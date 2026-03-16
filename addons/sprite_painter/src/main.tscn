@@ -1,0 +1,1011 @@
+[gd_scene load_steps=63 format=3 uid="uid://bc0weyhuhf5di"]
+
+[ext_resource type="Script" path="res://addons/sprite_painter/src/main.gd" id="1_pn6xr"]
+[ext_resource type="Script" path="res://addons/sprite_painter/editor_icon_button.gd" id="2_ahevp"]
+[ext_resource type="Texture2D" uid="uid://c7nymhfcdr3hl" path="res://addons/sprite_painter/graphics/diags.png" id="3_kxniu"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/image_view/image_tool_preview.gd" id="7_47ui8"]
+[ext_resource type="Shader" uid="uid://bpswjmm8i01cg" path="res://addons/sprite_painter/shaders/gradient.tres" id="7_nc3ac"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/image_view/image_grid_view.gd" id="8_af4ys"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/image_transform_menu.gd" id="9_20sxo"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/workspace.gd" id="9_gvnc2"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/image_view/image_view.gd" id="10_etjnr"]
+[ext_resource type="PackedScene" path="res://addons/sprite_painter/src/image_view/resize_rect.tscn" id="11_jhyl6"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/image_view/image_selection_view.gd" id="13_81c1e"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/floating/tool_switcher.gd" id="14_ig7f3"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_select.gd" id="15_2n2l5"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_brush.gd" id="16_b68p1"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_gradient.gd" id="16_np2pu"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_bucket.gd" id="17_4lt5q"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_brush_clone.gd" id="17_pf4en"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_brush_normalmap.gd" id="18_dwsmj"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_brush_shading.gd" id="18_f5yr5"]
+[ext_resource type="PackedScene" uid="uid://dcc6kewvuomhc" path="res://addons/sprite_painter/src/floating/type_context_settings.tscn" id="18_rmu80"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_pencil.gd" id="19_76b7g"]
+[ext_resource type="Shader" uid="uid://clpby1t4s1pvy" path="res://addons/sprite_painter/shaders/shape.tres" id="20_0y2y6"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_shape.gd" id="20_vwkmd"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_line.gd" id="21_rp6uq"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_wand.gd" id="21_xj52d"]
+[ext_resource type="PackedScene" uid="uid://be21fmb246ubn" path="res://addons/sprite_painter/src/floating/color_picker.tscn" id="22_rhy5h"]
+[ext_resource type="Shader" uid="uid://c84r6o3a8gfo0" path="res://addons/sprite_painter/shaders/line.tres" id="22_sfnac"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/editing_tools/tool_scripting.gd" id="23_h1454"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8skav"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nkhd7"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_lb3gr"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_2olkx"]
+keycode = 83
+
+[sub_resource type="Shortcut" id="Shortcut_ipdqg"]
+resource_name = "S"
+events = [SubResource("InputEventKey_2olkx")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ac1o6"]
+keycode = 86
+
+[sub_resource type="Shortcut" id="Shortcut_7y38e"]
+resource_name = "V"
+events = [SubResource("InputEventKey_ac1o6")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_8yx45"]
+device = -1
+keycode = 66
+unicode = 98
+
+[sub_resource type="Shortcut" id="Shortcut_cnbj8"]
+resource_name = "B"
+events = [SubResource("InputEventKey_8yx45")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_awww8"]
+keycode = 70
+
+[sub_resource type="Shortcut" id="Shortcut_unc62"]
+resource_name = "F"
+events = [SubResource("InputEventKey_awww8")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_c6v2k"]
+keycode = 78
+
+[sub_resource type="Shortcut" id="Shortcut_pgrth"]
+resource_name = "N"
+events = [SubResource("InputEventKey_c6v2k")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_bi32x"]
+keycode = 68
+
+[sub_resource type="Shortcut" id="Shortcut_qgge1"]
+resource_name = "D"
+events = [SubResource("InputEventKey_bi32x")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_qsaam"]
+keycode = 79
+
+[sub_resource type="Shortcut" id="Shortcut_nva4u"]
+resource_name = "O"
+events = [SubResource("InputEventKey_qsaam")]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jth0e"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_smn0a"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_m8eep"]
+keycode = 4194305
+
+[sub_resource type="Shortcut" id="Shortcut_lhl5g"]
+events = [SubResource("InputEventKey_m8eep")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kt81e"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="Theme" id="Theme_vlrlm"]
+Panel/styles/panel = SubResource("StyleBoxFlat_kt81e")
+
+[sub_resource type="Gradient" id="Gradient_xyctd"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.398601, 0.769231)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mhx6q"]
+gradient = SubResource("Gradient_xyctd")
+fill_to = Vector2(0.723647, 0.378917)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_nwvb2"]
+viewport_path = NodePath("Box/Workspace/ViewportOverlay/EditedImageView/SubViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_e8qge"]
+font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bt1d5"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o2ioo"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.8, 0.8, 0.8, 1)
+shadow_size = 4
+anti_aliasing = false
+
+[sub_resource type="Gradient" id="Gradient_jeov6"]
+offsets = PackedFloat32Array(0, 1, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bmka2"]
+gradient = SubResource("Gradient_jeov6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xuu2x"]
+shader = ExtResource("7_nc3ac")
+shader_parameter/from = Vector2(0.0820313, 0.132813)
+shader_parameter/delta = Vector2(0.0742188, 0.1875)
+shader_parameter/type = 0
+shader_parameter/gradient = SubResource("GradientTexture1D_bmka2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qmoem"]
+shader = ExtResource("20_0y2y6")
+shader_parameter/shape_index = 0
+shader_parameter/color_border = null
+shader_parameter/color_fill = null
+shader_parameter/origin = null
+shader_parameter/shape_size = null
+shader_parameter/border_width = null
+shader_parameter/drag_delta = null
+shader_parameter/enable_aa = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hi61m"]
+shader = ExtResource("22_sfnac")
+shader_parameter/color = null
+shader_parameter/origin = Vector2(104.5, 114.5)
+shader_parameter/delta = null
+shader_parameter/width = null
+shader_parameter/enable_aa = false
+
+[node name="Painter" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_pn6xr")
+metadata/_edit_lock_ = true
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Toolbar" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+mouse_filter = 0
+
+[node name="Control2" type="Control" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="BoxSelection" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_ipdqg")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "ActionCopy"
+
+[node name="WandSelection" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_ipdqg")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "PreviewSun"
+
+[node name="VSeparator2" type="VSeparator" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="Pencil" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_7y38e")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Edit"
+
+[node name="Brush" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_cnbj8")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "CanvasItem"
+
+[node name="Eraser" type="Button" parent="Box/Toolbar"]
+custom_minimum_size = Vector2(21, 0)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_cnbj8")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Eraser"
+
+[node name="Bucket" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_unc62")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Bucket"
+
+[node name="Gradient" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_unc62")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Gradient"
+
+[node name="VSeparator3" type="VSeparator" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="ShadingBrush" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_pgrth")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "MaterialPreviewSphere"
+
+[node name="CloneBrush" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+tooltip_text = "Shape"
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_pgrth")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Clear"
+
+[node name="NormalMapBrush" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_pgrth")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "3D"
+
+[node name="VSeparator" type="VSeparator" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="Shape" type="Button" parent="Box/Toolbar"]
+custom_minimum_size = Vector2(21, 0)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_qgge1")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "PickerShapeCircle"
+
+[node name="Line" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_qgge1")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Curve2D"
+
+[node name="Script" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_lb3gr")
+shortcut = SubResource("Shortcut_nva4u")
+shortcut_in_tooltip = false
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Shader"
+
+[node name="ToolsEnd" type="VSeparator" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="Transform" type="MenuButton" parent="Box/Toolbar"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jth0e")
+text = "Transform"
+item_count = 8
+popup/item_0/text = "Rotate clockwise"
+popup/item_0/id = 0
+popup/item_1/text = "Rotate counter-clockwise"
+popup/item_1/id = 1
+popup/item_2/text = "Flip horizontally"
+popup/item_2/id = 2
+popup/item_3/text = "Flip vertically"
+popup/item_3/id = 3
+popup/item_4/text = ""
+popup/item_4/id = 286
+popup/item_4/separator = true
+popup/item_5/text = "Crop to selection/Crop transparent"
+popup/item_5/id = 4
+popup/item_6/text = "Border +1"
+popup/item_6/id = 5
+popup/item_7/text = "Change size..."
+popup/item_7/id = 6
+script = ExtResource("9_20sxo")
+workspace = NodePath("../../Workspace")
+
+[node name="Dialog" type="ConfirmationDialog" parent="Box/Toolbar/Transform"]
+title = "Resize Image"
+size = Vector2i(361, 312)
+unresizable = true
+ok_button_text = "Resize"
+
+[node name="Grid" type="GridContainer" parent="Box/Toolbar/Transform/Dialog"]
+custom_minimum_size = Vector2(256, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -799.0
+offset_bottom = -385.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="Label" type="Label" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+text = "Width"
+
+[node name="Width" type="SpinBox" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = 2.0
+max_value = 4096.0
+value = 2.0
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Label2" type="Label" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+text = "Height"
+
+[node name="Height" type="SpinBox" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = 2.0
+max_value = 4096.0
+value = 2.0
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+text = "Percent"
+
+[node name="Percent" type="CheckBox" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+text = "On"
+
+[node name="Label4" type="Label" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+text = "Direction"
+
+[node name="Box" type="HBoxContainer" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Grid" type="GridContainer" parent="Box/Toolbar/Transform/Dialog/Grid/Box"]
+layout_mode = 2
+columns = 3
+
+[node name="ThemeIconButton2" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignTopLeft"
+
+[node name="ThemeIconButton3" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignCenterTop"
+
+[node name="ThemeIconButton4" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignTopRight"
+
+[node name="ThemeIconButton5" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignCenterLeft"
+
+[node name="ThemeIconButton6" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignCenter"
+
+[node name="ThemeIconButton7" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignCenterRight"
+
+[node name="ThemeIconButton8" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignBottomLeft"
+
+[node name="ThemeIconButton9" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignCenterBottom"
+
+[node name="ThemeIconButton10" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box/Grid"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignBottomRight"
+
+[node name="Stretch" type="Button" parent="Box/Toolbar/Transform/Dialog/Grid/Box"]
+layout_mode = 2
+tooltip_text = "Scale image"
+toggle_mode = true
+button_group = SubResource("ButtonGroup_smn0a")
+icon_alignment = 1
+script = ExtResource("2_ahevp")
+icon_name = "ControlAlignFullRect"
+
+[node name="Albel5" type="Label" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+text = "Algorithm"
+
+[node name="Interpolation" type="OptionButton" parent="Box/Toolbar/Transform/Dialog/Grid"]
+layout_mode = 2
+disabled = true
+item_count = 4
+selected = 0
+popup/item_0/text = "No smoothing"
+popup/item_0/id = 0
+popup/item_1/text = "Bilinear (fastest)"
+popup/item_1/id = 1
+popup/item_2/text = "Cubic"
+popup/item_2/id = 2
+popup/item_3/text = "Lanczos (highest quality)"
+popup/item_3/id = 4
+
+[node name="VSeparator4" type="VSeparator" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Box/Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Refresh" type="Button" parent="Box/Toolbar"]
+visible = false
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "RotateRight"
+
+[node name="Save" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+text = "Save"
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Save"
+
+[node name="VSeparator5" type="VSeparator" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="Discard" type="Button" parent="Box/Toolbar"]
+layout_mode = 2
+tooltip_text = "Close"
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8skav")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nkhd7")
+shortcut = SubResource("Shortcut_lhl5g")
+text = "Discard"
+flat = true
+script = ExtResource("2_ahevp")
+icon_name = "Close"
+
+[node name="Control3" type="Control" parent="Box/Toolbar"]
+layout_mode = 2
+
+[node name="Workspace" type="MarginContainer" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 1
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+theme = SubResource("Theme_vlrlm")
+script = ExtResource("9_gvnc2")
+metadata/_edit_lock_ = true
+
+[node name="ViewportOverlay" type="TextureRect" parent="Box/Workspace"]
+self_modulate = Color(0.0627451, 0.0627451, 0.0627451, 0.752941)
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("3_kxniu")
+expand_mode = 1
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="EditedImageView" type="Sprite2D" parent="Box/Workspace/ViewportOverlay"]
+unique_name_in_owner = true
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(248, 255)
+centered = false
+script = ExtResource("10_etjnr")
+draw_handler = NodePath("../../Floating/Control/ToolSettings/ToolSwitcher")
+
+[node name="SubViewport" type="SubViewport" parent="Box/Workspace/ViewportOverlay/EditedImageView"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(64, 64)
+
+[node name="ShaderView" type="Sprite2D" parent="Box/Workspace/ViewportOverlay/EditedImageView/SubViewport"]
+z_as_relative = false
+texture_filter = 1
+texture_repeat = 2
+texture = SubResource("GradientTexture2D_mhx6q")
+centered = false
+script = ExtResource("7_47ui8")
+draw_handler = NodePath("../../../../Floating/Control/ToolSettings/ToolSwitcher")
+draw_method = "draw_shader_preview"
+
+[node name="ShaderViewView" type="Sprite2D" parent="Box/Workspace/ViewportOverlay/EditedImageView"]
+texture = SubResource("ViewportTexture_nwvb2")
+centered = false
+
+[node name="ToolView" type="Sprite2D" parent="Box/Workspace/ViewportOverlay/EditedImageView"]
+script = ExtResource("7_47ui8")
+draw_handler = NodePath("../../../Floating/Control/ToolSettings/ToolSwitcher")
+
+[node name="GridView" type="Node2D" parent="Box/Workspace/ViewportOverlay/EditedImageView"]
+unique_name_in_owner = true
+z_as_relative = false
+script = ExtResource("8_af4ys")
+grid_color = Color(0.392157, 0.658824, 1, 1)
+region_color = Color(0.886275, 0.486275, 1, 1)
+region_outer_color = Color(0, 0, 0, 0.498039)
+
+[node name="SelectionView" type="Node2D" parent="Box/Workspace/ViewportOverlay/EditedImageView"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.75)
+z_as_relative = false
+script = ExtResource("13_81c1e")
+selection_color = Color(0.117647, 0.564706, 1, 0.498039)
+
+[node name="ResizeResult" type="Label" parent="Box/Workspace/ViewportOverlay"]
+visible = false
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 72.0
+offset_top = 32.0
+offset_right = -1078.0
+offset_bottom = -610.0
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_e8qge")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Dark" type="ColorRect" parent="Box/Workspace/ViewportOverlay/ResizeResult"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.752941)
+
+[node name="ImageBorder" type="Control" parent="Box/Workspace/ViewportOverlay"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 224.0
+offset_top = 239.0
+offset_right = 520.0
+offset_bottom = 527.0
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="BorderClip" type="NinePatchRect" parent="Box/Workspace/ViewportOverlay/ImageBorder"]
+clip_children = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_kxniu")
+draw_center = false
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+metadata/_edit_lock_ = true
+
+[node name="BorderTile" type="TextureRect" parent="Box/Workspace/ViewportOverlay/ImageBorder/BorderClip"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_kxniu")
+expand_mode = 1
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Resize" parent="Box/Workspace/ViewportOverlay/ImageBorder" instance=ExtResource("11_jhyl6")]
+layout_mode = 1
+sensitivity = 0.25
+
+[node name="Border" type="Panel" parent="Box/Workspace/ViewportOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bt1d5")
+metadata/_edit_lock_ = true
+
+[node name="Floating" type="MarginContainer" parent="Box/Workspace"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+metadata/_edit_lock_ = true
+
+[node name="Control" type="Control" parent="Box/Workspace/Floating"]
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="ToolSettings" type="MarginContainer" parent="Box/Workspace/Floating/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel2" type="Panel" parent="Box/Workspace/Floating/Control/ToolSettings"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o2ioo")
+
+[node name="Panel3" type="Panel" parent="Box/Workspace/Floating/Control/ToolSettings"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ToolSwitcher" type="MarginContainer" parent="Box/Workspace/Floating/Control/ToolSettings"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+script = ExtResource("14_ig7f3")
+toolbar = NodePath("../../../../../Toolbar")
+toolbar_end = NodePath("../../../../../Toolbar/ToolsEnd")
+image_view = NodePath("../../../../ViewportOverlay/EditedImageView")
+
+[node name="BoxSelection" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("15_2n2l5")
+
+[node name="WandSelection" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("21_xj52d")
+tool_name = "Color Selection"
+
+[node name="Pencil" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("19_76b7g")
+tool_name = "Pencil"
+
+[node name="Brush" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("16_b68p1")
+tool_name = "Brush"
+
+[node name="CloneBrush" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("17_pf4en")
+clone_preview_color = Color(1, 0.4, 0.937255, 0.752941)
+brush_type = 2
+tool_name = "Clone Brush"
+
+[node name="ShadingBrush" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("18_f5yr5")
+brush_type = 3
+tool_name = "Fill Brush"
+
+[node name="NormalMapBrush" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("18_dwsmj")
+brush_type = 4
+tool_name = "Normal Map Brush"
+tool_desc = "Drag with Right Mouse Button to change direction.
+You can use pen tilt or the left joystick."
+
+[node name="Eraser" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("16_b68p1")
+brush_type = 1
+tool_name = "Eraser"
+
+[node name="Bucket" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("17_4lt5q")
+tool_name = "Fill"
+
+[node name="Gradient" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+layout_mode = 2
+script = ExtResource("16_np2pu")
+shader_preview = NodePath("../../../../../ViewportOverlay/EditedImageView/SubViewport/ShaderView")
+shader_viewport_texture = SubResource("ViewportTexture_nwvb2")
+tool_name = "Gradient"
+preview_shader = SubResource("ShaderMaterial_xuu2x")
+
+[node name="Shape" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("20_vwkmd")
+shader_viewport_texture = SubResource("ViewportTexture_nwvb2")
+tool_name = "Shape"
+preview_shader = SubResource("ShaderMaterial_qmoem")
+
+[node name="Line" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("21_rp6uq")
+shader_viewport_texture = SubResource("ViewportTexture_nwvb2")
+tool_name = "Line"
+preview_shader = SubResource("ShaderMaterial_hi61m")
+
+[node name="Script" type="VBoxContainer" parent="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher"]
+visible = false
+layout_mode = 2
+script = ExtResource("23_h1454")
+workspace = NodePath("../../../../..")
+tool_name = "Image Script"
+tool_desc = "Choose a script in the dropdown.
+To preview the result, hover over the image!
+
+Edit or create scripts in the folder:
+res://addons/sprite_painter/image_scripts/"
+image_hide_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="ColorSettings" parent="Box/Workspace/Floating/Control" instance=ExtResource("22_rhy5h")]
+layout_mode = 1
+workspace = NodePath("../../..")
+
+[node name="ContextSettings" parent="Box/Workspace/Floating/Control" instance=ExtResource("18_rmu80")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = -316.0
+offset_top = -51.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[connection signal="confirmed" from="Box/Toolbar/Transform/Dialog" to="Box/Toolbar/Transform" method="_on_dialog_confirmed"]
+[connection signal="toggled" from="Box/Toolbar/Transform/Dialog/Grid/Percent" to="Box/Toolbar/Transform" method="_on_percent_toggled"]
+[connection signal="item_selected" from="Box/Toolbar/Transform/Dialog/Grid/Interpolation" to="Box/Toolbar/Transform" method="_on_interpolation_item_selected"]
+[connection signal="pressed" from="Box/Toolbar/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Box/Toolbar/Discard" to="." method="_on_close_pressed"]
+[connection signal="visibility_changed" from="Box/Workspace/ViewportOverlay/EditedImageView/SelectionView" to="Box/Workspace/ViewportOverlay/EditedImageView/SelectionView" method="_on_visibility_changed"]
+[connection signal="preview_changed" from="Box/Workspace/ViewportOverlay/ImageBorder/Resize" to="Box/Workspace/ViewportOverlay/EditedImageView" method="_on_resize_preview_changed"]
+[connection signal="value_changed" from="Box/Workspace/ViewportOverlay/ImageBorder/Resize" to="Box/Workspace" method="_on_resize_value_changed"]
+[connection signal="tool_changed" from="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher" to="Box/Workspace/ViewportOverlay/EditedImageView/SubViewport/ShaderView" method="_on_tool_switcher_tool_changed"]
+[connection signal="color_changed" from="Box/Workspace/Floating/Control/ColorSettings" to="Box/Workspace/Floating/Control/ToolSettings/ToolSwitcher" method="_on_color_settings_color_changed"]

@@ -1,0 +1,530 @@
+[gd_scene load_steps=19 format=3 uid="uid://be21fmb246ubn"]
+
+[ext_resource type="Script" path="res://addons/sprite_painter/src/floating/color_picker.gd" id="1_ae0lg"]
+[ext_resource type="Script" path="res://addons/sprite_painter/editor_icon_button.gd" id="1_srmpw"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_l6hbd"]
+resource_name = "Alt"
+keycode = 4194328
+
+[sub_resource type="InputEventKey" id="InputEventKey_wy4cg"]
+resource_name = "I"
+
+[sub_resource type="Shortcut" id="Shortcut_76p2c"]
+events = [SubResource("InputEventKey_l6hbd"), SubResource("InputEventKey_wy4cg")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o2ioo"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.8, 0.8, 0.8, 1)
+shadow_size = 4
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eeewi"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.6, 0.6, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70jsv"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1.5, 1.5, 1.5, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gjl5v"]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.6, 0.6, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cicb3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mbmh"]
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.6, 0.6, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qpcds"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xa6r5"]
+content_margin_left = 5.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fjbou"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_0j7g6"]
+keycode = 88
+
+[sub_resource type="Shortcut" id="Shortcut_8hnrs"]
+resource_name = "X"
+events = [SubResource("InputEventKey_0j7g6")]
+
+[sub_resource type="Image" id="Image_670mm"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_qaodq"]
+image = SubResource("Image_670mm")
+
+[node name="ColorSettings" type="MarginContainer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -110.0
+offset_right = 80.0
+grow_vertical = 0
+mouse_filter = 0
+script = ExtResource("1_ae0lg")
+picker_shortcut = SubResource("Shortcut_76p2c")
+
+[node name="Panel2" type="Panel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o2ioo")
+metadata/_edit_lock_ = true
+
+[node name="Panel3" type="Panel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_edit_lock_ = true
+
+[node name="Container" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+metadata/_edit_lock_ = true
+
+[node name="Box" type="HBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="Box" type="VBoxContainer" parent="Container/Box"]
+layout_mode = 2
+alignment = 2
+
+[node name="WhichColor" type="Label" parent="Container/Box/Box"]
+layout_mode = 2
+text = "Color"
+
+[node name="Box" type="HBoxContainer" parent="Container/Box/Box"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Container/Box/Box/Box"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Color2" type="Button" parent="Container/Box/Box/Box/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -37.0
+offset_top = -37.0
+grow_horizontal = 0
+grow_vertical = 0
+tooltip_text = "(Right Click)
+Secondary Color
+
+Click to open the Color Picker."
+theme_override_styles/normal = SubResource("StyleBoxFlat_eeewi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_70jsv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gjl5v")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cicb3")
+
+[node name="Frame" type="Button" parent="Container/Box/Box/Box/Control/Color2"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_5mbmh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5mbmh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5mbmh")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qpcds")
+
+[node name="Color1" type="Button" parent="Container/Box/Box/Box/Control"]
+self_modulate = Color(0.498039, 0.498039, 0.498039, 1)
+layout_mode = 0
+offset_right = 37.0
+offset_bottom = 37.0
+tooltip_text = "(Left Click)
+Primary Color
+
+Click to open the Color Picker."
+theme_override_styles/normal = SubResource("StyleBoxFlat_eeewi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_70jsv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gjl5v")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cicb3")
+
+[node name="Frame2" type="Button" parent="Container/Box/Box/Box/Control/Color1"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_5mbmh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5mbmh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5mbmh")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qpcds")
+
+[node name="Control2" type="CenterContainer" parent="Container/Box/Box/Box/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_bottom = -37.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Swap" type="Button" parent="Container/Box/Box/Box/Control/Control2"]
+layout_mode = 2
+tooltip_text = "(X)
+Swap Primary/Secondary Colors
+
+The Screen Color Picker (Alt) will always change the Primary (Left Mouse Button) color."
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fjbou")
+shortcut = SubResource("Shortcut_8hnrs")
+shortcut_in_tooltip = false
+icon = SubResource("ImageTexture_qaodq")
+flat = true
+icon_alignment = 1
+script = ExtResource("1_srmpw")
+icon_name = "Loop"
+
+[node name="Control" type="CenterContainer" parent="Container/Box/Box/Box/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 38.0
+offset_right = -38.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Pick" type="Button" parent="Container/Box/Box/Box/Control/Control"]
+layout_mode = 2
+tooltip_text = "(Alt)
+Color Sampler
+
+Can pick color from the editor screen, or the image. Change this in the Color Picker accessed by clicking a color here."
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_xa6r5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fjbou")
+icon = SubResource("ImageTexture_qaodq")
+flat = true
+icon_alignment = 1
+script = ExtResource("1_srmpw")
+icon_name = "ColorPick"
+
+[node name="Palette" type="VBoxContainer" parent="Container/Box/Box"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Box" type="HBoxContainer" parent="Container/Box/Box/Palette"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/Box/Box/Palette/Box"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Palette"
+
+[node name="FromImage" type="Button" parent="Container/Box/Box/Palette/Box"]
+layout_mode = 2
+tooltip_text = "Get from image / selection"
+icon = SubResource("ImageTexture_qaodq")
+script = ExtResource("1_srmpw")
+icon_name = "CanvasLayer"
+
+[node name="Palette" type="VFlowContainer" parent="Container/Box/Box/Palette"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect2" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect3" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect4" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect5" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect6" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect7" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect8" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect9" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect10" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect11" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect12" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect27" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect21" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect22" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect23" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect24" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect25" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect26" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect13" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect14" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect15" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect16" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect17" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect18" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect19" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect20" type="ColorRect" parent="Container/Box/Box/Palette/Palette"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Palette2" type="Button" parent="Container/Box/Box"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+icon = SubResource("ImageTexture_qaodq")
+icon_alignment = 1
+script = ExtResource("1_srmpw")
+icon_name = "Grid"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Picker" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -40.0
+offset_right = 308.0
+grow_horizontal = 0
+grow_vertical = 0
+metadata/_edit_group_ = true
+
+[node name="Panel4" type="Panel" parent="Control/Picker"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o2ioo")
+metadata/_edit_lock_ = true
+
+[node name="Panel5" type="Panel" parent="Control/Picker"]
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_edit_lock_ = true
+
+[node name="Margins" type="MarginContainer" parent="Control/Picker"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Box" type="VBoxContainer" parent="Control/Picker/Margins"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Control/Picker/Margins/Box"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Control/Picker/Margins/Box/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+icon = SubResource("ImageTexture_qaodq")
+icon_alignment = 1
+script = ExtResource("1_srmpw")
+icon_name = "ToolMove"
+
+[node name="Button2" type="Button" parent="Control/Picker/Margins/Box/Header"]
+layout_mode = 2
+tooltip_text = "Toggle color picking from image
+
+If off, the Picker Tool (Alt) will pick the color from the editor's viewport."
+toggle_mode = true
+icon = SubResource("ImageTexture_qaodq")
+script = ExtResource("1_srmpw")
+icon_name = "SubViewport"
+
+[node name="Button3" type="Button" parent="Control/Picker/Margins/Box/Header"]
+layout_mode = 2
+icon = SubResource("ImageTexture_qaodq")
+script = ExtResource("1_srmpw")
+icon_name = "Close"
+
+[node name="ColorPicker" type="ColorPicker" parent="Control/Picker/Margins/Box"]
+layout_mode = 2
+color = Color(0.498039, 0.498039, 0.498039, 1)
+color_mode = 1
+sampler_visible = false
+metadata/_edit_lock_ = true
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="Container/Box/Box/Box/Control/Color2" to="." method="_on_color_2_pressed"]
+[connection signal="pressed" from="Container/Box/Box/Box/Control/Color2/Frame" to="." method="_on_color_2_pressed"]
+[connection signal="pressed" from="Container/Box/Box/Box/Control/Color1" to="." method="_on_color_1_pressed"]
+[connection signal="pressed" from="Container/Box/Box/Box/Control/Color1/Frame2" to="." method="_on_color_2_pressed"]
+[connection signal="pressed" from="Container/Box/Box/Box/Control/Control2/Swap" to="." method="_on_swap_pressed"]
+[connection signal="pressed" from="Container/Box/Box/Box/Control/Control/Pick" to="." method="_on_color_pick_pressed"]
+[connection signal="toggled" from="Container/Box/Box/Palette2" to="." method="_on_palette_toggled"]
+[connection signal="gui_input" from="Control/Picker/Margins/Box/Header/Button" to="." method="_on_picker_header_gui_input"]
+[connection signal="toggled" from="Control/Picker/Margins/Box/Header/Button2" to="." method="_on_pick_from_image_toggled"]
+[connection signal="pressed" from="Control/Picker/Margins/Box/Header/Button3" to="Control/Picker" method="hide"]
+[connection signal="color_changed" from="Control/Picker/Margins/Box/ColorPicker" to="." method="_on_color_picker_color_changed"]

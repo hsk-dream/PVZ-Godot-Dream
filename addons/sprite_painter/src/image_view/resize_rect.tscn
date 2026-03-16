@@ -1,0 +1,89 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/sprite_painter/src/image_view/resize_rect.gd" id="1_eudu3"]
+[ext_resource type="Texture2D" uid="uid://c7nymhfcdr3hl" path="res://addons/sprite_painter/graphics/diags.png" id="1_v44m5"]
+
+[node name="Resize" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_eudu3")
+metadata/_edit_lock_ = true
+
+[node name="X-" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -16.0
+offset_right = -16.0
+offset_bottom = 16.0
+grow_vertical = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 10
+texture = ExtResource("1_v44m5")
+ignore_texture_size = true
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="X+" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -16.0
+offset_right = 48.0
+offset_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 10
+texture = ExtResource("1_v44m5")
+ignore_texture_size = true
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Y-" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -16.0
+offset_top = -48.0
+offset_right = 16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 9
+texture = ExtResource("1_v44m5")
+ignore_texture_size = true
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Y+" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = 16.0
+offset_right = 16.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 0
+mouse_default_cursor_shape = 9
+texture = ExtResource("1_v44m5")
+ignore_texture_size = true
+stretch_mode = 1
+metadata/_edit_lock_ = true

@@ -1,0 +1,181 @@
+[gd_scene load_steps=4 format=3 uid="uid://cr85guhgjht2p"]
+
+[ext_resource type="Script" uid="uid://cgu1dec4leah2" path="res://addons/anim_free_common_tracks/ui/main_panel.gd" id="1_8n2pf"]
+[ext_resource type="StyleBox" uid="uid://bhbqbh8iaph0s" path="res://addons/R2Ga_PVZ/ui/new_style_box_flat.tres" id="2_8ne2t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06l7b"]
+bg_color = Color(0.145098, 0.145098, 0.145098, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.101961, 0.101961, 0.101961, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="PanelContainer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8n2pf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PluginIntroductionPanel2" type="PanelContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(740, 0)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/PluginIntroductionPanel2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer"]
+custom_minimum_size = Vector2(725, 0)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_8ne2t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "选择动画文件目录"
+
+[node name="anim_path_box" type="HBoxContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="anim_path_option" type="OptionButton" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/anim_path_box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+tooltip_text = "res://animation/character/plant/025_sea_shroom/"
+clip_text = true
+
+[node name="anim_select_button" type="Button" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/anim_path_box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "选择动画文件夹"
+
+[node name="run_button" type="Button" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "运行"
+
+[node name="StatusLabel" type="Label" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_8ne2t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+text = "选择场景文件"
+
+[node name="anim_path_box" type="HBoxContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="anim_path_option2" type="OptionButton" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/anim_path_box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+tooltip_text = "res://scenes/character/zombie/014_zombie_bobsled_single.tscn"
+clip_text = true
+
+[node name="anim_select_button2" type="Button" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/anim_path_box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "选择场景文件"
+
+[node name="anim_path_box2" type="HBoxContainer" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/anim_path_box2"]
+layout_mode = 2
+text = "AnimationPlay节点名字："
+
+[node name="AnimPlayName" type="TextEdit" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/anim_path_box2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "为空时选择所有AnimationPlayer节点（注意僵尸灰烬动画）"
+
+[node name="run_button2" type="Button" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "运行"
+
+[node name="StatusLabel2" type="Label" parent="HBoxContainer/PluginIntroductionPanel2/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="PluginIntroductionPanel" type="PanelContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_06l7b")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/PluginIntroductionPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PluginIntroductionPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TitleLabel" type="Label" parent="HBoxContainer/PluginIntroductionPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Anim Free Common Tracks"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/PluginIntroductionPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "开发者：睡觉做大梦"
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="HBoxContainer/PluginIntroductionPanel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "版本：v1.0.3"
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="HBoxContainer/PluginIntroductionPanel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "为避免误删除，请做好备份，强烈建议先备份一份处理之前的动画文件，出现问题后方便找回"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label4" type="Label" parent="HBoxContainer/PluginIntroductionPanel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "插件简介：
+1、对godot动画资源文件更新，检测每个动画资源中值不变的轨道，若所有动画文件中不变轨道值相同，删除所有动画文件中的该轨道。同时删除动画文件中visible为空的节点的其余轨道（跳过含_ground字符串的节点）
+2、可以选择目录（非递归），对选择目录下的所有动画文件处理。也可以选择场景，对场景中的所有animationplay节点（递归查找所有节点）的动画处理
+3、在“输出”面板会输出详细信息
+4、在使用场景文件时，要输入场景文件中的AnimationPlayer节点名字,否则会选择所有的AnimationPlayer节点(多动画节点时，尤其注意僵尸灰烬动画)
+5、豌豆射手这种头和身体分开的，可以将头的动画和身体的动画分到两个文件夹下，选择动画文件目录处理。
+6、实现了动画文件夹路径的选择和自动保存"
+vertical_alignment = 1
+autowrap_mode = 3

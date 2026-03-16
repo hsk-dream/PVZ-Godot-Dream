@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://oxkls7ggogt1"]
+
+[ext_resource type="Script" uid="uid://bfdrwndxj5lpv" path="res://addons/calculate_roration/ui/cr_main_ui.gd" id="1_6t55t"]
+
+[node name="CrMainUi" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6t55t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+wrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="TextEdit2" type="TextEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+wrap_mode = 1
+scroll_past_end_of_file = true
+
+[node name="TextEdit3" type="TextEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "修改度数"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "是否正转"
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "开始"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]

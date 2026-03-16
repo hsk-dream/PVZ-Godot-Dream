@@ -1,0 +1,172 @@
+[gd_scene load_steps=6 format=3 uid="uid://dcc6kewvuomhc"]
+
+[ext_resource type="Script" path="res://addons/sprite_painter/src/floating/type_context_settings.gd" id="1_7q6dr"]
+[ext_resource type="Script" path="res://addons/sprite_painter/editor_icon_button.gd" id="2_l84pr"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/floating/type_context/context_spriteframes.gd" id="3_jtsht"]
+[ext_resource type="Script" path="res://addons/sprite_painter/src/floating/type_context/context_tileset.gd" id="4_mhrcf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o2ioo"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.8, 0.8, 0.8, 1)
+shadow_size = 4
+anti_aliasing = false
+
+[node name="ContextSettings" type="MarginContainer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -647.0
+offset_top = -363.0
+offset_right = -331.0
+offset_bottom = -312.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 0
+script = ExtResource("1_7q6dr")
+
+[node name="Panel2" type="Panel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o2ioo")
+metadata/_edit_lock_ = true
+
+[node name="Panel3" type="Panel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_edit_lock_ = true
+
+[node name="Container" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+metadata/_edit_lock_ = true
+
+[node name="Box" type="VBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="Grid" type="GridContainer" parent="Container/Box"]
+layout_mode = 2
+columns = 2
+
+[node name="Anim" type="Label" parent="Container/Box/Grid"]
+visible = false
+layout_mode = 2
+text = "Animation"
+
+[node name="FrameData" type="LineEdit" parent="Container/Box/Grid"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Idle, Frame 8"
+editable = false
+expand_to_text_length = true
+
+[node name="Label2" type="Label" parent="Container/Box/Grid"]
+visible = false
+layout_mode = 2
+text = "Helpers"
+
+[node name="Box" type="HBoxContainer" parent="Container/Box/Grid"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ThemeIconButton" type="Button" parent="Container/Box/Grid/Box"]
+layout_mode = 2
+script = ExtResource("2_l84pr")
+icon_name = "GuiVisibilityVisible"
+
+[node name="Button" type="Button" parent="Container/Box/Grid/Box"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit"
+
+[node name="CursorPos" type="LineEdit" parent="Container/Box"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+text = "Cursor: (0, 0) -> (0, 0) (size (0, 0))"
+editable = false
+expand_to_text_length = true
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Extra" type="MarginContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -704.0
+offset_top = -143.0
+offset_right = -398.0
+offset_bottom = -103.0
+grow_horizontal = 0
+grow_vertical = 0
+metadata/_edit_group_ = true
+
+[node name="Panel4" type="Panel" parent="Control/Extra"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o2ioo")
+metadata/_edit_lock_ = true
+
+[node name="Panel5" type="Panel" parent="Control/Extra"]
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_edit_lock_ = true
+
+[node name="Margins" type="MarginContainer" parent="Control/Extra"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Box" type="VBoxContainer" parent="Control/Extra/Margins"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Control/Extra/Margins/Box"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Control/Extra/Margins/Box/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+icon_alignment = 1
+script = ExtResource("2_l84pr")
+icon_name = "ToolMove"
+
+[node name="Button2" type="Button" parent="Control/Extra/Margins/Box/Header"]
+layout_mode = 2
+script = ExtResource("2_l84pr")
+icon_name = "Close"
+
+[node name="TypeHandlers" type="Node" parent="."]
+
+[node name="Spriteframes" type="Node" parent="TypeHandlers"]
+script = ExtResource("3_jtsht")
+label = NodePath("../../Container/Box/Grid/Anim")
+frame_data_textbox = NodePath("../../Container/Box/Grid/FrameData")
+
+[node name="Tileset" type="Node" parent="TypeHandlers"]
+script = ExtResource("4_mhrcf")
+
+[connection signal="gui_input" from="Control/Extra/Margins/Box/Header/Button" to="." method="_on_picker_header_gui_input"]
+[connection signal="pressed" from="Control/Extra/Margins/Box/Header/Button2" to="Control/Extra" method="hide"]

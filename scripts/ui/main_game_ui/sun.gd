@@ -69,5 +69,5 @@ func _start_fade_out() -> void:
 	)
 
 func on_sun_tween_finished():
-	if Global.auto_collect_sun:
+	if Global.config_service.auto_collect_sun:
 		_on_button_pressed()

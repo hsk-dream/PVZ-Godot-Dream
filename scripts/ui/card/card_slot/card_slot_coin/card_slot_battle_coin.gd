@@ -27,10 +27,10 @@ var is_next_wave_refresh:=false
 var is_end_wave:=false
 
 func _ready() -> void:
-	Global.signal_change_disappear_spare_card_placeholder.connect(judge_disappear_add_card_bar)
+	Global.config_service.signal_change_disappear_spare_card_placeholder.connect(judge_disappear_add_card_bar)
 	update_label_info()
 	Global.main_game.p_yeti_run = curr_p
-	Global.coin_value_change.connect(func():curr_coin_value.text = str(Global.coin_value))
+	Global.global_game_state.coin_value_changed.connect(func(_new_value: int): curr_coin_value.text = str(Global.global_game_state.coin_value))
 
 func _process(_delta: float) -> void:
 	if curr_wave_card <= 0 and not is_end_wave:
@@ -50,7 +50,7 @@ func update_label_info():
 
 ## 初始化出战卡槽，管理器调用
 func init_card_slot_battle(max_choosed_card_num:int):
-	curr_coin_value.text = str(Global.coin_value)
+	curr_coin_value.text = str(Global.global_game_state.coin_value)
 	for i in range(max_choosed_card_num):
 		var cloned_card_placeholder = card_placeholder_ori.duplicate()
 		card_ui_list.add_child(cloned_card_placeholder)
@@ -63,7 +63,7 @@ func init_card_slot_battle(max_choosed_card_num:int):
 func main_game_refresh_card():
 	for i in range(curr_cards.size()):
 		var card:Card = curr_cards[i]
-		card.judge_sun_enough(int(Global.coin_value/10.0))
+		card.judge_sun_enough(int(Global.global_game_state.coin_value / 10.0))
 		card.signal_card_use_end.connect(card_use_end.bind(card))
 		card.set_shortcut((i+1)%10)
 	judge_disappear_add_card_bar()
@@ -71,10 +71,10 @@ func main_game_refresh_card():
 ## 卡片种植后信号调用函数
 func card_use_end(card:Card):
 	## 减少阳光，卡片冷却
-	Global.coin_value = Global.coin_value - card.sun_cost * 10
+	Global.global_game_state.coin_value = Global.global_game_state.coin_value - card.sun_cost * 10
 	#card.card_cool()
-	curr_coin_value.text = str(Global.coin_value)
-	card.judge_sun_enough(int(Global.coin_value/10.0))
+	curr_coin_value.text = str(Global.global_game_state.coin_value)
+	card.judge_sun_enough(int(Global.global_game_state.coin_value / 10.0))
 	curr_wave_card -= 1
 	if curr_wave_card == 0:
 		card.set_card_disable()
@@ -112,7 +112,7 @@ func next_wave():
 func judge_disappear_add_card_bar():
 	## 在游戏进行阶段
 	if Global.main_game.main_game_progress == MainGameManager.E_MainGameProgress.MAIN_GAME:
-		if Global.disappear_spare_card_Placeholder:
+		if Global.config_service.disappear_spare_card_Placeholder:
 			if curr_cards.size() < cards_placeholder.size():
 				for i in range(curr_cards.size(), cards_placeholder.size()):
 					cards_placeholder[i].visible = false

@@ -30,8 +30,8 @@ func init_card_slot_norm(game_para:ResourceLevelData):
 
 # 重选上次卡片
 func _on_re_card_button_pressed() -> void:
-	Global.load_selected_cards()
-	for card_type_data:Dictionary in Global.selected_cards:
+	Global.save_service.load_selected_cards()
+	for card_type_data:Dictionary in Global.global_game_state.selected_cards:
 		if card_type_data.has("plant_type"):
 			var plant_type:EnumsCharacter.PlantType = card_type_data["plant_type"]
 			## 如果是模仿者
@@ -61,7 +61,7 @@ func _on_texture_button_pressed() -> void:
 	EventBus.push_event("card_slot_norm_start_game")
 	#card_disconnect_click_in_choose()
 	## 保存上次选卡
-	Global.selected_cards.clear()
+	Global.global_game_state.selected_cards.clear()
 	for card:Card in card_slot_battle.curr_cards:
 		var card_type_data:={}
 		if card.card_plant_type != EnumsCharacter.PlantType.Null:
@@ -72,9 +72,9 @@ func _on_texture_button_pressed() -> void:
 			card_type_data["zombie_type"] = card.card_zombie_type
 		else:
 			print("error:当前卡牌类型不为植物也不为僵尸")
-		Global.selected_cards.append(card_type_data)
+		Global.global_game_state.selected_cards.append(card_type_data)
 
-	Global.save_selected_cards()
+	Global.save_service.save_selected_cards()
 
 ## 初始化系统预选卡
 ## 从AllCards中复制一张新卡,隐藏card_slot_candidate的卡片
@@ -187,7 +187,7 @@ func pre_choosed_card(card:Card, target_parent):
 	## 罐子模式下系统预选卡无冷却
 	if Global.main_game.game_para.is_pot_mode:
 		if card.card_plant_type != EnumsCharacter.PlantType.Null:
-			if Global.zero_cd_plnat_card_type_on_pot_mode.has(card.card_plant_type):
+			if Global.global_read_data.zero_cd_plnat_card_type_on_pot_mode.has(card.card_plant_type):
 				card.card_change_cool_time(0)
 		## 僵尸卡牌都无冷却
 		elif card.card_zombie_type != EnumsCharacter.ZombieType.Null:

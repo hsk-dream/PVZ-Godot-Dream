@@ -19,7 +19,7 @@ var bgm_choose_card: AudioStream = preload("res://assets/audio/BGM/choose_card.m
 
 func _ready() -> void:
 	## 如果没有开放所有关卡
-	if not Global.open_all_level:
+	if not Global.config_service.open_all_level:
 		if game_mode == EnumsMainScene.MainScenes.ChooseLevelAdventure:
 			open_level_num = 1
 		## 自定义关卡全开放
@@ -43,7 +43,7 @@ func _ready() -> void:
 				node.signal_choose_level_button.connect(_on_choose_level_button)
 				## 初始化游戏数据的选关数据
 				node.curr_level_data_game_para.set_choose_level(game_mode, page_i, level_id)
-				var curr_level_state_data:Dictionary= Global.curr_all_level_state_data.get(node.curr_level_data_game_para.save_game_name, {})
+				var curr_level_state_data:Dictionary = Global.global_game_state.curr_all_level_state_data.get(node.curr_level_data_game_para.save_game_name, {})
 				node.update_curr_level_button_state(curr_level_state_data)
 				update_lock_level(node, curr_level_state_data)
 

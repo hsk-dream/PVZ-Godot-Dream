@@ -31,12 +31,12 @@ func _ready() -> void:
 	curr_dialog_detail = dialog_detail.duplicate(true)
 	judge_can_get_goods()
 	## 连接金币改变信号
-	Global.coin_value_change.connect(judge_can_get_goods)
+	Global.global_game_state.coin_value_changed.connect(func(_new_value: int): judge_can_get_goods())
 
 ## 判断是否卖的起,是否有商品
 func judge_can_get_goods():
 	## 如果当前金币买不起
-	if Global.coin_value < price:
+	if Global.global_game_state.coin_value < price:
 		curr_dialog_detail.text = "**你现在还卖不起这个商品**\n" + dialog_detail.text
 		button.disabled = true
 	else:
@@ -62,11 +62,11 @@ func _on_button_pressed() -> void:
 
 ## 确认购买该商品
 func comfirm_get_this_goods():
-	if Global.coin_value < price:
+	if Global.global_game_state.coin_value < price:
 		print("买不起，不应该出现该语句，因为按钮已经被禁用")
 		return
 	else:
-		Global.coin_value -= price
+		Global.global_game_state.coin_value -= price
 		get_one_goods()
 
 ## 获得该商品的作用，子类重写

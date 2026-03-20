@@ -13,7 +13,7 @@ signal siganl_exit_store
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Global.save_global_game_data()
+	Global.save_service.save_now()
 	if is_instance_valid(Global.coin_value_label):
 		ori_coin_value_label = Global.coin_value_label
 		Global.coin_value_label = coin_bank_bank
@@ -27,7 +27,7 @@ func _ready() -> void:
 ## 离开商店
 func _on_store_main_menu_button_pressed() -> void:
 	siganl_exit_store.emit()
-	Global.save_global_game_data()
+	Global.save_service.save_now()
 	if is_instance_valid(ori_coin_value_label):
 		Global.coin_value_label = ori_coin_value_label
 		Global.coin_value_label.update_label()

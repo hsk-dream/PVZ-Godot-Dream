@@ -20,24 +20,24 @@ func _ready() -> void:
 
 ## 初始化控制台
 func init_console_panel():
-	Global.load_config()
-	check_box.button_pressed = Global.auto_collect_sun
-	check_box_2.button_pressed = Global.auto_collect_coin
-	check_box_3.button_pressed = Global.disappear_spare_card_Placeholder
+	Global.config_service.load_and_apply_config()
+	check_box.button_pressed = Global.config_service.auto_collect_sun
+	check_box_2.button_pressed = Global.config_service.auto_collect_coin
+	check_box_3.button_pressed = Global.config_service.disappear_spare_card_Placeholder
 	check_box_4.button_pressed = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
-	check_box_5.button_pressed = Global.display_plant_HP_label
-	check_box_6.button_pressed = Global.display_zombie_HP_label
-	check_box_7.button_pressed = Global.card_slot_top_mouse_focus
-	check_box_8.button_pressed = Global.fog_is_static
-	check_box_9.button_pressed = Global.plant_be_shovel_front
-	check_box_10.button_pressed = Global.open_all_level
-	
+	check_box_5.button_pressed = Global.config_service.display_plant_HP_label
+	check_box_6.button_pressed = Global.config_service.display_zombie_HP_label
+	check_box_7.button_pressed = Global.config_service.card_slot_top_mouse_focus
+	check_box_8.button_pressed = Global.config_service.fog_is_static
+	check_box_9.button_pressed = Global.config_service.plant_be_shovel_front
+	check_box_10.button_pressed = Global.config_service.open_all_level
+
 
 ## 关闭控制台
 func _on_texture_button_pressed() -> void:
 	visible = false
 	EventBus.push_event("change_is_mouse_visibel_on_hammer", false)
-	Global.save_config()
+	Global.config_service.save_config()
 
 func appear_canvas_layer_control() -> void:
 	visible = true
@@ -45,15 +45,15 @@ func appear_canvas_layer_control() -> void:
 
 ## 自动收集阳光
 func _on_check_box_toggled(toggled_on: bool) -> void:
-	Global.auto_collect_sun = toggled_on
+	Global.config_service.auto_collect_sun = toggled_on
 
 ## 自动收集金币
 func _on_check_box_2_toggled(toggled_on: bool) -> void:
-	Global.auto_collect_coin = toggled_on
+	Global.config_service.auto_collect_coin = toggled_on
 
 ## 隐藏多余卡槽
 func _on_check_box_3_toggled(toggled_on: bool) -> void:
-	Global.disappear_spare_card_Placeholder = toggled_on
+	Global.config_service.disappear_spare_card_Placeholder = toggled_on
 
 ## 游戏全屏
 func _on_check_box_4_toggled(toggled_on: bool) -> void:
@@ -63,19 +63,19 @@ func _on_check_box_4_toggled(toggled_on: bool) -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 func _on_check_box_5_toggled(toggled_on: bool) -> void:
-	Global.display_plant_HP_label = toggled_on
+	Global.config_service.display_plant_HP_label = toggled_on
 
 func _on_check_box_6_toggled(toggled_on: bool) -> void:
-	Global.display_zombie_HP_label = toggled_on
+	Global.config_service.display_zombie_HP_label = toggled_on
 
 func _on_check_box_7_toggled(toggled_on: bool) -> void:
-	Global.card_slot_top_mouse_focus = toggled_on
+	Global.config_service.card_slot_top_mouse_focus = toggled_on
 
 func _on_check_box_8_toggled(toggled_on: bool) -> void:
-	Global.fog_is_static = toggled_on
+	Global.config_service.fog_is_static = toggled_on
 
 func _on_check_box_9_toggled(toggled_on: bool) -> void:
-	Global.plant_be_shovel_front = toggled_on
+	Global.config_service.plant_be_shovel_front = toggled_on
 
 func _on_check_box_10_toggled(toggled_on: bool) -> void:
-	Global.open_all_level = toggled_on
+	Global.config_service.open_all_level = toggled_on

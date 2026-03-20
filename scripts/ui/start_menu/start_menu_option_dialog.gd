@@ -21,7 +21,7 @@ func music_sound_signal(h_slider: HSlider, bus_index):
 	h_slider.value = SoundManager.get_volum(bus_index)
 	h_slider.value_changed.connect(func (v:float):
 		SoundManager.set_volume(bus_index, v)
-		Global.save_config()
+		Global.config_service.save_config()
 	)
 
 

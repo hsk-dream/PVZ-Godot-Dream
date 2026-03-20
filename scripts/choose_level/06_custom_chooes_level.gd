@@ -33,7 +33,7 @@ func _ready() -> void:
 
 		chooes_level_button.signal_choose_level_button.connect(_on_choose_level_button)
 		chooes_level_button.curr_level_data_game_para.set_choose_level(game_mode, page_i, all_game_paras[i][1])
-		chooes_level_button.update_curr_level_button_state(Global.curr_all_level_state_data.get(chooes_level_button.curr_level_data_game_para.save_game_name, {}))
+		chooes_level_button.update_curr_level_button_state(Global.global_game_state.curr_all_level_state_data.get(chooes_level_button.curr_level_data_game_para.save_game_name, {}))
 
 	grid_container.queue_free()
 	print("当前模式关卡数量:", all_game_paras.size())

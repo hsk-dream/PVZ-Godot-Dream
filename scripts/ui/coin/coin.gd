@@ -72,7 +72,7 @@ func launch(relative_target: Vector2):
 	tween = null
 	is_anim = true
 	## 如果开启自动收集金币
-	if Global.auto_collect_coin:
+	if Global.config_service.auto_collect_coin:
 		button.pressed.emit()
 
 func _on_interrupt_triggered():
@@ -99,7 +99,7 @@ func _on_button_pressed() -> void:
 	var click_tween:Tween = create_tween()
 	click_tween.tween_property(self, "global_position", coin_target_position, 0.5)
 	await click_tween.finished
-	Global.coin_value += coin_value
+	Global.global_game_state.coin_value += coin_value
 	click_tween = create_tween()
 	click_tween.set_parallel()
 	click_tween.tween_property(self, "modulate:a", 0, 0.5)
@@ -120,7 +120,7 @@ func be_attract_gold_magnet(target_global_pos:Vector2):
 	var be_attract_tween:Tween = create_tween()
 	be_attract_tween.tween_property(self, "global_position", target_global_pos, 0.5)
 	await be_attract_tween.finished
-	Global.coin_value += coin_value
+	Global.global_game_state.coin_value += coin_value
 	be_attract_tween = create_tween()
 	be_attract_tween.set_parallel()
 	be_attract_tween.tween_property(self, "modulate:a", 0, 0.5)

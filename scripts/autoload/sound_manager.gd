@@ -14,7 +14,7 @@ var curr_frame_sfx:Array[AudioStream] = []
 var frame_num:=0
 
 func _ready() -> void:
-	Global.load_config()
+	Global.config_service.load_and_apply_config()
 	#Global.save_config()
 	#print("音频管理器")
 

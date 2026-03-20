@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c50o87181155y"]
+[gd_scene load_steps=11 format=3 uid="uid://c50o87181155y"]
 
 [ext_resource type="Script" uid="uid://bgwxsr7olomf7" path="res://scripts/autoload/global/global.gd" id="1_3e7rl"]
 [ext_resource type="Script" uid="uid://bct64figeu6iv" path="res://scripts/autoload/global/character_registry.gd" id="2_gxwvw"]
@@ -6,6 +6,10 @@
 [ext_resource type="Script" uid="uid://dtkay45pl7vbw" path="res://scripts/autoload/global/item_registry.gd" id="4_ccgnt"]
 [ext_resource type="Script" uid="uid://d4o16fwixo5g" path="res://scripts/autoload/global/bullet_registry.gd" id="5_8byp4"]
 [ext_resource type="Script" uid="uid://b1nxff8rufo5e" path="res://scripts/autoload/global/user_manager.gd" id="6_ccgnt"]
+[ext_resource type="Script" uid="uid://cnxumnf18ca4n" path="res://scripts/autoload/global/config_service.gd" id="7_clw33"]
+[ext_resource type="Script" uid="uid://6u4ym4pc0pid" path="res://scripts/autoload/global/save_service.gd" id="7_dvwfn"]
+[ext_resource type="Script" uid="uid://bfp02l7lpb1hc" path="res://scripts/autoload/global/global_game_state.gd" id="8_t0h6q"]
+[ext_resource type="Script" uid="uid://bylmo3te1r3qj" path="res://scripts/autoload/global/global_read_data.gd" id="10_vrmlj"]
 
 [node name="Global" type="Node"]
 script = ExtResource("1_3e7rl")
@@ -31,3 +35,19 @@ script = ExtResource("5_8byp4")
 [node name="UserManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_ccgnt")
+
+[node name="SaveService" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_dvwfn")
+
+[node name="ConfigService" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_clw33")
+
+[node name="GlobalGameState" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("8_t0h6q")
+
+[node name="GlobalReadData" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("10_vrmlj")

@@ -17,7 +17,7 @@ func _ready():
 	tween.set_loops()  # 无限循环
 
 	## 自动收集金币
-	if Global.auto_collect_coin:
+	if Global.config_service.auto_collect_coin:
 		_on_texture_button_pressed()
 
 	## 等待10秒未点击删除
@@ -34,10 +34,10 @@ func _on_texture_button_pressed() -> void:
 
 	texture_button.visible = false
 	present_open.visible = true
-	Global.curr_num_new_garden_plant += 1
+	Global.global_game_state.curr_num_new_garden_plant += 1
 	gpu_particles_2d.emitting = true
 
-	Global.save_global_game_data()
+	Global.save_service.save_now()
 
 	await gpu_particles_2d.finished
 	queue_free()

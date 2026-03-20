@@ -9,7 +9,7 @@ func _ready() -> void:
 	judge_garden_condition()
 
 func judge_garden_condition():
-	if Global.curr_num_new_garden_plant > 0:
+	if Global.global_game_state.curr_num_new_garden_plant > 0:
 		sprout.visible = true
 		water.visible = false
 		visible = true
@@ -23,8 +23,8 @@ func judge_garden_condition():
 func _judge_need_water() -> bool:
 	for i in range(GardenManager.E_GardenBgType.size()):
 		## 背景种类
-		var curr_bg_data = Global.garden_data.get("第"+str(i)+"类背景", {})
-		for j in range(Global.garden_data["num_bg_page_"+str(i)]):
+		var curr_bg_data = Global.global_game_state.garden_data.get("第"+str(i)+"类背景", {})
+		for j in range(Global.global_game_state.garden_data["num_bg_page_" + str(i)]):
 			## 当前背景种类的页码数据
 			var curr_bg_page_data = curr_bg_data.get("第"+str(j)+"页", {})
 			for k in range(curr_bg_page_data.size()):

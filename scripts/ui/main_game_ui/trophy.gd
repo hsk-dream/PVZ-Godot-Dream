@@ -16,7 +16,7 @@ func _ready():
 	tween.tween_property(pick_up_glow, "scale", Vector2(1, 1), 1.0) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.set_loops()  # 无限循环
-	Global.save_global_game_data()
+	Global.save_service.save_now()
 
 func _on_trophy_button_pressed() -> void:
 	SoundManager.play_other_SFX("winmusic")

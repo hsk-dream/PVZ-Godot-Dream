@@ -101,7 +101,7 @@ func _ready() -> void:
 		item.is_clone = false
 
 	## 独轮车植物数据
-	var wheel_barrow_plant_data = Global.garden_data.get("WheelBarrow", {})
+	var wheel_barrow_plant_data = Global.global_game_state.garden_data.get("WheelBarrow", {})
 	if wheel_barrow_plant_data:
 		wheel_barrow.init_from_data(wheel_barrow_plant_data)
 
@@ -112,7 +112,7 @@ func _ready() -> void:
 
 func init_new_page():
 	## 背景种类
-	var curr_bg_data = Global.garden_data.get("第"+str(curr_bg_type)+"类背景", {})
+	var curr_bg_data = Global.global_game_state.garden_data.get("第"+str(curr_bg_type)+"类背景", {})
 	## 当前背景种类的页码数据
 	var curr_bg_page_data = curr_bg_data.get("第"+str(curr_page)+"页", {})
 
@@ -124,13 +124,13 @@ func init_new_page():
 	## 温室背景
 	if curr_bg_type == 0:
 		## 新增植物数量和空闲格子的数量的最小值
-		for i in range(min(Global.curr_num_new_garden_plant, empty_plant_cells.size())):
+		for i in range(min(Global.global_game_state.curr_num_new_garden_plant, empty_plant_cells.size())):
 			var empty_plant_cell:PlantCellGarden =  empty_plant_cells[i]
 			empty_plant_cell.init_new_plant_cell()
-			Global.curr_num_new_garden_plant -= 1
-		num_new_plant_no_plant_cell.text = "待放置植物数量:" + str(Global.curr_num_new_garden_plant)
+			Global.global_game_state.curr_num_new_garden_plant -= 1
+		num_new_plant_no_plant_cell.text = "待放置植物数量:" + str(Global.global_game_state.curr_num_new_garden_plant)
 
-	page_info_label.text = str(curr_page + 1) + "/" + str(int(Global.garden_data["num_bg_page_"+str(curr_bg_type)]))
+	page_info_label.text = str(curr_page + 1) + "/" + str(int(Global.global_game_state.garden_data["num_bg_page_" + str(curr_bg_type)]))
 	page_info_label2.text = str(curr_bg_type + 1) + "/" + str(E_GardenBgType.size())
 
 
@@ -138,8 +138,8 @@ func init_new_page():
 func _update_back_from_store():
 	## 如果有新植物
 	init_new_page()
-	num_new_plant_no_plant_cell.text = "待放置植物数量:" + str(Global.curr_num_new_garden_plant)
-	page_info_label.text = str(curr_page + 1) + "/" + str(int(Global.garden_data["num_bg_page_"+str(curr_bg_type)]))
+	num_new_plant_no_plant_cell.text = "待放置植物数量:" + str(Global.global_game_state.curr_num_new_garden_plant)
+	page_info_label.text = str(curr_page + 1) + "/" + str(int(Global.global_game_state.garden_data["num_bg_page_" + str(curr_bg_type)]))
 	page_info_label2.text = str(curr_bg_type + 1) + "/" + str(E_GardenBgType.size())
 
 
@@ -151,12 +151,12 @@ func save_curr_page_data():
 		curr_bg_page_data["第" + str(i) + "个植物格子"] = plant_cell.get_curr_plant_cell_data()
 
 	## 若当前类背景数据还未初始化
-	if "第"+str(curr_bg_type)+"类背景" not in Global.garden_data:
-		Global.garden_data["第"+str(curr_bg_type)+"类背景"] = {}
-	Global.garden_data["第"+str(curr_bg_type)+"类背景"]["第"+str(curr_page)+"页"] = curr_bg_page_data
+	if "第"+str(curr_bg_type)+"类背景" not in Global.global_game_state.garden_data:
+		Global.global_game_state.garden_data["第"+str(curr_bg_type)+"类背景"] = {}
+	Global.global_game_state.garden_data["第"+str(curr_bg_type)+"类背景"]["第"+str(curr_page)+"页"] = curr_bg_page_data
 	## 独轮车信息
-	Global.garden_data["WheelBarrow"] = wheel_barrow.choosed_plant_data
-	Global.save_global_game_data()
+	Global.global_game_state.garden_data["WheelBarrow"] = wheel_barrow.choosed_plant_data
+	Global.save_service.save_now()
 
 #region 按钮信号连接函数
 
@@ -183,7 +183,7 @@ func _on_next_pressed() -> void:
 	SoundManager.play_other_SFX("tap")
 	## 更新页面和种类
 	curr_page += 1
-	if curr_page >= Global.garden_data["num_bg_page_"+str(curr_bg_type)]:
+	if curr_page >= Global.global_game_state.garden_data["num_bg_page_" + str(curr_bg_type)]:
 		curr_page = 0
 		curr_bg_type = (int(curr_bg_type) + 1) as E_GardenBgType
 		if curr_bg_type >= E_GardenBgType.size():

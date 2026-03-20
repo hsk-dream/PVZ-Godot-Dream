@@ -21,7 +21,7 @@ var sun_value:
 			card.judge_sun_enough(value)
 
 func _ready() -> void:
-	Global.signal_change_disappear_spare_card_placeholder.connect(judge_disappear_add_card_bar)
+	Global.config_service.signal_change_disappear_spare_card_placeholder.connect(judge_disappear_add_card_bar)
 	EventBus.subscribe("test_change_sun_value", func(value): sun_value = value)
 	EventBus.subscribe("add_sun_value", func(value): sun_value+=value)
 	EventBus.subscribe("update_card_purple_sun_cost", update_card_purple_sun_cost)
@@ -74,7 +74,7 @@ func card_use_end(card:Card):
 func judge_disappear_add_card_bar():
 	## 在游戏进行阶段
 	if Global.main_game.main_game_progress == MainGameManager.E_MainGameProgress.MAIN_GAME:
-		if Global.disappear_spare_card_Placeholder:
+		if Global.config_service.disappear_spare_card_Placeholder:
 			if curr_cards.size() < cards_placeholder.size():
 				for i in range(curr_cards.size(), cards_placeholder.size()):
 					cards_placeholder[i].visible = false

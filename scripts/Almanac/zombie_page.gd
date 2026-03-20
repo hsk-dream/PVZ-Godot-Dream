@@ -11,13 +11,13 @@ const ALMANAC_ZOMBIE_CARD = preload("res://scenes/almanac/almanac_zombie_card.ts
 func init_almanac_page() -> void:
 	## 连接所有僵尸卡片点击信号
 	init_zombie_card()
-	almanac_character_show_panel.almanac_update_zombie_panel(Global.curr_zombie[0])
+	almanac_character_show_panel.almanac_update_zombie_panel(Global.global_game_state.curr_zombie[0])
 #
 ## 植物卡片初始化类型 连接点击信号
 func init_zombie_card():
-	for zombie_type in Global.curr_zombie:
+	for zombie_type in Global.global_game_state.curr_zombie:
 		var curr_zombie_name = Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieName)
-		if Global.data_almanac["Zombie"].has(curr_zombie_name):
+		if Global.global_read_data.data_almanac["Zombie"].has(curr_zombie_name):
 			var curr_zombie_card:AlmanacZombieCard = ALMANAC_ZOMBIE_CARD.instantiate()
 			curr_zombie_card.init_almanac_zombie_card(zombie_type)
 			card_grid_container.add_child(curr_zombie_card)

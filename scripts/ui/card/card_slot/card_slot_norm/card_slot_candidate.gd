@@ -56,7 +56,7 @@ func _init_card_slot_candidate_plant():
 	## 当前页面的所有卡片占位
 	var card_selected_placeholder:Array
 	var curr_num_page:int = -1
-	for i:int in Global.curr_plant.size():
+	for i:int in Global.global_game_state.curr_plant.size():
 		var page_i:int = int(float(i) / num_card_every_page)
 		if curr_num_page < page_i:
 			curr_num_page += 1
@@ -67,7 +67,7 @@ func _init_card_slot_candidate_plant():
 			## 当前页面的所有卡片占位
 			card_selected_placeholder = new_grid_container.get_children()
 		## 当前植物类型对应的card
-		var curr_plant_card = AllCards.all_plant_card_prefabs[Global.curr_plant[i]]
+		var curr_plant_card = AllCards.all_plant_card_prefabs[Global.global_game_state.curr_plant[i]]
 		var new_card = curr_plant_card.duplicate()
 		var card_candidate_container: CardCandidateContainer = SceneRegistry.CARD_CANDIDATE_CONTAINER.instantiate()
 
@@ -84,7 +84,7 @@ func _init_card_slot_candidate_zombie():
 	## 当前页面的所有卡片占位
 	var card_selected_placeholder:Array
 	var curr_num_page:int = -1
-	for i:int in Global.curr_zombie.size():
+	for i:int in Global.global_game_state.curr_zombie.size():
 		var page_i:int = int(float(i) / num_card_every_page)
 		if curr_num_page < page_i:
 			curr_num_page += 1
@@ -95,7 +95,7 @@ func _init_card_slot_candidate_zombie():
 			## 当前页面的所有卡片占位
 			card_selected_placeholder = new_grid_container.get_children()
 		## 当前僵尸类型对应的card
-		var curr_zombie_card = AllCards.all_zombie_card_prefabs[Global.curr_zombie[i]]
+		var curr_zombie_card = AllCards.all_zombie_card_prefabs[Global.global_game_state.curr_zombie[i]]
 		var new_card = curr_zombie_card.duplicate()
 		var card_candidate_container: CardCandidateContainer = SceneRegistry.CARD_CANDIDATE_CONTAINER.instantiate()
 
@@ -112,7 +112,7 @@ func _init_card_slot_candidate_imitater():
 	## 当前页面的所有卡片占位
 	var card_selected_placeholder:Array
 	var curr_num_page_imitater:=-1
-	for i:int in Global.curr_plant.size():
+	for i:int in Global.global_game_state.curr_plant.size():
 		var page_i:int = int(float(i) / num_card_every_page)
 		if curr_num_page_imitater < page_i:
 			curr_num_page_imitater += 1
@@ -123,7 +123,7 @@ func _init_card_slot_candidate_imitater():
 			## 当前页面的所有卡片占位
 			card_selected_placeholder = new_grid_container.get_children()
 		## 当前植物类型对应的card
-		var curr_plant_card = AllCards.all_plant_card_prefabs[Global.curr_plant[i]]
+		var curr_plant_card = AllCards.all_plant_card_prefabs[Global.global_game_state.curr_plant[i]]
 		var new_card = curr_plant_card.duplicate()
 		new_card.is_imitater = true
 		var card_candidate_container: CardCandidateContainer = SceneRegistry.CARD_CANDIDATE_CONTAINER.instantiate()

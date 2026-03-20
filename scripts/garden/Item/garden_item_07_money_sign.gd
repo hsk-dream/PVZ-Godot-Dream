@@ -51,8 +51,8 @@ func use_it():
 
 ## 同意售卖
 func sell_agree():
-	Global.coin_value += curr_plant_price
-	print("当前金币：", Global.coin_value)
+	Global.global_game_state.coin_value += curr_plant_price
+	print("当前金币：", Global.global_game_state.coin_value)
 
 	print(plant_cell_give_dave.global_position)
 	plant_cell_give_dave.queue_free()

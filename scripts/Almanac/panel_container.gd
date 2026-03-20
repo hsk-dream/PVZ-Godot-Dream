@@ -34,7 +34,7 @@ var show_character:Character000Base
 ## 更新图鉴植物信息
 func almanac_update_plant_panel(curr_plant_type:EnumsCharacter.PlantType):
 	var curr_plant_name = Global.character_registry.get_plant_info(curr_plant_type, EnumsCharacter.PlantInfoAttribute.PlantName)
-	almanac_update_character_panel_common(Global.data_almanac["Plant"][curr_plant_name])
+	almanac_update_character_panel_common(Global.global_read_data.data_almanac["Plant"][curr_plant_name])
 
 	## 花费
 	cost.get_node("Value").text = str(Global.character_registry.get_plant_info(curr_plant_type,  EnumsCharacter.PlantInfoAttribute.SunCost))
@@ -69,7 +69,7 @@ func special_plant_update_pos(new_show_plant:Plant000Base):
 ## 更新图鉴僵尸信息
 func almanac_update_zombie_panel(curr_zombie_type:EnumsCharacter.ZombieType):
 	var curr_zombie_name = Global.character_registry.get_zombie_info(curr_zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieName)
-	almanac_update_character_panel_common(Global.data_almanac["Zombie"][curr_zombie_name])
+	almanac_update_character_panel_common(Global.global_read_data.data_almanac["Zombie"][curr_zombie_name])
 	create_zombie(curr_zombie_type)
 
 func create_zombie(curr_zombie_type:EnumsCharacter.ZombieType):

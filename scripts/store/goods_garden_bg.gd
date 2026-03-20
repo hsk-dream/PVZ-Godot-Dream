@@ -14,5 +14,5 @@ const data_string_path_from_bg_map = {
 
 ## 获得该商品的作用，子类重写
 func get_one_goods():
-	Global.garden_data[data_string_path_from_bg_map[curr_goods_garden_bg]] += 1
-	Global.save_global_game_data()
+	Global.global_game_state.garden_data[data_string_path_from_bg_map[curr_goods_garden_bg]] += 1
+	Global.save_service.save_now()

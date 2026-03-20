@@ -179,7 +179,7 @@ func satisfy_need(item: GardenManager.E_NeedItem):
 func up_growth_stage():
 	## 如果是发芽状态成长
 	if curr_growth_stage == GardenManager.E_GrowthStage.Sprout:
-		curr_plant_type = Global.curr_plant.pick_random()
+		curr_plant_type = Global.global_game_state.curr_plant.pick_random()
 		direction_x = [-1,1].pick_random()
 	curr_growth_stage = (curr_growth_stage + 1) as GardenManager.E_GrowthStage
 

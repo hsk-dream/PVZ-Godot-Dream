@@ -25,8 +25,8 @@ func update_growth_stage():
 
 ## 成长状态升级
 func up_growth_stage():
-	curr_growth_stage += 1
-	curr_plant_type = Global.curr_plant.pick_random()
+	curr_growth_stage = (curr_growth_stage + 1) as GardenManager.E_GrowthStage
+	curr_plant_type = Global.global_game_state.curr_plant.pick_random()
 	direction_x = [-1,1].pick_random()
 
 

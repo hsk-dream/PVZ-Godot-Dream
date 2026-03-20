@@ -274,7 +274,7 @@ func update_multi_round_zombie_refresh_types(curr_round:int, game_sences:EnumsMa
 		zombie_refresh_types.append(EnumsCharacter.ZombieType.Z003Cone)
 		zombie_refresh_types.append(EnumsCharacter.ZombieType.Z005Bucket)
 	else:
-		var whitelist_refresh_zombie_types_copy = Global.whitelist_refresh_zombie_types_with_zombie_row_type[Global.main_scene_registry.ZombieRowTypewithMainScenesMap[game_sences]].duplicate(true)
+		var whitelist_refresh_zombie_types_copy = Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[Global.main_scene_registry.ZombieRowTypewithMainScenesMap[game_sences]].duplicate(true)
 		zombie_refresh_types.append(EnumsCharacter.ZombieType.Z001Norm)
 		whitelist_refresh_zombie_types_copy.erase(EnumsCharacter.ZombieType.Z001Norm)
 		# 第二种：80% 路障 (Cone)，20% 报纸 (Paper)

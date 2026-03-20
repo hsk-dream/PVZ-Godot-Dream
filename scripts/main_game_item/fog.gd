@@ -30,11 +30,11 @@ func _ready() -> void:
 	change_fog_type()
 	global_position.x = end_global_positon_x
 
-	Global.signal_fog_is_static.connect(change_fog_type)
+	Global.config_service.signal_fog_is_static.connect(change_fog_type)
 
 ## 修改雾的种类
 func change_fog_type():
-	if Global.fog_is_static:
+	if Global.config_service.fog_is_static:
 		static_fog.visible = true
 		dynamic_fog.visible = false
 		update_fog_static()
@@ -46,21 +46,21 @@ func change_fog_type():
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	if is_move and not fog_clearers.is_empty():
-		if Global.fog_is_static:
+		if Global.config_service.fog_is_static:
 			update_fog_static()
 		else:
 			update_fog_dynamic()
 
 func add_fog_clearer(fog_clearer:Area2D):
 	fog_clearers.append(fog_clearer)
-	if Global.fog_is_static:
+	if Global.config_service.fog_is_static:
 		update_fog_static()
 	else:
 		update_fog_dynamic()
 
 func del_fog_clearer(fog_clearer:Area2D):
 	fog_clearers.erase(fog_clearer)
-	if Global.fog_is_static:
+	if Global.config_service.fog_is_static:
 		update_fog_static()
 	else:
 		update_fog_dynamic()

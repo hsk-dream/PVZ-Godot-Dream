@@ -363,7 +363,7 @@ func init_para():
 	## 出怪参数判断是否正确
 	if monster_mode == E_MonsterMode.Norm:
 		## 更新当前场景可以自然刷新的列表
-		whitelist_refresh_zombie_types = Global.whitelist_refresh_zombie_types_with_zombie_row_type[Global.main_scene_registry.ZombieRowTypewithMainScenesMap[game_sences]]
+		whitelist_refresh_zombie_types = Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[Global.main_scene_registry.ZombieRowTypewithMainScenesMap[game_sences]]
 		zombie_refresh_types = filter_invalid_zombie_refresh_types(zombie_refresh_types, whitelist_refresh_zombie_types)
 
 	## 如果生成罐子
@@ -379,22 +379,22 @@ func init_para():
 			weight_pot_type_sum = weight_pot_type.x + weight_pot_type.y + weight_pot_type.z
 			## 若罐子可以刷新的植物为空，更新为 等权重 罐子刷新白名单
 			if candidate_plant_pot.is_empty():
-				for plant_type in Global.whitelist_plant_types_with_pot:
+				for plant_type in Global.global_read_data.whitelist_plant_types_with_pot:
 					candidate_plant_pot[plant_type] = 1
 			else:
 				## 若在黑名单中，删除该植物
 				for plant_type in candidate_plant_pot.keys():
-					if Global.blacklist_plant_types_with_pot.has(plant_type):
+					if Global.global_read_data.blacklist_plant_types_with_pot.has(plant_type):
 						candidate_plant_pot.erase(plant_type)
 						print("warning: 植物", Global.character_registry.get_plant_info(plant_type, EnumsCharacter.PlantInfoAttribute.PlantName), "在罐子刷新黑名单中，已删除该植物")
 			if candidate_zombie_pot.is_empty():
-				for zombie_type in Global.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Land]:
+				for zombie_type in Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Land]:
 					candidate_zombie_pot_with_zombie_row_type[EnumsCharacter.ZombieRowType.Land][zombie_type] = 1
-				for zombie_type in Global.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool]:
+				for zombie_type in Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool]:
 					candidate_zombie_pot_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool][zombie_type] = 1
 			else:
 				for zombie_type:EnumsCharacter.ZombieType in candidate_zombie_pot.keys():
-					if Global.blacklist_zombie_types_with_pot.has(zombie_type):
+					if Global.global_read_data.blacklist_zombie_types_with_pot.has(zombie_type):
 						candidate_zombie_pot.erase(zombie_type)
 						print("warning: 僵尸", Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieName), "在罐子刷新黑名单中，已删除该僵尸")
 						continue
@@ -410,34 +410,34 @@ func init_para():
 							candidate_zombie_pot_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool][zombie_type] = candidate_zombie_pot[zombie_type]
 				## 若有僵尸行类型候选列表为空，使用自然刷怪行类型白名单
 				if candidate_zombie_pot_with_zombie_row_type[EnumsCharacter.ZombieRowType.Land].is_empty():
-					for zombie_type in Global.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Land]:
+					for zombie_type in Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Land]:
 						candidate_zombie_pot_with_zombie_row_type[EnumsCharacter.ZombieRowType.Land][zombie_type] = 1
 				if candidate_zombie_pot_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool].is_empty():
-					for zombie_type in Global.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool]:
+					for zombie_type in Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool]:
 						candidate_zombie_pot_with_zombie_row_type[EnumsCharacter.ZombieRowType.Pool][zombie_type] = 1
 
 		E_PotMode.Fixd:
 			pot_num_on_fixed_mode = 0
 			for plant_type in random_pot_plant.keys():
-				if Global.blacklist_plant_types_with_pot.has(plant_type):
+				if Global.global_read_data.blacklist_plant_types_with_pot.has(plant_type):
 					random_pot_plant.erase(plant_type)
 					print("warning: 植物", Global.character_registry.get_plant_info(plant_type, EnumsCharacter.PlantInfoAttribute.PlantName), "在罐子刷新黑名单中，已删除该植物")
 				else:
 					pot_num_on_fixed_mode += random_pot_plant[plant_type]
 			for plant_type in plant_pot.keys():
-				if Global.blacklist_plant_types_with_pot.has(plant_type):
+				if Global.global_read_data.blacklist_plant_types_with_pot.has(plant_type):
 					plant_pot.erase(plant_type)
 					print("warning: 植物", Global.character_registry.get_plant_info(plant_type, EnumsCharacter.PlantInfoAttribute.PlantName), "在罐子刷新黑名单中，已删除该植物")
 				else:
 					pot_num_on_fixed_mode += plant_pot[plant_type]
 			for zombie_type in random_pot_zombie.keys():
-				if Global.blacklist_zombie_types_with_pot.has(zombie_type):
+				if Global.global_read_data.blacklist_zombie_types_with_pot.has(zombie_type):
 					random_pot_zombie.erase(zombie_type)
 					print("warning: 僵尸", Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieName), "在罐子刷新黑名单中，已删除该僵尸")
 				else:
 					pot_num_on_fixed_mode += random_pot_zombie[zombie_type]
 			for zombie_type in zombie_pot.keys():
-				if Global.blacklist_zombie_types_with_pot.has(zombie_type):
+				if Global.global_read_data.blacklist_zombie_types_with_pot.has(zombie_type):
 					zombie_pot.erase(zombie_type)
 					print("warning: 僵尸", Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieName), "在罐子刷新黑名单中，已删除该僵尸")
 				else:
@@ -535,10 +535,10 @@ func filter_invalid_zombie_refresh_types(zombie_types:Array[EnumsCharacter.Zombi
 func get_save_game_path()->String:
 	## 确保存档文件存在
 	var dir = DirAccess.open("user://")
-	if not dir.dir_exists(Global.user_manager.curr_user_name + "/" + Global.MainGameSaveDirName):
-		dir.make_dir(Global.user_manager.curr_user_name + "/" + Global.MainGameSaveDirName)
+	if not dir.dir_exists(Global.user_manager.curr_user_name + "/" + Global.save_service.MAIN_GAME_SAVE_DIR_NAME):
+		dir.make_dir(Global.user_manager.curr_user_name + "/" + Global.save_service.MAIN_GAME_SAVE_DIR_NAME)
 
-	return "user://" + Global.user_manager.curr_user_name + "/" + Global.MainGameSaveDirName + "/" + save_game_name + ".tres"
+	return "user://" + Global.user_manager.curr_user_name + "/" + Global.save_service.MAIN_GAME_SAVE_DIR_NAME + "/" + save_game_name + ".tres"
 
 
 #endregion

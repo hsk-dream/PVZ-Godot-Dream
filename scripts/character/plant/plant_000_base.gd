@@ -194,13 +194,13 @@ func character_death_not_disappear():
 #region 与铲子\种植交互
 ## 被铲子威胁
 func be_shovel_look():
-	if Global.plant_be_shovel_front:
+	if Global.config_service.plant_be_shovel_front:
 		z_index += 10
 	body.set_other_color(BodyCharacter.E_ChangeColors.BeShovelLookColor, Color(2, 2, 2))
 
 ## 被铲子威胁结束
 func be_shovel_look_end():
-	if Global.plant_be_shovel_front:
+	if Global.config_service.plant_be_shovel_front:
 		z_index -= 10
 	body.set_other_color(BodyCharacter.E_ChangeColors.BeShovelLookColor, Color(1, 1, 1))
 
@@ -211,13 +211,13 @@ func be_shovel_kill():
 
 ## 手持紫卡植物可以种植在该植物上
 func preplant_purple_body_light_and_dark():
-	if Global.plant_be_shovel_front:
+	if Global.config_service.plant_be_shovel_front:
 		z_index += 10
 	body.body_light_and_dark()
 
 ## 手持紫卡植物可以种植在该植物上结束
 func preplant_purple_body_light_and_dark_end():
-	if Global.plant_be_shovel_front:
+	if Global.config_service.plant_be_shovel_front:
 		z_index -= 10
 	body.body_light_and_dark_end()
 

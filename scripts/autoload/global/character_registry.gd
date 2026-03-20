@@ -1,7 +1,6 @@
 extends Node
 class_name CharacterRegistry
 
-
 ## 紫卡植物种植前置植物
 @export var AllPrePlantPurple:Dictionary[EnumsCharacter.PlantType, EnumsCharacter.PlantType]= {
 	EnumsCharacter.PlantType.P041GatlingPea:EnumsCharacter.PlantType.P008PeaShooterDouble,

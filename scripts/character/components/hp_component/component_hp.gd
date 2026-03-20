@@ -40,12 +40,12 @@ func _ready() -> void:
 	## 出战角色连接信号，显示血量
 	if owner_character.character_init_type == Character000Base.E_CharacterInitType.IsNorm:
 		if self is HpComponentZombie:
-			visible = Global.display_zombie_HP_label
-			Global.signal_change_display_zombie_HP_label.connect(change_display_HP_label)
+			visible = Global.config_service.display_zombie_HP_label
+			Global.config_service.signal_change_display_zombie_HP_label.connect(change_display_HP_label)
 
 		else:
-			visible = Global.display_plant_HP_label
-			Global.signal_change_display_plant_HP_label.connect(change_display_HP_label)
+			visible = Global.config_service.display_plant_HP_label
+			Global.config_service.signal_change_display_plant_HP_label.connect(change_display_HP_label)
 	else:
 		is_can_look_hp = false
 		visible = false

@@ -158,15 +158,15 @@ func random_res():
 		EnumsItem.E_PotType.Random:
 			var p_plant_zombie:=randf()
 			if p_plant_zombie <=0.5:
-				curr_plant_type = Global.whitelist_plant_types_with_pot.pick_random()
+				curr_plant_type = Global.global_read_data.whitelist_plant_types_with_pot.pick_random()
 			else:
 				var curr_zomebi_row_type:EnumsCharacter.ZombieRowType = Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type
-				curr_zombie_type = Global.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type].pick_random()
+				curr_zombie_type = Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type].pick_random()
 		EnumsItem.E_PotType.Plant:
-			curr_plant_type = Global.whitelist_plant_types_with_pot.pick_random()
+			curr_plant_type = Global.global_read_data.whitelist_plant_types_with_pot.pick_random()
 		EnumsItem.E_PotType.Zombie:
 			var curr_zomebi_row_type:EnumsCharacter.ZombieRowType = Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type
-			curr_zombie_type = Global.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type].pick_random()
+			curr_zombie_type = Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type].pick_random()
 
 ## 打开植物
 func open_plant(plant_type:EnumsCharacter.PlantType):
@@ -289,7 +289,7 @@ func update_res_random_character_static():
 
 ## 结果随机罐子初始化植物虚影
 func character_static_init_res_random_plant():
-	for plant_type:EnumsCharacter.PlantType in Global.whitelist_plant_types_with_pot:
+	for plant_type:EnumsCharacter.PlantType in Global.global_read_data.whitelist_plant_types_with_pot:
 		all_plant_character_statics[plant_type] = AllCards.all_plant_card_prefabs[plant_type].character_static.duplicate()
 		character_container.add_child(all_plant_character_statics[plant_type])
 		all_plant_character_statics[plant_type].position = Vector2(0,0)
@@ -299,7 +299,7 @@ func character_static_init_res_random_plant():
 func character_static_init_res_random_zombie():
 	var curr_zomebi_row_type:EnumsCharacter.ZombieRowType = Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type
 	## 从白名单生成所有的僵尸虚影
-	for zombie_type:EnumsCharacter.ZombieType in Global.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type]:
+	for zombie_type:EnumsCharacter.ZombieType in Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type]:
 		all_zombie_character_statics[zombie_type] = AllCards.all_zombie_card_prefabs[zombie_type].character_static.duplicate()
 		character_container.add_child(all_zombie_character_statics[zombie_type])
 		all_zombie_character_statics[zombie_type].position = Vector2(0,0)

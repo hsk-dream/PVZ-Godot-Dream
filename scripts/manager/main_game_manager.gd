@@ -549,17 +549,17 @@ func load_game_main_game():
 ## 更新当前关卡数据 (完成)
 func update_level_state_data_success():
 	## 更新全局关卡数据
-	var curr_level_state_data:Dictionary = Global.curr_all_level_state_data.get(game_para.save_game_name, {})
+	var curr_level_state_data:Dictionary = Global.global_game_state.curr_all_level_state_data.get(game_para.save_game_name, {})
 	curr_level_state_data["IsSuccess"] = true
-	Global.curr_all_level_state_data[game_para.save_game_name] = curr_level_state_data
-	Global.save_global_game_data()
+	Global.global_game_state.curr_all_level_state_data[game_para.save_game_name] = curr_level_state_data
+	Global.save_service.save_now()
 
 ## 更新当前关卡数据 (多轮游戏)
 func update_level_state_data_multi_round_data(is_have_multi_round_data:=true):
 	## 更新全局关卡数据
-	var curr_level_state_data:Dictionary = Global.curr_all_level_state_data.get(game_para.save_game_name, {})
+	var curr_level_state_data:Dictionary = Global.global_game_state.curr_all_level_state_data.get(game_para.save_game_name, {})
 	curr_level_state_data["IsHaveMultiRoundSaveGameData"] = is_have_multi_round_data
 	curr_level_state_data["CurrGameRound"] = curr_game_round
-	Global.curr_all_level_state_data[game_para.save_game_name] = curr_level_state_data
-	Global.save_global_game_data()
+	Global.global_game_state.curr_all_level_state_data[game_para.save_game_name] = curr_level_state_data
+	Global.save_service.save_now()
 #endregion

@@ -12,8 +12,7 @@ class_name MainAlmanac
 func _ready() -> void:
 	_on_return_button_pressed()
 
-	if Global.data_almanac.is_empty():
-		Global.data_almanac = Global.load_json(Global.PathDataAlmanac)
+	Global.global_read_data.ensure_almanac_loaded()
 
 	plant_page.init_almanac_page()
 	zombie_page.init_almanac_page()

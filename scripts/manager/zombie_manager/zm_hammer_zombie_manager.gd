@@ -36,7 +36,7 @@ var curr_group_min := -1		#当前小组数
 var progress_bar_segment_every_groud_min :float
 
 ## 当前可以生成的僵尸类型
-var curr_zombie_type_candidate :Array[Global.ZombieType] = [Global.ZombieType.Z001Norm]
+var curr_zombie_type_candidate :Array[EnumsCharacter.ZombieType] = [EnumsCharacter.ZombieType.Z001Norm]
 ## 当前每小组可以生成的僵尸数量
 var curr_num_new_zombie_every_group := 1
 ## 当前每小组间隔时间（从1s开始，每大组减速0.05秒，真正使用时增加0.1秒波动）最小为0.5
@@ -134,9 +134,9 @@ func _on_hammer_zombie_timer_timeout() -> void:
 				2:
 					curr_num_new_zombie_every_group = 2
 				4:
-					curr_zombie_type_candidate.append(Global.ZombieType.Z003Cone)
+					curr_zombie_type_candidate.append(EnumsCharacter.ZombieType.Z003Cone)
 				6:
-					curr_zombie_type_candidate.append(Global.ZombieType.Z005Bucket)
+					curr_zombie_type_candidate.append(EnumsCharacter.ZombieType.Z005Bucket)
 				8:
 					curr_num_new_zombie_every_group = 3
 			## 更新僵尸动画速度和小组间隔

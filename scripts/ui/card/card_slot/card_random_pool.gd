@@ -3,9 +3,9 @@ class_name CardRandomPool
 ## 卡片随机池,随机生成一张新卡片
 
 ## 可能出现的植物卡片,及其概率
-var all_card_plant_type_probability :Dictionary[Global.PlantType, int] = {}
+var all_card_plant_type_probability :Dictionary[EnumsCharacter.PlantType, int] = {}
 ## 可能出现的僵尸卡片,及其概率
-var all_card_zombie_type_probability :Dictionary[Global.ZombieType, int] = {}
+var all_card_zombie_type_probability :Dictionary[EnumsCharacter.ZombieType, int] = {}
 ## 选择卡片随即池_植物
 var card_choose_random_pool_plant:RandomPicker
 ## 选择卡片随即池_僵尸
@@ -62,9 +62,9 @@ func get_random_card_info() -> Dictionary:
 	## 植物卡片
 	if rand_val <= total_prob_plant:
 		var card_plant_type = card_choose_random_pool_plant.get_random_item()
-		return {"plant_type": card_plant_type,"zombie_type": Global.ZombieType.Null}
+		return {"plant_type": card_plant_type,"zombie_type": EnumsCharacter.ZombieType.Null}
 	else:
 		var card_zombie_type = card_choose_random_pool_zombie.get_random_item()
-		return {"plant_type": Global.PlantType.Null, "zombie_type": card_zombie_type}
+		return {"plant_type": EnumsCharacter.PlantType.Null, "zombie_type": card_zombie_type}
 
 

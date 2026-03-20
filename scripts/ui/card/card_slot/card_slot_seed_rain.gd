@@ -8,9 +8,9 @@ class_name CardSlotSeedRain
 @export var card_area_x_range:Vector2 = Vector2(100,700)
 @export var card_area_y_range:Vector2 = Vector2(100,500)
 ## 按顺序出现的卡片植物
-@export var card_order_plant:Dictionary[int, Global.PlantType] = {}
+@export var card_order_plant:Dictionary[int, EnumsCharacter.PlantType] = {}
 ## 按顺序出现的卡片僵尸(若重复,则使用植物的卡片)
-@export var card_order_zombie:Dictionary[int, Global.ZombieType] = {}
+@export var card_order_zombie:Dictionary[int, EnumsCharacter.ZombieType] = {}
 ## 创建卡片的时间
 @export var card_create_cd_range:Vector2 = Vector2(3,5)
 ## 卡片正常存在时间,存在时间结束后闪烁5秒后消失

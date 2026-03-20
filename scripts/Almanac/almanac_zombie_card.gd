@@ -3,7 +3,7 @@ class_name AlmanacZombieCard
 
 @onready var almanac_zombie_card_bg: TextureRect = $AlmanacZombieCardBg
 
-var zombie_type:Global.ZombieType
+var zombie_type:EnumsCharacter.ZombieType
 
 signal signal_card_click
 
@@ -14,7 +14,7 @@ func _ready() -> void:
 	character_static.scale = Vector2(1.6, 1.6)
 	character_static.position = Vector2(40, 50)
 
-func init_almanac_zombie_card(curr_zombie_type:Global.ZombieType):
+func init_almanac_zombie_card(curr_zombie_type:EnumsCharacter.ZombieType):
 	zombie_type = curr_zombie_type
 
 func _on_button_pressed() -> void:

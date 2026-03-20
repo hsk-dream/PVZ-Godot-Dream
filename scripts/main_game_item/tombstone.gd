@@ -6,7 +6,7 @@ class_name  TombStone
 @onready var mound: Sprite2D = $MoundMask/mound
 @onready var tombstone_mask: Panel = $TombstoneMask
 
-@export var zombie_candidate_list :Array[Global.ZombieType]
+@export var zombie_candidate_list :Array[EnumsCharacter.ZombieType]
 
 var plant_cell:PlantCell
 var new_zombie:Zombie000Base
@@ -52,7 +52,7 @@ func failure_eat_tombstone():
 	tombstone.position.y += 30
 
 ## 生成僵尸
-func create_new_zombie(new_zombie_type:Global.ZombieType, anim_multiply:float=1.0):
+func create_new_zombie(new_zombie_type:EnumsCharacter.ZombieType, anim_multiply:float=1.0):
 	if not new_zombie:
 
 		var zombie_init_para:Dictionary = {

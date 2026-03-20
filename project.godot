@@ -18,7 +18,7 @@ config/windows_native_icon="res://pvz_icon.ico"
 
 [autoload]
 
-Global="*res://scripts/autoload/global.gd"
+Global="*res://scenes/autoload/global.tscn"
 SoundManager="*res://scenes/autoload/sound_manager.tscn"
 SceneRegistry="*res://scripts/autoload/scene_registry.gd"
 AllCards="*res://scenes/autoload/all_cards.tscn"

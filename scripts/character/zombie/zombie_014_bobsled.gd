@@ -44,7 +44,7 @@ func judge_is_in_ice_road():
 			is_in_road = true
 			break
 	if not is_in_road:
-		hp_component.Hp_loss(100, Global.AttackMode.Real, true, false)
+		hp_component.Hp_loss(100, EnumsBullet.AttackMode.Real, true, false)
 
 
 ## 角色死亡
@@ -69,7 +69,7 @@ func death_language():
 			}
 			Global.main_game.zombie_manager.call_deferred(
 				"create_norm_zombie",
-				Global.ZombieType.Z1001BobsledSingle,
+				EnumsCharacter.ZombieType.Z1001BobsledSingle,
 				zombie_row,
 				zombie_init_para,
 				Vector2(sub_zombie_body.global_position.x, Global.main_game.zombie_manager.all_zombie_rows[lane].zombie_create_position.global_position.y)

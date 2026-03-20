@@ -109,7 +109,7 @@ func _physics_process(delta: float) -> void:
 func attack_once(enemy:Character000Base):
 	## 攻击植物时,若周围有叶子保护伞
 	if enemy is Plant000Base:
-		var all_umbrella_surrounding:Array[Plant000Base] = enemy.plant_cell.get_plant_surrounding(Global.PlantType.P038UmbrellaLeaf)
+		var all_umbrella_surrounding:Array[Plant000Base] = enemy.plant_cell.get_plant_surrounding(EnumsCharacter.PlantType.P038UmbrellaLeaf)
 		if not all_umbrella_surrounding.is_empty():
 			for p:Plant038UmbrellaLeaf in all_umbrella_surrounding:
 				p.activete_umbrella()
@@ -147,12 +147,12 @@ func eased_time(t: float) -> float:
 ## 抛物线子弹先对Norm进行攻击
 func get_first_be_hit_plant_in_cell(plant:Plant000Base)->Plant000Base:
 	## shell
-	if is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Norm]):
-		return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Norm]
-	elif is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Shell]):
-		return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Shell]
-	elif is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Down]):
-		return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Down]
+	if is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]):
+		return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]
+	elif is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]):
+		return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]
+	elif is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Down]):
+		return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Down]
 	else:
 		printerr("当前植物格子没有检测到可以攻击的植物")
 		return null

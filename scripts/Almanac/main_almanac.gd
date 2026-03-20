@@ -22,7 +22,7 @@ func _ready() -> void:
 func _on_exit_button_pressed() -> void:
 	## 如果当前场景为图鉴场景
 	if get_tree().current_scene == self:
-		get_tree().change_scene_to_file(Global.MainScenesMap[Global.MainScenes.StartMenu])
+		get_tree().change_scene_to_file(Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.StartMenu])
 	## 从其余场景进入图鉴场景
 	else:
 		queue_free()

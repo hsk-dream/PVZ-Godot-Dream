@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://c50o87181155y"]
+
+[ext_resource type="Script" uid="uid://bgwxsr7olomf7" path="res://scripts/autoload/global/global.gd" id="1_3e7rl"]
+[ext_resource type="Script" uid="uid://bct64figeu6iv" path="res://scripts/autoload/global/character_registry.gd" id="2_gxwvw"]
+[ext_resource type="Script" uid="uid://c03l528142t8t" path="res://scripts/autoload/global/main_scene_registry.gd" id="3_8byp4"]
+[ext_resource type="Script" uid="uid://dtkay45pl7vbw" path="res://scripts/autoload/global/item_registry.gd" id="4_ccgnt"]
+[ext_resource type="Script" uid="uid://d4o16fwixo5g" path="res://scripts/autoload/global/bullet_registry.gd" id="5_8byp4"]
+[ext_resource type="Script" uid="uid://b1nxff8rufo5e" path="res://scripts/autoload/global/user_manager.gd" id="6_ccgnt"]
+
+[node name="Global" type="Node"]
+script = ExtResource("1_3e7rl")
+
+[node name="Registry" type="Node" parent="."]
+
+[node name="CharacterRegistry" type="Node" parent="Registry"]
+unique_name_in_owner = true
+script = ExtResource("2_gxwvw")
+
+[node name="MainSceneRegistry" type="Node" parent="Registry"]
+unique_name_in_owner = true
+script = ExtResource("3_8byp4")
+
+[node name="ItemRegistry" type="Node" parent="Registry"]
+unique_name_in_owner = true
+script = ExtResource("4_ccgnt")
+
+[node name="BulletRegistry" type="Node" parent="Registry"]
+unique_name_in_owner = true
+script = ExtResource("5_8byp4")
+
+[node name="UserManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_ccgnt")

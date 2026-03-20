@@ -32,7 +32,7 @@ func balloon_pop():
 		move_component.update_move_mode(MoveComponent.E_MoveMode.Ground)
 		curr_be_attack_status = E_BeAttackStatusZombie.IsNorm
 		SoundManager.play_character_SFX(&"balloon_pop")
-		if curr_zombie_row_type == Global.ZombieRowType.Pool:
+		if curr_zombie_row_type == EnumsCharacter.ZombieRowType.Pool:
 			character_death_disappear()
 
 ## 动画调用 气球破裂结束落地,可以移动

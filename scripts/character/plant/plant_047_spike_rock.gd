@@ -26,10 +26,10 @@ func _attack_once():
 		var enemy:Character000Base = all_enemy_can_be_attacked[i]
 		if enemy is Zombie000Base:
 			var zombie = enemy as Zombie000Base
-			zombie.be_attacked_bullet(attack_value, Global.AttackMode.Real, true, true)
+			zombie.be_attacked_bullet(attack_value, EnumsBullet.AttackMode.Real, true, true)
 
 ## 被压扁
 ## [character:Character000Base] 发动攻击的角色
 func be_flattened_from_enemy(character:Character000Base):
 	character.be_caltrop()
-	hp_component.Hp_loss(int(hp_component.max_hp/9.0), Global.AttackMode.Norm, true)
+	hp_component.Hp_loss(int(hp_component.max_hp/9.0), EnumsBullet.AttackMode.Norm, true)

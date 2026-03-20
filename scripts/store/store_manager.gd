@@ -33,7 +33,7 @@ func _on_store_main_menu_button_pressed() -> void:
 		Global.coin_value_label.update_label()
 
 	if get_tree().current_scene == self:
-		get_tree().change_scene_to_file(Global.MainScenesMap[Global.MainScenes.StartMenu])
+		get_tree().change_scene_to_file(Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.StartMenu])
 	else:
 		queue_free()
 

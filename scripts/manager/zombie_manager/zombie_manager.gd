@@ -136,13 +136,13 @@ func start_game():
 #region 生成僵尸
 ## 生成一个正常出战僵尸，所有出战僵尸都要从这里生成
 func create_norm_zombie(
-	zombie_type:Global.ZombieType,	## 僵尸类型
+	zombie_type:EnumsCharacter.ZombieType,	## 僵尸类型
 	zombie_parent:Node,				## 僵尸父节点
 	zombie_init_para:Dictionary,			## 僵尸初始化参数
 	global_pos:Vector2=Vector2.ZERO,
 	init_zombie_special:Callable = Callable()		## 初始化僵尸特殊属性
 ) -> Zombie000Base:
-	var zombie:Zombie000Base = Global.get_zombie_info(zombie_type, Global.ZombieInfoAttribute.ZombieScenes).instantiate()
+	var zombie:Zombie000Base = Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieScenes).instantiate()
 	zombie_init_para[Zombie000Base.E_ZInitAttr.IsMiniZombie] = is_mini_zombie
 	zombie_init_para[Zombie000Base.E_ZInitAttr.IsZombieMode] = is_zombie_mode
 
@@ -264,34 +264,34 @@ func start_next_game_zombie_mananger_update():
 
 #region 多轮(无尽)出怪
 ## 多轮出怪获取出怪列表
-func update_multi_round_zombie_refresh_types(curr_round:int, game_sences:Global.MainScenes) -> void:
+func update_multi_round_zombie_refresh_types(curr_round:int, game_sences:EnumsMainScene.MainScenes) -> void:
 	## 清空数据
 	is_bungi = false
 	zombie_refresh_types.clear()
 	# 第一次选卡 (curr_round == 1) 的 “固定三种”：普僵 + 路障 + 铁桶
 	if curr_round == 1:
-		zombie_refresh_types.append(Global.ZombieType.Z001Norm)
-		zombie_refresh_types.append(Global.ZombieType.Z003Cone)
-		zombie_refresh_types.append(Global.ZombieType.Z005Bucket)
+		zombie_refresh_types.append(EnumsCharacter.ZombieType.Z001Norm)
+		zombie_refresh_types.append(EnumsCharacter.ZombieType.Z003Cone)
+		zombie_refresh_types.append(EnumsCharacter.ZombieType.Z005Bucket)
 	else:
-		var whitelist_refresh_zombie_types_copy = Global.whitelist_refresh_zombie_types_with_zombie_row_type[Global.ZombieRowTypewithMainScenesMap[game_sences]].duplicate(true)
-		zombie_refresh_types.append(Global.ZombieType.Z001Norm)
-		whitelist_refresh_zombie_types_copy.erase(Global.ZombieType.Z001Norm)
+		var whitelist_refresh_zombie_types_copy = Global.whitelist_refresh_zombie_types_with_zombie_row_type[Global.main_scene_registry.ZombieRowTypewithMainScenesMap[game_sences]].duplicate(true)
+		zombie_refresh_types.append(EnumsCharacter.ZombieType.Z001Norm)
+		whitelist_refresh_zombie_types_copy.erase(EnumsCharacter.ZombieType.Z001Norm)
 		# 第二种：80% 路障 (Cone)，20% 报纸 (Paper)
 		var prob = randf()
 		if prob < 0.8:
-			zombie_refresh_types.append(Global.ZombieType.Z003Cone)
-			whitelist_refresh_zombie_types_copy.erase(Global.ZombieType.Z003Cone)
+			zombie_refresh_types.append(EnumsCharacter.ZombieType.Z003Cone)
+			whitelist_refresh_zombie_types_copy.erase(EnumsCharacter.ZombieType.Z003Cone)
 		else:
-			zombie_refresh_types.append(Global.ZombieType.Z006Paper)
-			whitelist_refresh_zombie_types_copy.erase(Global.ZombieType.Z006Paper)
+			zombie_refresh_types.append(EnumsCharacter.ZombieType.Z006Paper)
+			whitelist_refresh_zombie_types_copy.erase(EnumsCharacter.ZombieType.Z006Paper)
 		## 第二轮之后可能刷新僵尸(min(轮次*2,8)+2)个
 		for i in range(min(curr_round * 2, 8)):
 			var zombie_type_choose = whitelist_refresh_zombie_types_copy.pick_random()
 			zombie_refresh_types.append(zombie_type_choose)
 			whitelist_refresh_zombie_types_copy.erase(zombie_type_choose)
 
-			if zombie_type_choose == Global.ZombieType.Z021Bungi:
+			if zombie_type_choose == EnumsCharacter.ZombieType.Z021Bungi:
 				print("warning: 出怪刷新列表禁止使用 Z021Bungi ,已修改为选择 is_bungi 参数")
 				is_bungi = true
 				zombie_refresh_types.erase(zombie_type_choose)
@@ -301,9 +301,9 @@ func update_multi_round_zombie_refresh_types(curr_round:int, game_sences:Global.
 
 	print("当前轮次", curr_round,"可能刷新的僵尸类型有:")
 	for zombie_type in zombie_refresh_types:
-		print(Global.get_zombie_info(zombie_type, Global.ZombieInfoAttribute.ZombieName))
+		print(Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieName))
 	if is_bungi:
-		print(Global.get_zombie_info(Global.ZombieType.Z021Bungi, Global.ZombieInfoAttribute.ZombieName))
+		print(Global.character_registry.get_zombie_info(EnumsCharacter.ZombieType.Z021Bungi, EnumsCharacter.ZombieInfoAttribute.ZombieName))
 
 
 #endregion

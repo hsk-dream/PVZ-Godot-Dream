@@ -22,7 +22,7 @@ var max_wave_one_round :int
 @onready var ui_remind_word: UIRemindWord = %UIRemindWord
 
 ## 大波僵尸时墓碑生产的僵尸类型
-@export var zombie_type_candidate_tombstone :Array[Global.ZombieType] = [Global.ZombieType.Z001Norm]
+@export var zombie_type_candidate_tombstone :Array[EnumsCharacter.ZombieType] = [EnumsCharacter.ZombieType.Z001Norm]
 
 ## 当前波次类型
 enum E_WaveType{

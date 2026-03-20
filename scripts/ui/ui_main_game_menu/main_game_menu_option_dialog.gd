@@ -59,7 +59,7 @@ func return_button_pressed():
 
 ## 图鉴
 func encyclopedia():
-	var almance_node = load(Global.MainScenesMap[Global.MainScenes.Almanac]).instantiate()
+	var almance_node = load(Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.Almanac]).instantiate()
 	canvas_layer_almanac.add_child(almance_node)
 
 
@@ -81,7 +81,7 @@ func return_main_menu():
 	TreePauseManager.end_tree_pause_clear_all_pause_factors()
 	Global.time_scale = 1.0
 	Engine.time_scale = Global.time_scale
-	get_tree().change_scene_to_file(Global.MainScenesMap[Global.MainScenes.StartMenu])
+	get_tree().change_scene_to_file(Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.StartMenu])
 
 ## 功能未实现
 func _unrealized():

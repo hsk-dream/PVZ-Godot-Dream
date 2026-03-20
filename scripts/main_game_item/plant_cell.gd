@@ -39,21 +39,21 @@ var ori_condition:int = 3
 var curr_condition:int = 3
 
 ## 在当前格子中对应位置的植物
-@export var plant_in_cell:Dictionary[Global.PlacePlantInCell, Plant000Base] =  {
-	Global.PlacePlantInCell.Norm: null,
-	Global.PlacePlantInCell.Float: null,
-	Global.PlacePlantInCell.Down: null,
-	Global.PlacePlantInCell.Shell: null,
-	#Global.PlacePlantInCell.Imitater: null,
+@export var plant_in_cell:Dictionary[EnumsCharacter.PlacePlantInCell, Plant000Base] =  {
+	EnumsCharacter.PlacePlantInCell.Norm: null,
+	EnumsCharacter.PlacePlantInCell.Float: null,
+	EnumsCharacter.PlacePlantInCell.Down: null,
+	EnumsCharacter.PlacePlantInCell.Shell: null,
+	#EnumsCharacter.PlacePlantInCell.Imitater: null,
 }
 
 ## 在当前格子中对应位置的容器节点
 @onready var plant_container_node:Dictionary =  {
-	Global.PlacePlantInCell.Norm: $PlantNormContainer,
-	Global.PlacePlantInCell.Shell: $PlantShellContainer,
-	Global.PlacePlantInCell.Float: $PlantFloatContainer,
-	Global.PlacePlantInCell.Down: $PlantDownContainer,
-	Global.PlacePlantInCell.Imitater: $PlantImitaterContainer,
+	EnumsCharacter.PlacePlantInCell.Norm: $PlantNormContainer,
+	EnumsCharacter.PlacePlantInCell.Shell: $PlantShellContainer,
+	EnumsCharacter.PlacePlantInCell.Float: $PlantFloatContainer,
+	EnumsCharacter.PlacePlantInCell.Down: $PlantDownContainer,
+	EnumsCharacter.PlacePlantInCell.Imitater: $PlantImitaterContainer,
 }
 
 ## 在当前格子中对应容器位置的节点初始全局位置,
@@ -94,8 +94,8 @@ enum E_SpecialStateZombie {
 var ladder:Ladder
 
 ## 植物种植和死亡信号
-signal signal_plant_create(plant_cell:PlantCell, plant_type:Global.PlantType)
-signal signal_plant_free(plant_cell:PlantCell, plant_type:Global.PlantType)
+signal signal_plant_create(plant_cell:PlantCell, plant_type:EnumsCharacter.PlantType)
+signal signal_plant_free(plant_cell:PlantCell, plant_type:EnumsCharacter.PlantType)
 
 #region 植物格子初始化
 func _ready() -> void:
@@ -148,7 +148,7 @@ func plant_be_flattened():
 
 #region 植物(僵尸)种植(死亡)
 ## 模仿者创建植物
-func imitater_create_plant(plant_type:Global.PlantType, is_plant_start_effect:=true):
+func imitater_create_plant(plant_type:EnumsCharacter.PlantType, is_plant_start_effect:=true):
 	await get_tree().process_frame
 	var plant = create_plant(plant_type, false, is_plant_start_effect, true)
 	return plant
@@ -157,22 +157,22 @@ func imitater_create_plant(plant_type:Global.PlantType, is_plant_start_effect:=t
 ##[is_plant_start_effect:bool] 是否有种植特效
 ##[is_imitater_material:bool] 是否为模仿者材质
 ##[is_zombie_mode:bool] 是否为我是僵尸模式
-func create_plant(plant_type:Global.PlantType, is_imitater:=false, is_plant_start_effect:=true, is_imitater_material:=false, is_zombie_mode:=false) -> Plant000Base:
+func create_plant(plant_type:EnumsCharacter.PlantType, is_imitater:=false, is_plant_start_effect:=true, is_imitater_material:=false, is_zombie_mode:=false) -> Plant000Base:
 	var plant_condition:ResourcePlantCondition
 	var plant :Plant000Base
-	plant_condition = Global.get_plant_info(plant_type, Global.PlantInfoAttribute.PlantConditionResource)
+	plant_condition = Global.character_registry.get_plant_info(plant_type, EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
 	## 创建植物
 	if is_imitater:
 		## 创建植物
-		#plant_condition = Global.get_plant_info(Global.PlantType.P999Imitater, Global.PlantInfoAttribute.PlantConditionResource)
-		plant = Global.get_plant_info(Global.PlantType.P999Imitater, Global.PlantInfoAttribute.PlantScenes).instantiate()
+		#plant_condition = Global.character_registry.get_plant_info(EnumsCharacter.PlantType.P999Imitater, EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
+		plant = Global.character_registry.get_plant_info(EnumsCharacter.PlantType.P999Imitater, EnumsCharacter.PlantInfoAttribute.PlantScenes).instantiate()
 		plant = plant as Plant999Imitater
 		plant.imitater_plant_type = plant_type
 	else:
 		## 如果该植物为紫卡
 		if plant_condition.is_purple_card:
 			## 删除紫卡前置植物,创建新植物
-			var condition_pre_plant :ResourcePlantCondition = Global.get_plant_info(Global.AllPrePlantPurple[plant_type], Global.PlantInfoAttribute.PlantConditionResource)
+			var condition_pre_plant :ResourcePlantCondition = Global.character_registry.get_plant_info(Global.character_registry.AllPrePlantPurple[plant_type], EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
 			if is_instance_valid(plant_in_cell[condition_pre_plant.place_plant_in_cell]):
 				plant_in_cell[condition_pre_plant.place_plant_in_cell].character_death_disappear()
 				#await get_tree().process_frame
@@ -182,7 +182,7 @@ func create_plant(plant_type:Global.PlantType, is_imitater:=false, is_plant_star
 				print("当前位置", row_col, "已经有植物：", plant_in_cell[plant_condition.place_plant_in_cell].name)
 				return
 
-		plant = Global.get_plant_info(plant_type, Global.PlantInfoAttribute.PlantScenes).instantiate()
+		plant = Global.character_registry.get_plant_info(plant_type, EnumsCharacter.PlantInfoAttribute.PlantScenes).instantiate()
 
 	var plant_init_para = {
 		Plant000Base.E_PInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsNorm,
@@ -192,7 +192,7 @@ func create_plant(plant_type:Global.PlantType, is_imitater:=false, is_plant_star
 	}
 	plant.init_plant(plant_init_para)
 	if is_imitater:
-		plant_container_node[Global.PlacePlantInCell.Imitater].add_child(plant)
+		plant_container_node[EnumsCharacter.PlacePlantInCell.Imitater].add_child(plant)
 	else:
 		plant_container_node[plant_condition.place_plant_in_cell].add_child(plant)
 
@@ -212,16 +212,16 @@ func create_plant(plant_type:Global.PlantType, is_imitater:=false, is_plant_star
 	if not is_imitater:
 
 		## 如果是down位置植物，修改中间植物节点顺序， 提高中间植物和壳的位置,
-		if plant_condition.place_plant_in_cell == Global.PlacePlantInCell.Down:
+		if plant_condition.place_plant_in_cell == EnumsCharacter.PlacePlantInCell.Down:
 			#plant = plant as PlantDownBase
 			## 修改PlantNorm和PlantShell为底部植物节点上下移动节点的子节点
-			remove_child(plant_container_node[Global.PlacePlantInCell.Norm])
-			plant.down_plant_container.add_child(plant_container_node[Global.PlacePlantInCell.Norm])
-			plant_container_node[Global.PlacePlantInCell.Norm].global_position = plant_postion_node_ori_global_position[Global.PlacePlantInCell.Norm] - plant.plant_up_position
+			remove_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Norm])
+			plant.down_plant_container.add_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Norm])
+			plant_container_node[EnumsCharacter.PlacePlantInCell.Norm].global_position = plant_postion_node_ori_global_position[EnumsCharacter.PlacePlantInCell.Norm] - plant.plant_up_position
 
-			remove_child(plant_container_node[Global.PlacePlantInCell.Shell])
-			plant.down_plant_container.add_child(plant_container_node[Global.PlacePlantInCell.Shell])
-			plant_container_node[Global.PlacePlantInCell.Shell].global_position = plant_postion_node_ori_global_position[Global.PlacePlantInCell.Shell] - plant.plant_up_position
+			remove_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Shell])
+			plant.down_plant_container.add_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Shell])
+			plant_container_node[EnumsCharacter.PlacePlantInCell.Shell].global_position = plant_postion_node_ori_global_position[EnumsCharacter.PlacePlantInCell.Shell] - plant.plant_up_position
 
 	signal_plant_create.emit(self, plant.plant_type)
 
@@ -229,36 +229,36 @@ func create_plant(plant_type:Global.PlantType, is_imitater:=false, is_plant_star
 
 ## 咖啡豆唤醒在睡眠中的植物
 func coffee_bean_awake_up():
-	if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Norm]):
-		plant_in_cell[Global.PlacePlantInCell.Norm].coffee_bean_awake_up()
+	if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]):
+		plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm].coffee_bean_awake_up()
 	else:
 		print("没有睡眠植物")
 
 ## 获取种植新植物时植物虚影的位置
-func get_new_plant_static_shadow_global_position(place_plant_in_cell:Global.PlacePlantInCell):
+func get_new_plant_static_shadow_global_position(place_plant_in_cell:EnumsCharacter.PlacePlantInCell):
 	return plant_container_node[place_plant_in_cell].global_position
 
 ## 植物死亡
 func one_plant_free(plant:Plant000Base):
-	var curr_plant_condition :ResourcePlantCondition = Global.get_plant_info(plant.plant_type, Global.PlantInfoAttribute.PlantConditionResource)
+	var curr_plant_condition :ResourcePlantCondition = Global.character_registry.get_plant_info(plant.plant_type, EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
 
 	if is_instance_valid(ladder):
-		if curr_plant_condition.place_plant_in_cell in [Global.PlacePlantInCell.Down, Global.PlacePlantInCell.Norm, Global.PlacePlantInCell.Shell]:
+		if curr_plant_condition.place_plant_in_cell in [EnumsCharacter.PlacePlantInCell.Down, EnumsCharacter.PlacePlantInCell.Norm, EnumsCharacter.PlacePlantInCell.Shell]:
 			ladder.ladder_death()
 
 	#plant_in_cell[curr_plant_condition.place_plant_in_cell] = null
 	## 如果是down位置植物，下降中间植物和壳的位置，修改节点结构
-	if curr_plant_condition.place_plant_in_cell == Global.PlacePlantInCell.Down:
+	if curr_plant_condition.place_plant_in_cell == EnumsCharacter.PlacePlantInCell.Down:
 		## 中间植物的节点修改回来
-		plant.down_plant_container.remove_child(plant_container_node[Global.PlacePlantInCell.Norm])
-		add_child(plant_container_node[Global.PlacePlantInCell.Norm])
-		plant_container_node[Global.PlacePlantInCell.Norm].global_position = plant_postion_node_ori_global_position[Global.PlacePlantInCell.Norm]
+		plant.down_plant_container.remove_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Norm])
+		add_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Norm])
+		plant_container_node[EnumsCharacter.PlacePlantInCell.Norm].global_position = plant_postion_node_ori_global_position[EnumsCharacter.PlacePlantInCell.Norm]
 
-		plant.down_plant_container.remove_child(plant_container_node[Global.PlacePlantInCell.Shell])
-		add_child(plant_container_node[Global.PlacePlantInCell.Shell])
-		plant_container_node[Global.PlacePlantInCell.Shell].global_position = plant_postion_node_ori_global_position[Global.PlacePlantInCell.Shell]
+		plant.down_plant_container.remove_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Shell])
+		add_child(plant_container_node[EnumsCharacter.PlacePlantInCell.Shell])
+		plant_container_node[EnumsCharacter.PlacePlantInCell.Shell].global_position = plant_postion_node_ori_global_position[EnumsCharacter.PlacePlantInCell.Shell]
 	## 玉米加农炮只有后轮plantcell发射信号更新植物数据
-	if plant.plant_type == Global.PlantType.P048CobCannon:
+	if plant.plant_type == EnumsCharacter.PlantType.P048CobCannon:
 		if plant.plant_cell == self:
 			signal_plant_free.emit(self, plant.plant_type)
 	else:
@@ -323,10 +323,10 @@ func down_plant_change_condition(is_water:bool):
 ## 被蹦极僵尸偷植物,返回被偷的植物body复制体
 func be_bungi()->Node2D:
 	for place in [
-		Global.PlacePlantInCell.Norm,
-		Global.PlacePlantInCell.Shell,
-		Global.PlacePlantInCell.Down,
-		Global.PlacePlantInCell.Float
+		EnumsCharacter.PlacePlantInCell.Norm,
+		EnumsCharacter.PlacePlantInCell.Shell,
+		EnumsCharacter.PlacePlantInCell.Down,
+		EnumsCharacter.PlacePlantInCell.Float
 	]:
 		if is_instance_valid(plant_in_cell[place]):
 			#plant_in_cell[place].be_bungi()
@@ -343,9 +343,9 @@ func create_tombstone():
 		return
 	## 被墓碑顶掉的植物
 	var all_place_plant_in_cell_be_tombstone = [
-		Global.PlacePlantInCell.Norm,
-		Global.PlacePlantInCell.Down,
-		Global.PlacePlantInCell.Shell
+		EnumsCharacter.PlacePlantInCell.Norm,
+		EnumsCharacter.PlacePlantInCell.Down,
+		EnumsCharacter.PlacePlantInCell.Shell
 	]
 	## 删除对应位置植物
 	for place_plant_in_cell in all_place_plant_in_cell_be_tombstone:
@@ -461,49 +461,49 @@ func return_plant_be_shovel_look():
 ## 如果当前位置没有植物时，返回顺位植物,递归调用，直到返回植物
 ## is_loop 表示上次是否判断过是否为norm，shell循环
 ## 写代码的时候没有float植物，不确定是否有问题
-func return_plant_null_res(plant_place_be_shovel:Global.PlacePlantInCell, is_loop:=false):
+func return_plant_null_res(plant_place_be_shovel:EnumsCharacter.PlacePlantInCell, is_loop:=false):
 	match plant_place_be_shovel:
-		Global.PlacePlantInCell.Norm:
-			if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Norm]):
-				return plant_in_cell[Global.PlacePlantInCell.Norm]
+		EnumsCharacter.PlacePlantInCell.Norm:
+			if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]):
+				return plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]
 			else:
 				if is_loop:
-					return return_plant_null_res(Global.PlacePlantInCell.Down, true)
+					return return_plant_null_res(EnumsCharacter.PlacePlantInCell.Down, true)
 				else:
-					return return_plant_null_res(Global.PlacePlantInCell.Shell, true)
+					return return_plant_null_res(EnumsCharacter.PlacePlantInCell.Shell, true)
 
-		Global.PlacePlantInCell.Shell:
-			if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Shell]):
-				return plant_in_cell[Global.PlacePlantInCell.Shell]
+		EnumsCharacter.PlacePlantInCell.Shell:
+			if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]):
+				return plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]
 			else:
 				if is_loop:
-					return return_plant_null_res(Global.PlacePlantInCell.Down, true)
+					return return_plant_null_res(EnumsCharacter.PlacePlantInCell.Down, true)
 				else:
-					return return_plant_null_res(Global.PlacePlantInCell.Norm, true)
+					return return_plant_null_res(EnumsCharacter.PlacePlantInCell.Norm, true)
 
-		Global.PlacePlantInCell.Float:
-			if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Float]):
-				return plant_in_cell[Global.PlacePlantInCell.Float]
+		EnumsCharacter.PlacePlantInCell.Float:
+			if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Float]):
+				return plant_in_cell[EnumsCharacter.PlacePlantInCell.Float]
 			else:
-				return return_plant_null_res(Global.PlacePlantInCell.Norm)
+				return return_plant_null_res(EnumsCharacter.PlacePlantInCell.Norm)
 
-		Global.PlacePlantInCell.Down:
-			if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Down]):
-				return plant_in_cell[Global.PlacePlantInCell.Down]
+		EnumsCharacter.PlacePlantInCell.Down:
+			if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Down]):
+				return plant_in_cell[EnumsCharacter.PlacePlantInCell.Down]
 			else:
-				return return_plant_null_res(Global.PlacePlantInCell.Float)
+				return return_plant_null_res(EnumsCharacter.PlacePlantInCell.Float)
 
 ## 铲子进入该shell时，判断当前格子是否有多个植物,蹦极僵尸判断是否有植物
 ## 有多个植物时，会随鼠标移动更新当前被铲子看的植物
 func get_curr_plant_num()->int:
 	var curr_plant_num = 0
-	if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Norm]):
+	if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]):
 		curr_plant_num += 1
-	if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Shell]):
+	if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]):
 		curr_plant_num += 1
-	if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Float]):
+	if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Float]):
 		curr_plant_num += 1
-	if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Down]):
+	if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Down]):
 		curr_plant_num += 1
 	return curr_plant_num
 
@@ -517,11 +517,11 @@ func get_plant_place_from_mouse_pos():
 	var local_pos = button.get_local_mouse_position()
 	var height = button.size.y
 	if local_pos.y < height / 3:
-		return Global.PlacePlantInCell.Float
+		return EnumsCharacter.PlacePlantInCell.Float
 	elif local_pos.y < height * 2 / 3:
-		return Global.PlacePlantInCell.Norm
+		return EnumsCharacter.PlacePlantInCell.Norm
 	else:
-		return Global.PlacePlantInCell.Shell
+		return EnumsCharacter.PlacePlantInCell.Shell
 
 #endregion
 
@@ -546,11 +546,11 @@ func ladder_loss():
 ## 获取当前植物格子可以挂载梯子的植物
 func get_plant_ladder() -> Plant000Base:
 	## 如果有壳类植物
-	if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Shell]):
-		return plant_in_cell[Global.PlacePlantInCell.Shell]
+	if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]):
+		return plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]
 	## 如果Norm植物
-	if is_instance_valid(plant_in_cell[Global.PlacePlantInCell.Norm]) and plant_in_cell[Global.PlacePlantInCell.Norm].is_can_ladder:
-		return plant_in_cell[Global.PlacePlantInCell.Norm]
+	if is_instance_valid(plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]) and plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm].is_can_ladder:
+		return plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]
 
 	return null
 
@@ -559,10 +559,10 @@ func get_plant_ladder() -> Plant000Base:
 
 
 ## 获取周围一圈(包括本身格子)的某个植物
-func get_plant_surrounding(p_t:Global.PlantType) -> Array[Plant000Base]:
+func get_plant_surrounding(p_t:EnumsCharacter.PlantType) -> Array[Plant000Base]:
 	var all_plant:Array[Plant000Base] = []
 	## 植物种植条件
-	var plant_condition:ResourcePlantCondition = Global.get_plant_info(p_t, Global.PlantInfoAttribute.PlantConditionResource)
+	var plant_condition:ResourcePlantCondition = Global.character_registry.get_plant_info(p_t, EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
 	for i in range(max(0, row_col.x-1), min(Global.main_game.plant_cell_manager.row_col.x, row_col.x+2)):
 		for j in range(max(0, row_col.y-1), min(Global.main_game.plant_cell_manager.row_col.y, row_col.y+2)):
 			var p_c:PlantCell = Global.main_game.plant_cell_manager.all_plant_cells[i][j]

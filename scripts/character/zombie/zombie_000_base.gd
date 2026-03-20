@@ -10,7 +10,7 @@ class_name Zombie000Base
 @onready var drop_item_component: DropItemComponent = %DropItemComponent
 
 #region 僵尸类基础属性
-@export var zombie_type:Global.ZombieType
+@export var zombie_type:EnumsCharacter.ZombieType
 ## 僵尸基础属性参数，_ready初始化
 @export_group("僵尸基础属性")
 ## 是否忽略梯子,即可以攻击梯子下的植物
@@ -24,7 +24,7 @@ var is_body_up_from_ground := false
 
 @export_subgroup("僵尸铁器")
 ## 僵尸铁器类型
-@export var iron_type:Global.IronType = Global.IronType.Null
+@export var iron_type:EnumsItem.IronType = EnumsItem.IronType.Null
 ## 僵尸铁器节点
 @export var iron_node:IronNode
 @export_subgroup("僵尸初始化状态")
@@ -39,7 +39,7 @@ var curr_be_attack_status:E_BeAttackStatusZombie=E_BeAttackStatusZombie.IsNorm:
 		signal_status_update.emit()
 
 ## 当前僵尸所在行，陆地、水池
-var curr_zombie_row_type:Global.ZombieRowType=Global.ZombieRowType.Land
+var curr_zombie_row_type:EnumsCharacter.ZombieRowType=EnumsCharacter.ZombieRowType.Land
 ## 水路两栖僵尸当前行为水路时body变化
 @export var body_change_on_pool:ResourceBodyChange
 
@@ -190,7 +190,7 @@ func ready_norm():
 	## 攻击的检测组件更新是否可以攻击梯子下的植物，是否忽略梯子
 	attack_component.detect_component.is_attack_ladder_plant = is_ignore_ladder
 	## 两栖类僵尸在水路时变化
-	if Global.get_zombie_info(zombie_type, Global.ZombieInfoAttribute.ZombieRowType) == Global.ZombieRowType.Both:
+	if Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieRowType) == EnumsCharacter.ZombieRowType.Both:
 		if body_change_on_pool != null:
 			zombie_row_type_both_body_update()
 
@@ -200,7 +200,7 @@ func ready_norm():
 ## 两栖类僵尸body变化
 func zombie_row_type_both_body_update():
 	## 水路时body变化
-	if curr_zombie_row_type == Global.ZombieRowType.Pool:
+	if curr_zombie_row_type == EnumsCharacter.ZombieRowType.Pool:
 		for sprite_path in body_change_on_pool.sprite_appear:
 			var sprite = get_node(sprite_path)
 			sprite.visible = true
@@ -293,10 +293,10 @@ func ready_norm_signal_connect():
 
 	## 铁器防具
 	match iron_type:
-		Global.IronType.IronArmor1:
-			hp_component.signal_armor1_death.connect(func():iron_type=Global.IronType.Null)
-		Global.IronType.IronArmor2:
-			hp_component.signal_armor2_death.connect(func():iron_type=Global.IronType.Null)
+		EnumsItem.IronType.IronArmor1:
+			hp_component.signal_armor1_death.connect(func():iron_type=EnumsItem.IronType.Null)
+		EnumsItem.IronType.IronArmor2:
+			hp_component.signal_armor2_death.connect(func():iron_type=EnumsItem.IronType.Null)
 
 	## 掉落战利品
 	hp_component.signal_hp_component_death.connect(drop_item_component.drop_coin)
@@ -435,7 +435,7 @@ func be_grap_in_pool():
 ## is_cherry_bomb:bool = false ：是否灰烬炸弹(非土豆雷)
 func be_bomb(attack_value:int, is_cherry_bomb:bool = false):
 	is_can_death_language = false
-	hp_component.Hp_loss(attack_value, Global.AttackMode.Penetration, false, false)
+	hp_component.Hp_loss(attack_value, EnumsBullet.AttackMode.Penetration, false, false)
 	## 如果角色死亡
 	if is_death:
 		## 在在灰烬动画条件下
@@ -448,7 +448,7 @@ func be_bomb(attack_value:int, is_cherry_bomb:bool = false):
 ## 被大嘴花吃
 func be_chomper_eat(attack_value:int):
 	is_can_death_language = false
-	hp_component.Hp_loss(attack_value, Global.AttackMode.Penetration, false, false)
+	hp_component.Hp_loss(attack_value, EnumsBullet.AttackMode.Penetration, false, false)
 	if is_death:
 		queue_free()
 	#await get_tree().process_frame
@@ -457,7 +457,7 @@ func be_chomper_eat(attack_value:int):
 ## 被倭瓜压
 func be_squash(attack_value:int=1800):
 	is_can_death_language = false
-	hp_component.Hp_loss(attack_value, Global.AttackMode.Penetration, false, false)
+	hp_component.Hp_loss(attack_value, EnumsBullet.AttackMode.Penetration, false, false)
 	if is_death:
 		queue_free()
 	#await get_tree().process_frame
@@ -468,17 +468,17 @@ func be_squash(attack_value:int=1800):
 ## 非一类防具和非二类防具需重写该函数
 func be_magnet_iron():
 	match iron_type:
-		Global.IronType.IronArmor1:
-			hp_component.Hp_loss(hp_component.curr_hp_armor1, Global.AttackMode.Norm, false, false)
-		Global.IronType.IronArmor2:
-			hp_component.Hp_loss(hp_component.curr_hp_armor2, Global.AttackMode.Norm, false, false)
-		Global.IronType.IronItem:
+		EnumsItem.IronType.IronArmor1:
+			hp_component.Hp_loss(hp_component.curr_hp_armor1, EnumsBullet.AttackMode.Norm, false, false)
+		EnumsItem.IronType.IronArmor2:
+			hp_component.Hp_loss(hp_component.curr_hp_armor2, EnumsBullet.AttackMode.Norm, false, false)
+		EnumsItem.IronType.IronItem:
 			loss_iron_item()
 
 ## 失去铁器道具的影响,对应子类继承重写
 func loss_iron_item():
 	iron_node.visible = false
-	iron_type = Global.IronType.Null
+	iron_type = EnumsItem.IronType.Null
 
 ## 被吹走,在空中的僵尸被三叶草吹时调用
 func be_blow_away():

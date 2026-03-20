@@ -42,7 +42,7 @@ func start_ladder(plant:Plant000Base):
 func ladder_once():
 	if is_instance_valid(plant_ladder) and not plant_ladder.plant_cell.ladder and not is_drop_ladder:
 		plant_ladder.plant_cell.be_ladder()
-		hp_component.Hp_loss(hp_component.curr_hp_armor2, Global.AttackMode.Norm, false, false, false)
+		hp_component.Hp_loss(hp_component.curr_hp_armor2, EnumsBullet.AttackMode.Norm, false, false, false)
 	else:
 		is_fail_ladder = true
 		is_place_ladder = false

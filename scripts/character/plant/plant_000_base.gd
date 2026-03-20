@@ -8,7 +8,7 @@ class_name Plant000Base
 
 #region 植物类基础属性
 
-@export var plant_type:Global.PlantType
+@export var plant_type:EnumsCharacter.PlantType
 ## 植物初始化受击状态（从1[is_norm] 开始）僵尸攻击检测时判断是否可以攻击
 @export var init_be_attack_status :E_BeAttackStatusPlant = E_BeAttackStatusPlant.IsNorm
 ## 是否白天睡觉
@@ -162,7 +162,7 @@ func be_bungi()->Node2D:
 ## attack_value:伤害
 ## attack_zombie:攻击的僵尸
 func be_zombie_eat(attack_value:int, _attack_zombie:Zombie000Base):
-	hp_component.Hp_loss(attack_value, Global.AttackMode.Penetration, true, false)
+	hp_component.Hp_loss(attack_value, EnumsBullet.AttackMode.Penetration, true, false)
 
 ## 被僵尸啃食一次发光
 func be_zombie_eat_once(attack_zombie:Zombie000Base):

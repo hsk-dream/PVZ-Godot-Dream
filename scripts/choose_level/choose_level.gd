@@ -8,7 +8,7 @@ var next_level_number: int = 1
 @onready var label_page: Label = get_node_or_null("LabelPage")
 
 ## 游戏模式,用于管理关卡存档
-@export var game_mode:Global.MainScenes = Global.MainScenes.Null
+@export var game_mode:EnumsMainScene.MainScenes = EnumsMainScene.MainScenes.Null
 ## 开放关卡数量，冒险默认为1，其余模式为3，若打开控制台开放所有关卡为-1
 var open_level_num:int = -1
 var all_pages_array : Array[GridContainer]
@@ -20,10 +20,10 @@ var bgm_choose_card: AudioStream = preload("res://assets/audio/BGM/choose_card.m
 func _ready() -> void:
 	## 如果没有开放所有关卡
 	if not Global.open_all_level:
-		if game_mode == Global.MainScenes.ChooseLevelAdventure:
+		if game_mode == EnumsMainScene.MainScenes.ChooseLevelAdventure:
 			open_level_num = 1
 		## 自定义关卡全开放
-		elif game_mode == Global.MainScenes.ChooseLevelCustom:
+		elif game_mode == EnumsMainScene.MainScenes.ChooseLevelCustom:
 			open_level_num = -1
 		else:
 			open_level_num = 3
@@ -96,12 +96,12 @@ func _on_choose_level_button(choose_level_button:ChooseLevelButton):
 	choose_level_start_game(choose_level_button.curr_level_data_game_para.game_sences)
 
 ## 进入游戏关卡
-func choose_level_start_game(game_scense:Global.MainScenes):
-	get_tree().change_scene_to_file(Global.MainScenesMap[game_scense])
+func choose_level_start_game(game_scense:EnumsMainScene.MainScenes):
+	get_tree().change_scene_to_file(Global.main_scene_registry.MainScenesMap[game_scense])
 
 ## 返回开始菜单
 func back_start_menu():
-	get_tree().change_scene_to_file(Global.MainScenesMap[Global.MainScenes.StartMenu])
+	get_tree().change_scene_to_file(Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.StartMenu])
 
 
 func _on_last_pressed() -> void:

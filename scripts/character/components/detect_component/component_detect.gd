@@ -239,17 +239,17 @@ func _on_detect_character(enemy:Character000Base) -> bool:
 func get_first_be_hit_plant_in_cell(plant:Plant000Base)->Plant000Base:
 	## shell
 	#prints("植物是否合法", is_instance_valid(plant), plant.name)
-	if is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Shell]):
-		return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Shell]
-	elif is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Norm]):
-		return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Norm]
-	elif is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Imitater]):
-		return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Imitater]
-	elif is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Down]):
-		return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Down]
-	elif is_instance_valid(plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Float]):
+	if is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]):
+		return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Shell]
+	elif is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]):
+		return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm]
+	elif is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Imitater]):
+		return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Imitater]
+	elif is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Down]):
+		return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Down]
+	elif is_instance_valid(plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Float]):
 		if can_attack_plant_status & 2:
-			return plant.plant_cell.plant_in_cell[Global.PlacePlantInCell.Float]
+			return plant.plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Float]
 		else:
 			printerr("当前位置有悬浮植物，但角色不攻击悬浮植物")
 			return null

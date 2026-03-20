@@ -7,7 +7,7 @@ class_name ResourcePlantCondition
 var plant_condition:int = 22
 
 ## 植物在格子中占的位置，
-@export var place_plant_in_cell :Global.PlacePlantInCell = Global.PlacePlantInCell.Norm
+@export var place_plant_in_cell :EnumsCharacter.PlacePlantInCell = EnumsCharacter.PlacePlantInCell.Norm
 
 ## 是否为特殊植物，非特殊植物满足上面两点（地形条件、格子位置）种植即可,
 ## 特殊植物调用重写方法判断是否可以种植judge_special_plants_condition
@@ -19,7 +19,7 @@ var plant_condition:int = 22
 
 
 ## 判断是否可以种植
-func judge_is_can_plant(plant_cell:PlantCell, curr_plant_type:Global.PlantType) -> bool:
+func judge_is_can_plant(plant_cell:PlantCell, curr_plant_type:EnumsCharacter.PlantType) -> bool:
 	## 特殊植物
 	if is_special_plants:
 		return judge_special_plants_condition(plant_cell)
@@ -28,9 +28,9 @@ func judge_is_can_plant(plant_cell:PlantCell, curr_plant_type:Global.PlantType) 
 		## 当前可以种植普通植物 and 当前格子地形符合 and 当前格子对应的植物位置为空
 		if plant_cell.can_common_plant and plant_condition & plant_cell.curr_condition and not is_instance_valid(plant_cell.plant_in_cell[place_plant_in_cell]):
 			## 如果是壳类植物,若当前植物格子中Norm为玉米加农炮
-			if place_plant_in_cell == Global.PlacePlantInCell.Shell \
-			and is_instance_valid(plant_cell.plant_in_cell[Global.PlacePlantInCell.Norm])\
-			and plant_cell.plant_in_cell[Global.PlacePlantInCell.Norm].plant_type == Global.PlantType.P048CobCannon:
+			if place_plant_in_cell == EnumsCharacter.PlacePlantInCell.Shell \
+			and is_instance_valid(plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm])\
+			and plant_cell.plant_in_cell[EnumsCharacter.PlacePlantInCell.Norm].plant_type == EnumsCharacter.PlantType.P048CobCannon:
 				return false
 
 			return true
@@ -44,7 +44,7 @@ func judge_is_can_plant(plant_cell:PlantCell, curr_plant_type:Global.PlantType) 
 
 
 ## 判断当前场上是否有紫卡预种植植物,紫卡是否可以种植
-func judge_purple_card_can_plant(all_plant_cells, curr_plant_type:Global.PlantType)->bool:
+func judge_purple_card_can_plant(all_plant_cells, curr_plant_type:EnumsCharacter.PlantType)->bool:
 	for plant_cells_row in all_plant_cells:
 		for plant_cell in plant_cells_row:
 			if get_preplant_purple(plant_cell, curr_plant_type) != null:
@@ -53,12 +53,12 @@ func judge_purple_card_can_plant(all_plant_cells, curr_plant_type:Global.PlantTy
 
 ## 获取当前格子紫卡预种植植物
 ## 返回预种植植物,若当前植物格子可以种植紫卡,返回预种植紫卡,
-func get_preplant_purple(plant_cell:PlantCell, curr_plant_type:Global.PlantType) ->Plant000Base:
+func get_preplant_purple(plant_cell:PlantCell, curr_plant_type:EnumsCharacter.PlantType) ->Plant000Base:
 	## 紫卡前置植物
-	var precondition_plant:Global.PlantType = Global.AllPrePlantPurple[curr_plant_type]
+	var precondition_plant:EnumsCharacter.PlantType = Global.character_registry.AllPrePlantPurple[curr_plant_type]
 	## 当前格子存在前置种植植物
-	var condition_precondition_plant :ResourcePlantCondition = Global.get_plant_info(precondition_plant, Global.PlantInfoAttribute.PlantConditionResource)
-	var place_precondition_plant:Global.PlacePlantInCell = condition_precondition_plant.place_plant_in_cell
+	var condition_precondition_plant :ResourcePlantCondition = Global.character_registry.get_plant_info(precondition_plant, EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
+	var place_precondition_plant:EnumsCharacter.PlacePlantInCell = condition_precondition_plant.place_plant_in_cell
 	if is_instance_valid(plant_cell.plant_in_cell[place_precondition_plant]) and\
 	plant_cell.plant_in_cell[place_precondition_plant].plant_type == precondition_plant:
 		## 如果种植位置不相同,并且当前植物格子已有紫卡植物位置的植物
@@ -71,7 +71,7 @@ func get_preplant_purple(plant_cell:PlantCell, curr_plant_type:Global.PlantType)
 
 
 ## 获取当前场上所有的紫卡植物的对应预种植植物
-func get_all_preplant_purple(all_plant_cells, curr_plant_type:Global.PlantType):
+func get_all_preplant_purple(all_plant_cells, curr_plant_type:EnumsCharacter.PlantType):
 	var all_preplant_purple:Array[Plant000Base]
 	for plant_cells_row in all_plant_cells:
 		for plant_cell in plant_cells_row:

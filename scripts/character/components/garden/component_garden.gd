@@ -12,7 +12,7 @@ var garden_speech_bubble : GardenSpeehBubble
 ## 该植物下的花盆
 var flower_pot:GardenFlowerPot
 ## 当前植物类型
-var curr_plant_type : Global.PlantType
+var curr_plant_type : EnumsCharacter.PlantType
 ## 植物朝向x
 var direction_x := 1.0
 ## 植物种植条件（默认为草地）

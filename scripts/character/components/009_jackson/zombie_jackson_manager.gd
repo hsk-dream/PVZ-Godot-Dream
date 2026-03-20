@@ -175,7 +175,7 @@ func call_zombie_dancer():
 					Zombie000Base.E_ZInitAttr.Lane:new_zombie_dancer_lane_and_pos["lane"],
 				}
 				var _new_zombie_dancer:Zombie010Dancer = Global.main_game.zombie_manager.create_norm_zombie(
-					Global.ZombieType.Z010Dancer,
+					EnumsCharacter.ZombieType.Z010Dancer,
 					Global.main_game.zombie_manager.all_zombie_rows[new_zombie_dancer_lane_and_pos["lane"]],
 					zombie_init_para,
 					new_zombie_dancer_lane_and_pos["pos"],
@@ -200,7 +200,7 @@ func get_new_zombie_dancer_lane_and_glo_pos(i:int, lane_Jackson:int, global_post
 	## 上下左右顺序
 	if i == 0:
 		## 舞王在第一行，或者召唤行为泳池行
-		if lane_Jackson == 0 or Global.main_game.zombie_manager.all_zombie_rows[lane_Jackson - 1].zombie_row_type == Global.ZombieRowType.Pool:
+		if lane_Jackson == 0 or Global.main_game.zombie_manager.all_zombie_rows[lane_Jackson - 1].zombie_row_type == EnumsCharacter.ZombieRowType.Pool:
 			return false
 		var global_pos = Vector2(global_postion_jackson.x, Global.main_game.zombie_manager.all_zombie_rows[lane_Jackson - 1].zombie_create_position.global_position.y)
 
@@ -209,7 +209,7 @@ func get_new_zombie_dancer_lane_and_glo_pos(i:int, lane_Jackson:int, global_post
 			"pos": global_pos
 		}
 	elif i == 1:
-		if lane_Jackson == Global.main_game.zombie_manager.all_zombie_rows.size() - 1 or Global.main_game.zombie_manager.all_zombie_rows[lane_Jackson + 1].zombie_row_type == Global.ZombieRowType.Pool:
+		if lane_Jackson == Global.main_game.zombie_manager.all_zombie_rows.size() - 1 or Global.main_game.zombie_manager.all_zombie_rows[lane_Jackson + 1].zombie_row_type == EnumsCharacter.ZombieRowType.Pool:
 			return false
 		var global_pos = Vector2(global_postion_jackson.x, Global.main_game.zombie_manager.all_zombie_rows[lane_Jackson + 1].zombie_create_position.global_position.y)
 

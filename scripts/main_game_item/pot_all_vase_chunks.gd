@@ -4,7 +4,7 @@ class_name PotAllVaseChunks
 @onready var vase_chunks: PotVaseChunkDrop = $VaseChunks
 
 ## 根据罐子类型更新罐子外表
-func update_pot_vase_chunks_appearance(curr_pot_type:Global.E_PotType):
+func update_pot_vase_chunks_appearance(curr_pot_type:EnumsItem.E_PotType):
 	vase_chunks.frame_coords.y = int(curr_pot_type)
 	vase_chunks.frame_coords.y = int(curr_pot_type)
 

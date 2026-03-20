@@ -191,7 +191,7 @@ func character_death():
 
 ## 被攻击至死亡(大保龄球)
 func be_attack_to_death(trigger_be_attack_SFX:=true):
-	hp_component.Hp_loss(hp_component.get_all_hp(), Global.AttackMode.Norm, true, trigger_be_attack_SFX)
+	hp_component.Hp_loss(hp_component.get_all_hp(), EnumsBullet.AttackMode.Norm, true, trigger_be_attack_SFX)
 
 ## 死亡不消失(海草\被碾压)
 func character_death_not_disappear():
@@ -203,13 +203,13 @@ func character_death_disappear():
 	queue_free()
 
 ## 被子弹攻击
-func be_attacked_bullet(attack_value:int, bullet_mode:Global.AttackMode=Global.AttackMode.Norm, is_drop:bool=true, trigger_be_attack_SFX:=true):
+func be_attacked_bullet(attack_value:int, bullet_mode:EnumsBullet.AttackMode=EnumsBullet.AttackMode.Norm, is_drop:bool=true, trigger_be_attack_SFX:=true):
 	hp_component.Hp_loss(attack_value, bullet_mode, is_drop, trigger_be_attack_SFX)
 	body.body_light()
 
 ## 被锤子攻击(伤害值不生效)
 func be_attacked_hammer(attack_value:int):
-	hp_component.Hp_loss(attack_value, Global.AttackMode.Hammer, true, true)
+	hp_component.Hp_loss(attack_value, EnumsBullet.AttackMode.Hammer, true, true)
 	body.body_light()
 	return is_death
 
@@ -218,7 +218,7 @@ func be_attacked_hammer(attack_value:int):
 ## attack_value:伤害
 ## attack_zombie:攻击的僵尸
 func be_zombie_eat(attack_value:int, _attack_zombie:Zombie000Base):
-	hp_component.Hp_loss(attack_value, Global.AttackMode.Penetration, true, false)
+	hp_component.Hp_loss(attack_value, EnumsBullet.AttackMode.Penetration, true, false)
 
 ## 被僵尸啃食一次发光
 func be_zombie_eat_once(_attack_zombie:Zombie000Base):
@@ -265,7 +265,7 @@ func _on_ice_decelerate_timer_timeout() -> void:
 ## 被冰冻控制
 func be_ice_freeze(time:float, new_time_ice_end_decelerate:float):
 	## 被冰冻掉20血
-	hp_component.Hp_loss(20, Global.AttackMode.Real, true, false)
+	hp_component.Hp_loss(20, EnumsBullet.AttackMode.Real, true, false)
 
 	self.time_ice_end_decelerate = new_time_ice_end_decelerate
 	update_speed_factor(0.0, E_Influence_Speed_Factor.IceFreezeSpeed)

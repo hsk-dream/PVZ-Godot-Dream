@@ -33,7 +33,7 @@ func _on_re_card_button_pressed() -> void:
 	Global.load_selected_cards()
 	for card_type_data:Dictionary in Global.selected_cards:
 		if card_type_data.has("plant_type"):
-			var plant_type:Global.PlantType = card_type_data["plant_type"]
+			var plant_type:EnumsCharacter.PlantType = card_type_data["plant_type"]
 			## 如果是模仿者
 			if card_type_data.get("is_imitater", false):
 				## 未选择模仿者时
@@ -44,7 +44,7 @@ func _on_re_card_button_pressed() -> void:
 					card_slot_candidate.all_card_candidate_containers_plant[AllCards.plant_card_ids[plant_type]].card._on_button_pressed()
 
 		elif card_type_data.has("zombie_type"):
-			var zombie_type:Global.ZombieType = card_type_data["zombie_type"]
+			var zombie_type:EnumsCharacter.ZombieType = card_type_data["zombie_type"]
 			if not card_slot_candidate.all_card_candidate_containers_zombie[AllCards.zombie_card_ids[zombie_type]].card.is_choosed_pre_card:
 				card_slot_candidate.all_card_candidate_containers_zombie[AllCards.zombie_card_ids[zombie_type]].card._on_button_pressed()
 
@@ -64,11 +64,11 @@ func _on_texture_button_pressed() -> void:
 	Global.selected_cards.clear()
 	for card:Card in card_slot_battle.curr_cards:
 		var card_type_data:={}
-		if card.card_plant_type != Global.PlantType.Null:
+		if card.card_plant_type != EnumsCharacter.PlantType.Null:
 			card_type_data["plant_type"] = card.card_plant_type
 			if card.is_imitater:
 				card_type_data["is_imitater"] = true
-		elif card.card_zombie_type != Global.ZombieType.Null:
+		elif card.card_zombie_type != EnumsCharacter.ZombieType.Null:
 			card_type_data["zombie_type"] = card.card_zombie_type
 		else:
 			print("error:当前卡牌类型不为植物也不为僵尸")
@@ -78,22 +78,22 @@ func _on_texture_button_pressed() -> void:
 
 ## 初始化系统预选卡
 ## 从AllCards中复制一张新卡,隐藏card_slot_candidate的卡片
-func init_pre_choosed_card(card_type_list:Array[Global.PlantType], card_type_list_zombie:Array[Global.ZombieType]):
+func init_pre_choosed_card(card_type_list:Array[EnumsCharacter.PlantType], card_type_list_zombie:Array[EnumsCharacter.ZombieType]):
 	for i in card_type_list.size():
 		var card:Card
-		var plant_type:Global.PlantType = card_type_list[i]
-		var zombie_type:Global.ZombieType = card_type_list_zombie[i]
-		var character_type:Global.CharacterType = GlobalUtils.get_character_type(plant_type, zombie_type)
+		var plant_type:EnumsCharacter.PlantType = card_type_list[i]
+		var zombie_type:EnumsCharacter.ZombieType = card_type_list_zombie[i]
+		var character_type:EnumsCharacter.CharacterType = GlobalUtils.get_character_type(plant_type, zombie_type)
 		match character_type:
-			Global.CharacterType.Plant:
+			EnumsCharacter.CharacterType.Plant:
 				card_slot_candidate.all_card_candidate_containers_plant[AllCards.plant_card_ids[plant_type]].card.visible = false
 				card_slot_candidate.all_card_candidate_containers_plant[AllCards.plant_card_ids[plant_type]].card.is_choosed_pre_card = true
 				card = AllCards.all_plant_card_prefabs[plant_type].duplicate()
-			Global.CharacterType.Zombie:
+			EnumsCharacter.CharacterType.Zombie:
 				card_slot_candidate.all_card_candidate_containers_zombie[AllCards.zombie_card_ids[zombie_type]].card.visible = false
 				card_slot_candidate.all_card_candidate_containers_zombie[AllCards.zombie_card_ids[zombie_type]].card.is_choosed_pre_card = true
 				card = AllCards.all_zombie_card_prefabs[zombie_type].duplicate()
-			Global.CharacterType.Null:
+			EnumsCharacter.CharacterType.Null:
 				continue
 
 		card_slot_battle.curr_cards.append(card)
@@ -186,11 +186,11 @@ func pre_choosed_card(card:Card, target_parent):
 
 	## 罐子模式下系统预选卡无冷却
 	if Global.main_game.game_para.is_pot_mode:
-		if card.card_plant_type != Global.PlantType.Null:
+		if card.card_plant_type != EnumsCharacter.PlantType.Null:
 			if Global.zero_cd_plnat_card_type_on_pot_mode.has(card.card_plant_type):
 				card.card_change_cool_time(0)
 		## 僵尸卡牌都无冷却
-		elif card.card_zombie_type != Global.ZombieType.Null:
+		elif card.card_zombie_type != EnumsCharacter.ZombieType.Null:
 			card.card_change_cool_time(0)
 
 ### 预选卡隐藏对应待选卡槽的卡片(植物)

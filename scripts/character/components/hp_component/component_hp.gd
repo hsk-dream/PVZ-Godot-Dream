@@ -61,12 +61,12 @@ func get_all_hp():
 	return curr_hp
 
 ## attack_value(int): 掉血的值
-## bullet_mode(Global.AttackMode): 伤害类型
+## bullet_mode(EnumsBullet.AttackMode): 伤害类型
 ## trigger_be_attack_SFX:=true:是否触发受击音效
 ## [is_drop_on_death:bool] 死亡时是否有掉落
 ## [is_drop_2:bool] 是否有掉落额外条件
 ## return bool: 返回是否死亡
-func Hp_loss(attack_value:int, _bullet_mode:Global.AttackMode = Global.AttackMode.Norm, is_drop_on_death=true, trigger_be_attack_SFX:=true, is_drop_2:=true):
+func Hp_loss(attack_value:int, _bullet_mode:EnumsBullet.AttackMode = EnumsBullet.AttackMode.Norm, is_drop_on_death=true, trigger_be_attack_SFX:=true, is_drop_2:=true):
 	curr_hp -= attack_value
 	var is_drop = not (owner.is_death and not is_drop_on_death) and is_drop_2
 	signal_hp_loss.emit(curr_hp, is_drop)
@@ -80,4 +80,4 @@ func Hp_loss(attack_value:int, _bullet_mode:Global.AttackMode = Global.AttackMod
 ## 掉血死亡
 ##[is_drop:bool]是否有掉落body
 func Hp_loss_death(is_drop:=true):
-	Hp_loss(get_all_hp(), Global.AttackMode.Norm, is_drop, false)
+	Hp_loss(get_all_hp(), EnumsBullet.AttackMode.Norm, is_drop, false)

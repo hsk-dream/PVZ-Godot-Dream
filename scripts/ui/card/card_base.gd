@@ -20,10 +20,10 @@ var CradBgMap:Dictionary[E_CardBg, Resource] = {
 
 ## 卡片索引位置,用于在备选卡槽时确定位置
 @export var card_id :int = -1
-## 植物卡片类型，植物卡片类型为Global.PlantType.Null时为僵尸卡片
-@export var card_plant_type: Global.PlantType
+## 植物卡片类型，植物卡片类型为EnumsCharacter.PlantType.Null时为僵尸卡片
+@export var card_plant_type: EnumsCharacter.PlantType
 ## 僵尸卡片类型
-@export var card_zombie_type: Global.ZombieType
+@export var card_zombie_type: EnumsCharacter.ZombieType
 ## 是否为紫卡
 var is_purple_card := false
 ## 卡片背景,紫卡会自动更换背景
@@ -50,7 +50,7 @@ var plant_condition:ResourcePlantCondition
 func _ready() -> void:
 	## 如果是植物,根据是否为紫卡更新背景
 	if card_plant_type != 0:
-		plant_condition = Global.get_plant_info(card_plant_type, Global.PlantInfoAttribute.PlantConditionResource)
+		plant_condition = Global.character_registry.get_plant_info(card_plant_type, EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
 		is_purple_card = plant_condition.is_purple_card
 		if is_purple_card:
 			curr_card_gb = E_CardBg.CB02Purple

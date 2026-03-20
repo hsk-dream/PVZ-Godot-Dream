@@ -37,7 +37,7 @@ func _shoot_bullet():
 func _create_bullte(await_time:float, i:int=1, change_y_target:bool=false):
 	if await_time:
 		await get_tree().create_timer(await_time).timeout
-	var bullet:Bullet000Base = Global.get_bullet_scenes(attack_bullet_type).instantiate()
+	var bullet:Bullet000Base = Global.bullet_registry.get_bullet_scenes(attack_bullet_type).instantiate()
 
 	## 有偏移的为正常发射的子弹
 	if change_y_target:

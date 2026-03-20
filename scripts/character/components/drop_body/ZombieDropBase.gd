@@ -73,7 +73,7 @@ func acitvate_it(control_x:float = 0):
 		is_swimming = true
 
 
-	var zombie_lane := Global.main_game.zombie_manager.all_zombie_rows[zombie.lane]
+	var zombie_lane :ZombieRow= Global.main_game.zombie_manager.all_zombie_rows[zombie.lane]
 	reparent(zombie_lane)
 
 	## 从地下出现的僵尸修改其陆地位置
@@ -92,7 +92,7 @@ func acitvate_it_on_ground(global_pos_x:float):
 	drop_body.position.y = 10
 	velocity = Vector2(randf_range(-50, -30),-500)
 	is_active = true
-	var zombie_lane := Global.main_game.zombie_manager.all_zombie_rows[zombie.lane]
+	var zombie_lane :ZombieRow= Global.main_game.zombie_manager.all_zombie_rows[zombie.lane]
 	reparent(zombie_lane)
 
 

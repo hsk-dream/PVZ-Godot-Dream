@@ -169,7 +169,7 @@ func _on_store_enter_key_pressed():
 
 	SoundManager.play_other_SFX("tap")
 	## 商店场景添加为子节点
-	var store_node:StoreManager = load(Global.MainScenesMap[Global.MainScenes.Store]).instantiate()
+	var store_node:StoreManager = load(Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.Store]).instantiate()
 	canvas_layer_store.add_child(store_node)
 	store_node.siganl_exit_store.connect(_update_back_from_store)
 
@@ -204,6 +204,6 @@ func on_button_ui_item(item:ItemBase):
 ## 返回菜单按钮
 func _on_return_start_menu_pressed() -> void:
 	save_curr_page_data()
-	get_tree().change_scene_to_file(Global.MainScenesMap[Global.MainScenes.StartMenu])
+	get_tree().change_scene_to_file(Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.StartMenu])
 
 #endregion

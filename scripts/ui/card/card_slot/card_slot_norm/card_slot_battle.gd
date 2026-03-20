@@ -92,5 +92,5 @@ func update_card_purple_sun_cost():
 	await get_tree().process_frame
 	for card:Card in curr_cards:
 		if card.is_purple_card and Global.main_game.plant_cell_manager.curr_plant_num.has(card.card_plant_type):
-			card.sun_cost = Global.get_plant_info(card.card_plant_type, Global.PlantInfoAttribute.SunCost) + 50 * Global.main_game.plant_cell_manager.curr_plant_num[card.card_plant_type]
+			card.sun_cost = Global.character_registry.get_plant_info(card.card_plant_type, EnumsCharacter.PlantInfoAttribute.SunCost) + 50 * Global.main_game.plant_cell_manager.curr_plant_num[card.card_plant_type]
 			card.judge_sun_enough(sun_value)

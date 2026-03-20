@@ -8,11 +8,11 @@ class_name Bullet000Base
 @onready var bullet_effect: BulletEffect000Base = $BulletEffect
 ## 子弹本体节点
 @onready var body: Node2D = $Body
-@export var bullet_type:Global.BulletType
+@export var bullet_type:EnumsBullet.BulletType
 ## 子弹基类
 @export_group("子弹基础属性")
 ## 子弹阵营
-@export var bullet_camp:Global.CharacterType = Global.CharacterType.Plant
+@export var bullet_camp:EnumsCharacter.CharacterType = EnumsCharacter.CharacterType.Plant
 ## 子弹是否旋转
 @export var is_rotate := false
 ## 最大攻击次数(-1表示可以无限攻击)
@@ -26,7 +26,7 @@ var curr_attack_num:=0
 ## 子弹默认移动方向
 @export var direction: Vector2 = Vector2.RIGHT
 ## 子弹伤害模式：普通，穿透，真实
-@export var bullet_mode : Global.AttackMode
+@export var bullet_mode : EnumsBullet.AttackMode
 ## 子弹移动离出生点最大距离，超过自动销毁
 @export var max_distance := 2000.0
 ## 子弹初始位置
@@ -107,13 +107,13 @@ func _on_area_2d_attack_area_entered(area: Area2D) -> void:
 	## TODO:攻击植物子弹
 	if enemy is Plant000Base:
 		## 子弹阵营为植物
-		if bullet_camp == Global.CharacterType.Plant:
+		if bullet_camp == EnumsCharacter.CharacterType.Plant:
 			return
 		if not enemy.curr_be_attack_status & can_attack_plant_status:
 			return
 	elif enemy is Zombie000Base:
 		## 子弹阵营为植物
-		if bullet_camp == Global.CharacterType.Zombie:
+		if bullet_camp == EnumsCharacter.CharacterType.Zombie:
 			return
 		## 如果不是可攻击状态敌人
 		if not enemy.curr_be_attack_status & can_attack_zombie_status:

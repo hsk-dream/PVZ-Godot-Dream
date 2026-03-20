@@ -61,7 +61,7 @@ func create_imp():
 		Zombie000Base.E_ZInitAttr.IsPotZombie: is_pot_zombie,
 	}
 	Global.main_game.zombie_manager.create_norm_zombie(
-		Global.ZombieType.Z025Imp,
+		EnumsCharacter.ZombieType.Z025Imp,
 		Global.main_game.zombie_manager.all_zombie_rows[lane],
 		zombie_init_para,
 		_get_imp_throw_glo_pos(),

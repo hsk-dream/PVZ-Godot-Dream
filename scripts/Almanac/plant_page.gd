@@ -14,7 +14,7 @@ func init_almanac_page() -> void:
 ## 植物卡片初始化类型 连接点击信号
 func init_plant_card():
 	for plant_type in Global.curr_plant:
-		var curr_plant_name = Global.get_plant_info(plant_type, Global.PlantInfoAttribute.PlantName)
+		var curr_plant_name = Global.character_registry.get_plant_info(plant_type, EnumsCharacter.PlantInfoAttribute.PlantName)
 		## 如果有图鉴数据
 		if Global.data_almanac["Plant"].has(curr_plant_name):
 			var curr_plant_card:Card = AllCards.all_plant_card_prefabs[plant_type].duplicate()

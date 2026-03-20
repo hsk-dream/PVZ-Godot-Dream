@@ -3,15 +3,15 @@ class_name ZombieChooseRowSystem
 
 ## 每行的基础权重
 var base_weight: Array[float] = []
-var base_weigth_all_type :Dictionary[Global.ZombieRowType, Array]
+var base_weigth_all_type :Dictionary[EnumsCharacter.ZombieRowType, Array]
 
 var last_picked: Array[int] = []
 var second_last_picked: Array[int] = []
 
-var curr_type: Global.ZombieRowType = Global.ZombieRowType.Land
+var curr_type: EnumsCharacter.ZombieRowType = EnumsCharacter.ZombieRowType.Land
 ## 基础权重之和
 var total_base_weight :float= 0
-var total_base_weight_all_type :Dictionary[Global.ZombieRowType, float]
+var total_base_weight_all_type :Dictionary[EnumsCharacter.ZombieRowType, float]
 
 
 ## 初始化系统
@@ -21,21 +21,21 @@ func init_zombie_choose_row_system():
 	var ori_weight_both:Array[float] = []
 	for zombie_row_node: ZombieRow in Global.main_game.zombie_manager.all_zombie_rows:
 		match zombie_row_node.zombie_row_type:
-			Global.ZombieRowType.Land:
+			EnumsCharacter.ZombieRowType.Land:
 				ori_weight_land.append(1)
 				ori_weight_pool.append(0)
-			Global.ZombieRowType.Pool:
+			EnumsCharacter.ZombieRowType.Pool:
 				ori_weight_land.append(0)
 				ori_weight_pool.append(1)
-			Global.ZombieRowType.Both:
+			EnumsCharacter.ZombieRowType.Both:
 				ori_weight_land.append(1)
 				ori_weight_pool.append(1)
 		ori_weight_both.append(1.0)
 
 	base_weigth_all_type = {
-		Global.ZombieRowType.Land:ori_weight_land,
-		Global.ZombieRowType.Pool:ori_weight_pool,
-		Global.ZombieRowType.Both:ori_weight_both
+		EnumsCharacter.ZombieRowType.Land:ori_weight_land,
+		EnumsCharacter.ZombieRowType.Pool:ori_weight_pool,
+		EnumsCharacter.ZombieRowType.Both:ori_weight_both
 	}
 
 	last_picked = [0,0,0,0,0,0]
@@ -56,7 +56,7 @@ func on_zombie_spawned(row_index: int):
 	last_picked[row_index] = 0
 
 ## 计算平滑权重
-func calculate_smooth_weights(zombie_row_type: Global.ZombieRowType, special_base_weight: Array = []) -> Array:
+func calculate_smooth_weights(zombie_row_type: EnumsCharacter.ZombieRowType, special_base_weight: Array = []) -> Array:
 	var smooth_weights: Array[float] = []
 	if not special_base_weight.is_empty():
 		print("使用临时特殊基础权重")
@@ -85,7 +85,7 @@ func calculate_smooth_weights(zombie_row_type: Global.ZombieRowType, special_bas
 	return smooth_weights
 
 ## 选择下一个出怪行
-func select_spawn_row(zombie_row_type: Global.ZombieRowType, special_base_weight: Array = []) -> int:
+func select_spawn_row(zombie_row_type: EnumsCharacter.ZombieRowType, special_base_weight: Array = []) -> int:
 	var smooth_weights = calculate_smooth_weights(zombie_row_type, special_base_weight)
 	var total_smooth_weight = 0.0
 	for w in smooth_weights:
@@ -107,7 +107,7 @@ func select_spawn_row(zombie_row_type: Global.ZombieRowType, special_base_weight
 
 ### 获取概率
 #func get_row_probabilities() -> Array:
-	#var smooth_weights = calculate_smooth_weights(0 as Global.ZombieRowType)
+	#var smooth_weights = calculate_smooth_weights(0 as EnumsCharacter.ZombieRowType)
 	#var total = 0.0
 	#for w in smooth_weights:
 		#total += w

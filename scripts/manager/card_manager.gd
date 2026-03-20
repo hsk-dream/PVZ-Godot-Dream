@@ -159,9 +159,9 @@ enum E_TempCardParaAttr{
 ## 创建临时卡片
 func create_temp_card(temp_card_para:Dictionary) -> Card:
 	var new_card_prefabs:Card
-	if temp_card_para.has(E_TempCardParaAttr.PlantType) and temp_card_para[E_TempCardParaAttr.PlantType] != Global.PlantType.Null:
+	if temp_card_para.has(E_TempCardParaAttr.PlantType) and temp_card_para[E_TempCardParaAttr.PlantType] != EnumsCharacter.PlantType.Null:
 		new_card_prefabs = AllCards.all_plant_card_prefabs[temp_card_para[E_TempCardParaAttr.PlantType]]
-	elif temp_card_para.has(E_TempCardParaAttr.ZombieType) and temp_card_para[E_TempCardParaAttr.ZombieType] !=  Global.ZombieType.Null:
+	elif temp_card_para.has(E_TempCardParaAttr.ZombieType) and temp_card_para[E_TempCardParaAttr.ZombieType] !=  EnumsCharacter.ZombieType.Null:
 		new_card_prefabs = AllCards.all_zombie_card_prefabs[temp_card_para[E_TempCardParaAttr.ZombieType]]
 	else:
 		print("error: 没有卡片类型")

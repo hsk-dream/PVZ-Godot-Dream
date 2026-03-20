@@ -466,7 +466,7 @@ func win_main_game():
 	## 多轮游戏，重置主游戏数据
 	if game_para.game_round != 1:
 		re_main_game()
-	get_tree().change_scene_to_file(Global.MainScenesMap.get(game_para.game_mode, Global.MainScenesMap[Global.MainScenes.StartMenu]))
+	get_tree().change_scene_to_file(Global.main_scene_registry.MainScenesMap.get(game_para.game_mode, Global.main_scene_registry.MainScenesMap[EnumsMainScene.MainScenes.StartMenu]))
 
 #endregion
 

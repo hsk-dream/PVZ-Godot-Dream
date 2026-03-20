@@ -21,7 +21,7 @@ var is_lane:=true
 #@export var attack_value_bullet:int = -1
 @export var attack_cd:float = 1.5
 ## 攻击子弹类型
-@export var attack_bullet_type:Global.BulletType = Global.BulletType.Bullet001Pea
+@export var attack_bullet_type:EnumsBullet.BulletType = EnumsBullet.BulletType.Bullet001Pea
 ## 子弹生产位置
 @export var markers_2d_bullet: Array[Marker2D]
 @export_group("发射子弹音效")
@@ -92,7 +92,7 @@ func set_cancel_attack():
 func _shoot_bullet():
 	signal_shoot_bullet.emit()
 	for i in range(markers_2d_bullet.size()):
-		var bullet:Bullet000Base = Global.get_bullet_scenes(attack_bullet_type).instantiate()
+		var bullet:Bullet000Base = Global.bullet_registry.get_bullet_scenes(attack_bullet_type).instantiate()
 		var bullet_paras = get_bullet_paras(markers_2d_bullet[i].global_position, detect_component.ray_area_direction[i])
 		#print(bullet_paras)
 		bullet.init_bullet(bullet_paras)

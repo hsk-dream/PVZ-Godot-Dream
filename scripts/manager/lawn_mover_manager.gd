@@ -17,9 +17,9 @@ const LawnMoverSecneMap = {
 
 ## 所有场景中的小推车类型
 const AllLawnMoverTypeFromGameScenes = {
-	Global.MainScenes.MainGameFront:[0,0,0,0,0],
-	Global.MainScenes.MainGameBack:[0,0,1,1,0,0],
-	Global.MainScenes.MainGameRoof:[2,2,2,2,2]
+	EnumsMainScene.MainScenes.MainGameFront:[0,0,0,0,0],
+	EnumsMainScene.MainScenes.MainGameBack:[0,0,1,1,0,0],
+	EnumsMainScene.MainScenes.MainGameRoof:[2,2,2,2,2]
 }
 
 @onready var lawn_movers: Node2D = %LawnMovers
@@ -31,7 +31,7 @@ var all_lawn_movers:Array[LawnMover] = []
 
 ## 是否有小推车
 var is_lawn_mover := true
-var game_scene:Global.MainScenes
+var game_scene:EnumsMainScene.MainScenes
 ## 初始化plant_cell_manager和zombie_manager两个管理器ready后在初始化该管理器
 func init_lawn_mover_manager(game_para:ResourceLevelData) -> void:
 	is_lawn_mover = game_para.is_lawn_mover

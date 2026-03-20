@@ -1,4 +1,4 @@
-extends RefCounted
+extends Node
 class_name UserManager
 
 signal signal_users_update

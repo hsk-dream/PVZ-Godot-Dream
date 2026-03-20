@@ -85,18 +85,18 @@ func get_all_hp():
 
 
 ## [attack_value:int] 掉血的值
-## [bullet_mode:Global.AttackMode]: 伤害类型
+## [bullet_mode:EnumsBullet.AttackMode]: 伤害类型
 ## [is_drop_on_death:bool] 死亡时是否有掉落
 ## [trigger_be_attack_SFX:bool]:是否触发受击音效
 ## [is_drop_2:bool] 是否有掉落额外条件
 ## return bool: 返回是否死亡
-func Hp_loss(attack_value:int, bullet_mode : Global.AttackMode = Global.AttackMode.Norm, is_drop_on_death=true, trigger_be_attack_SFX:=true, is_drop_2:=true):
+func Hp_loss(attack_value:int, bullet_mode : EnumsBullet.AttackMode = EnumsBullet.AttackMode.Norm, is_drop_on_death=true, trigger_be_attack_SFX:=true, is_drop_2:=true):
 	var ori_hp = get_all_hp()
 	## 掉血标志, 1:本体 2:一类防具 4:二类防具
 	var flag_loss:int = 0
 	match bullet_mode:
 		## 普通子弹
-		Global.AttackMode.Norm:
+		EnumsBullet.AttackMode.Norm:
 			# 如果有二类防具，先对二类防具掉血，若二类防具血量<0, 修改
 			if curr_hp_armor2 > 0:
 				var new_curr_hp_armor2 = curr_hp_armor2 - attack_value
@@ -124,7 +124,7 @@ func Hp_loss(attack_value:int, bullet_mode : Global.AttackMode = Global.AttackMo
 
 
 		## 穿透子弹,爆炸
-		Global.AttackMode.Penetration:
+		EnumsBullet.AttackMode.Penetration:
 			# 如果有二类防具，先对二类防具掉血
 			if curr_hp_armor2 > 0:
 				var new_curr_hp_armor2 = curr_hp_armor2 - attack_value
@@ -149,7 +149,7 @@ func Hp_loss(attack_value:int, bullet_mode : Global.AttackMode = Global.AttackMo
 				curr_hp -= attack_value
 
 		## 真实伤害子弹
-		Global.AttackMode.Real:
+		EnumsBullet.AttackMode.Real:
 			# 如果有一类防具
 			if curr_hp_armor1 > 0 and attack_value > 0:
 				var new_curr_hp_armor1 = curr_hp_armor1 - attack_value
@@ -167,7 +167,7 @@ func Hp_loss(attack_value:int, bullet_mode : Global.AttackMode = Global.AttackMo
 				curr_hp -= attack_value
 
 		## 保龄球子弹
-		Global.AttackMode.BowlingFront:
+		EnumsBullet.AttackMode.BowlingFront:
 			# 如果是正面
 			# 如果有二类防具，先对二类防具掉血
 			if curr_hp_armor2 > 0:
@@ -191,7 +191,7 @@ func Hp_loss(attack_value:int, bullet_mode : Global.AttackMode = Global.AttackMo
 				flag_loss |= 1
 
 		## 保龄球侧面子弹
-		Global.AttackMode.BowlingSide:
+		EnumsBullet.AttackMode.BowlingSide:
 
 			#如果是正面
 			# 如果有二类防具，先对二类防具掉血，若二类防具血量<0, 修改
@@ -214,7 +214,7 @@ func Hp_loss(attack_value:int, bullet_mode : Global.AttackMode = Global.AttackMo
 				flag_loss |= 1
 
 		## 锤子
-		Global.AttackMode.Hammer:
+		EnumsBullet.AttackMode.Hammer:
 			# 如果有二类防具，无视二类防具,
 			if curr_hp_armor2 > 0:
 				pass

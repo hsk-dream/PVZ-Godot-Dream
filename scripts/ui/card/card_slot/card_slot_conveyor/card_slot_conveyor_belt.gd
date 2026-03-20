@@ -24,9 +24,9 @@ var all_card_pos_x_target :Array[float] = []
 #region 随机生成卡片相关
 @onready var card_random_pool: CardRandomPool = $CardRandomPool
 ## 按顺序出现的卡片植物
-var card_order_plant:Dictionary[int, Global.PlantType] = {}
+var card_order_plant:Dictionary[int, EnumsCharacter.PlantType] = {}
 ## 按顺序出现的卡片僵尸(若重复,则使用植物的卡片)
-var card_order_zombie:Dictionary[int, Global.ZombieType] = {}
+var card_order_zombie:Dictionary[int, EnumsCharacter.ZombieType] = {}
 ## 当前生成的卡片总数量
 var all_num_card :int = 0
 #endregion

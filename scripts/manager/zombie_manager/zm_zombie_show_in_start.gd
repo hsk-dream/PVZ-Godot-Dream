@@ -13,20 +13,20 @@ class_name ZombieShowInStart
 ## #关卡前展示僵尸生成默认数量范围
 @export var default_show_zombie_num_range:Vector2i = Vector2i(1,4)
 ## 关卡前展示僵尸生成数量范围(默认不生成旗帜僵尸)
-@export var special_show_zombie_num_range: Dictionary[Global.ZombieType, Vector2i] = {
-	Global.ZombieType.Z002Flag : Vector2i(0,0)
+@export var special_show_zombie_num_range: Dictionary[EnumsCharacter.ZombieType, Vector2i] = {
+	EnumsCharacter.ZombieType.Z002Flag : Vector2i(0,0)
 }
 var show_zombies_array :Array[Zombie000Base]
 
 
 #region 生成关卡前展示僵尸
 ## 生成一个展示僵尸
-func create_show_zombie(zombie_type:Global.ZombieType, parent_node:Panel) -> Zombie000Base:
+func create_show_zombie(zombie_type:EnumsCharacter.ZombieType, parent_node:Panel) -> Zombie000Base:
 	var zombie_pos :=Vector2(randf_range(0, parent_node.size.x), randf_range(0, parent_node.size.y))
-	var zombie:Zombie000Base = Global.get_zombie_info(zombie_type, Global.ZombieInfoAttribute.ZombieScenes).instantiate()
+	var zombie:Zombie000Base = Global.character_registry.get_zombie_info(zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieScenes).instantiate()
 	var zombie_init_para:Dictionary = {
 		Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsShow,
-		Zombie000Base.E_ZInitAttr.CurrZombieRowType:Global.ZombieRowType.Land,
+		Zombie000Base.E_ZInitAttr.CurrZombieRowType:EnumsCharacter.ZombieRowType.Land,
 		Zombie000Base.E_ZInitAttr.IsMiniZombie: zombie_manager.is_mini_zombie
 	}
 	zombie.init_zombie(zombie_init_para)
@@ -43,7 +43,7 @@ func create_prepare_show_zombies():
 			var z = create_show_zombie(zombie_type, show_zombie_panel)
 			show_zombies_array.append(z)
 	if zombie_manager.is_bungi:
-		var z = create_show_zombie(Global.ZombieType.Z021Bungi, show_zombie_panel_2)
+		var z = create_show_zombie(EnumsCharacter.ZombieType.Z021Bungi, show_zombie_panel_2)
 		show_zombies_array.append(z)
 
 ## 删除关卡前展示僵尸

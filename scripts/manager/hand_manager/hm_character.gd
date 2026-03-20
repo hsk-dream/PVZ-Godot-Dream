@@ -14,7 +14,7 @@ var characte_static_shadow:Node2D
 ## 植物种植条件
 var plant_condition:ResourcePlantCondition
 ## 僵尸种植行条件
-var zombie_row_type:Global.ZombieRowType
+var zombie_row_type:EnumsCharacter.ZombieRowType
 ## 虚影在格子中，即可以种植
 var is_shadow_in_cell:=false
 
@@ -42,8 +42,8 @@ func click_card(card:Card) -> void:
 	curr_card = card
 	EventBus.push_event("hm_character_hand_card", [curr_card])
 	## 植物
-	if curr_card.card_plant_type != Global.PlantType.Null:
-		plant_condition = Global.get_plant_info(curr_card.card_plant_type, Global.PlantInfoAttribute.PlantConditionResource)
+	if curr_card.card_plant_type != EnumsCharacter.PlantType.Null:
+		plant_condition = Global.character_registry.get_plant_info(curr_card.card_plant_type, EnumsCharacter.PlantInfoAttribute.PlantConditionResource)
 		## 静态植物以及植物虚影
 		characte_static = card.character_static.duplicate()
 		characte_static.get_child(0).scale = Vector2.ONE
@@ -63,7 +63,7 @@ func click_card(card:Card) -> void:
 
 	## 僵尸
 	else:
-		zombie_row_type = Global.get_zombie_info(curr_card.card_zombie_type, Global.ZombieInfoAttribute.ZombieRowType)
+		zombie_row_type = Global.character_registry.get_zombie_info(curr_card.card_zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieRowType)
 		## 静态僵尸以及僵尸虚影
 		characte_static = card.character_static.duplicate()
 		characte_static.get_child(0).scale = Vector2.ONE
@@ -78,7 +78,7 @@ func click_card(card:Card) -> void:
 			click_card_column()
 
 ## 紫卡预种植植物身体明暗发光开始
-func start_preplant_purple_light(curr_plant_condition:ResourcePlantCondition, plant_type:Global.PlantType):
+func start_preplant_purple_light(curr_plant_condition:ResourcePlantCondition, plant_type:EnumsCharacter.PlantType):
 	curr_all_preplant_purple = curr_plant_condition.get_all_preplant_purple(Global.main_game.plant_cell_manager.all_plant_cells, plant_type)
 	for preplant_purple in curr_all_preplant_purple:
 		preplant_purple.preplant_purple_body_light_and_dark()
@@ -104,7 +104,7 @@ func _clear_curr_data():
 	characte_static.queue_free()
 	characte_static_shadow.queue_free()
 	plant_condition = null
-	zombie_row_type = Global.ZombieRowType.Land
+	zombie_row_type = EnumsCharacter.ZombieRowType.Land
 	if is_mode_column:
 		_clear_curr_data_column()
 
@@ -130,10 +130,10 @@ func _update_cell_shadow(plant_cell:PlantCell, characte_static_shadow:Node2D) ->
 	## 僵尸
 	else:
 		## 如果当前格子不能种植僵尸(蹦极除外)
-		if not plant_cell.can_common_zombie and curr_card.card_zombie_type != Global.ZombieType.Z021Bungi:
+		if not plant_cell.can_common_zombie and curr_card.card_zombie_type != EnumsCharacter.ZombieType.Z021Bungi:
 			return false
 		## 如果不是双地形
-		if zombie_row_type != Global.ZombieRowType.Both:
+		if zombie_row_type != EnumsCharacter.ZombieRowType.Both:
 			if zombie_row_type == Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type:
 				characte_static_shadow.global_position =  get_zombie_static_shadow_global_position(plant_cell)
 				characte_static_shadow.modulate.a = 0.5

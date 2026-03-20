@@ -8,8 +8,8 @@ var bullets:Node2D
 
 ## 子弹升级数据
 const bullet_upgrade_data = {
-	Global.BulletType.Bullet001Pea: Global.BulletType.Bullet006PeaFire,
-	Global.BulletType.Bullet002PeaSnow: Global.BulletType.Bullet001Pea,
+	EnumsBullet.BulletType.Bullet001Pea: EnumsBullet.BulletType.Bullet006PeaFire,
+	EnumsBullet.BulletType.Bullet002PeaSnow: EnumsBullet.BulletType.Bullet001Pea,
 }
 
 func ready_norm() -> void:
@@ -32,7 +32,7 @@ func _on_area_2d_up_bullet_area_exited(area: Area2D) -> void:
 ## 升级子弹
 func _up_bullet(curr_bullet:Bullet000Base):
 	if curr_bullet not in curr_bullet_up:
-		var new_bullet_up_scenes = Global.get_bullet_scenes(bullet_upgrade_data[curr_bullet.bullet_type])
+		var new_bullet_up_scenes = Global.bullet_registry.get_bullet_scenes(bullet_upgrade_data[curr_bullet.bullet_type])
 		var bullet_up :Bullet000Base = new_bullet_up_scenes.instantiate()
 		bullet_up.init_bullet(curr_bullet.get_bullet_paras())
 		curr_bullet_up.append(bullet_up)

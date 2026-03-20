@@ -32,20 +32,20 @@ const CharacterBgMap = {
 var show_character:Character000Base
 
 ## 更新图鉴植物信息
-func almanac_update_plant_panel(curr_plant_type:Global.PlantType):
-	var curr_plant_name = Global.get_plant_info(curr_plant_type, Global.PlantInfoAttribute.PlantName)
+func almanac_update_plant_panel(curr_plant_type:EnumsCharacter.PlantType):
+	var curr_plant_name = Global.character_registry.get_plant_info(curr_plant_type, EnumsCharacter.PlantInfoAttribute.PlantName)
 	almanac_update_character_panel_common(Global.data_almanac["Plant"][curr_plant_name])
 
 	## 花费
-	cost.get_node("Value").text = str(Global.get_plant_info(curr_plant_type,  Global.PlantInfoAttribute.SunCost))
+	cost.get_node("Value").text = str(Global.character_registry.get_plant_info(curr_plant_type,  EnumsCharacter.PlantInfoAttribute.SunCost))
 	## 冷却时间
-	cool_time.get_node("Value").text = str(Global.get_plant_info(curr_plant_type,  Global.PlantInfoAttribute.CoolTime))
+	cool_time.get_node("Value").text = str(Global.character_registry.get_plant_info(curr_plant_type,  EnumsCharacter.PlantInfoAttribute.CoolTime))
 	cool_time.get_node("Value").text += "(秒)"
 	## 展示植物
 	create_plant(curr_plant_type)
 
-func create_plant(curr_plant_type:Global.PlantType):
-	var plant_scene = Global.get_plant_info(curr_plant_type, Global.PlantInfoAttribute.PlantScenes)
+func create_plant(curr_plant_type:EnumsCharacter.PlantType):
+	var plant_scene = Global.character_registry.get_plant_info(curr_plant_type, EnumsCharacter.PlantInfoAttribute.PlantScenes)
 	var new_show_plant:Plant000Base = plant_scene.instantiate()
 	var plant_init_para:Dictionary = {Plant000Base.E_PInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsShow}
 	new_show_plant.init_plant(plant_init_para)
@@ -62,18 +62,18 @@ func create_plant(curr_plant_type:Global.PlantType):
 ## 生成的特殊植物修改位置
 func special_plant_update_pos(new_show_plant:Plant000Base):
 	match new_show_plant.plant_type:
-		Global.PlantType.P048CobCannon:
+		EnumsCharacter.PlantType.P048CobCannon:
 			new_show_plant.position = Vector2(60,130)
 
 
 ## 更新图鉴僵尸信息
-func almanac_update_zombie_panel(curr_zombie_type:Global.ZombieType):
-	var curr_zombie_name = Global.get_zombie_info(curr_zombie_type, Global.ZombieInfoAttribute.ZombieName)
+func almanac_update_zombie_panel(curr_zombie_type:EnumsCharacter.ZombieType):
+	var curr_zombie_name = Global.character_registry.get_zombie_info(curr_zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieName)
 	almanac_update_character_panel_common(Global.data_almanac["Zombie"][curr_zombie_name])
 	create_zombie(curr_zombie_type)
 
-func create_zombie(curr_zombie_type:Global.ZombieType):
-	var zombie_scene = Global.get_zombie_info(curr_zombie_type, Global.ZombieInfoAttribute.ZombieScenes)
+func create_zombie(curr_zombie_type:EnumsCharacter.ZombieType):
+	var zombie_scene = Global.character_registry.get_zombie_info(curr_zombie_type, EnumsCharacter.ZombieInfoAttribute.ZombieScenes)
 	var new_show_zombie:Zombie000Base = zombie_scene.instantiate()
 	var zombie_init_para:Dictionary = {Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsShow}
 	new_show_zombie.init_zombie(zombie_init_para)
@@ -87,7 +87,7 @@ func create_zombie(curr_zombie_type:Global.ZombieType):
 ## 生成的特殊僵尸修改位置
 func special_zombie_update_pos(new_show_zombie:Zombie000Base):
 	match new_show_zombie.zombie_type:
-		Global.ZombieType.Z024Gargantuar:
+		EnumsCharacter.ZombieType.Z024Gargantuar:
 			new_show_zombie.position = Vector2(100,200)
 
 

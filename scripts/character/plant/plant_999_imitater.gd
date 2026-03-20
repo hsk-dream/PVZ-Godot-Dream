@@ -2,7 +2,7 @@ extends Plant000Base
 class_name Plant999Imitater
 
 ## 模仿的植物类型
-var imitater_plant_type :Global.PlantType = Global.PlantType.Null
+var imitater_plant_type :EnumsCharacter.PlantType = EnumsCharacter.PlantType.Null
 @onready var imitater_effect: Node2D = $ImitaterEffect
 
 

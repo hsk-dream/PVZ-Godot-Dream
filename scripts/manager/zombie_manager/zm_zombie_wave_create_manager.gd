@@ -15,65 +15,65 @@ var range_num_bungi:Vector2i = Vector2i(3,5)
 
 ## 定义每个僵尸的战力值
 const zombie_power = {
-	Global.ZombieType.Z001Norm: 1,		# 普僵战力
-	Global.ZombieType.Z002Flag: 1,		# 旗帜战力
-	Global.ZombieType.Z003Cone: 2,		# 路障战力
-	Global.ZombieType.Z004PoleVaulter: 2,	# 撑杆战力
-	Global.ZombieType.Z005Bucket: 4,		# 铁桶战力
+	EnumsCharacter.ZombieType.Z001Norm: 1,		# 普僵战力
+	EnumsCharacter.ZombieType.Z002Flag: 1,		# 旗帜战力
+	EnumsCharacter.ZombieType.Z003Cone: 2,		# 路障战力
+	EnumsCharacter.ZombieType.Z004PoleVaulter: 2,	# 撑杆战力
+	EnumsCharacter.ZombieType.Z005Bucket: 4,		# 铁桶战力
 
-	Global.ZombieType.Z006Paper: 2,		# 读报战力
-	Global.ZombieType.Z007ScreenDoor: 4,	# 铁门战力
-	Global.ZombieType.Z008Football: 7,	# 橄榄球战力
-	Global.ZombieType.Z009Jackson: 5,		# 舞王战力
-	Global.ZombieType.Z010Dancer: 1,		# 伴舞权重
+	EnumsCharacter.ZombieType.Z006Paper: 2,		# 读报战力
+	EnumsCharacter.ZombieType.Z007ScreenDoor: 4,	# 铁门战力
+	EnumsCharacter.ZombieType.Z008Football: 7,	# 橄榄球战力
+	EnumsCharacter.ZombieType.Z009Jackson: 5,		# 舞王战力
+	EnumsCharacter.ZombieType.Z010Dancer: 1,		# 伴舞权重
 
-	Global.ZombieType.Z012Snorkle: 3,		# 潜水
-	Global.ZombieType.Z013Zamboni: 7,		# 冰车
-	Global.ZombieType.Z014Bobsled: 3,		# 滑雪四兄弟
-	Global.ZombieType.Z015Dolphinrider: 3,# 海豚僵尸
+	EnumsCharacter.ZombieType.Z012Snorkle: 3,		# 潜水
+	EnumsCharacter.ZombieType.Z013Zamboni: 7,		# 冰车
+	EnumsCharacter.ZombieType.Z014Bobsled: 3,		# 滑雪四兄弟
+	EnumsCharacter.ZombieType.Z015Dolphinrider: 3,# 海豚僵尸
 
-	Global.ZombieType.Z016Jackbox: 3,		# 小丑
-	Global.ZombieType.Z017Balloon: 2,		# 气球
-	Global.ZombieType.Z018Digger: 4,		# 矿工
-	Global.ZombieType.Z019Pogo: 4,			# 跳跳
-	Global.ZombieType.Z020Yeti: 4,			# 雪人
+	EnumsCharacter.ZombieType.Z016Jackbox: 3,		# 小丑
+	EnumsCharacter.ZombieType.Z017Balloon: 2,		# 气球
+	EnumsCharacter.ZombieType.Z018Digger: 4,		# 矿工
+	EnumsCharacter.ZombieType.Z019Pogo: 4,			# 跳跳
+	EnumsCharacter.ZombieType.Z020Yeti: 4,			# 雪人
 
-	Global.ZombieType.Z022Ladder: 4,		# 扶梯
-	Global.ZombieType.Z023Catapult: 5,		# 投篮
-	Global.ZombieType.Z024Gargantuar: 10,	# 伽刚特尔
-	Global.ZombieType.Z025Imp: 1,			# 小鬼
+	EnumsCharacter.ZombieType.Z022Ladder: 4,		# 扶梯
+	EnumsCharacter.ZombieType.Z023Catapult: 5,		# 投篮
+	EnumsCharacter.ZombieType.Z024Gargantuar: 10,	# 伽刚特尔
+	EnumsCharacter.ZombieType.Z025Imp: 1,			# 小鬼
 }
 
 ## 创建 zombie_weights 字典，存储初始权重,普僵权重会修改，
 var zombie_weights:Dictionary = zombie_weights_ori.duplicate_deep()
 const zombie_weights_ori = {
-	Global.ZombieType.Z001Norm: 4000,			# 普僵权重
-	#Global.ZombieType.Z002Flag: 0,			# 旗帜权重
-	Global.ZombieType.Z003Cone: 4000,			# 路障权重
-	Global.ZombieType.Z004PoleVaulter: 2000,	# 撑杆权重
-	Global.ZombieType.Z005Bucket: 3000,		# 铁桶权重
+	EnumsCharacter.ZombieType.Z001Norm: 4000,			# 普僵权重
+	#EnumsCharacter.ZombieType.Z002Flag: 0,			# 旗帜权重
+	EnumsCharacter.ZombieType.Z003Cone: 4000,			# 路障权重
+	EnumsCharacter.ZombieType.Z004PoleVaulter: 2000,	# 撑杆权重
+	EnumsCharacter.ZombieType.Z005Bucket: 3000,		# 铁桶权重
 
-	Global.ZombieType.Z006Paper: 1000,		# 读报权重
-	Global.ZombieType.Z007ScreenDoor: 3500,	# 铁门权重
-	Global.ZombieType.Z008Football: 2000,		# 橄榄球权重
-	Global.ZombieType.Z009Jackson: 1000,		# 舞王权重
-	Global.ZombieType.Z010Dancer: 4000,		# 舞王权重
+	EnumsCharacter.ZombieType.Z006Paper: 1000,		# 读报权重
+	EnumsCharacter.ZombieType.Z007ScreenDoor: 3500,	# 铁门权重
+	EnumsCharacter.ZombieType.Z008Football: 2000,		# 橄榄球权重
+	EnumsCharacter.ZombieType.Z009Jackson: 1000,		# 舞王权重
+	EnumsCharacter.ZombieType.Z010Dancer: 4000,		# 舞王权重
 
-	Global.ZombieType.Z012Snorkle: 2000,		# 潜水
-	Global.ZombieType.Z013Zamboni: 2000,		# 冰车
-	Global.ZombieType.Z014Bobsled: 2000,		# 滑雪四兄弟
-	Global.ZombieType.Z015Dolphinrider: 1500,	# 海豚僵尸
+	EnumsCharacter.ZombieType.Z012Snorkle: 2000,		# 潜水
+	EnumsCharacter.ZombieType.Z013Zamboni: 2000,		# 冰车
+	EnumsCharacter.ZombieType.Z014Bobsled: 2000,		# 滑雪四兄弟
+	EnumsCharacter.ZombieType.Z015Dolphinrider: 1500,	# 海豚僵尸
 
-	Global.ZombieType.Z016Jackbox: 1000,		# 小丑
-	Global.ZombieType.Z017Balloon: 2000,		# 气球
-	Global.ZombieType.Z018Digger: 1000,		# 矿工
-	Global.ZombieType.Z019Pogo: 1000,			# 跳跳
-	Global.ZombieType.Z020Yeti: 1,			# 雪人
+	EnumsCharacter.ZombieType.Z016Jackbox: 1000,		# 小丑
+	EnumsCharacter.ZombieType.Z017Balloon: 2000,		# 气球
+	EnumsCharacter.ZombieType.Z018Digger: 1000,		# 矿工
+	EnumsCharacter.ZombieType.Z019Pogo: 1000,			# 跳跳
+	EnumsCharacter.ZombieType.Z020Yeti: 1,			# 雪人
 
-	Global.ZombieType.Z022Ladder: 1000,		# 扶梯
-	Global.ZombieType.Z023Catapult: 1500,	# 投篮
-	Global.ZombieType.Z024Gargantuar: 1500,	# 伽刚特尔
-	#Global.ZombieType.Z025Imp: 0,		# 小鬼
+	EnumsCharacter.ZombieType.Z022Ladder: 1000,		# 扶梯
+	EnumsCharacter.ZombieType.Z023Catapult: 1500,	# 投篮
+	EnumsCharacter.ZombieType.Z024Gargantuar: 1500,	# 伽刚特尔
+	#EnumsCharacter.ZombieType.Z025Imp: 0,		# 小鬼
 }
 
 ## 僵尸随机选择池
@@ -112,7 +112,7 @@ func update_zombie_refresh_types():
 ## 创建当前波僵尸
 func create_curr_wave_all_zombies(wave:int, is_big_wave:bool):
 	## 获取当前波僵尸生成列表
-	var wave_spawn :Array[Global.ZombieType] = create_curr_wave_zombie_list(wave, is_big_wave)
+	var wave_spawn :Array[EnumsCharacter.ZombieType] = create_curr_wave_zombie_list(wave, is_big_wave)
 	## 特殊基础权重,若有雪橇车僵尸,更新该权重
 	var special_base_weight:Array[float] = []
 	wave_all_zombies.clear()
@@ -120,10 +120,10 @@ func create_curr_wave_all_zombies(wave:int, is_big_wave:bool):
 	var curr_wave_zombie_date:Array[Dictionary]
 
 	for i in range(wave_spawn.size()):
-		var zombie_type : Global.ZombieType = wave_spawn[i]
+		var zombie_type : EnumsCharacter.ZombieType = wave_spawn[i]
 		var lane :int = -1
 		## 雪橇车僵尸
-		if zombie_type == Global.ZombieType.Z014Bobsled:
+		if zombie_type == EnumsCharacter.ZombieType.Z014Bobsled:
 			## 计算冰道权重
 			if special_base_weight.is_empty():
 				for row_ice_road:Array[IceRoad] in zombie_manager.all_ice_roads:
@@ -134,12 +134,12 @@ func create_curr_wave_all_zombies(wave:int, is_big_wave:bool):
 				print(special_base_weight)
 			## 如果没有冰道
 			if GlobalUtils.sum_arr(special_base_weight) == 0:
-				zombie_type = Global.ZombieType.Z013Zamboni
-				lane = zombie_choose_row_system.select_spawn_row(Global.ZombieInfo[zombie_type][Global.ZombieInfoAttribute.ZombieRowType])
+				zombie_type = EnumsCharacter.ZombieType.Z013Zamboni
+				lane = zombie_choose_row_system.select_spawn_row(Global.character_registry.ZombieInfo[zombie_type][EnumsCharacter.ZombieInfoAttribute.ZombieRowType])
 			else:
-				lane = zombie_choose_row_system.select_spawn_row(Global.ZombieInfo[zombie_type][Global.ZombieInfoAttribute.ZombieRowType], special_base_weight)
+				lane = zombie_choose_row_system.select_spawn_row(Global.character_registry.ZombieInfo[zombie_type][EnumsCharacter.ZombieInfoAttribute.ZombieRowType], special_base_weight)
 		else:
-			lane = zombie_choose_row_system.select_spawn_row(Global.ZombieInfo[zombie_type][Global.ZombieInfoAttribute.ZombieRowType])
+			lane = zombie_choose_row_system.select_spawn_row(Global.character_registry.ZombieInfo[zombie_type][EnumsCharacter.ZombieInfoAttribute.ZombieRowType])
 		curr_wave_zombie_date.append(
 			{
 				"zombie_type":zombie_type,
@@ -159,7 +159,7 @@ func create_curr_wave_all_zombies(wave:int, is_big_wave:bool):
 
 ## 生成波次僵尸
 func wave_create_zombie(
-	zombie_type:Global.ZombieType,
+	zombie_type:EnumsCharacter.ZombieType,
 	lane:int, 	## 僵尸行
 	curr_wave:int,		## 僵尸波次
 	init_zombie_special:Callable = Callable()		## 初始化僵尸特殊属性
@@ -184,7 +184,7 @@ func create_curr_wave_zombie_list(wave:int, is_big_wave:bool):
 	## 更新僵尸权重上限
 	update_curr_zombie_weight_upper_limit(wave)
 	## 获取当前波的生成僵尸列表
-	var wave_spawn :Array[Global.ZombieType] = get_curr_wave_zombie_list(wave, is_big_wave, curr_wave_power_limit)
+	var wave_spawn :Array[EnumsCharacter.ZombieType] = get_curr_wave_zombie_list(wave, is_big_wave, curr_wave_power_limit)
 
 	return wave_spawn
 
@@ -232,20 +232,20 @@ func _update_weights(wave: int):
 			wave = 25
 
 		var norm_weight = 4000 - (wave - 5) * 180
-		zombie_weights[Global.ZombieType.Z001Norm] = norm_weight
-		if Global.ZombieType.Z001Norm in zombie_manager.zombie_refresh_types:
-			zombie_choose_random_pool.update_item_weight(Global.ZombieType.Z001Norm, norm_weight, false)
+		zombie_weights[EnumsCharacter.ZombieType.Z001Norm] = norm_weight
+		if EnumsCharacter.ZombieType.Z001Norm in zombie_manager.zombie_refresh_types:
+			zombie_choose_random_pool.update_item_weight(EnumsCharacter.ZombieType.Z001Norm, norm_weight, false)
 		var cone_weight = 4000 - (wave - 5) * 150
-		zombie_weights[Global.ZombieType.Z003Cone] = cone_weight
-		if Global.ZombieType.Z003Cone in zombie_manager.zombie_refresh_types:
-			zombie_choose_random_pool.update_item_weight(Global.ZombieType.Z003Cone, cone_weight, false)
+		zombie_weights[EnumsCharacter.ZombieType.Z003Cone] = cone_weight
+		if EnumsCharacter.ZombieType.Z003Cone in zombie_manager.zombie_refresh_types:
+			zombie_choose_random_pool.update_item_weight(EnumsCharacter.ZombieType.Z003Cone, cone_weight, false)
 
 		zombie_choose_random_pool.rebuild_alias_table()
 
 ## 获取当前波僵尸列表
-func get_curr_wave_zombie_list(wave:int, is_big_wave: bool, curr_wave_power_limit:int) ->Array[Global.ZombieType]:
+func get_curr_wave_zombie_list(wave:int, is_big_wave: bool, curr_wave_power_limit:int) ->Array[EnumsCharacter.ZombieType]:
 	## 当前波的僵尸列表
-	var wave_spawn :Array[Global.ZombieType]= []
+	var wave_spawn :Array[EnumsCharacter.ZombieType]= []
 	## 目前总战力
 	var total_power = 0
 	## 当前空隙位置
@@ -254,27 +254,27 @@ func get_curr_wave_zombie_list(wave:int, is_big_wave: bool, curr_wave_power_limi
 	## 如果是大波，先刷新特殊僵尸
 	if is_big_wave:
 		## 第一个旗帜僵尸
-		wave_spawn.append(Global.ZombieType.Z002Flag)
-		total_power += zombie_power[Global.ZombieType.Z002Flag]
+		wave_spawn.append(EnumsCharacter.ZombieType.Z002Flag)
+		total_power += zombie_power[EnumsCharacter.ZombieType.Z002Flag]
 		curr_spare_slot -= 1
 
 		# 第一次大波（第10波），刷新4个普通僵尸
 		if wave == 9:
 			for i in range(4):
-				wave_spawn.append(Global.ZombieType.Z001Norm)
-				total_power += zombie_power[Global.ZombieType.Z001Norm]
+				wave_spawn.append(EnumsCharacter.ZombieType.Z001Norm)
+				total_power += zombie_power[EnumsCharacter.ZombieType.Z001Norm]
 				curr_spare_slot -= 1
 		# 之后的大波（第20波、30波...），刷新8个普通僵尸
 		else:
 			for i in range(8):
-				wave_spawn.append(Global.ZombieType.Z001Norm)
-				total_power += zombie_power[Global.ZombieType.Z001Norm]
+				wave_spawn.append(EnumsCharacter.ZombieType.Z001Norm)
+				total_power += zombie_power[EnumsCharacter.ZombieType.Z001Norm]
 				curr_spare_slot -= 1
 
 	# 生成剩余僵尸，直到总战力符合当前战力上限
 	while curr_spare_slot > 0 and total_power < curr_wave_power_limit:
 
-		var selected_zombie:Global.ZombieType = zombie_choose_random_pool.get_random_item()
+		var selected_zombie:EnumsCharacter.ZombieType = zombie_choose_random_pool.get_random_item()
 		var zombie_power_value = zombie_power[selected_zombie]
 
 		#prints("当前剩余僵尸", curr_spare_slot, "当前战力:", total_power, "当前所选僵尸:", selected_zombie, "当前所选僵尸战力:", zombie_power_value)
@@ -286,8 +286,8 @@ func get_curr_wave_zombie_list(wave:int, is_big_wave: bool, curr_wave_power_limi
 			curr_spare_slot -= 1
 		elif curr_wave_power_limit - total_power < min_power:
 			for i in range(curr_wave_power_limit - total_power):
-				wave_spawn.append(Global.ZombieType.Z001Norm)
-				total_power += zombie_power[Global.ZombieType.Z001Norm]
+				wave_spawn.append(EnumsCharacter.ZombieType.Z001Norm)
+				total_power += zombie_power[EnumsCharacter.ZombieType.Z001Norm]
 				curr_spare_slot -= 1
 			continue
 		else:
@@ -319,16 +319,16 @@ func spawn_special_zombie_in_big_wave(is_final:=false):
 func spawn_sea_weed_zombies():
 	var zombie_row_pool_i :Array[int]
 	for i in range(zombie_manager.all_zombie_rows.size()):
-		if zombie_manager.all_zombie_rows[i].zombie_row_type == Global.ZombieRowType.Pool:
+		if zombie_manager.all_zombie_rows[i].zombie_row_type == EnumsCharacter.ZombieRowType.Pool:
 			zombie_row_pool_i.append(i)
 	if zombie_row_pool_i.is_empty():
 		print("无水路,无法生成珊瑚僵尸")
 		return
 
-	var zombie_type_sea_weed_list :Array= [Global.ZombieType.Z001Norm, Global.ZombieType.Z003Cone, Global.ZombieType.Z005Bucket]
+	var zombie_type_sea_weed_list :Array= [EnumsCharacter.ZombieType.Z001Norm, EnumsCharacter.ZombieType.Z003Cone, EnumsCharacter.ZombieType.Z005Bucket]
 
 	for i in range(3):
-		var zombie_type:Global.ZombieType = zombie_type_sea_weed_list.pick_random()
+		var zombie_type:EnumsCharacter.ZombieType = zombie_type_sea_weed_list.pick_random()
 		var lane:int= zombie_row_pool_i.pick_random()
 		var zombie_sea_weed:Zombie000Base = wave_create_zombie(zombie_type, lane, -1, _zombie_seaweed)
 
@@ -357,7 +357,7 @@ func spawn_bungi_zombies():
 		}
 
 		zombie_manager.create_norm_zombie(
-			Global.ZombieType.Z021Bungi,
+			EnumsCharacter.ZombieType.Z021Bungi,
 			zombie_manager.all_zombie_rows[plant_cell.row_col.x],
 			zombie_init_para,
 			Vector2(plant_cell.global_position.x + plant_cell.size.x/2,

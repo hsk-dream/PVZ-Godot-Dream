@@ -96,7 +96,7 @@ func _on_area_2d_attack_area_entered(area: Area2D) -> void:
 			attack_once(enemy)
 			_update_direction()
 			first_attack_end = true
-			bullet_mode = Global.AttackMode.BowlingSide
+			bullet_mode = EnumsBullet.AttackMode.BowlingSide
 	else :
 		curr_enemy = area.owner
 

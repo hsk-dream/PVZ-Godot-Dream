@@ -61,14 +61,14 @@ func sum_arr(arr: Array[float]) -> float:
 	return total
 
 ## 根据当前植物类型和僵尸类型获取当前是植物还是僵尸
-func get_character_type(plant_type:Global.PlantType, zombie_type:Global.ZombieType):
-	if plant_type == Global.PlantType.Null:
-		if zombie_type == Global.ZombieType.Null:
-			return Global.CharacterType.Null
+func get_character_type(plant_type:EnumsCharacter.PlantType, zombie_type:EnumsCharacter.ZombieType) -> EnumsCharacter.CharacterType:
+	if plant_type == EnumsCharacter.PlantType.Null:
+		if zombie_type == EnumsCharacter.ZombieType.Null:
+			return EnumsCharacter.CharacterType.Null
 		else:
-			return Global.CharacterType.Zombie
+			return EnumsCharacter.CharacterType.Zombie
 	else:
-		return Global.CharacterType.Plant
+		return EnumsCharacter.CharacterType.Plant
 
 ## 补全列表
 func pad_array(arr: Array, target_size: int, pad_value = 0) -> Array:
@@ -100,9 +100,9 @@ func create_new_timer_once(need_node:Node, callable:Callable, wait_time:float=0)
 
 #region 特殊僵尸生成函数
 
-func get_special_zombie_callable(zombie_type:Global.ZombieType, plant_cell:PlantCell) -> Callable:
+func get_special_zombie_callable(zombie_type:EnumsCharacter.ZombieType, plant_cell:PlantCell) -> Callable:
 	match zombie_type:
-		Global.ZombieType.Z021Bungi:
+		EnumsCharacter.ZombieType.Z021Bungi:
 			return create_bungi.bind(plant_cell)
 	return Callable()
 

@@ -37,7 +37,7 @@ func attack_once():
 		if enemy is Plant000Base:
 			enemy.plant_cell.be_gargantuar_attack(owner)
 		elif enemy is Zombie000Base:
-			enemy.be_attacked_bullet(1800, Global.AttackMode.Penetration, true, true)
+			enemy.be_attacked_bullet(1800, EnumsBullet.AttackMode.Penetration, true, true)
 
 		SoundManager.play_character_SFX("gargantuar_thump")
 

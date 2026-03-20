@@ -15,18 +15,18 @@ func init_card_slot_coin(game_para:ResourceLevelData):
 
 ## 初始化系统预选卡
 ## 从AllCards中复制一张新卡,隐藏card_slot_candidate的卡片
-func init_pre_choosed_card(card_type_list:Array[Global.PlantType], card_type_list_zombie:Array[Global.ZombieType]):
+func init_pre_choosed_card(card_type_list:Array[EnumsCharacter.PlantType], card_type_list_zombie:Array[EnumsCharacter.ZombieType]):
 	for i in card_type_list.size():
 		var card:Card
-		var plant_type:Global.PlantType = card_type_list[i]
-		var zombie_type:Global.ZombieType = card_type_list_zombie[i]
-		var character_type:Global.CharacterType = GlobalUtils.get_character_type(plant_type, zombie_type)
+		var plant_type:EnumsCharacter.PlantType = card_type_list[i]
+		var zombie_type:EnumsCharacter.ZombieType = card_type_list_zombie[i]
+		var character_type:EnumsCharacter.CharacterType = GlobalUtils.get_character_type(plant_type, zombie_type)
 		match character_type:
-			Global.CharacterType.Plant:
+			EnumsCharacter.CharacterType.Plant:
 				card = AllCards.all_plant_card_prefabs[plant_type].duplicate()
-			Global.CharacterType.Zombie:
+			EnumsCharacter.CharacterType.Zombie:
 				card = AllCards.all_zombie_card_prefabs[zombie_type].duplicate()
-			Global.CharacterType.Null:
+			EnumsCharacter.CharacterType.Null:
 				continue
 
 		card_slot_battle_coin.curr_cards.append(card)

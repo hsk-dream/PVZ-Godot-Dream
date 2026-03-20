@@ -10,11 +10,11 @@ class_name AllCardsClass
 	%ZombieCards, %ZombieCards2
 ]
 
-@export var all_plant_card_prefabs:Dictionary[Global.PlantType, Card]
-@export var all_zombie_card_prefabs:Dictionary[Global.ZombieType, Card]
+@export var all_plant_card_prefabs:Dictionary[EnumsCharacter.PlantType, Card]
+@export var all_zombie_card_prefabs:Dictionary[EnumsCharacter.ZombieType, Card]
 
-@export var plant_card_ids :Dictionary[Global.PlantType, int]
-@export var zombie_card_ids :Dictionary[Global.ZombieType, int]
+@export var plant_card_ids :Dictionary[EnumsCharacter.PlantType, int]
+@export var zombie_card_ids :Dictionary[EnumsCharacter.ZombieType, int]
 
 var frame_num := 0
 
@@ -33,8 +33,8 @@ func _ready() -> void:
 				plant_i += 1
 				var card_para:Dictionary[Card.E_CInitAttr, Variant] = {
 					Card.E_CInitAttr.CardId:plant_i,
-					Card.E_CInitAttr.CoolTime:Global.PlantInfo[card.card_plant_type][Global.PlantInfoAttribute.CoolTime],
-					Card.E_CInitAttr.SunCost:Global.PlantInfo[card.card_plant_type][Global.PlantInfoAttribute.SunCost]
+					Card.E_CInitAttr.CoolTime:Global.character_registry.PlantInfo[card.card_plant_type][EnumsCharacter.PlantInfoAttribute.CoolTime],
+					Card.E_CInitAttr.SunCost:Global.character_registry.PlantInfo[card.card_plant_type][EnumsCharacter.PlantInfoAttribute.SunCost]
 				}
 				#card.init_card(card_para)
 				init_card(card, card_para)
@@ -49,8 +49,8 @@ func _ready() -> void:
 			if card.card_zombie_type != 0:
 				zombie_i += 1
 				card.card_id = zombie_i
-				card.cool_time = Global.ZombieInfo[card.card_zombie_type][Global.ZombieInfoAttribute.CoolTime]
-				card.sun_cost = Global.ZombieInfo[card.card_zombie_type][Global.ZombieInfoAttribute.SunCost]
+				card.cool_time = Global.character_registry.ZombieInfo[card.card_zombie_type][EnumsCharacter.ZombieInfoAttribute.CoolTime]
+				card.sun_cost = Global.character_registry.ZombieInfo[card.card_zombie_type][EnumsCharacter.ZombieInfoAttribute.SunCost]
 				all_zombie_card_prefabs[card.card_zombie_type] = card
 				zombie_card_ids[card.card_zombie_type] = zombie_i
 

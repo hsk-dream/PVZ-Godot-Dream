@@ -12,10 +12,10 @@ class_name AttackComponentBulletCorn
 func random_choose_butter_or_corn():
 	var p = randf()
 	if p < p_butter:
-		attack_bullet_type = Global.BulletType.Bullet011Butter
+		attack_bullet_type = EnumsBullet.BulletType.Bullet011Butter
 		sprite_2d_butter_in_body.visible = true
 	else:
-		attack_bullet_type = Global.BulletType.Bullet010Corn
+		attack_bullet_type = EnumsBullet.BulletType.Bullet010Corn
 
 
 func _shoot_bullet():

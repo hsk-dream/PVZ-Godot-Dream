@@ -41,4 +41,4 @@ func spatter_all_area_zombie(direct_hit_enemy:Character000Base, lane:int=-1):
 				attack_enemy(enemy, damage_per_enemy)
 
 func attack_enemy(enemy:Character000Base, damage_per_enemy:int):
-	enemy.be_attacked_bullet(damage_per_enemy, Global.AttackMode.Penetration, true, false)
+	enemy.be_attacked_bullet(damage_per_enemy, EnumsBullet.AttackMode.Penetration, true, false)

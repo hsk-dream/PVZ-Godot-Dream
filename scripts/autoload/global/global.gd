@@ -8,9 +8,13 @@ extends Node
 @onready var item_registry: ItemRegistry = %ItemRegistry
 ## 用户管理（已从 Global 拆分）
 @onready var user_manager: UserManager = %UserManager
+## 存档服务
 @onready var save_service: SaveService = %SaveService
+## 配置服务（用户音量、控制台）
 @onready var config_service: ConfigService = %ConfigService
+## 全局游戏状态（金币、花园数据、关卡数据、当前植物、当前僵尸）
 @onready var global_game_state: GlobalGameState = %GlobalGameState
+## 全局只读数据（图鉴数据、刷怪白名单、罐子白名单等）
 @onready var global_read_data: GlobalReadData = %GlobalReadData
 
 
@@ -29,61 +33,6 @@ func _ready() -> void:
 var main_game:MainGameManager
 var game_para:ResourceLevelData
 
-
-#region 全局游戏数据
-#region 金币
-## 显示金币的label
-var coin_value_label:CoinBankLabel
-
-## 生产金币,按概率生产，概率和为1, 将金币生产在coin_bank_bank（coin_value_label）节点下
-## 概率顺序为 银币金币和钻石
-func create_coin(probability:Array=[0.5, 0.5, 0], global_position_new_coin:Vector2=Vector2.ZERO, target_position:Vector2=Vector2(randf_range(-50, 50), randf_range(80, 90))):
-	coin_value_label.update_label()
-	## 如果当前场景有金币值的label,将金币生产在coin_bank_bank（coin_value_label）节点下
-	if is_instance_valid(coin_value_label):
-		var probability_sum: float = float(probability[0]) + float(probability[1]) + float(probability[2])
-		assert(abs(probability_sum - 1.0) < 0.001, "概率和不为1")
-		var r = randf()
-		var new_coin:Coin
-		if r < probability[0]:
-			new_coin = SceneRegistry.COIN_SILVER.instantiate()
-		elif r < probability[0] + probability[1]:
-			new_coin = SceneRegistry.COIN_GOLD.instantiate()
-		else:
-			new_coin = SceneRegistry.COIN_DIAMOND.instantiate()
-		coin_value_label.add_child(new_coin)
-		## 主游戏场景中,摄像位置修正
-		if is_instance_valid(main_game):
-			global_position_new_coin -= main_game.camera_2d.global_position
-		new_coin.global_position = global_position_new_coin
-		## 抛物线发射金币
-		new_coin.launch(target_position)
-	else:
-		printerr("生成金币但没有coin_value_label")
-#endregion
-
-#region 花园
-# TODO:暂时先写global，后面要改?
-# 也可能不改 -- 20250907
-## 掉落花园植物
-func create_garden_plant(global_position_new_garden_plant:Vector2):
-	coin_value_label.update_label()
-
-	var new_garden_plant:Present = SceneRegistry.PRESENT.instantiate()
-
-	coin_value_label.add_child(new_garden_plant)
-	## 主游戏场景中,摄像位置修正
-	if is_instance_valid(main_game):
-		global_position_new_garden_plant -= main_game.camera_2d.global_position
-	new_garden_plant.global_position = global_position_new_garden_plant
-	SoundManager.play_other_SFX("chime")
-
-#endregion
-
-#endregion
-
 ## 游戏倍速
 var time_scale := 1.0
-
-#endregion
 

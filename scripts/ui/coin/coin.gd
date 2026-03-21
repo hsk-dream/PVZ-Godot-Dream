@@ -29,7 +29,8 @@ var tween: Tween = null
 ## 是否被获取
 var is_get:bool = false
 
-
+func setup(coin_target_pos:Vector2):
+	coin_target_position = coin_target_pos
 
 func _ready():
 	## 信号连接
@@ -91,10 +92,6 @@ func _on_button_pressed() -> void:
 	##打断抛物线
 	_on_interrupt_triggered()
 	is_anim = false
-	## 如果当前场景有金币值的label
-	if Global.coin_value_label and is_instance_valid(Global.coin_value_label):
-		coin_target_position = Global.coin_value_label.marker_2d_coin_target.global_position
-
 
 	var click_tween:Tween = create_tween()
 	click_tween.tween_property(self, "global_position", coin_target_position, 0.5)

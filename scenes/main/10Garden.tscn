@@ -1,9 +1,10 @@
-[gd_scene load_steps=31 format=3 uid="uid://bro2wcaph4ceu"]
+[gd_scene load_steps=32 format=3 uid="uid://bro2wcaph4ceu"]
 
 [ext_resource type="Script" uid="uid://cjfk7fy344tvb" path="res://scripts/garden/garden_manager.gd" id="1_cd35e"]
 [ext_resource type="Texture2D" uid="uid://47ixd5hsddft" path="res://assets/image/ui/ui_card/ShovelBank.png" id="1_uu8cm"]
 [ext_resource type="Texture2D" uid="uid://y7ir422gbnxv" path="res://assets/image/garden/WateringCanGold.png" id="2_r7eep"]
 [ext_resource type="AudioStream" uid="uid://ryoiuendasef" path="res://assets/audio/BGM/garden.mp3" id="2_yfmuy"]
+[ext_resource type="Script" uid="uid://vemd6ndasc6s" path="res://scripts/manager/drop_item_manager.gd" id="3_y8v5q"]
 [ext_resource type="Texture2D" uid="uid://3vm8i65dei2h" path="res://assets/image/garden/Fertilizer.png" id="4_l0x8f"]
 [ext_resource type="Script" uid="uid://55q5g0e2ktn6" path="res://scripts/garden/ui_item_button.gd" id="5_6rwu8"]
 [ext_resource type="PackedScene" uid="uid://cuken451e2wr7" path="res://scenes/garden/01_wateringcan.tscn" id="5_hjxn1"]
@@ -35,7 +36,12 @@
 script = ExtResource("1_cd35e")
 bgm = ExtResource("2_yfmuy")
 
+[node name="DropItemManager" type="Node" parent="." node_paths=PackedStringArray("all_drop_coin_parent")]
+script = ExtResource("3_y8v5q")
+all_drop_coin_parent = NodePath("../CanvasLayerDrop/AllDropCoin")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="PanelUI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -486,7 +492,7 @@ position = Vector2(72, -112)
 
 [node name="Fertilizer" parent="CanvasLayer/Items" instance=ExtResource("8_6rwu8")]
 visible = false
-position = Vector2(192.5, -122)
+position = Vector2(163, -139)
 
 [node name="BugSpray" parent="CanvasLayer/Items" instance=ExtResource("11_2db7u")]
 visible = false
@@ -512,17 +518,6 @@ position = Vector2(560.5, -124)
 visible = false
 position = Vector2(633.5, -125)
 
-[node name="CoinBankLabel" parent="CanvasLayer" instance=ExtResource("26_aho5g")]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 364.0
-offset_top = -56.0
-offset_right = 364.0
-offset_bottom = -56.0
-grow_vertical = 0
-auto_hide = null
-
 [node name="StoreEnterKey" type="TextureButton" parent="CanvasLayer"]
 anchors_preset = 1
 anchor_left = 1.0
@@ -545,6 +540,22 @@ script = ExtResource("22_aho5g")
 visible = false
 texture = ExtResource("25_aho5g")
 centered = false
+
+[node name="CanvasLayerDrop" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="CoinBankLabel" parent="CanvasLayerDrop" instance=ExtResource("26_aho5g")]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 364.0
+offset_top = -56.0
+offset_right = 364.0
+offset_bottom = -56.0
+grow_vertical = 0
+
+[node name="AllDropCoin" type="Node2D" parent="CanvasLayerDrop"]
 
 [node name="CanvasLayerStore" type="CanvasLayer" parent="."]
 layer = 100

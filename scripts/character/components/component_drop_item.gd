@@ -26,10 +26,13 @@ func drop_coin():
 
 	var r = randf()
 	if r < drop_coin_rate:
-		Global.create_coin(drop_coin_silver_glod_diamond_rate,\
-		Vector2(clamp(global_position.x, 0, get_viewport().get_visible_rect().size.x),\
-		clamp(global_position.y-correct_y, 0, get_viewport().get_visible_rect().size.y)),
-		Vector2(randf_range(-50, 50), randf_range(target_move_y_range.x, target_move_y_range.y)))
+
+		EventBus.push_event("create_coin", [
+			drop_coin_silver_glod_diamond_rate,\
+			Vector2(clamp(global_position.x, 0, get_viewport().get_visible_rect().size.x),\
+			clamp(global_position.y-correct_y, 0, get_viewport().get_visible_rect().size.y)),
+			Vector2(randf_range(-50, 50), randf_range(target_move_y_range.x, target_move_y_range.y))
+		])
 
 ## 掉落花园植物
 func drop_garden_plant():

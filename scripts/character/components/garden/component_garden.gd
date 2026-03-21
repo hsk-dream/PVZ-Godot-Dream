@@ -88,7 +88,7 @@ func _on_coin_timer_timeout():
 		create_coin_timer.start(create_coin_time_cd + randf_range(-5, 5))
 	else:
 		create_coin_timer.stop()
-	Global.create_coin([0.7, 0.25, 0.05], global_position_create_coin)
+	EventBus.push_event("create_coin", [[0.7, 0.25, 0.05], global_position_create_coin])
 
 ## 检测当前是否需要触发，读档时使用
 func _check_if_need_should_trigger():
@@ -147,7 +147,7 @@ func satisfy_need(item: GardenManager.E_NeedItem):
 	var is_update_growth_stage := false
 	match curr_need_item:
 		GardenManager.E_NeedItem.WateringCan:
-			Global.create_coin([0.5, 0.5, 0.0], global_position_create_coin)
+			EventBus.push_event("create_coin", [[0.5, 0.5, 0.0], global_position_create_coin])
 			curr_water_time += 1
 			# 开启下一次需求计时
 			_calculate_next_need_time(short_time_range_need_item_next)
@@ -157,8 +157,8 @@ func satisfy_need(item: GardenManager.E_NeedItem):
 				up_growth_stage()
 			else:
 				print("不应该出现该语句，当前满足完美状态需求，")
-			Global.create_coin([0.0, 0.95, 0.05], global_position_create_coin)
-			Global.create_coin([0.0, 0.95, 0.05], global_position_create_coin)
+			EventBus.push_event("create_coin", [[0.0, 0.95, 0.05], global_position_create_coin])
+			EventBus.push_event("create_coin", [[0.0, 0.95, 0.05], global_position_create_coin])
 
 			curr_water_time = 0
 			max_water_time = randi_range(3, 5)  # 重置新的最大次数

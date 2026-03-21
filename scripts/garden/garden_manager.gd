@@ -27,9 +27,6 @@ enum E_NeedItem{
 	Phonograph,		## 留声机
 }
 
-## 金币显示
-@onready var coin_bank_bank: CoinBankLabel = $CanvasLayer/CoinBankLabel
-
 ## 当前花园背景页
 @export var curr_bg_type:E_GardenBgType=E_GardenBgType.GreenHouse
 @export var curr_page:=0
@@ -89,7 +86,6 @@ var curr_bg := []
 func _ready() -> void:
 	## bgm
 	SoundManager.play_bgm(bgm)
-	Global.coin_value_label = coin_bank_bank
 
 	## 连接ui物品信号
 	for i in range(item_buttons.size()):

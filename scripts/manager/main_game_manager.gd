@@ -160,8 +160,6 @@ func _ready() -> void:
 	signal_connect()
 	## 初始化子管理器
 	init_manager()
-	## 金币label初始化
-	Global.coin_value_label = coin_bank_label
 	coin_bank_label.visible = false
 	## 初始化游戏背景音乐
 	_init_game_BGM()

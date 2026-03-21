@@ -260,6 +260,7 @@ script_list_meta = {
 "res://scripts/manager/background_manager.gd": [-1, -1],
 "res://scripts/manager/card_manager.gd": [-1, -1],
 "res://scripts/manager/day_suns_manager.gd": [-1, -1],
+"res://scripts/manager/drop_item_manager.gd": [-1, -1],
 "res://scripts/manager/game_item_manager.gd": [-1, -1],
 "res://scripts/manager/hand_manager/hand_manager.gd": [-1, -1],
 "res://scripts/manager/hand_manager/hm_character.gd": [-1, -1],

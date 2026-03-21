@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://b2soejmoqi7wd"]
+[gd_scene load_steps=71 format=3 uid="uid://b2soejmoqi7wd"]
 
 [ext_resource type="Script" uid="uid://c7dr2016dfdoo" path="res://scripts/manager/main_game_manager.gd" id="1_7dde3"]
 [ext_resource type="Script" uid="uid://b2rst408m72au" path="res://scripts/manager/hand_manager/hand_manager.gd" id="3_acpf0"]
@@ -31,6 +31,7 @@
 [ext_resource type="Script" uid="uid://c7icgyhar4pfl" path="res://scripts/manager/zombie_mode_manager.gd" id="20_27j16"]
 [ext_resource type="Texture2D" uid="uid://uh50cdkqdl67" path="res://assets/image/background/background1.jpg" id="20_ifnc6"]
 [ext_resource type="Texture2D" uid="uid://c4jwi8yjt7hmd" path="res://assets/image/ui/ui_remind_word/Approaching.png" id="21_48j6u"]
+[ext_resource type="Script" uid="uid://vemd6ndasc6s" path="res://scripts/manager/drop_item_manager.gd" id="21_xftc3"]
 [ext_resource type="Texture2D" uid="uid://bp2ironyexkgp" path="res://assets/image/ui/ui_remind_word/FinalWave.png" id="22_httmh"]
 [ext_resource type="Texture2D" uid="uid://cdoiwcmaapdkm" path="res://assets/image/background/background3_gameover_mask.png" id="22_xh73d"]
 [ext_resource type="Texture2D" uid="uid://dfpr4h80b1qyx" path="res://assets/image/background/background4_gameover_mask.png" id="23_401pl"]
@@ -171,6 +172,12 @@ script = ExtResource("19_a514a")
 [node name="ZombieModeManager" type="Node" parent="Manager"]
 unique_name_in_owner = true
 script = ExtResource("20_27j16")
+
+[node name="DropItemManager" type="Node" parent="Manager" node_paths=PackedStringArray("all_drop_coin_parent", "all_drop_garden_plant_parent")]
+unique_name_in_owner = true
+script = ExtResource("21_xftc3")
+all_drop_coin_parent = NodePath("../../CanvasLayerDropItem/AllDropCoin")
+all_drop_garden_plant_parent = NodePath("../../CanvasLayerDropItem/AllDropGardenPlant")
 
 [node name="CanvasLayerBG" type="CanvasLayer" parent="."]
 layer = -10
@@ -382,6 +389,26 @@ follow_viewport_enabled = true
 [node name="Frontground" type="Node2D" parent="CanvasLayerFG"]
 unique_name_in_owner = true
 
+[node name="CanvasLayerDropItem" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 6
+follow_viewport_enabled = true
+
+[node name="CoinBankLabel" parent="CanvasLayerDropItem" instance=ExtResource("30_xh73d")]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 245.0
+offset_top = -41.0
+offset_right = 245.0
+offset_bottom = -41.0
+grow_vertical = 0
+
+[node name="AllDropCoin" type="Node2D" parent="CanvasLayerDropItem"]
+
+[node name="AllDropGardenPlant" type="Node2D" parent="CanvasLayerDropItem"]
+
 [node name="CanvasLayerCardSlotFront" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 layer = 10
@@ -431,17 +458,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ybhi1")
 [node name="CanvasLayerUI" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 layer = 50
-
-[node name="CoinBankLabel" parent="CanvasLayerUI" instance=ExtResource("30_xh73d")]
-unique_name_in_owner = true
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 245.0
-offset_top = -41.0
-offset_right = 245.0
-offset_bottom = -41.0
-grow_vertical = 0
 
 [node name="UIRemindWord" type="Control" parent="CanvasLayerUI"]
 unique_name_in_owner = true

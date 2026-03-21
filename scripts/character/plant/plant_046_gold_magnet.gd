@@ -28,7 +28,5 @@ func _on_attack_cd_timer_timeout() -> void:
 
 ## 吸收金币一次
 func attack_once():
-	if is_instance_valid(Global.coin_value_label):
-		for c in Global.coin_value_label.get_children():
-			if c is Coin:
-				c.be_attract_gold_magnet(marker_2d_coin.global_position)
+	EventBus.push_event("gold_magnet_attract_once", marker_2d_coin.global_position)
+

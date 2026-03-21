@@ -13,10 +13,9 @@ enum Bus {MASTER, BGM, SFX}
 var curr_frame_sfx:Array[AudioStream] = []
 var frame_num:=0
 
-func _ready() -> void:
-	Global.config_service.load_and_apply_config()
+#func _ready() -> void:
+	#Global.config_service.load_and_apply_config()
 	#Global.save_config()
-	#print("音频管理器")
 
 @warning_ignore("unused_parameter")
 func _physics_process(delta: float) -> void:

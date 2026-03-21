@@ -15,12 +15,18 @@ class_name CanvasLayerConsole
 
 
 func _ready() -> void:
-	call_deferred("init_console_panel")
+	init_console_panel()
+	EventBus.subscribe("on_config_update", on_config_update)
 
 
 ## 初始化控制台
 func init_console_panel():
-	Global.config_service.load_and_apply_config()
+	_update_console_panel()
+
+func on_config_update():
+	_update_console_panel()
+
+func _update_console_panel():
 	check_box.button_pressed = Global.config_service.auto_collect_sun
 	check_box_2.button_pressed = Global.config_service.auto_collect_coin
 	check_box_3.button_pressed = Global.config_service.disappear_spare_card_Placeholder

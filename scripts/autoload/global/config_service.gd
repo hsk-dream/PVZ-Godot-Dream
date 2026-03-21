@@ -62,6 +62,7 @@ func _get_config_path() -> String:
 	return "user://" + user_manager.curr_user_name + "/" + CURRENT_CONFIG_FILE
 
 func load_and_apply_config() -> void:
+
 	var path := _get_config_path()
 	if path.is_empty():
 		return
@@ -85,6 +86,8 @@ func load_and_apply_config() -> void:
 	fog_is_static = config.get_value("user_control", "fog_is_static", false)
 	plant_be_shovel_front = config.get_value("user_control", "plant_be_shovel_front", true)
 	open_all_level = config.get_value("user_control", "open_all_level", false)
+
+	EventBus.push_event("on_config_update")
 
 func save_config() -> void:
 	var path := _get_config_path()

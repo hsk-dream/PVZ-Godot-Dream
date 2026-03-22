@@ -8,5 +8,8 @@ class_name CrazyDaveDialogDetailResource
 @export var is_crazy:bool = false
 ## 戴夫当前语句是否展示手上物品
 @export var is_hand:bool = false
-## TODO:戴夫当前语句是否为选择
+## 当前对话的手持物品的编号(戴夫对话资源手持物品场景列表的下标)
+@export var hand_item_id:int = -1
+
+## 戴夫当前语句是否为选择
 @export var is_choosed:bool = false

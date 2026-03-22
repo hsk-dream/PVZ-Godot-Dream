@@ -131,6 +131,8 @@ func ready_show():
 	super()
 	garden_component.queue_free()
 
+
+
 ## 初始化花园角色
 func ready_garden():
 	super()

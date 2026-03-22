@@ -135,8 +135,11 @@ var is_save_game_data_on_init:=false
 #endregion
 
 #endregion
-## 进入树时更新游戏参数，子管理器赋值对应的游戏参数
 func _enter_tree() -> void:
+	set_game_para()
+
+## 进入树时更新游戏参数，子管理器赋值对应的游戏参数
+func set_game_para() -> void:
 	Global.main_game = self
 	## 先获取当前关卡参数
 	if Global.game_para != null:
@@ -149,7 +152,6 @@ func _enter_tree() -> void:
 		)
 		queue_free()
 		return
-	game_para.init_para()
 
 func _exit_tree() -> void:
 	## 避免切场景后主游戏节点已释放，Global 仍持有野指针
@@ -157,6 +159,7 @@ func _exit_tree() -> void:
 		Global.main_game = null
 
 func _ready() -> void:
+	game_para.init_para()
 	## 多轮游戏并且有存档
 	is_save_game_data_on_init = game_para.game_round != 1 and game_para.save_game_data_main_game != null
 

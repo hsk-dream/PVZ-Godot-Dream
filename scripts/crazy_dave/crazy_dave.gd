@@ -25,16 +25,22 @@ class_name CrazyDave
 @export var is_activate := true
 ## 戴夫是否为idle状态，idle状态下，动画循环播放，需要等待用户点击
 @export var is_idle:= true
+
 ## 说话时间长短，1,2,3，控制动画播放
-@export var talk_time :int = 0
+var talk_time :int = 0
 ## 鼠标点击跳过的对话id
-@export var mouse_skip_talk_id :int = -1
+var mouse_skip_talk_id :int = -1
 ## 当前对话的id
-@export var curr_talk_id :int = 0
+var curr_talk_id :int = 0
 ## 是否为疯言疯语
-@export var is_crazy := false
+var is_crazy := false
 ## 手上展示物品的容器节点，展示物品放置在该节点下
 @export var hand_container: Node2D
+## 当前手持物品id
+var curr_hand_item_id:int = -1
+## 所有手持物品道具
+var all_hand_items:Array[Node2D]
+
 ## 选项节点
 @onready var choose_node: Control = $ChooseNode
 ## 选项题目
@@ -165,6 +171,17 @@ func once_dialog(dialog_detail:CrazyDaveDialogDetailResource) -> int:
 
 	speech_text_label.text = dialog_detail.text
 	_speech_anim_from_dialog_detail(dialog_detail)
+
+	## 如果这句话之前有手持物品,先隐藏
+	if curr_hand_item_id != -1:
+		all_hand_items[curr_hand_item_id].visible = false
+	## 如果有手持物品 并且 编号合法
+	if is_hand and dialog_detail.hand_item_id >= 0 and dialog_detail.hand_item_id < all_hand_items.size():
+		curr_hand_item_id = dialog_detail.hand_item_id
+		all_hand_items[curr_hand_item_id].visible = true
+	else:
+		curr_hand_item_id = -1
+
 	if dialog_detail.is_choosed:
 		choose_node.visible = true
 
@@ -197,20 +214,27 @@ func _speech_anim_from_dialog_detail(dialog_detail:CrazyDaveDialogDetailResource
 
 ## 初始化戴夫相关参数
 ## @param dialog_resource (CrazyDaveDialogResource) - 本次对话的戴夫资源文件。
-
+## @param hand_node (Node) - 代码初始化戴夫时的手持物品，在该函数中添加到戴夫手中
 func init_dave(curr_dialog_resource:CrazyDaveDialogResource, hand_node:Node = null) -> void:
 	dialog_resource = curr_dialog_resource
-	## 如果存在手持物品时
-	if dialog_resource.hand_show_item_path:
-		get_node(dialog_resource.hand_show_item_path).visible = true
 	if hand_node:
 		hand_container.add_child(hand_node)
 
-	## 第一句话是否手持物品
-	self.is_hand = dialog_resource.dialog_detail_list[0].is_hand
+	## 从场景中创建所有的手持物品
+	for hand_itme_scene:PackedScene in curr_dialog_resource.all_hand_itmes_scene:
+		var new_hand_item:Node2D = hand_itme_scene.instantiate()
+		new_hand_item.visible = false
+		hand_container.add_child(new_hand_item)
+		all_hand_items.append(new_hand_item)
 
-	self.is_enter_up = dialog_resource.is_enter_up
-	self.is_grab = dialog_resource.is_grab
+	## 第一句话是否手持物品
+	is_hand = dialog_resource.dialog_detail_list[0].is_hand
+	if is_hand and dialog_resource.dialog_detail_list[0].hand_item_id >= 0 and dialog_resource.dialog_detail_list[0].hand_item_id < all_hand_items.size():
+		curr_hand_item_id = dialog_resource.dialog_detail_list[0].hand_item_id
+		all_hand_items[curr_hand_item_id].visible = true
+
+	is_enter_up = dialog_resource.is_enter_up
+	is_grab = dialog_resource.is_grab
 
 
 func reset_dave(new_dialog_resource:CrazyDaveDialogResource, hand_node:Node = null) -> void:

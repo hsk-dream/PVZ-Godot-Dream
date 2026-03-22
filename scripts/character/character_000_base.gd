@@ -158,6 +158,15 @@ func ready_show():
 	is_show = true
 	is_idle = true
 	hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.InitType)
+	## 禁用生产阳光组件
+	var create_sun_component: CreateSunComponent = get_node_or_null("CreateSunComponent")
+	if is_instance_valid(create_sun_component):
+		create_sun_component.disable_component(ComponentNormBase.E_IsEnableFactor.InitType)
+	## 禁用攻击组件
+	var attack_component: AttackComponentBase = get_node_or_null("AttackComponent")
+	if is_instance_valid(attack_component):
+		attack_component.disable_component(ComponentNormBase.E_IsEnableFactor.InitType)
+
 
 ## 初始化花园角色
 func ready_garden():

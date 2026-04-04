@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://45gwbrqotnwa"]
+[gd_scene load_steps=4 format=3 uid="uid://45gwbrqotnwa"]
 
 [ext_resource type="PackedScene" uid="uid://dlwaiybjqakk1" path="res://scenes/bullet/bullet_000_base.tscn" id="1_m2ji4"]
 [ext_resource type="Script" uid="uid://6l30kk0ltd8u" path="res://scripts/bullet/bullet_000_track_base.gd" id="2_787xx"]
+[ext_resource type="Script" uid="uid://b34gaco3eofky" path="res://scripts/bullet/component/movement/bullet_movement_track.gd" id="3_yaalf"]
 
 [node name="Bullet000TrackBase" instance=ExtResource("1_m2ji4")]
 script = ExtResource("2_787xx")
-target_pos_correct = Vector2(0, -40)
+
+[node name="MovementComponent" parent="." index="4"]
+script = ExtResource("3_yaalf")
+target_pos_corr_value = Vector2(0, -40)
 first_point_time = 10.0

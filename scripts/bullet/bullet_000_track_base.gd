@@ -1,19 +1,18 @@
 extends Bullet000Base
 class_name Bullet000TrackBase
 
+@onready var movement_component: BulletMovementTrack = $MovementComponent
+
 ## 敌人
 var target_enemy:Character000Base = null
-## 检测到敌人后的移动时间
-var current_time:float = 0
-## 下一帧的目标点
-var next_point:Vector2
 ## 全局检测组件
 var detect_component_global:DetectComponent
 
-## 最终位置修正,目标位置为本体位置,本体与body有偏移
-@export var target_pos_correct:Vector2 = Vector2(0, -40)
-## 第一修正点的位置 按当前速度移动的秒数,由于每帧更新方向,更新频繁,因此改变方向非常快
-@export var first_point_time:float = 10
+func _ready() -> void:
+	super()
+	if not is_instance_valid(target_enemy):
+		target_enemy = detect_component_global.update_enemy_track_bullet()
+
 ## 追踪子弹初始化子弹属性
 ## [Enemy: Character000Base]: 敌人
 func init_bullet(bullet_paras:Dictionary[E_InitParasAttr,Variant]):
@@ -21,43 +20,50 @@ func init_bullet(bullet_paras:Dictionary[E_InitParasAttr,Variant]):
 	z_index = 4000
 	detect_component_global = Global.main_game.detect_component_global
 
-	## 抛物线子弹初始化(子弹初始化之后)
-	self.target_enemy = bullet_paras.get(E_InitParasAttr.Enemy, null)
-	if not is_instance_valid(self.target_enemy):
-		self.target_enemy = detect_component_global.update_enemy_track_bullet()
+	target_enemy = bullet_paras.get(E_InitParasAttr.Enemy, null)
 
 
 func _physics_process(delta: float) -> void:
-	## 如果敌人死亡或敌人不存在
-	if (is_instance_valid(target_enemy) and target_enemy.is_death) or not is_instance_valid(target_enemy):
+	## 如果敌人存在并且没有死亡
+	if is_instance_valid(target_enemy) and not target_enemy.is_death:
+		movement_component.reset_track_movement(target_enemy.hurt_box_component.global_position, false, false)
+	## 敌人不存在 全局寻找敌人
+	else:
 		if is_instance_valid(detect_component_global.enemy_can_be_attacked) and not detect_component_global.enemy_can_be_attacked.is_death:
 			target_enemy = detect_component_global.enemy_can_be_attacked
 		else:
 			target_enemy = detect_component_global.update_enemy_track_bullet()
-		current_time = 0
-		if not is_instance_valid(target_enemy):
-			global_position += direction * delta * speed
+		## 如果找到敌人
+		if is_instance_valid(target_enemy):
+			movement_component.reset_track_movement(target_enemy.hurt_box_component.global_position, true, false)
+			## 已在目标受击盒内时不会再次触发 area_entered（例如刚切换目标时子弹已在箱内），用重叠补判
+			_try_attack_target_if_already_overlapping()
 
-			## 移动超过最大距离后销毁，部分子弹有限制,大部分子弹超过默认2000后删除
-			if global_position.distance_to(start_pos) > max_distance:
-				queue_free()
+		## 如果没找到敌人
+		else:
+			movement_component.reset_track_movement(get_global_mouse_position(), true, true)
 
+	movement_component.physics_process_bullet_move(delta)
+
+
+	## 移动超过最大距离后销毁，部分子弹有限制,大部分子弹超过默认2000后删除
+	if global_position.distance_to(start_pos) > max_distance:
+		queue_free()
+
+## 切换目标时，尝试攻击是否已经碰撞
+func _try_attack_target_if_already_overlapping() -> void:
+	if not is_instance_valid(target_enemy) or target_enemy.is_death:
+		return
+	## 无限穿透仍依赖多次 area_entered；若在此每帧补判会连续造成伤害
+	if max_attack_num == -1:
+		return
+	if curr_attack_num >= max_attack_num:
+		return
+	for a: Area2D in area_2d_attack.get_overlapping_areas():
+		if a.owner == target_enemy:
+			attack_once(target_enemy)
 			return
 
-	set_next_point(delta)
-	body.look_at(next_point)
-	global_position = global_position.move_toward(next_point, speed * delta)
-
-func set_next_point(delta):
-	current_time += delta
-	var distance = global_position.distance_to(target_enemy.hurt_box_component.global_position + target_pos_correct)
-	var all_time = distance / speed
-	var t = min(current_time / all_time, 1)
-	var start_control_point = direction * speed * first_point_time + global_position
-	next_point = global_position.bezier_interpolate(start_control_point, target_enemy.hurt_box_component.global_position + target_pos_correct, target_enemy.hurt_box_component.global_position + target_pos_correct, t)
-	direction = (next_point - global_position).normalized()
-	#prints("子弹方向:", direction, "速度:", speed)
-	#prints("当前全局位置", global_position, "第一控制点", start_control_point)
 
 ## 子弹与敌人碰撞
 func _on_area_2d_attack_area_entered(area: Area2D) -> void:

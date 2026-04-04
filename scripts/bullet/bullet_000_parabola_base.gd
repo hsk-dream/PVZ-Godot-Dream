@@ -24,9 +24,9 @@ func _ready() -> void:
 
 	## 子弹实例化后，目标未消失，初始化目标位置,否则使用 target_enemy_glo_pos_init
 	if is_instance_valid(target_enemy) and is_instance_valid(target_enemy.hurt_box_component):
-		movement_component.movement_ready(target_enemy.hurt_box_component.global_position)
+		movement_component.parabola_movement_ready(target_enemy.hurt_box_component.global_position)
 	else:
-		movement_component.movement_ready(target_enemy_glo_pos_init)
+		movement_component.parabola_movement_ready(target_enemy_glo_pos_init)
 
 	## 是否有斜坡
 	is_have_slope = is_instance_valid(Global.main_game.main_game_slope)

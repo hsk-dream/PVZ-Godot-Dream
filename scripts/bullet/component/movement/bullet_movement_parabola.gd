@@ -33,7 +33,7 @@ var end_global_pos:Vector2
 #endregion
 
 ## 移动组件开始时参数，根ready调用
-func movement_ready(end_glo_pos:Vector2=Vector2.ZERO):
+func parabola_movement_ready(end_glo_pos:Vector2=Vector2.ZERO):
 	## 如果敌人还存在,更新敌人位置，不存在使用init时的位置
 	end_global_pos = end_glo_pos + enemy_pos_corr_value
 

@@ -46,6 +46,7 @@ script_list_meta = {
 "res://scripts/bullet/component/movement/bullet_movement_base.gd": [-1, -1],
 "res://scripts/bullet/component/movement/bullet_movement_linear.gd": [-1, -1],
 "res://scripts/bullet/component/movement/bullet_movement_parabola.gd": [-1, -1],
+"res://scripts/bullet/component/movement/bullet_movement_track.gd": [-1, -1],
 "res://scripts/bullet/component/spatter_component.gd": [-1, -1],
 "res://scripts/bullet/component/spatter_component_winter_melon.gd": [-1, -1],
 "res://scripts/camera/main_game_camera.gd": [-1, -1],

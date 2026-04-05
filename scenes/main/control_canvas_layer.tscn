@@ -131,6 +131,14 @@ mouse_filter = 1
 mouse_default_cursor_shape = 2
 text = "开放所有关卡"
 
+[node name="CheckBox11" type="CheckBox" parent="OptionBG/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "追踪子弹无目标时，追踪鼠标"
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+text = "追踪子弹跟随鼠标"
+
 [node name="TextureButton" type="TextureButton" parent="OptionBG"]
 layout_mode = 1
 anchors_preset = 3
@@ -182,4 +190,5 @@ vertical_alignment = 1
 [connection signal="toggled" from="OptionBG/HBoxContainer/VBoxContainer/CheckBox8" to="." method="_on_check_box_8_toggled"]
 [connection signal="toggled" from="OptionBG/HBoxContainer/VBoxContainer2/CheckBox9" to="." method="_on_check_box_9_toggled"]
 [connection signal="toggled" from="OptionBG/HBoxContainer/VBoxContainer2/CheckBox10" to="." method="_on_check_box_10_toggled"]
+[connection signal="toggled" from="OptionBG/HBoxContainer/VBoxContainer2/CheckBox11" to="." method="_on_check_box_11_toggled"]
 [connection signal="pressed" from="OptionBG/TextureButton" to="." method="_on_texture_button_pressed"]

@@ -12,6 +12,7 @@ class_name CanvasLayerConsole
 @onready var check_box_8: CheckBox = $OptionBG/HBoxContainer/VBoxContainer/CheckBox8
 @onready var check_box_9: CheckBox = $OptionBG/HBoxContainer/VBoxContainer2/CheckBox9
 @onready var check_box_10: CheckBox = $OptionBG/HBoxContainer/VBoxContainer2/CheckBox10
+@onready var check_box_11: CheckBox = $OptionBG/HBoxContainer/VBoxContainer2/CheckBox11
 
 
 func _ready() -> void:
@@ -36,6 +37,7 @@ func _update_console_panel():
 	check_box_7.button_pressed = Global.config_service.card_slot_top_mouse_focus
 	check_box_8.button_pressed = Global.config_service.fog_is_static
 	check_box_9.button_pressed = Global.config_service.plant_be_shovel_front
+	check_box_10.button_pressed = Global.config_service.open_all_level
 	check_box_10.button_pressed = Global.config_service.open_all_level
 
 
@@ -85,3 +87,6 @@ func _on_check_box_9_toggled(toggled_on: bool) -> void:
 
 func _on_check_box_10_toggled(toggled_on: bool) -> void:
 	Global.config_service.open_all_level = toggled_on
+
+func _on_check_box_11_toggled(toggled_on: bool) -> void:
+	Global.config_service.track_bullet_mouse = toggled_on

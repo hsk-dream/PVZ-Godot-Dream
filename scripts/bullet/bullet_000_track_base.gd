@@ -26,7 +26,7 @@ func init_bullet(bullet_paras:Dictionary[E_InitParasAttr,Variant]):
 func _physics_process(delta: float) -> void:
 	## 如果敌人存在并且没有死亡
 	if is_instance_valid(target_enemy) and not target_enemy.is_death:
-		movement_component.reset_track_movement(target_enemy.hurt_box_component.global_position, false, false)
+		movement_component.reset_track_movement(true, false, target_enemy.hurt_box_component.global_position)
 	## 敌人不存在 全局寻找敌人
 	else:
 		if is_instance_valid(detect_component_global.enemy_can_be_attacked) and not detect_component_global.enemy_can_be_attacked.is_death:
@@ -35,16 +35,15 @@ func _physics_process(delta: float) -> void:
 			target_enemy = detect_component_global.update_enemy_track_bullet()
 		## 如果找到敌人
 		if is_instance_valid(target_enemy):
-			movement_component.reset_track_movement(target_enemy.hurt_box_component.global_position, true, false)
+			movement_component.reset_track_movement(true, true, target_enemy.hurt_box_component.global_position)
 			## 已在目标受击盒内时不会再次触发 area_entered（例如刚切换目标时子弹已在箱内），用重叠补判
 			_try_attack_target_if_already_overlapping()
 
 		## 如果没找到敌人
 		else:
-			movement_component.reset_track_movement(get_global_mouse_position(), true, true)
+			movement_component.reset_track_movement(false)
 
 	movement_component.physics_process_bullet_move(delta)
-
 
 	## 移动超过最大距离后销毁，部分子弹有限制,大部分子弹超过默认2000后删除
 	if global_position.distance_to(start_pos) > max_distance:

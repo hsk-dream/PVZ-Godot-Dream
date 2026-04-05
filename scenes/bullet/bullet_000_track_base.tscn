@@ -11,3 +11,4 @@ script = ExtResource("2_787xx")
 script = ExtResource("3_yaalf")
 target_pos_corr_value = Vector2(0, -40)
 first_point_time = 10.0
+bullet_speed_r_target_null = 0.2

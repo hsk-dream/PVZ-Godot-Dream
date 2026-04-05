@@ -90,7 +90,7 @@ func load_global_game_data() -> void:
 	var loaded_curr_plant: Array[CharacterRegistry.PlantType] = []
 	for plant_type in loaded_curr_plant_raw:
 		loaded_curr_plant.append(int(plant_type) as CharacterRegistry.PlantType)
-	state.curr_plant = loaded_curr_plant
+	#state.curr_plant = loaded_curr_plant
 
 	var loaded_curr_zombie_raw: Array = data.get("curr_zombie", state.curr_zombie)
 	var loaded_curr_zombie: Array[CharacterRegistry.ZombieType] = []

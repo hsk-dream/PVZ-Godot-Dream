@@ -1,68 +1,12 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=15 format=3 uid="uid://n4ag8qfqegwh"]
+[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=3 format=3 uid="uid://n4ag8qfqegwh"]
 
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="1_0covv"]
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_84rgi"]
-[ext_resource type="Script" uid="uid://7qucqjvdq78q" path="res://scripts/resources/crazy_dave_dialog_detail_resource.gd" id="2_ifj48"]
-[ext_resource type="PackedScene" uid="uid://dfhgawhex8gx1" path="res://scenes/crazy_dave/plant_001_pea_shooter_single.tscn" id="2_vbb2k"]
-[ext_resource type="PackedScene" uid="uid://en53w6xj0svh" path="res://scenes/crazy_dave/plant_002_sun_flower.tscn" id="3_p4yik"]
-[ext_resource type="Script" uid="uid://dlfnh7fjqyil6" path="res://scripts/resources/crazy_dave_dialog_resource.gd" id="3_vbb2k"]
-
-[sub_resource type="Resource" id="Resource_p4yik"]
-script = ExtResource("2_ifj48")
-text = "这是豌豆射手"
-is_hand = true
-hand_item_id = 0
-metadata/_custom_type_script = "uid://7qucqjvdq78q"
-
-[sub_resource type="Resource" id="Resource_6abwe"]
-script = ExtResource("2_ifj48")
-text = "222"
-metadata/_custom_type_script = "uid://7qucqjvdq78q"
-
-[sub_resource type="Resource" id="Resource_eccgf"]
-script = ExtResource("2_ifj48")
-text = "向日葵"
-is_crazy = true
-is_hand = true
-hand_item_id = 1
-metadata/_custom_type_script = "uid://7qucqjvdq78q"
-
-[sub_resource type="Resource" id="Resource_7r5ei"]
-script = ExtResource("2_ifj48")
-text = "333"
-is_hand = true
-metadata/_custom_type_script = "uid://7qucqjvdq78q"
-
-[sub_resource type="Resource" id="Resource_qy5cj"]
-script = ExtResource("2_ifj48")
-text = "这是豌豆射手"
-is_hand = true
-hand_item_id = 0
-metadata/_custom_type_script = "uid://7qucqjvdq78q"
-
-[sub_resource type="Resource" id="Resource_d4fmt"]
-script = ExtResource("2_ifj48")
-text = "我说这是豌豆射手"
-is_hand = true
-hand_item_id = 0
-metadata/_custom_type_script = "uid://7qucqjvdq78q"
-
-[sub_resource type="Resource" id="Resource_br76a"]
-script = ExtResource("2_ifj48")
-text = "这是豌豆射手射手射手"
-is_hand = true
-hand_item_id = 0
-metadata/_custom_type_script = "uid://7qucqjvdq78q"
-
-[sub_resource type="Resource" id="Resource_qb7i6"]
-script = ExtResource("3_vbb2k")
-dialog_detail_list = Array[ExtResource("2_ifj48")]([SubResource("Resource_p4yik"), SubResource("Resource_6abwe"), SubResource("Resource_eccgf"), SubResource("Resource_7r5ei"), SubResource("Resource_qy5cj"), SubResource("Resource_d4fmt"), SubResource("Resource_br76a")])
-all_hand_itmes_scene = Array[PackedScene]([ExtResource("2_vbb2k"), ExtResource("3_p4yik")])
-metadata/_custom_type_script = "uid://dlfnh7fjqyil6"
 
 [resource]
 script = ExtResource("1_0covv")
-crazy_dave_dialog = SubResource("Resource_qb7i6")
+monster_mode = 0
 max_wave = 10
 start_sun = 5210
+pre_choosed_card_list_plant = Array[int]([1001, 1002, 1003])
 metadata/_custom_type_script = "uid://bjt3l56exxmdw"

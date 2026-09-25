@@ -1,0 +1,3 @@
+interface:
+  display_name: "遮罩生成透明 PNG"
+  short_description: "使用灰度遮罩生成透明 PNG，保留原图颜色与半透明边缘"

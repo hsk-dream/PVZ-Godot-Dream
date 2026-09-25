@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://7y86ib4sacu4"]
+
+[ext_resource type="PackedScene" uid="uid://bkx25sp71flk5" path="res://scenes/character/character_000_base.tscn" id="1_bu51k"]
+
+[node name="ZombieBoss000Base" unique_id=1135427569 instance=ExtResource("1_bu51k")]

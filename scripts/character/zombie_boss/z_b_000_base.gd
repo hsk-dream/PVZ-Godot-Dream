@@ -1,0 +1,2 @@
+extends Character000Base
+class_name ZB000Base

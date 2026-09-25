@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://gnlo3ckohgef" path="res://assets/reanim/Zombie_balloon_top.png" id="8_fuck"]
 [ext_resource type="Texture2D" uid="uid://csr4uc1qe2u8u" path="res://assets/reanim/Zombie_balloon_body2.png" id="9_fuck"]
 [ext_resource type="Texture2D" uid="uid://r4v5voglt86g" path="res://assets/reanim/Zombie_balloon_body1.png" id="10_fuck"]
-[ext_resource type="Texture2D" uid="uid://btjxktub70sh0" path="res://assets/reanim/Zombie_balloon_outerleg_foot.png" id="11_fuck"]
+[ext_resource type="Texture2D" uid="uid://btjxktub70sh0" path="res://assets/reanim/Zombie_balloon_outerleg_FOOT.png" id="11_fuck"]
 [ext_resource type="Texture2D" uid="uid://dtvjlpwc6oksx" path="res://assets/reanim/Zombie_balloon_outerleg_lower.png" id="12_fuck"]
 [ext_resource type="Texture2D" uid="uid://qxhl1eck8fir" path="res://assets/reanim/Zombie_balloon_innerleg_upper.png" id="13_fuck"]
 [ext_resource type="Texture2D" uid="uid://25pfkquqyf10" path="res://assets/reanim/Zombie_balloon_head.png" id="14_fuck"]

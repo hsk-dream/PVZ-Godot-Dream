@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cb7lvkchehhyj" path="res://assets/reanim/Zombie_boss_innerarm_lower.png" id="1_fuck"]
 [ext_resource type="Texture2D" uid="uid://c77q3t07btgx3" path="res://assets/reanim/Zombie_boss_innerarm_finger.png" id="2_fuck"]
 [ext_resource type="Texture2D" uid="uid://b61wa16xujdnk" path="res://assets/reanim/Zombie_boss_innerarm_hand.png" id="3_fuck"]
-[ext_resource type="Texture2D" uid="uid://c533qswlsv8dw" path="res://assets/reanim/Zombie_boss_rvwheel.png" id="4_fuck"]
+[ext_resource type="Texture2D" uid="uid://c533qswlsv8dw" path="res://assets/reanim/Zombie_boss_RVwheel.png" id="4_fuck"]
 [ext_resource type="Texture2D" uid="uid://cj10wpko1fxuj" path="res://assets/reanim/Zombie_boss_rv.png" id="5_fuck"]
 [ext_resource type="Texture2D" uid="uid://cdrqid7xanb3t" path="res://assets/reanim/Zombie_boss_innerarm_thumb2.png" id="6_fuck"]
 [ext_resource type="Texture2D" uid="uid://dgcifib0510bl" path="res://assets/reanim/Zombie_boss_innerarm_thumb1.png" id="7_fuck"]

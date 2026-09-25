@@ -1,11 +1,11 @@
-[gd_resource type="Animation" load_steps=7 format=3 uid="uid://bec43cvxog3qs"]
+[gd_resource type="Animation" format=3 uid="uid://bec43cvxog3qs"]
 
-[ext_resource type="Texture2D" uid="uid://lyw24xd1xo6b" path="res://assets/reanim/Gatlingpea_head.png" id="8_fuck"]
-[ext_resource type="Texture2D" uid="uid://d4al6wc7hk8at" path="res://assets/reanim/Gatlingpea_mouth.png" id="9_fuck"]
-[ext_resource type="Texture2D" uid="uid://bxifwtxc523wo" path="res://assets/reanim/Gatlingpea_barrel.png" id="10_fuck"]
-[ext_resource type="Texture2D" uid="uid://w2pc4t1b0k5v" path="res://assets/reanim/Gatlingpea_mouth_overlay.png" id="11_fuck"]
-[ext_resource type="Texture2D" uid="uid://dgigsil3n5prk" path="res://assets/reanim/Peashooter_eyebrow.png" id="13_fuck"]
-[ext_resource type="Texture2D" uid="uid://bilalnayg1vtf" path="res://assets/reanim/Gatlingpea_helmet.png" id="14_fuck"]
+[ext_resource type="Texture2D" uid="uid://lyw24xd1xo6b" path="res://assets/reanim/GatlingPea_head.png" id="8_fuck"]
+[ext_resource type="Texture2D" uid="uid://d4al6wc7hk8at" path="res://assets/reanim/GatlingPea_mouth.png" id="9_fuck"]
+[ext_resource type="Texture2D" uid="uid://bxifwtxc523wo" path="res://assets/reanim/GatlingPea_barrel.png" id="10_fuck"]
+[ext_resource type="Texture2D" uid="uid://w2pc4t1b0k5v" path="res://assets/reanim/GatlingPea_mouth_overlay.png" id="11_fuck"]
+[ext_resource type="Texture2D" uid="uid://dgigsil3n5prk" path="res://assets/reanim/PeaShooter_eyebrow.png" id="13_fuck"]
+[ext_resource type="Texture2D" uid="uid://bilalnayg1vtf" path="res://assets/reanim/GatlingPea_helmet.png" id="14_fuck"]
 
 [resource]
 resource_name = "GatlingPea_head_idle"
@@ -802,7 +802,7 @@ tracks/65/keys = {
 "times": PackedFloat32Array(0, 0.083333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333, 0.666667, 0.75, 0.833333, 0.916667, 1, 1.08333, 1.16667, 1.25, 1.33333, 1.41667, 1.5, 1.58333, 1.66667, 1.75, 1.83333, 1.91667, 2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.064577, 0.066323, 0.066323, 0.068068, 0.069813, 0.069813, 0.071558, 0.069813, 0.068068, 0.068068, 0.066323, 0.064577, 0.062832, 0.061087, 0.062832, 0.064577, 0.068068, 0.069813, 0.071558, 0.069813, 0.069813, 0.068068, 0.066323, 0.066323, 0.064577]
+"values": [0.064577, 0.06632299999999999, 0.06632299999999999, 0.068068, 0.069813, 0.069813, 0.071558, 0.069813, 0.068068, 0.068068, 0.06632299999999999, 0.064577, 0.062832, 0.061087, 0.062832, 0.064577, 0.068068, 0.069813, 0.071558, 0.069813, 0.069813, 0.068068, 0.06632299999999999, 0.06632299999999999, 0.064577]
 }
 tracks/66/type = "value"
 tracks/66/imported = false

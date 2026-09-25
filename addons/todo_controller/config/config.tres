@@ -200,6 +200,7 @@ script_list_meta = {
 "res://scripts/fx/other_effect/canvas_layer_effect.gd": [-1, -1],
 "res://scripts/fx/other_effect/dirt_new_zombie_appear_from_ground.gd": [-1, -1],
 "res://scripts/fx/other_effect/doom_shroom_crater.gd": [-1, -1],
+"res://scripts/fx/plant_effect/p_fx_012_gpu_particles_2d_grave_buster.gd": [-1, -1],
 "res://scripts/fx/plant_effect/plant_effect_000_bomb_base.gd": [-1, -1],
 "res://scripts/fx/plant_effect/plant_effect_001_bomb_cherry.gd": [-1, -1],
 "res://scripts/fx/plant_effect/plant_effect_002_bomb_potato_mine.gd": [-1, -1],

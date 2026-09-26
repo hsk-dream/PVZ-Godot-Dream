@@ -1,5 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://g6ybgmhkx6rj"]
+[gd_scene load_steps=30 format=3 uid="uid://g6ybgmhkx6rj"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_ntbhs"]
 [ext_resource type="Script" uid="uid://dg022118rnan8" path="res://scripts/character/plant/plant_033_cabbage_pult.gd" id="2_01mcx"]
 [ext_resource type="Texture2D" uid="uid://dit0i5evvco14" path="res://assets/reanim/PeaShooter_frontleaf_lefttip.png" id="2_4s2r4"]
@@ -224,6 +225,7 @@ attack_bullet_type = 9
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Marker2DBullet")]
 
 [node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0"]
+script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]
 script = ExtResource("19_01mcx")

@@ -1,5 +1,6 @@
-[gd_scene load_steps=126 format=3 uid="uid://djwe3mquxfwg2"]
+[gd_scene load_steps=127 format=3 uid="uid://djwe3mquxfwg2"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://cktksmdbn2nmn" path="res://scenes/character/zombie/zombie_000_base.tscn" id="1_cl81h"]
 [ext_resource type="Script" uid="uid://bme2lvkmfapsq" path="res://scripts/character/zombie/zombie_023_catapult.gd" id="2_dreih"]
 [ext_resource type="Texture2D" uid="uid://dbgta7mnwqmxv" path="res://assets/reanim/Zombie_catapult_crank.png" id="2_i1o18"]
@@ -1957,6 +1958,7 @@ markers_2d_bullet = [NodePath("../Body/BodyCorrect/Marker2D")]
 attack_sfx = &"basketball"
 
 [node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0"]
+script = ExtResource("speed_timer")
 
 [node name="DetectComponent" parent="AttackComponent" index="1"]
 is_detect_items = 0

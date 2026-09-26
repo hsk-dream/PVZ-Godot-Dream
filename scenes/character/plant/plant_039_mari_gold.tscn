@@ -1,5 +1,6 @@
-[gd_scene load_steps=23 format=3 uid="uid://1k30aslpk43r"]
+[gd_scene load_steps=24 format=3 uid="uid://1k30aslpk43r"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_rdg00"]
 [ext_resource type="Texture2D" uid="uid://cy3xu8ug3gd2" path="res://assets/reanim/PeaShooter_backleaf.png" id="2_43sbo"]
 [ext_resource type="Script" uid="uid://cdmi72wg2u0se" path="res://scripts/character/plant/plant_039_mari_gold.gd" id="2_n70fy"]
@@ -160,6 +161,7 @@ script = ExtResource("17_43sbo")
 marker_2d_create_coin = NodePath("../Body/Marker2DCreateCoin")
 
 [node name="CreateCoinTimer" type="Timer" parent="CreateCoinComponent" index="0"]
+script = ExtResource("speed_timer")
 one_shot = true
 
 [connection signal="timeout" from="CreateCoinComponent/CreateCoinTimer" to="CreateCoinComponent" method="_on_create_coin_timer_timeout"]

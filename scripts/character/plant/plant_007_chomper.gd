@@ -4,7 +4,7 @@ class_name Plant007Chomper
 @onready var detect_component: DetectComponent = $DetectComponent
 
 ## 咀嚼时间计时器
-@onready var chew_timer: Timer = $ChewTimer
+@onready var chew_timer: SpeedTimer = $ChewTimer
 ## 啃咬伤害
 @export var eat_attack:int = 1800
 ## 咀嚼时间
@@ -19,24 +19,18 @@ class_name Plant007Chomper
 
 func ready_norm() -> void:
 	super()
-	## 咀嚼计时器
-	chew_timer.wait_time = eat_CD
+	## 基础咀嚼时间不含倍率，进入角色时同步已有速度因素。
+	chew_timer.base_wait_time = eat_CD
+	owner_update_speed(GlobalUtils.get_dic_product(influence_speed_factors))
 
 func ready_norm_signal_connect():
 	super()
 	signal_update_speed.connect(owner_update_speed)
 	detect_component.signal_can_attack.connect(change_is_attack.bind(true))
 
-## 速度改变
+## 速度改变保留剩余咀嚼进度，零速由计时器暂停，避免除零。
 func owner_update_speed(speed_product:float):
-	if not chew_timer.is_stopped():
-		if speed_product == 0:
-			chew_timer.paused = true
-		else:
-			chew_timer.paused = false
-			chew_timer.start(chew_timer.time_left / speed_product)
-
-	chew_timer.wait_time = eat_CD / speed_product
+	chew_timer.set_speed_scale(speed_product)
 
 ## 改变是否正在攻击,即攻击范围内是否有敌人
 func change_is_attack(is_attack:bool):
@@ -73,6 +67,6 @@ func _eat_zombie():
 	if is_instance_valid(detect_component.enemy_can_be_attacked):
 		var zombie :Zombie000Base = detect_component.enemy_can_be_attacked
 		zombie.be_chomper_eat(eat_attack)
-		chew_timer.start()
+		chew_timer.start_scaled()
 
 		is_chewing = true

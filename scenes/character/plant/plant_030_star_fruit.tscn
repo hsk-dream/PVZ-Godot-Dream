@@ -1,5 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://bo2laq3egm6ic"]
+[gd_scene load_steps=22 format=3 uid="uid://bo2laq3egm6ic"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_nndnm"]
 [ext_resource type="Script" uid="uid://ufhh4gtgm5my" path="res://scripts/character/plant/plant_030_star_fruit.gd" id="2_ds8om"]
 [ext_resource type="Texture2D" uid="uid://h5yqjc7mrtnq" path="res://assets/reanim/Starfruit_body.png" id="2_j1qv8"]
@@ -157,6 +158,7 @@ attack_bullet_type = 8
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Marker2DBullet"), NodePath("../Body/BodyCorrect/Marker2DBullet2"), NodePath("../Body/BodyCorrect/Marker2DBullet3"), NodePath("../Body/BodyCorrect/Marker2DBullet4"), NodePath("../Body/BodyCorrect/Marker2DBullet5")]
 
 [node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0"]
+script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]
 script = ExtResource("10_us3df")

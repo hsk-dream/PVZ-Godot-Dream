@@ -1,5 +1,6 @@
-[gd_scene load_steps=45 format=3 uid="uid://bb3ca0a5g0fr0"]
+[gd_scene load_steps=46 format=3 uid="uid://bb3ca0a5g0fr0"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_ug5a7"]
 [ext_resource type="Script" uid="uid://cl8b42d0noa8u" path="res://scripts/character/plant/plant_008_pea_shooter_double.gd" id="2_8obf8"]
 [ext_resource type="Script" uid="uid://bafp0ax1lmlge" path="res://scripts/character/components/detect_component/component_detect.gd" id="2_p0ksa"]
@@ -280,6 +281,7 @@ script = ExtResource("3_q37ln")
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Anim_stem/stem_correct/Marker2DBullet")]
 
 [node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0"]
+script = ExtResource("speed_timer")
 unique_name_in_owner = true
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]

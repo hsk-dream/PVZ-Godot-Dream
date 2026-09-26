@@ -1,5 +1,6 @@
-[gd_scene load_steps=43 format=3 uid="uid://mrgea1notfc4"]
+[gd_scene load_steps=44 format=3 uid="uid://mrgea1notfc4"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_rixsb"]
 [ext_resource type="Texture2D" uid="uid://d1ync1uai7er" path="res://assets/reanim/ScaredyShroom_head_inner.png" id="2_6htc2"]
 [ext_resource type="Script" uid="uid://ocomsy14xung" path="res://scripts/character/plant/plant_014_scaredy_shroom.gd" id="2_esfqn"]
@@ -251,6 +252,7 @@ attack_bullet_type = 5
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Marker2DBullet")]
 
 [node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0"]
+script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]
 script = ExtResource("19_68pw3")

@@ -1,5 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://crqebeaq2my21"]
+[gd_scene load_steps=22 format=3 uid="uid://crqebeaq2my21"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_xhjrs"]
 [ext_resource type="Script" uid="uid://df80fu0w4mwgm" path="res://scripts/character/plant/plant_042_twin_sun_flower.gd" id="2_6jujh"]
 [ext_resource type="Texture2D" uid="uid://cy3xu8ug3gd2" path="res://assets/reanim/PeaShooter_backleaf.png" id="2_vu5k0"]
@@ -191,6 +192,7 @@ marker_2d_create_sun = NodePath("../Body/BodyCorrect/Marker2DCreateSun")
 num_create_sun = 2
 
 [node name="CreateSunTimer" type="Timer" parent="CreateSunComponent" index="0"]
+script = ExtResource("speed_timer")
 one_shot = true
 
 [connection signal="timeout" from="CreateSunComponent/CreateSunTimer" to="CreateSunComponent" method="_on_create_sun_timer_timeout"]

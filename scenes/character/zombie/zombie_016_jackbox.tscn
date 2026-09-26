@@ -1,5 +1,6 @@
-[gd_scene load_steps=98 format=3 uid="uid://dxic1u3pj6402"]
+[gd_scene load_steps=99 format=3 uid="uid://dxic1u3pj6402"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://cktksmdbn2nmn" path="res://scenes/character/zombie/zombie_000_base.tscn" id="1_gyefg"]
 [ext_resource type="Script" uid="uid://cnuqmphc2v487" path="res://scripts/character/zombie/zombie_016_jackbox.gd" id="2_4vwr3"]
 [ext_resource type="Texture2D" uid="uid://bpwq05kghn85" path="res://assets/reanim/Zombie_jackbox_innerleg_foot.png" id="2_70gdr"]
@@ -1684,6 +1685,7 @@ process_material = SubResource("ShaderMaterial_yehmf")
 texture = ExtResource("49_6u1wh")
 
 [node name="JackBombTimer" type="Timer" parent="BombComponentJackbox" index="2"]
+script = ExtResource("speed_timer")
 one_shot = true
 
 [connection signal="timeout" from="BombComponentJackbox/JackBombTimer" to="BombComponentJackbox" method="_on_jack_bomb_timer_timeout"]

@@ -251,17 +251,18 @@ func _stop_action_timers() -> void:
 		timer.stop()
 
 
-## 跟随主体实际播放倍率，包括播放器暂停和自定义播放倍率；全局倍率由 Timer 自行处理。
+## 跟随主体实际播放倍率，包括暂停与自定义播放倍率；全局倍率由 Timer 自行处理。
 func sync_action_timer_speed() -> void:
-	# 主体当前实际播放倍率；播放器停止、暂停或倍率非法时最终按 0 处理。
+	# 当前动作计时倍率；播放器暂停或停止时为零。
 	var action_speed := _get_action_speed()
 	# 当前待停止、同步倍率或校验配置的动作计时器。
 	for timer in _get_action_timers():
 		timer.set_speed_scale(action_speed)
 
 
+## 读取主体实际播放速度；蹦极等待改由事件结束，不需要额外推进计时。
 func _get_action_speed() -> float:
-	# 主体当前实际播放倍率；播放器停止、暂停或倍率非法时最终按 0 处理。
+	# 停止、暂停或非法倍率统一视为零速，状态切换仍由 advance 处理。
 	var action_speed := animation_player.get_playing_speed() if is_instance_valid(animation_player) else 0.0
 	return maxf(action_speed, 0.0) if is_finite(action_speed) else 0.0
 

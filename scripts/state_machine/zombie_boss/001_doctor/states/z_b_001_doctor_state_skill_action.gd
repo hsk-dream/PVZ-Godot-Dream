@@ -19,7 +19,7 @@ func enter() -> void:
 
 ## [param event_name] 动画方法轨道传入的事件名，由当前活动状态判断是否处理。
 func on_animation_event(event_name: StringName) -> void:
-	if not _released and event_name == skill_state.release_event and skill_state.is_active_skill():
+	if skill_state.requires_release_keyframe() and not _released and event_name == skill_state.release_event and skill_state.is_active_skill():
 		_released = true
 		skill_state.execute_effect()
 

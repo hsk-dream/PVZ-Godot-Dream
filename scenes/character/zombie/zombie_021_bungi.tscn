@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://bbg8g31tr56th"]
+[gd_scene format=3 uid="uid://bbg8g31tr56th"]
 
 [ext_resource type="PackedScene" uid="uid://cktksmdbn2nmn" path="res://scenes/character/zombie/zombie_000_base.tscn" id="1_onwj1"]
 [ext_resource type="Texture2D" uid="uid://ni7u5qre4aik" path="res://assets/reanim/Zombie_bungi_body.png" id="2_a0b6f"]
@@ -23,12 +23,18 @@
 [ext_resource type="Texture2D" uid="uid://cr5wbmtt2c1o4" path="res://assets/reanim/Zombie_bungi_jaw.png" id="18_imx3q"]
 [ext_resource type="Texture2D" uid="uid://cmvshansx1t4" path="res://assets/reanim/Zombie_bungi_head.png" id="19_l7o4p"]
 [ext_resource type="Texture2D" uid="uid://drpdbrrx80w50" path="res://assets/reanim/Zombie_bungi_hair.png" id="20_rkgsd"]
+[ext_resource type="Texture2D" uid="uid://bx4pwk01tuacw" path="res://assets/reanim/Zombie_bungi_body2.png" id="21_6178g"]
 [ext_resource type="Animation" uid="uid://c05ppetvbvju2" path="res://animation/character/zombie/021_zombie_bungi/Zombie_bungi_drop.tres" id="21_by4nx"]
 [ext_resource type="Animation" uid="uid://suri3adeuspy" path="res://animation/character/zombie/021_zombie_bungi/Zombie_bungi_grab.tres" id="22_qbgit"]
+[ext_resource type="Texture2D" uid="uid://2rm0tg32561b" path="res://assets/reanim/Zombie_bungi_rightarm_upper2.png" id="22_sykij"]
 [ext_resource type="Animation" uid="uid://c7c0v7g6tkqp1" path="res://animation/character/zombie/021_zombie_bungi/Zombie_bungi_hold.tres" id="23_0sp28"]
+[ext_resource type="Texture2D" uid="uid://dpk57ampyjh35" path="res://assets/reanim/Zombie_bungi_leftarm_upper2.png" id="23_mjxwu"]
 [ext_resource type="Animation" uid="uid://dn3naym2wmuh7" path="res://animation/character/zombie/021_zombie_bungi/Zombie_bungi_idle.tres" id="24_0rum0"]
 [ext_resource type="PackedScene" uid="uid://ds30bt2f2bdfi" path="res://scenes/character/components/zombie_death_bomb.tscn" id="24_khhiw"]
 [ext_resource type="Animation" uid="uid://8gg4sid31erl" path="res://animation/character/zombie/021_zombie_bungi/Zombie_bungi_raise.tres" id="25_0i828"]
+[ext_resource type="Texture2D" uid="uid://yv0qp1u5tk0r" path="res://assets/reanim/Zombie_bungi_hand2.png" id="27_4elt0"]
+[ext_resource type="Texture2D" uid="uid://dhac65jhpiflp" path="res://assets/reanim/Zombie_bungi_leftarm_lower2.png" id="28_qy0td"]
+[ext_resource type="Texture2D" uid="uid://q081ibpltatr" path="res://assets/reanim/Zombie_bungi_rightarm_lower2.png" id="29_imx3q"]
 [ext_resource type="Script" uid="uid://jl0nl4a234bc" path="res://scripts/resources/resource_body_change.gd" id="30_3wvdt"]
 [ext_resource type="Script" uid="uid://drotj4n03qg0e" path="res://scripts/character/components/charred_component/component_charred_black_anim.gd" id="30_fblr2"]
 
@@ -95,20 +101,20 @@ states/Zombie_bungi_idle/node = SubResource("AnimationNodeAnimation_ybvct")
 states/Zombie_bungi_idle/position = Vector2(271, 8)
 states/Zombie_bungi_raise/node = SubResource("AnimationNodeAnimation_d5mcp")
 states/Zombie_bungi_raise/position = Vector2(704, 89)
-transitions = ["Start", "Zombie_bungi_idle", SubResource("AnimationNodeStateMachineTransition_upuuw"), "Start", "Zombie_bungi_drop", SubResource("AnimationNodeStateMachineTransition_khhiw"), "Zombie_bungi_drop", "Zombie_bungi_idle", SubResource("AnimationNodeStateMachineTransition_p25vc"), "Zombie_bungi_idle", "Zombie_bungi_grab", SubResource("AnimationNodeStateMachineTransition_8d5nx"), "Zombie_bungi_grab", "Zombie_bungi_raise", SubResource("AnimationNodeStateMachineTransition_usjfy"), "Zombie_bungi_drop", "Zombie_bungi_raise", SubResource("AnimationNodeStateMachineTransition_fblr2")]
+transitions = ["Start", "Zombie_bungi_idle", SubResource("AnimationNodeStateMachineTransition_upuuw"), "Start", "Zombie_bungi_drop", SubResource("AnimationNodeStateMachineTransition_khhiw"), "Zombie_bungi_drop", "Zombie_bungi_idle", SubResource("AnimationNodeStateMachineTransition_p25vc"), "Zombie_bungi_idle", "Zombie_bungi_grab", SubResource("AnimationNodeStateMachineTransition_8d5nx"), "Zombie_bungi_grab", "Zombie_bungi_raise", SubResource("AnimationNodeStateMachineTransition_usjfy"), "Zombie_bungi_drop", "Zombie_bungi_raise", SubResource("AnimationNodeStateMachineTransition_fblr2"), "Zombie_bungi_idle", "Zombie_bungi_raise", SubResource("AnimationNodeStateMachineTransition_fblr2")]
 graph_offset = Vector2(-64, -89)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_3wvdt"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_6178g"]
-graph_offset = Vector2(-191, 41)
+graph_offset = Vector2(-322, 90)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_fblr2")
 nodes/StateMachine/position = Vector2(-140, 120)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_3wvdt")
 nodes/TimeScale/position = Vector2(100, 120)
 node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"StateMachine"]
 
-[node name="Zombie021Bungi" instance=ExtResource("1_onwj1")]
+[node name="Zombie021Bungi" unique_id=1501385555 instance=ExtResource("1_onwj1")]
 script = ExtResource("2_ykfrv")
 is_drop_end = false
 is_grab = false
@@ -116,284 +122,312 @@ is_umbrella_raise = false
 zombie_type = 21
 sfx_enter_name = &"bungee_scream"
 
-[node name="BungeeTarget" type="Sprite2D" parent="." index="1"]
+[node name="BungeeTarget" type="Sprite2D" parent="." index="1" unique_id=150830155]
 z_index = 1
 position = Vector2(1, -18)
 texture = ExtResource("3_d5mcp")
 
-[node name="BodyCorrect" parent="Body" index="0"]
+[node name="BodyCorrect" parent="Body" parent_id_path=PackedInt32Array(218567138) index="0" unique_id=825799443]
 position = Vector2(-43, -121)
 
-[node name="Zombie_bungi_body" type="Sprite2D" parent="Body/BodyCorrect" index="0"]
-position = Vector2(17.6, 30.553549)
-scale = Vector2(0.702, 0.6651796)
+[node name="Zombie_bungi_body" type="Sprite2D" parent="Body/BodyCorrect" index="0" unique_id=1974012458]
+position = Vector2(17.6, 17)
+scale = Vector2(0.702, 0.702)
 texture = ExtResource("2_a0b6f")
 centered = false
 
-[node name="BungeeCords" type="Node2D" parent="Body/BodyCorrect/Zombie_bungi_body" index="0"]
+[node name="BungeeCords" type="Node2D" parent="Body/BodyCorrect/Zombie_bungi_body" index="0" unique_id=2101585825]
 position = Vector2(35.6125, -22.792)
 scale = Vector2(1.4245, 1.45156)
 
-[node name="BungeeCord" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="0"]
+[node name="BungeeCord" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="0" unique_id=333568455]
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord2" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="1"]
+[node name="BungeeCord2" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="1" unique_id=1115386659]
 position = Vector2(0, -50)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord3" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="2"]
+[node name="BungeeCord3" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="2" unique_id=1198061081]
 position = Vector2(0, -100)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord4" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="3"]
+[node name="BungeeCord4" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="3" unique_id=1115413450]
 position = Vector2(0, -150)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord5" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="4"]
+[node name="BungeeCord5" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="4" unique_id=1795534141]
 position = Vector2(0, -200)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord6" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="5"]
+[node name="BungeeCord6" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="5" unique_id=103340111]
 position = Vector2(0, -250)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord7" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="6"]
+[node name="BungeeCord7" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="6" unique_id=1122873164]
 position = Vector2(0, -300)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord8" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="7"]
+[node name="BungeeCord8" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="7" unique_id=983721229]
 position = Vector2(0, -350)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord9" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="8"]
+[node name="BungeeCord9" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="8" unique_id=916621718]
 position = Vector2(0, -400)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord10" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="9"]
+[node name="BungeeCord10" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="9" unique_id=1799845616]
 position = Vector2(0, -450)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord11" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="10"]
+[node name="BungeeCord11" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="10" unique_id=98961165]
 position = Vector2(0, -500)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord12" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="11"]
+[node name="BungeeCord12" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="11" unique_id=1899493398]
 position = Vector2(0, -550)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord13" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="12"]
+[node name="BungeeCord13" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="12" unique_id=951407455]
 position = Vector2(0, -600)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord14" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="13"]
+[node name="BungeeCord14" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="13" unique_id=1727389099]
 position = Vector2(0, -650)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord15" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="14"]
+[node name="BungeeCord15" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="14" unique_id=2125940563]
 position = Vector2(0, -700)
 texture = ExtResource("3_ybvct")
 
-[node name="BungeeCord16" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="15"]
+[node name="BungeeCord16" type="Sprite2D" parent="Body/BodyCorrect/Zombie_bungi_body/BungeeCords" index="15" unique_id=1063639006]
 position = Vector2(0, -750)
 texture = ExtResource("3_ybvct")
 
-[node name="Zombie_bungi_rightleg_upper" type="Sprite2D" parent="Body/BodyCorrect" index="1"]
-position = Vector2(12.4, 63.595345)
-rotation = -0.08854182
-scale = Vector2(0.701, 0.701)
+[node name="Zombie_bungi_rightleg_upper" type="Sprite2D" parent="Body/BodyCorrect" index="1" unique_id=2042800324]
+position = Vector2(9.8, 55.4)
+rotation = -0.657989
+scale = Vector2(0.766, 0.701)
+skew = 0.16057
 texture = ExtResource("3_ykfrv")
 centered = false
 
-[node name="Zombie_bungi_rightleg_lower" type="Sprite2D" parent="Body/BodyCorrect" index="2"]
-position = Vector2(6.258204, 65.85355)
-rotation = -0.057282355
-scale = Vector2(0.701, 0.701)
+[node name="Zombie_bungi_rightleg_lower" type="Sprite2D" parent="Body/BodyCorrect" index="2" unique_id=727786566]
+position = Vector2(6.7, 55.5)
+rotation = -0.137881
+scale = Vector2(0.701, 0.748)
 texture = ExtResource("4_ybvct")
 centered = false
 
-[node name="Zombie_bungi_rightleg_foot" type="Sprite2D" parent="Body/BodyCorrect" index="3"]
-position = Vector2(-13.858204, 85.24302)
-rotation = -0.2608319
+[node name="Zombie_bungi_rightleg_foot" type="Sprite2D" parent="Body/BodyCorrect" index="3" unique_id=2084908035]
+position = Vector2(-12.4, 84.4)
+rotation = -0.607375
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_d5mcp")
 centered = false
 
-[node name="Zombie_bungi_leftleg_upper" type="Sprite2D" parent="Body/BodyCorrect" index="4"]
-position = Vector2(51.458206, 58.804325)
-rotation = 0.06629526
-scale = Vector2(0.701, 0.701)
+[node name="Zombie_bungi_leftleg_upper" type="Sprite2D" parent="Body/BodyCorrect" index="4" unique_id=2006658764]
+position = Vector2(57.3, 39)
+rotation = 0.528835
+scale = Vector2(0.705, 0.701)
+skew = -0.113447
 texture = ExtResource("6_upuuw")
 centered = false
 
-[node name="Zombie_bungi_left_tatter" type="Sprite2D" parent="Body/BodyCorrect" index="5"]
-position = Vector2(57.7, 56.53714)
-rotation = 0.078512676
-scale = Vector2(0.70716405, 0.7352384)
-skew = 0.085051045
+[node name="Zombie_bungi_left_tatter" type="Sprite2D" parent="Body/BodyCorrect" index="5" unique_id=1204169420]
+position = Vector2(58, 35)
+scale = Vector2(0.702, 0.702)
 texture = ExtResource("7_khhiw")
 centered = false
 
-[node name="Zombie_bungi_leftshirt" type="Sprite2D" parent="Body/BodyCorrect" index="6"]
-position = Vector2(58.341797, 42.47894)
-rotation = 0.06629526
-scale = Vector2(0.70716405, 0.701)
-skew = -0.06629526
+[node name="Zombie_bungi_leftshirt" type="Sprite2D" parent="Body/BodyCorrect" index="6" unique_id=862124727]
+visible = false
+position = Vector2(62.5, 28.2)
+rotation = 1.13272
+scale = Vector2(0.699, 0.788)
+skew = -0.479966
 texture = ExtResource("8_p25vc")
 centered = false
 
-[node name="Zombie_bungi_rightshirt" type="Sprite2D" parent="Body/BodyCorrect" index="7"]
-position = Vector2(2.158204, 52.160976)
-rotation = -0.15978676
-scale = Vector2(0.72149223, 0.6882539)
-skew = 0.09901361
+[node name="Zombie_bungi_rightshirt" type="Sprite2D" parent="Body/BodyCorrect" index="7" unique_id=1300777161]
+visible = false
+position = Vector2(10.4, 57.6)
+rotation = -1.09258
+scale = Vector2(0.699, 0.724)
+skew = 0.261799
 texture = ExtResource("9_8d5nx")
 centered = false
 
-[node name="Zombie_bungi_leftleg_lower" type="Sprite2D" parent="Body/BodyCorrect" index="8"]
-position = Vector2(56.76718, 66.41175)
-rotation = -0.014248904
-scale = Vector2(0.701, 0.701)
+[node name="Zombie_bungi_leftleg_lower" type="Sprite2D" parent="Body/BodyCorrect" index="8" unique_id=1789062008]
+position = Vector2(54.6, 55)
+scale = Vector2(0.702, 0.702)
 texture = ExtResource("10_usjfy")
 centered = false
 
-[node name="Zombie_bungi_leftleg_tatter" type="Sprite2D" parent="Body/BodyCorrect" index="9"]
-position = Vector2(73.87461, 78.48637)
-rotation = 0.241347
-scale = Vector2(0.746, 0.745)
-skew = 0.036495153
+[node name="Zombie_bungi_leftleg_tatter" type="Sprite2D" parent="Body/BodyCorrect" index="9" unique_id=1313854476]
+position = Vector2(73.3, 67.1)
+rotation = 0.565487
+scale = Vector2(0.848, 0.746)
+skew = 0.0209436
 texture = ExtResource("11_fblr2")
 centered = false
 
-[node name="Zombie_bungi_leftleg_foot" type="Sprite2D" parent="Body/BodyCorrect" index="10"]
-position = Vector2(95.91641, 85.12817)
-rotation = 3.2006166
-scale = Vector2(0.70041794, 0.70041794)
+[node name="Zombie_bungi_leftleg_foot" type="Sprite2D" parent="Body/BodyCorrect" index="10" unique_id=49461652]
+position = Vector2(96.8, 82.9)
+rotation = 3.55349
+scale = Vector2(0.701, 0.701)
 skew = -3.14159
 texture = ExtResource("5_d5mcp")
 centered = false
 
-[node name="Zombie_bungi_rightarm_upper" type="Sprite2D" parent="Body/BodyCorrect" index="11"]
-position = Vector2(-0.6328162, 18.987917)
-rotation = 0.015994322
-scale = Vector2(0.701, 0.705)
-skew = -0.061502486
+[node name="Zombie_bungi_rightarm_upper" type="Sprite2D" parent="Body/BodyCorrect" index="11" unique_id=1860451573]
+visible = false
+position = Vector2(-8.6, 26.2)
+rotation = -0.649262
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("12_3wvdt")
 centered = false
 
-[node name="Zombie_bungi_rightarm_lower" type="Sprite2D" parent="Body/BodyCorrect" index="12"]
-position = Vector2(-10.174612, 21.320734)
-rotation = -0.048555937
-scale = Vector2(0.701, 0.701)
+[node name="Zombie_bungi_rightarm_lower" type="Sprite2D" parent="Body/BodyCorrect" index="12" unique_id=860016238]
+visible = false
+position = Vector2(-12.1, 37.6)
+rotation = -0.925024
+scale = Vector2(0.699, 0.699)
 texture = ExtResource("13_6178g")
 centered = false
 
-[node name="Zombie_bungi_rightarm_cuff" type="Sprite2D" parent="Body/BodyCorrect" index="13"]
-position = Vector2(-18.732817, 27.077387)
-rotation = -0.2170691
-scale = Vector2(0.701, 0.701)
+[node name="Zombie_bungi_rightarm_cuff" type="Sprite2D" parent="Body/BodyCorrect" index="13" unique_id=698998249]
+visible = false
+position = Vector2(-13.7, 44.1)
+rotation = -0.925024
+scale = Vector2(0.699, 0.699)
 texture = ExtResource("14_sykij")
 centered = false
 
-[node name="Zombie_bungi_rightarm_hand" type="Sprite2D" parent="Body/BodyCorrect" index="14"]
-position = Vector2(-35.149223, 28.74302)
-rotation = -0.28685537
-scale = Vector2(0.70041794, 0.70041794)
+[node name="Zombie_bungi_rightarm_hand" type="Sprite2D" parent="Body/BodyCorrect" index="14" unique_id=454248366]
+visible = false
+position = Vector2(-27.1, 56.6)
+rotation = -1.05592
+scale = Vector2(0.698, 0.698)
 texture = ExtResource("15_mjxwu")
 centered = false
 
-[node name="Zombie_bungi_leftarm_upper" type="Sprite2D" parent="Body/BodyCorrect" index="15"]
-position = Vector2(57.31641, 21.437141)
-rotation = -0.010758322
-scale = Vector2(0.701, 0.703)
-skew = 0.038526855
+[node name="Zombie_bungi_leftarm_upper" type="Sprite2D" parent="Body/BodyCorrect" index="15" unique_id=632097893]
+visible = false
+position = Vector2(64.9, 10.7)
+rotation = 0.595157
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("16_4elt0")
 centered = false
 
-[node name="Zombie_bungi_leftarm_lower" type="Sprite2D" parent="Body/BodyCorrect" index="16"]
-position = Vector2(74.57461, 20.678938)
-rotation = 0.11631029
-scale = Vector2(0.701, 0.701)
+[node name="Zombie_bungi_leftarm_lower" type="Sprite2D" parent="Body/BodyCorrect" index="16" unique_id=1442776802]
+visible = false
+position = Vector2(79.7, 20.3)
+rotation = 0.726057
+scale = Vector2(0.699, 0.699)
 texture = ExtResource("17_qy0td")
 centered = false
 
-[node name="Zombie_bungi_leftarm_hand" type="Sprite2D" parent="Body/BodyCorrect" index="17"]
-position = Vector2(113.91641, 34.0102)
-rotation = 3.392681
-scale = Vector2(0.70041794, 0.70041794)
+[node name="Zombie_bungi_leftarm_hand" type="Sprite2D" parent="Body/BodyCorrect" index="17" unique_id=1471639861]
+visible = false
+position = Vector2(103.7, 53.9)
+rotation = 3.98982
+scale = Vector2(0.698, 0.698)
 skew = -3.14159
 texture = ExtResource("15_mjxwu")
 centered = false
 
-[node name="Zombie_bungi_body2" type="Sprite2D" parent="Body/BodyCorrect" index="18"]
-visible = false
+[node name="Zombie_bungi_body2" type="Sprite2D" parent="Body/BodyCorrect" index="18" unique_id=375515934]
+position = Vector2(18.4, 8.2)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("21_6178g")
 centered = false
 
-[node name="Zombie_bungi_rightarm_upper2" type="Sprite2D" parent="Body/BodyCorrect" index="19"]
-visible = false
+[node name="Zombie_bungi_rightarm_upper2" type="Sprite2D" parent="Body/BodyCorrect" index="19" unique_id=1705497366]
+position = Vector2(15.5, 13.6)
+rotation = 0.427606
+scale = Vector2(0.554, 0.657)
+texture = ExtResource("22_sykij")
 centered = false
 
-[node name="Zombie_bungi_leftarm_upper2" type="Sprite2D" parent="Body/BodyCorrect" index="20"]
-visible = false
+[node name="Zombie_bungi_leftarm_upper2" type="Sprite2D" parent="Body/BodyCorrect" index="20" unique_id=1941614395]
+position = Vector2(47, 24)
+rotation = -0.549779
+scale = Vector2(0.791, 0.696)
+skew = -0.0733035
+texture = ExtResource("23_mjxwu")
 centered = false
 
-[node name="Zombie_bungi_jaw" type="Sprite2D" parent="Body/BodyCorrect" index="21"]
-position = Vector2(26.3, 45.93714)
-scale = Vector2(0.702, 0.702)
+[node name="Zombie_bungi_jaw" type="Sprite2D" parent="Body/BodyCorrect" index="21" unique_id=626606169]
+position = Vector2(26.3, 31.2)
+scale = Vector2(0.702, 0.966)
 texture = ExtResource("18_imx3q")
 centered = false
 
-[node name="Anim_head1" type="Sprite2D" parent="Body/BodyCorrect" index="22"]
-position = Vector2(22.1, 12.204326)
+[node name="Anim_head1" type="Sprite2D" parent="Body/BodyCorrect" index="22" unique_id=2042458825]
+position = Vector2(22.1, -4.3)
 scale = Vector2(0.702, 0.702)
 texture = ExtResource("19_l7o4p")
 centered = false
 
-[node name="Zombie_bungi_hair" type="Sprite2D" parent="Body/BodyCorrect" index="23"]
-position = Vector2(19.4, 8.420733)
-scale = Vector2(0.702, 0.6677616)
+[node name="Zombie_bungi_hair" type="Sprite2D" parent="Body/BodyCorrect" index="23" unique_id=1532188946]
+position = Vector2(19.2, -4.5)
+scale = Vector2(0.702, 0.555)
 texture = ExtResource("20_rkgsd")
 centered = false
 
-[node name="Zombie_bungi_leftarm_hand2" type="Sprite2D" parent="Body/BodyCorrect" index="24"]
-visible = false
+[node name="Zombie_bungi_leftarm_hand2" type="Sprite2D" parent="Body/BodyCorrect" index="24" unique_id=1036943944]
+position = Vector2(69.7, 55)
+rotation = 3.39118
+scale = Vector2(0.647, 0.647)
+skew = -3.14159
+texture = ExtResource("27_4elt0")
 centered = false
 
-[node name="Zombie_bungi_leftarm_lower2" type="Sprite2D" parent="Body/BodyCorrect" index="25"]
-visible = false
+[node name="Zombie_bungi_leftarm_lower2" type="Sprite2D" parent="Body/BodyCorrect" index="25" unique_id=1385789794]
+position = Vector2(38.8, 23.7)
+rotation = 0.118682
+scale = Vector2(0.702, 0.697)
+skew = 0.113447
+texture = ExtResource("28_qy0td")
 centered = false
 
-[node name="Zombie_bungi_rightarm_hand2" type="Sprite2D" parent="Body/BodyCorrect" index="26"]
-visible = false
+[node name="Zombie_bungi_rightarm_hand2" type="Sprite2D" parent="Body/BodyCorrect" index="26" unique_id=537706139]
+position = Vector2(14, 60.9)
+rotation = -0.253073
+scale = Vector2(0.649, 0.649)
+texture = ExtResource("27_4elt0")
 centered = false
 
-[node name="Zombie_bungi_rightarm_lower2" type="Sprite2D" parent="Body/BodyCorrect" index="27"]
-visible = false
+[node name="Zombie_bungi_rightarm_lower2" type="Sprite2D" parent="Body/BodyCorrect" index="27" unique_id=1203017877]
+position = Vector2(6.8, 40.2)
+rotation = -0.047124
+scale = Vector2(0.63, 0.693)
+skew = -0.0506144
+texture = ExtResource("29_imx3q")
 centered = false
 
-[node name="BungiContainer" type="Node2D" parent="Body/BodyCorrect" index="28"]
+[node name="BungiContainer" type="Node2D" parent="Body/BodyCorrect" index="28" unique_id=524813878]
 position = Vector2(42, 73)
 
-[node name="ZombieDeathBomb" parent="Body" index="2" instance=ExtResource("24_khhiw")]
+[node name="ZombieDeathBomb" parent="Body" parent_id_path=PackedInt32Array(218567138) index="2" unique_id=1848203921 instance=ExtResource("24_khhiw")]
 
-[node name="HpStageChangeComponent" parent="." index="4"]
+[node name="HpStageChangeComponent" parent="." index="4" unique_id=418842355]
 boundary_value_hp = Array[int]([0])
 body_change = Array[ExtResource("30_3wvdt")]([null])
 
-[node name="CharredComponent" parent="." index="6"]
+[node name="CharredComponent" parent="." index="6" unique_id=426505838]
 script = ExtResource("30_fblr2")
 
-[node name="AttackComponent" parent="." index="7"]
+[node name="AttackComponent" parent="." index="7" unique_id=558966890]
 is_enable_default = false
 
-[node name="MoveComponent" parent="." index="8"]
+[node name="MoveComponent" parent="." index="8" unique_id=1713986679]
 is_enable_default = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="12"]
-libraries = {
-&"": SubResource("AnimationLibrary_q7pds")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="12" unique_id=15278359]
+libraries/ = SubResource("AnimationLibrary_q7pds")
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="13"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="13" unique_id=1669201243]
 tree_root = SubResource("AnimationNodeBlendTree_6178g")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")

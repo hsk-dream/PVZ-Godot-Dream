@@ -312,6 +312,46 @@ func create_skill_zombie(zombie_type: CharacterRegistry.ZombieType, lane: int, s
 	return create_norm_zombie(zombie_type, row, init_parameters, spawn_position)
 
 
+## 创建技能召唤的蹦极僵尸，目标在入树前注入；失败时返回 null。[br]
+## [param target_cell] 目标格子，其行号使用项目内部的零起始索引。[br]
+## [param on_created] 可选初始化回调，接收僵尸实例；用于在入树前监听本批完成事件。
+func create_skill_bungi(target_cell: PlantCell, on_created: Callable = Callable()) -> Zombie021Bungi:
+	if not _is_game_running() or not is_instance_valid(target_cell) \
+		or target_cell.is_queued_for_deletion() or not target_cell.is_inside_tree() \
+		or not main_game.is_ancestor_of(target_cell) or target_cell.get_bungi_target() == null:
+		return null
+	# 目标所在行，不使用展示用的一起始行号。
+	var lane: int = target_cell.row_col.x
+	if not can_spawn_skill_zombie(CharacterRegistry.ZombieType.Z021Bungi, lane):
+		return null
+	# 父节点沿用实际僵尸行，保持现有行层级和死亡登记方式。
+	var row: ZombieRow = all_zombie_rows[lane]
+	# 根节点使用落点基准；身体上方偏移由蹦极自身处理，坡面由 ready_norm 修正一次。
+	var spawn_position := Vector2(target_cell.global_position.x + target_cell.size.x / 2.0,
+		row.zombie_create_position.global_position.y)
+	if not spawn_position.is_finite():
+		return null
+	# 技能生成不归属自然波次，但仍正常计入场上僵尸数量。
+	var init_parameters: Dictionary = {
+		Zombie000Base.E_ZInitAttr.CharacterInitType: Character000Base.E_CharacterInitType.IsNorm,
+		Zombie000Base.E_ZInitAttr.Lane: lane,
+		Zombie000Base.E_ZInitAttr.CurrWave: -1,
+	}
+	return create_norm_zombie(CharacterRegistry.ZombieType.Z021Bungi, row, init_parameters,
+		spawn_position, _initialize_skill_bungi.bind(target_cell, on_created)) as Zombie021Bungi
+
+
+## [param zombie] 刚实例化且尚未入树的蹦极僵尸。[br]
+## [param target_cell] 本轮锁定的格子。[br]
+## [param on_created] 技能提供的实例监听回调；先注入目标和入场参数，再交给调用方登记。
+func _initialize_skill_bungi(zombie: Zombie021Bungi, target_cell: PlantCell, on_created: Callable) -> void:
+	GlobalUtils.create_bungi(zombie, target_cell)
+	# 博士已经通过进入动画表现召唤，蹦极入树后隐藏靶子并立即下降。
+	zombie.skip_spawn_warning = true
+	if on_created.is_valid():
+		on_created.call(zombie)
+
+
 ## 生成一个正常出战僵尸，所有出战僵尸都要从这里生成
 func create_norm_zombie(
 	zombie_type:CharacterRegistry.ZombieType,	## 僵尸类型

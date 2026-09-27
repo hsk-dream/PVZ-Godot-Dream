@@ -6,7 +6,7 @@ class_name ZB001DoctorSkillState
 @export var effect_component: ZB001DoctorSkillBase
 ## 对应同一技能的动画变体，不假定变体编号等于关卡行号。
 @export var action_animations: Array[StringName] = []
-## 本技能认可的释放事件名，必须与动画方法轨道的事件参数一致。
+## 本技能认可的释放事件名；使用方法关键帧的技能必须配置，不使用关键帧的技能留空。
 @export var release_event: StringName
 ## 当前动作的参数快照，包含动画变体及技能专属数据；准备时重建，退出时清空。
 var action_parameters: Dictionary = {}
@@ -92,6 +92,11 @@ func _on_child_state_changed(_previous: CharacterState, _next: CharacterState) -
 		doctor_state_machine.notify_skill_status_changed()
 		doctor_state_machine.sync_action_timer_speed()
 
+## 默认由动画关键帧释放技能；流程自行等待的技能可覆盖为 false，免于配置占位事件。
+func requires_release_keyframe() -> bool:
+	return true
+
+
 ## 根状态机启动前校验整个内部流程，不允许缺失动画或效果组件后进入死路。
 ## 错误由检测分支就地输出；返回值供上层中止初始化，转发时不重复报错。
 func get_configuration_error() -> String:
@@ -105,11 +110,11 @@ func get_configuration_error() -> String:
 		detected_error = "%s 必须绑定博士自身的技能组件。" % name
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if action_animations.is_empty() or release_event.is_empty():
+	if action_animations.is_empty() or (requires_release_keyframe() and release_event.is_empty()):
 		detected_error = "%s 未配置动作动画或释放事件。" % name
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	# 当前待检查的技能动画名称，必须存在且包含唯一有效释放帧。
+	# 当前待检查的技能动画名称；按技能约定决定是否额外校验释放帧。
 	for animation_name in action_animations:
 		if not state_machine.animation_player.has_animation(animation_name):
 			detected_error = "%s 缺少动画 %s。" % [name, animation_name]
@@ -121,7 +126,7 @@ func get_configuration_error() -> String:
 			detected_error = "%s 的技能动作动画必须为非循环。" % name
 			push_error("%s：%s" % [get_path(), detected_error])
 			return detected_error
-		if not doctor_state_machine.has_skill_keyframe(animation, animation_name, release_event):
+		if requires_release_keyframe() and not doctor_state_machine.has_skill_keyframe(animation, animation_name, release_event):
 			detected_error = "%s 缺少有效技能释放关键帧。" % animation_name
 			push_error("%s：%s" % [get_path(), detected_error])
 			return detected_error

@@ -43,6 +43,11 @@ func enter() -> void:
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
 	super.enter()
 
+## 主状态机选择前的只读条件；默认允许，具有目标要求的技能自行覆盖，不提前准备动作。
+func can_be_selected() -> bool:
+	return true
+
+
 ## 动作准备时锁定一次，动画播放期间不重新选择目标或变体。
 func prepare_action() -> void:
 	# 本次随机选择的动画数组下标，从 0 开始；传给效果组件时转换为从 1 开始的编号。

@@ -23,10 +23,10 @@ const DRIVER_DEATH_ANIMATION: StringName = &"Zombie_Boss_driver_death"
 ## 主层只选择完整技能，内部动画阶段与收尾由各复合技能管理。
 ## 普通待机状态引用；入场或技能收尾后进入，等待下一次技能选择。
 @export var idle_state: ZB001DoctorStateIdle
-## 键为直属技能状态，值为选择权重；权重为零时不参与 Idle 随机选择。
-## 权重统一由主状态机配置，技能自身只管理动作流程；初始顺序与吐球保底不受零权重限制。
+## 键为直属技能状态，值为选择权重；零权重或当前不满足触发条件时不参与 Idle 随机选择。
+## 权重由主状态机配置，技能自身提供可用性查询并管理动作；初始顺序与吐球保底不受零权重限制。
 @export var skill_state_weights: Dictionary[ZB001DoctorSkillState, float] = {}
-## 开场按数组顺序选择完整技能，全部用完后改为加权随机；空数组直接使用随机选择。
+## 开场按数组顺序选择完整技能，不可用项直接跳过；耗尽后改为加权随机，空数组直接随机。
 ## 可重复配置同一技能，固定顺序不执行随机去重；吐球保底插队时保留尚未执行的下一项。
 @export var initial_skill_sequence: Array[ZB001DoctorSkillState] = []
 ## 死亡演出状态引用，死亡请求会优先切换到此状态。
@@ -49,7 +49,7 @@ var _death_started := false
 var _last_selected_skill: ZB001DoctorSkillState
 ## 连续选中的非吐球技能次数；选择吐球或重新初始化时清零，空池重试不计回合。
 var _rounds_without_head_skill: int = 0
-## 初始技能数组中下一项的下标；每次取用递增，重新初始化时归零，普通待机不会重置。
+## 初始技能数组中下一项的下标；取用或跳过不可用项时递增，重新初始化时归零。
 var _initial_skill_index: int = 0
 
 ## 提供博士类型引用，避免各状态重复转换；原始引用仍由通用状态机统一维护。
@@ -149,22 +149,27 @@ func stop() -> void:
 	super.stop()
 
 
-## 先执行初始顺序，耗尽后使用 RandomPicker 按权重选择，零权重不加入随机池。
+## 先执行初始顺序并跳过不可用项，耗尽后使用 RandomPicker 按权重选择。
+## 随机池只包含正权重且满足触发条件的技能，跳过技能不改变回合与上次技能记录。
 ## 每次从当前字典构建池，使运行中调整权重立即生效，无需额外维护缓存同步。
 ## 有多个可用技能且抽到上次技能时，移除它再重抽；唯一可用技能允许连续使用。
 ## 连续非吐球回合达到上限时优先返回吐球技能，保证周期性开放受击窗口。
 func select_skill() -> ZB001DoctorSkillState:
-	# 本轮 RandomPicker 输入项，只包含正且有限权重的技能及其权重。
+	# 本轮 RandomPicker 输入项，只包含正且有限权重、满足触发条件的技能。
 	var items: Array[Dictionary] = []
 	# 从注册字典中识别唯一的吐球技能；即使权重为 0，也保留它作为保底目标。
 	var head_skill: ZB001DoctorStateHeadSkill
 	# 当前遍历的技能状态键，用于构建随机池或检查状态归属与技能配置。
 	for skill: ZB001DoctorSkillState in skill_state_weights:
+		if not is_instance_valid(skill):
+			continue
 		if skill is ZB001DoctorStateHeadSkill:
 			head_skill = skill
 		# 当前技能的选择权重；0 表示禁用，负数及非有限值属于非法配置。
 		var weight := skill_state_weights[skill]
 		if not is_finite(weight) or weight <= 0:
+			continue
+		if not skill.can_be_selected():
 			continue
 		items.append({"data": skill, "weight": weight})
 	# 尚未消耗的开场技能；空数组或序列耗尽后为 null，不改变后续随机权重。
@@ -177,9 +182,12 @@ func select_skill() -> ZB001DoctorSkillState:
 			_initial_skill_index += 1
 		_record_selected_skill(head_skill)
 		return head_skill
-	# 固定顺序允许有意重复，也允许使用随机权重为 0 的技能，严格消费用户配置的下一项。
-	if initial_skill != null:
+	# 固定顺序仍允许重复和零随机权重，但没有目标的技能直接跳过，不占用一个回合。
+	while _initial_skill_index < initial_skill_sequence.size():
+		initial_skill = initial_skill_sequence[_initial_skill_index]
 		_initial_skill_index += 1
+		if not is_instance_valid(initial_skill) or not initial_skill.can_be_selected():
+			continue
 		_record_selected_skill(initial_skill)
 		return initial_skill
 	# 字典键天然唯一；重抽只修改临时池，不改变检查器中的配置权重。

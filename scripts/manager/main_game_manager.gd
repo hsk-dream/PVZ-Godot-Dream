@@ -51,6 +51,9 @@ class_name MainGameManager
 var marker_2d_sun_target: Marker2D
 @onready var marker_2d_sun_target_default: Marker2D = %Marker2DSunTargetDefault
 
+## 场景内独立物件的挂载节点，包括博士释放的冰火球。
+@onready var items: Node2D = %Items
+
 ## 将子弹\爆炸\阳光
 @onready var bullets: Node2D = %Bullets
 @onready var bombs: Node2D = %Bombs
@@ -159,7 +162,9 @@ func _exit_tree() -> void:
 		Global.main_game = null
 
 func _ready() -> void:
-	game_para.init_para()
+	# 参数资源负责校验与初始化；失败时保持 NONE 阶段，不继续选卡或初始化子管理器。
+	if not game_para.init_para():
+		return
 	## 多轮游戏并且有存档
 	is_save_game_data_on_init = game_para.game_round != 1 and game_para.save_game_data_main_game != null
 

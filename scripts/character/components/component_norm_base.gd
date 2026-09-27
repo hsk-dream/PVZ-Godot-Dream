@@ -32,6 +32,7 @@ enum E_IsEnableFactor{
 	GameMode,	## 游戏模式，我是僵尸禁用生产组件
 }
 
+## 按原因记录的启用开关；所有已记录因素都为 true 时组件才可启用。
 var is_enable_factors:Dictionary[E_IsEnableFactor, bool] = {}
 
 func _ready() -> void:
@@ -40,6 +41,8 @@ func _ready() -> void:
 
 
 ## 改变组件是否启用状态
+## [param value] 当前原因是否允许组件启用，true 启用、false 禁用。
+## [param is_enable_factor] 本次启用或禁用操作对应的原因，避免覆盖其他原因的禁用状态。
 func change_is_enabling(value:bool, is_enable_factor:E_IsEnableFactor):
 	if value:
 		enable_component(is_enable_factor)
@@ -47,15 +50,19 @@ func change_is_enabling(value:bool, is_enable_factor:E_IsEnableFactor):
 		disable_component(is_enable_factor)
 
 ## 启用组件
+## [param is_enable_factor] 本次启用或禁用操作对应的原因，避免覆盖其他原因的禁用状态。
 func enable_component(is_enable_factor:E_IsEnableFactor):
 	is_enable_factors[is_enable_factor] = true
+	# v 是单个原因的允许开关，所有原因都允许时组件才启用。
 	is_enabling = is_enable_factors.values().all(func(v): return v == true)
 
 ## 禁用组件
+## [param is_enable_factor] 本次启用或禁用操作对应的原因，避免覆盖其他原因的禁用状态。
 func disable_component(is_enable_factor:E_IsEnableFactor):
 	is_enable_factors[is_enable_factor] = false
 	is_enabling = false
 
 ## 修改速度
+## [param _speed_product] 角色速度因素乘积；此基类不实现具体速度变化，交由子类处理。
 func owner_update_speed(_speed_product:float):
 	pass

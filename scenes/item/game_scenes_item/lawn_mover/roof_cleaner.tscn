@@ -22,77 +22,80 @@ _data = {
 script = ExtResource("1_6e8hu")
 
 [node name="Body" type="Node2D" parent="." unique_id=476929685]
-position = Vector2(-34, -67)
+
+[node name="Node2D" type="Node2D" parent="Body" unique_id=1089007782]
+position = Vector2(-38, -65)
 scale = Vector2(0.8, 0.8)
 
-[node name="RoofCleaner_backwheel1" type="Sprite2D" parent="Body" unique_id=865167033]
-position = Vector2(10.6, 30)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_backwheel1" type="Sprite2D" parent="Body/Node2D" unique_id=865167033]
+position = Vector2(10.600001, 30.000004)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("2_eiklp")
 centered = false
 
-[node name="RoofCleaner_backwheel2" type="Sprite2D" parent="Body" unique_id=1371582062]
-position = Vector2(61.5, 30)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_backwheel2" type="Sprite2D" parent="Body/Node2D" unique_id=1371582062]
+position = Vector2(61.500008, 30.000004)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("2_eiklp")
 centered = false
 
-[node name="RoofCleaner_body1" type="Sprite2D" parent="Body" unique_id=628775420]
-position = Vector2(12.1, 30)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_body1" type="Sprite2D" parent="Body/Node2D" unique_id=628775420]
+position = Vector2(12.100001, 30.000004)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("3_k8gy7")
 centered = false
 
-[node name="RoofCleaner_brushes" type="Sprite2D" parent="Body" unique_id=1795372899]
-position = Vector2(11.8, 29.8)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_brushes" type="Sprite2D" parent="Body/Node2D" unique_id=1795372899]
+position = Vector2(11.800002, 29.800003)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("4_prrhb")
 centered = false
 
-[node name="RoofCleaner_body2" type="Sprite2D" parent="Body" unique_id=438059844]
-position = Vector2(9.1, 28)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_body2" type="Sprite2D" parent="Body/Node2D" unique_id=438059844]
+position = Vector2(9.100001, 28.000002)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("5_hwmf1")
 centered = false
 
-[node name="RoofCleaner_body3" type="Sprite2D" parent="Body" unique_id=1553333086]
-position = Vector2(32.9, 33.1)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_body3" type="Sprite2D" parent="Body/Node2D" unique_id=1553333086]
+position = Vector2(32.900005, 33.100002)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("6_uilwf")
 centered = false
 
-[node name="RoofCleaner_body4" type="Sprite2D" parent="Body" unique_id=2063439204]
-position = Vector2(45.9, 29.6)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_body4" type="Sprite2D" parent="Body/Node2D" unique_id=2063439204]
+position = Vector2(45.900005, 29.600002)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("7_5qan5")
 centered = false
 
-[node name="RoofCleaner_outerwheel1" type="Sprite2D" parent="Body" unique_id=1259408364]
-position = Vector2(54, 64.5)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_outerwheel1" type="Sprite2D" parent="Body/Node2D" unique_id=1259408364]
+position = Vector2(54.000008, 64.50001)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("2_eiklp")
 centered = false
 
-[node name="RoofCleaner_hubcap1" type="Sprite2D" parent="Body" unique_id=1401216853]
-position = Vector2(54.4, 64.3)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_hubcap1" type="Sprite2D" parent="Body/Node2D" unique_id=1401216853]
+position = Vector2(54.400005, 64.30001)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("8_epu2j")
 centered = false
 
-[node name="RoofCleaner_outerwheel2" type="Sprite2D" parent="Body" unique_id=290330900]
-position = Vector2(4.1, 65.3)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_outerwheel2" type="Sprite2D" parent="Body/Node2D" unique_id=290330900]
+position = Vector2(4.1000004, 65.30001)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("2_eiklp")
 centered = false
 
-[node name="RoofCleaner_hubcap2" type="Sprite2D" parent="Body" unique_id=372001441]
-position = Vector2(4.2, 65.1)
-scale = Vector2(0.8, 0.8)
+[node name="RoofCleaner_hubcap2" type="Sprite2D" parent="Body/Node2D" unique_id=372001441]
+position = Vector2(4.2000003, 65.100006)
+scale = Vector2(0.80000013, 0.80000013)
 texture = ExtResource("8_epu2j")
 centered = false
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2087611669]
 position = Vector2(0, -17)
+collision_layer = 8192
 collision_mask = 512
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1783174817]

@@ -46,7 +46,7 @@ movie_writer/movie_file="E:/movie"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/DragNDropNodes/plugin.cfg", "res://addons/R2Ga_PVZ/plugin.cfg", "res://addons/anim_free_common_tracks/plugin.cfg", "res://addons/anim_player_refactor/plugin.cfg", "res://addons/todo_controller/plugin.cfg")
+enabled=PackedStringArray("res://addons/DragNDropNodes/plugin.cfg", "res://addons/R2Ga_PVZ/plugin.cfg", "res://addons/anim_free_common_tracks/plugin.cfg", "res://addons/anim_player_refactor/plugin.cfg")
 
 [input]
 
@@ -126,6 +126,7 @@ test1={
 2d_physics/layer_11="ZombieHurtBoxRealBeHypnotized"
 2d_physics/layer_12="ItemDetect"
 2d_physics/layer_13="ItemReal"
+2d_physics/layer_14="LawnMover"
 
 [rendering]
 

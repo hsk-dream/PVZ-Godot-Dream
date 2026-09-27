@@ -1,0 +1,147 @@
+[gd_scene format=3 uid="uid://cfb640e8a6cea"]
+
+[ext_resource type="Texture2D" uid="uid://bvmrq6jelfff5" path="res://assets/reanim/Zombie_boss_icefire_shadow.png" id="1_r1egx"]
+[ext_resource type="Texture2D" uid="uid://dg66k3k7u00wc" path="res://assets/reanim/Zombie_boss_iceball.png" id="2_014fn"]
+[ext_resource type="Texture2D" uid="uid://kjktdmjoxga8" path="res://assets/reanim/Zombie_boss_iceball_crystal1.png" id="3_0vr0f"]
+[ext_resource type="Texture2D" uid="uid://bvkkwjabdj7ll" path="res://assets/reanim/Zombie_boss_iceball_crystal2.png" id="4_0kt5q"]
+[ext_resource type="Texture2D" uid="uid://8cdyneorsuep" path="res://assets/reanim/Zombie_boss_iceball_crystal3.png" id="5_xgs2r"]
+[ext_resource type="Texture2D" uid="uid://cc15crp1shwqv" path="res://assets/reanim/Zombie_boss_iceball_overlay.png" id="6_rjq6w"]
+[ext_resource type="Texture2D" uid="uid://du2nahjyxoabh" path="res://assets/reanim/Zombie_boss_iceball_multiply.png" id="7_kbhha"]
+[ext_resource type="Texture2D" uid="uid://6egcjmj5ims1" path="res://assets/reanim/Zombie_boss_iceball_highlight.png" id="8_bhq58"]
+[ext_resource type="Animation" uid="uid://dti8rh025sp0h" path="res://animation/character/zombie_boss/001_doctor/ball/Zombie_boss_iceball_form.tres" id="9_gtojm"]
+[ext_resource type="Animation" uid="uid://b35acvsk45x1g" path="res://animation/character/zombie_boss/001_doctor/ball/Zombie_boss_iceball_role.tres" id="10_6ojit"]
+[ext_resource type="Script" uid="uid://iamshwi08yib" path="res://scripts/character/zombie_boss/objects/001_doctor/z_b_001_doctor_ice_ball.gd" id="ball_script"]
+[ext_resource type="Script" uid="uid://lae0hyhwqrkw" path="res://scripts/character/zombie_boss/objects/001_doctor/z_b_001_doctor_ground_particles.gd" id="ground_script"]
+[ext_resource type="Texture2D" uid="uid://dwxbch0uvhsr5" path="res://assets/image/particles/Zombie_boss_iceball_groundparticles.png" id="ground_texture"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4gl0v"]
+_data = {
+&"Zombie_boss_iceball_form": ExtResource("9_gtojm"),
+&"Zombie_boss_iceball_role": ExtResource("10_6ojit")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
+size = Vector2(140, 100)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ground"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_ground_fade"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ground_fade"]
+gradient = SubResource("Gradient_ground_fade")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ground"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 0.8
+scale_max = 1.2
+color_ramp = SubResource("GradientTexture1D_ground_fade")
+anim_offset_max = 0.9999
+
+[node name="Zombie_boss_iceball" type="Node2D" unique_id=76422671]
+script = ExtResource("ball_script")
+
+[node name="Body" type="Node2D" parent="." unique_id=1333859819]
+position = Vector2(-103.45, -179.45)
+
+[node name="BodyCorrect" type="Node2D" parent="Body" unique_id=1456638270]
+position = Vector2(-0.55000305, -2.550003)
+
+[node name="Anim_form" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1383808757]
+visible = false
+centered = false
+
+[node name="Anim_role" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1018598531]
+centered = false
+
+[node name="_ground" type="Sprite2D" parent="Body/BodyCorrect" unique_id=2110340591]
+position = Vector2(647.6, 51)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Layer 64" type="Sprite2D" parent="Body/BodyCorrect" unique_id=767903358]
+self_modulate = Color(1, 1, 1, 0.25)
+position = Vector2(32.8, 150.2)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("1_r1egx")
+centered = false
+
+[node name="Iceball" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1886813144]
+position = Vector2(217.80002, 138.39996)
+rotation = -9.87
+scale = Vector2(0.999, 0.999)
+texture = ExtResource("2_014fn")
+centered = false
+
+[node name="Ice_crystal1" type="Sprite2D" parent="Body/BodyCorrect" unique_id=970385969]
+position = Vector2(138.99998, 29.500002)
+rotation = -4.5309997
+scale = Vector2(0.999, 0.999)
+texture = ExtResource("3_0vr0f")
+centered = false
+
+[node name="Ice_crystal1_2" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1976365939]
+position = Vector2(100.90001, 144.6)
+rotation = -4.5309997
+scale = Vector2(0.999, 0.999)
+texture = ExtResource("3_0vr0f")
+centered = false
+
+[node name="Ice_crystal2" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1220156087]
+position = Vector2(30.500002, 115.1)
+rotation = 4.918
+scale = Vector2(0.999, 0.999)
+texture = ExtResource("4_0kt5q")
+centered = false
+
+[node name="Ice_crystal3" type="Sprite2D" parent="Body/BodyCorrect" unique_id=2053652643]
+position = Vector2(127.80002, 153.6)
+rotation = -14.739
+scale = Vector2(0.998, 0.998)
+texture = ExtResource("5_xgs2r")
+centered = false
+
+[node name="Ice_overlay" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1110104416]
+position = Vector2(168.99998, -5.9000087)
+rotation = -4.9170003
+scale = Vector2(0.999, 0.999)
+texture = ExtResource("6_rjq6w")
+centered = false
+
+[node name="Ice_multiply" type="Sprite2D" parent="Body/BodyCorrect" unique_id=214204280]
+position = Vector2(16.4, 13.7)
+texture = ExtResource("7_kbhha")
+centered = false
+
+[node name="Ice_highlight" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1702955635]
+position = Vector2(14.4, 9.9)
+texture = ExtResource("8_bhq58")
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2047678660]
+libraries/ = SubResource("AnimationLibrary_4gl0v")
+
+[node name="AttackArea" type="Area2D" parent="." unique_id=8232175]
+collision_layer = 0
+collision_mask = 8448
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=957618235]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_attack")
+
+[node name="GroundParticles" type="GPUParticles2D" parent="." unique_id=391268272]
+material = SubResource("CanvasItemMaterial_ground")
+emitting = false
+texture = ExtResource("ground_texture")
+lifetime = 5.0
+visibility_rect = Rect2(-2048, -512, 4096, 1024)
+process_material = SubResource("ParticleProcessMaterial_ground")
+script = ExtResource("ground_script")

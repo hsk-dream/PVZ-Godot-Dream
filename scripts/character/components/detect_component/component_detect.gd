@@ -151,9 +151,17 @@ func disable_component(is_enable_factor:E_IsEnableFactor):
 ## 敌人进入当前区域，若为同一行，当前帧进行判断是否可以攻击
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	var enemy = area.owner
-	if is_lane and owner.lane != enemy.lane:
+	# 道具仍由后续查询处理，不读取非角色节点的行属性。
+	if not enemy is Character000Base:
+		need_judge = true
 		return
-	if enemy is Plant000Base:
+	# 僵王跨行由检测框覆盖范围决定，普通角色仍保留同行限制。
+	if not enemy is ZB000Base and is_lane and owner.lane != enemy.lane:
+		return
+	if enemy is ZB000Base:
+		if not enemy.signal_status_update.is_connected(_on_enemy_boss_status_update):
+			enemy.signal_status_update.connect(_on_enemy_boss_status_update)
+	elif enemy is Plant000Base:
 		if not enemy.signal_ladder_update.is_connected(_on_enemy_plant_ladder_update.bind(enemy)):
 			enemy.signal_ladder_update.connect(_on_enemy_plant_ladder_update.bind(enemy))
 	elif enemy is Zombie000Base:
@@ -161,6 +169,21 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			enemy.signal_status_update.connect(_on_enemy_zombie_status_update.bind(enemy))
 		if not enemy.signal_lane_update.is_connected(_on_enemy_zombie_lane_update.bind(enemy)):
 			enemy.signal_lane_update.connect(_on_enemy_zombie_lane_update.bind(enemy))
+	# 使用具名回调去重；多个区域重叠同一角色时也只订阅一次。
+	if not enemy.signal_character_death.is_connected(_on_enemy_target_removed):
+		enemy.signal_character_death.connect(_on_enemy_target_removed)
+	if not enemy.tree_exiting.is_connected(_on_enemy_target_removed):
+		enemy.tree_exiting.connect(_on_enemy_target_removed)
+	need_judge = true
+
+
+## 状态变化只标记重查；受击框实际启停产生的进入/退出事件仍会再次刷新重叠结果。
+func _on_enemy_boss_status_update() -> void:
+	need_judge = true
+
+
+## 死亡或移除后重新选取目标，不能把旧的敌人引用继续用于攻击。
+func _on_enemy_target_removed() -> void:
 	need_judge = true
 
 ## 敌人离开当前射线检测区域
@@ -228,9 +251,12 @@ func _on_detect_character(enemy:Character000Base) -> bool:
 	if _judge_enemy_is_can_be_attack(enemy):
 		if enemy is Plant000Base:
 			enemy_can_be_attacked = get_first_be_hit_plant_in_cell(enemy)
-		elif enemy is Zombie000Base:
+		elif enemy is Zombie000Base or enemy is ZB000Base:
 			enemy_can_be_attacked = enemy
-		enemy_can_be_attacked.signal_character_death.connect(func():need_judge = true)
+		if not is_instance_valid(enemy_can_be_attacked):
+			return false
+		if not enemy_can_be_attacked.signal_character_death.is_connected(_on_enemy_target_removed):
+			enemy_can_be_attacked.signal_character_death.connect(_on_enemy_target_removed)
 		return true
 	else:
 		return false
@@ -259,8 +285,13 @@ func get_first_be_hit_plant_in_cell(plant:Plant000Base)->Plant000Base:
 
 ## 判断敌人状态是否可以被攻击
 func _judge_enemy_is_can_be_attack(enemy:Character000Base)->bool:
-	if not is_instance_valid(enemy):
+	if not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.is_death:
 		return false
+	# 状态机直接控制受击组件；无需查询接口或僵王专属检测开关。
+	if enemy is ZB000Base:
+		return enemy.character_init_type == Character000Base.E_CharacterInitType.IsNorm \
+			and is_instance_valid(enemy.hurt_box_component) and enemy.hurt_box_component.is_enabling \
+			and (can_attack_zombie_status & Zombie000Base.E_BeAttackStatusZombie.IsNorm) != 0
 	## 先判断行属性
 	if is_lane and owner.lane != enemy.lane:
 		return false
@@ -298,11 +329,12 @@ func update_first_enemy()->Character000Base:
 	for ray_area in all_ray_area:
 		var all_enemy_area = ray_area.get_overlapping_areas()
 		for enemy_area in all_enemy_area:
-			var enemy:Character000Base = enemy_area.owner
+			var enemy := enemy_area.owner as Character000Base
 			## 如果敌人可以被攻击
 			if _judge_enemy_is_can_be_attack(enemy):
 				if is_instance_valid(enemy_can_be_attacked):
-					if enemy_can_be_attacked.global_position.x > enemy.global_position.x:
+					# 博士根节点可远离受击框，排序统一依据实际受击组件的位置。
+					if enemy_can_be_attacked.hurt_box_component.global_position.x > enemy.hurt_box_component.global_position.x:
 						enemy_can_be_attacked = enemy
 				else:
 					enemy_can_be_attacked = enemy
@@ -341,8 +373,8 @@ func judge_zombie_in_sky() -> bool:
 		for enemy_area in all_enemy_area:
 			if enemy_area.owner is Character000Base:
 				var enemy:Character000Base = enemy_area.owner
-				## 先判断行属性
-				if is_lane and owner.lane != enemy.lane:
+				## 复用存活及行状态判断，避免选中已经死亡的空中僵尸。
+				if not _judge_enemy_is_can_be_attack(enemy):
 					continue
 				## 检测到僵尸 and 可以攻击状态 and 在空中
 				if enemy is Zombie000Base \
@@ -365,31 +397,21 @@ func judge_zombie_in_sky() -> bool:
 func update_enemy_track_bullet() -> Character000Base:
 	## 所有的可以攻击的敌人
 	var all_enemy_can_be_attacked:Array[Character000Base] = get_all_enemy_can_be_attacked()
+	# 重新获取目标时清理旧引用，避免已死亡或禁用受击的旧目标参与排序。
+	enemy_can_be_attacked = null
 	## 是否有空中敌人
 	var is_have_sky_enemy:= false
 	for enemy:Character000Base in all_enemy_can_be_attacked:
-		if enemy is Plant000Base:
-			pass
-		elif enemy is Zombie000Base:
-			## 敌人已经死亡
-			if not is_instance_valid(enemy_can_be_attacked):
-				enemy_can_be_attacked = enemy
-				if enemy.curr_be_attack_status == Zombie000Base.E_BeAttackStatusZombie.IsSky:
-					is_have_sky_enemy = true
-				continue
-			## 如果有在空中的敌人,只对空中敌人进行判定
-			if is_have_sky_enemy:
-				if enemy.curr_be_attack_status == Zombie000Base.E_BeAttackStatusZombie.IsSky:
-					if enemy_can_be_attacked.global_position.x > enemy.global_position.x:
-						enemy_can_be_attacked = enemy
-			else:
-				## 先判断是否为空中敌人
-				if enemy.curr_be_attack_status == Zombie000Base.E_BeAttackStatusZombie.IsSky:
-					is_have_sky_enemy = true
-					enemy_can_be_attacked = enemy
-				else:
-					if enemy_can_be_attacked.global_position.x > enemy.global_position.x:
-						enemy_can_be_attacked = enemy
+		if not (enemy is Zombie000Base or enemy is ZB000Base):
+			continue
+		# 仅普通僵尸具有空中状态字段；僵王按地面目标参与排序。
+		var is_sky: bool = enemy is Zombie000Base and enemy.curr_be_attack_status == Zombie000Base.E_BeAttackStatusZombie.IsSky
+		if not is_instance_valid(enemy_can_be_attacked) or (is_sky and not is_have_sky_enemy):
+			enemy_can_be_attacked = enemy
+			is_have_sky_enemy = is_sky
+		elif is_sky == is_have_sky_enemy \
+			and enemy.hurt_box_component.global_position.x < enemy_can_be_attacked.hurt_box_component.global_position.x:
+			enemy_can_be_attacked = enemy
 
 	return enemy_can_be_attacked
 

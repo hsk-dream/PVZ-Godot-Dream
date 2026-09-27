@@ -1,6 +1,0 @@
-[gd_scene format=3]
-
-[ext_resource type="Script" path="res://tests/character_speed_timer_test.gd" id="1_test"]
-
-[node name="CharacterSpeedTimerTest" type="Node"]
-script = ExtResource("1_test")

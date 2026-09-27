@@ -12,12 +12,15 @@ var state_machine: CharacterStateMachine
 
 ## 初始化前的兼容性检查。通用状态接受任意有效 Character000Base；
 ## 角色专用状态可覆盖此方法限制类型，避免初始化后才出现类型转换失败。
+## [param actor] 待检查或注入的所属角色；具体允许的角色类型由当前状态或状态机限定。
 func accepts_character(actor: Character000Base) -> bool:
 	return is_instance_valid(actor)
 
 
 ## 由状态机完成全部子状态校验后统一调用，只注入依赖，不启动动作。
 ## 重新初始化时可能再次调用；动作临时数据应在 enter() 中重置。
+## [param actor] 待检查或注入的所属角色；具体允许的角色类型由当前状态或状态机限定。
+## [param machine] 管理当前状态的直属状态机，提供播放器与同层状态切换入口。
 func setup(actor: Character000Base, machine: CharacterStateMachine) -> void:
 	character = actor
 	state_machine = machine
@@ -37,17 +40,20 @@ func exit() -> void:
 
 ## 仅当前状态接收更新。delta 由状态机传入，不再自行乘全局时间倍率。
 ## 子状态不额外实现每帧调度，以免非当前状态仍在运行或重复计时。
+## [param _delta] 本次更新的时间步长（秒）；当前状态没有逐帧行为，因此不使用。
 func update(_delta: float) -> void:
 	pass
 
 
 ## 接收主体播放器的完成通知。子类须核对动画名及本次动作是否有效，
 ## 再决定是否请求转换；循环动画的退出应由计时或业务条件驱动。
+## [param _anim_name] 收到的动画完成名称；当前状态不依赖该通知推进流程。
 func on_animation_finished(_anim_name: StringName) -> void:
 	pass
 
 
 ## 接收方法轨道等来源的逻辑事件，如 ball_release；模板不解释事件内容。
 ## 需要只生效一次的技能，应由具体状态记录本次动作是否已执行。
+## [param _event_name] 收到的动画事件名；当前状态不处理技能释放事件。
 func on_animation_event(_event_name: StringName) -> void:
 	pass

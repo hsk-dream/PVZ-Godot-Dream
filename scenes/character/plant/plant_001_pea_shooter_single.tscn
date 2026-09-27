@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cfc5vrs1dcy0j"]
+[gd_scene format=3 uid="uid://cfc5vrs1dcy0j"]
 
 [ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_c75pq"]
@@ -1078,115 +1078,113 @@ node_connections = [&"output", 0, &"TimeScale", &"Add2", 0, &"OneShot", &"Add2",
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rgmag"]
 size = Vector2(1000, 5)
 
-[node name="Plant001PeaShooterSingle" node_paths=PackedStringArray("node_no_change_direction", "node2d_detect_in_slope") instance=ExtResource("1_c75pq")]
+[node name="Plant001PeaShooterSingle" unique_id=312319193 node_paths=PackedStringArray("node_no_change_direction", "node2d_detect_in_slope") instance=ExtResource("1_c75pq")]
 script = ExtResource("2_rdoq1")
 plant_type = 1
 node_no_change_direction = [NodePath("HpComponent"), NodePath("SleepComponent"), null]
 node2d_detect_in_slope = [NodePath("HurtBoxComponent/HurtBoxDetection"), NodePath("AttackComponent/DetectComponent")]
 
-[node name="BodyCorrect" parent="Body" index="0"]
+[node name="BodyCorrect" parent="Body" parent_id_path=PackedInt32Array(218567138) index="0" unique_id=825799443]
 position = Vector2(-43, -67)
 
-[node name="Backleaf" type="Sprite2D" parent="Body/BodyCorrect" index="0"]
-position = Vector2(27.589127, 55.03262)
-scale = Vector2(0.59543496, 0.4640214)
+[node name="Backleaf" type="Sprite2D" parent="Body/BodyCorrect" index="0" unique_id=1214165550]
+position = Vector2(27.6, 54.849785)
+scale = Vector2(0.5894936, 0.4767639)
 texture = ExtResource("2_866ce")
 centered = false
 
-[node name="Backleaf_left_tip" type="Sprite2D" parent="Body/BodyCorrect" index="1"]
-position = Vector2(24.478254, 55.943493)
-rotation = -0.036197457
-scale = Vector2(0.63086987, 0.515)
+[node name="Backleaf_left_tip" type="Sprite2D" parent="Body/BodyCorrect" index="1" unique_id=1420253777]
+position = Vector2(24.650215, 55.424465)
+rotation = -0.0034534289
+scale = Vector2(0.6189872, 0.515)
 texture = ExtResource("3_w7gu6")
 centered = false
 
-[node name="Backleaf_right_tip" type="Sprite2D" parent="Body/BodyCorrect" index="2"]
-position = Vector2(48.03262, 54.821747)
-rotation = 0.07732629
-scale = Vector2(0.65145636, 0.4983476)
+[node name="Backleaf_right_tip" type="Sprite2D" parent="Body/BodyCorrect" index="2" unique_id=1835225974]
+position = Vector2(47.949787, 54.499573)
+rotation = 0.05538601
+scale = Vector2(0.6582575, 0.50600857)
 texture = ExtResource("4_hlxsk")
 centered = false
 
-[node name="Stalk_bottom" type="Sprite2D" parent="Body/BodyCorrect" index="3"]
-position = Vector2(40.976112, 50.3)
-rotation = 0.5158615
-scale = Vector2(0.5641087, 0.6393476)
-skew = -0.1829952
+[node name="Stalk_bottom" type="Sprite2D" parent="Body/BodyCorrect" index="3" unique_id=8897469]
+position = Vector2(38.47425, 49.02489)
+rotation = 0.23946999
+scale = Vector2(0.5602489, 0.7495235)
+skew = -0.08374592
 texture = ExtResource("5_rgmag")
 centered = false
 
-[node name="Stalk_top" type="Sprite2D" parent="Body/BodyCorrect" index="4"]
-position = Vector2(40.484844, 37.665237)
-rotation = 0.36549515
-scale = Vector2(0.559369, 0.8029127)
-skew = -0.0011353275
+[node name="Stalk_top" type="Sprite2D" parent="Body/BodyCorrect" index="4" unique_id=864549769]
+position = Vector2(34.598717, 36.649784)
+rotation = 0.20110981
+scale = Vector2(0.5655021, 0.85426605)
+skew = -0.07767068
 texture = ExtResource("6_rdoq1")
 centered = false
 
-[node name="Frontleaf" type="Sprite2D" parent="Body/BodyCorrect" index="5"]
-position = Vector2(21.878254, 56.132618)
-scale = Vector2(0.59243494, 0.4983476)
+[node name="Frontleaf" type="Sprite2D" parent="Body/BodyCorrect" index="5" unique_id=369590477]
+position = Vector2(22.175108, 55.449787)
+scale = Vector2(0.5779957, 0.51975536)
 texture = ExtResource("7_ul06u")
 centered = false
 
-[node name="Frontleaf_right_tip" type="Sprite2D" parent="Body/BodyCorrect" index="6"]
-position = Vector2(57.14349, 57)
-rotation = -0.047768388
-scale = Vector2(0.6406079, 0.53878254)
+[node name="Frontleaf_right_tip" type="Sprite2D" parent="Body/BodyCorrect" index="6" unique_id=752987428]
+position = Vector2(55.624466, 56.5)
+rotation = -0.15318422
+scale = Vector2(0.7235235, 0.54450214)
 texture = ExtResource("8_6f6l5")
 centered = false
 
-[node name="Frontleaf_tip_left" type="Sprite2D" parent="Body/BodyCorrect" index="7"]
-position = Vector2(18.678255, 61.83262)
-rotation = -0.02007284
-scale = Vector2(0.59513015, 0.5696524)
-skew = -0.0050461753
+[node name="Frontleaf_tip_left" type="Sprite2D" parent="Body/BodyCorrect" index="7" unique_id=1612594774]
+position = Vector2(19.550215, 60.499573)
+rotation = 0.1340004
+scale = Vector2(0.62600857, 0.5464936)
 texture = ExtResource("9_7rwin")
 centered = false
 
-[node name="Anim_stem" type="Sprite2D" parent="Body/BodyCorrect" index="8"]
-position = Vector2(44.752224, 44.697857)
+[node name="Anim_stem" type="Sprite2D" parent="Body/BodyCorrect" index="8" unique_id=100983373]
+position = Vector2(40.273823, 42.87468)
 centered = false
 
-[node name="stem_correct" type="Node2D" parent="Body/BodyCorrect/Anim_stem" index="0"]
+[node name="stem_correct" type="Node2D" parent="Body/BodyCorrect/Anim_stem" index="0" unique_id=175516666]
 position = Vector2(-37.6, -48.7)
 
-[node name="Anim_sprout" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="0"]
-position = Vector2(6.9782534, 26.741352)
-rotation = -0.2676449
-scale = Vector2(0.7961087, 0.7961087)
-skew = 0.0031110374
+[node name="Anim_sprout" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="0" unique_id=622742166]
+position = Vector2(7.6746793, 24.075962)
+rotation = -0.13140157
+scale = Vector2(0.799, 0.799)
 texture = ExtResource("10_q6tdq")
 centered = false
 
-[node name="Anim_face" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="1"]
-position = Vector2(19.2, 15.119606)
-scale = Vector2(0.555, 0.5349341)
+[node name="Anim_face" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="1" unique_id=1996144528]
+position = Vector2(19.224894, 12.599572)
+scale = Vector2(0.555, 0.5732575)
 texture = ExtResource("11_ydmpl")
 centered = false
 
-[node name="Idle_mouth" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="2"]
-position = Vector2(52.51087, 14.908732)
-rotation = 0.087269574
-scale = Vector2(0.5561087, 0.5349341)
-skew = -0.087269574
+[node name="Idle_mouth" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="2" unique_id=664800687]
+position = Vector2(52.5, 12.349359)
+rotation = -0.007386027
+scale = Vector2(0.5552489, 0.58251065)
+skew = 0.007386027
 texture = ExtResource("12_tjilp")
 centered = false
 
-[node name="Idle_shoot_blink" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="3"]
+[node name="Idle_shoot_blink" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="3" unique_id=1628603282]
 centered = false
 
-[node name="Anim_blink" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="4"]
+[node name="Anim_blink" type="Sprite2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="4" unique_id=2010779786]
 visible = false
-position = Vector2(38.0088, 21.3152)
+position = Vector2(38.0088, 18.99936)
 scale = Vector2(0.555, 0.555)
 texture = ExtResource("13_dkjuv")
 centered = false
 
-[node name="Marker2DBullet" type="Marker2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="5"]
+[node name="Marker2DBullet" type="Marker2D" parent="Body/BodyCorrect/Anim_stem/stem_correct" index="5" unique_id=818361008]
 position = Vector2(60.9452, 30.6411)
 
-[node name="HpComponent" parent="." index="3"]
+[node name="HpComponent" parent="." index="3" unique_id=2107863698]
 sfx_be_attack_body = null
 
 [node name="SleepComponent" parent="." index="4" node_paths=PackedStringArray("sleep_influence_components")]
@@ -1199,15 +1197,13 @@ all_blink_body_change = Array[ExtResource("17_rgmag")]([SubResource("Resource_rd
 [node name="GardenComponent" parent="." index="6"]
 is_enable_default = null
 
-[node name="HurtBoxComponent" parent="." index="7"]
+[node name="HurtBoxComponent" parent="." index="7" unique_id=35856933]
 is_enable_default = null
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="8"]
-libraries = {
-&"": SubResource("AnimationLibrary_q6tdq")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="8" unique_id=964162062]
+libraries/ = SubResource("AnimationLibrary_q6tdq")
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="9"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="9" unique_id=53398749]
 deterministic = false
 tree_root = SubResource("AnimationNodeBlendTree_ul06u")
 advance_expression_base_node = NodePath("..")
@@ -1219,22 +1215,22 @@ parameters/OneShot/request = 0
 parameters/TimeScale/scale = 1.0
 "parameters/TimeScale 2/scale" = 3.0
 
-[node name="AttackComponent" type="Node2D" parent="." index="10" node_paths=PackedStringArray("markers_2d_bullet")]
+[node name="AttackComponent" type="Node2D" parent="." index="10" unique_id=408193386 node_paths=PackedStringArray("markers_2d_bullet")]
 script = ExtResource("17_rdoq1")
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Anim_stem/stem_correct/Marker2DBullet")]
 
-[node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0"]
+[node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0" unique_id=524750138]
 script = ExtResource("speed_timer")
 
-[node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]
+[node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1" unique_id=1077907324]
 script = ExtResource("17_ul06u")
 
-[node name="Area2D" type="Area2D" parent="AttackComponent/DetectComponent" index="0"]
+[node name="Area2D" type="Area2D" parent="AttackComponent/DetectComponent" index="0" unique_id=1095046273]
 position = Vector2(0, -25)
 collision_layer = 0
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent/DetectComponent/Area2D" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent/DetectComponent/Area2D" index="0" unique_id=335375367]
 position = Vector2(500, 0)
 shape = SubResource("RectangleShape2D_rgmag")
 

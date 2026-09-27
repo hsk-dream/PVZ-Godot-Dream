@@ -2,8 +2,8 @@ extends Node
 class_name CharacterRegistry
 
 
-# 定义枚举
-enum CharacterType {Null, Plant, Zombie}
+## 定义枚举
+enum CharacterType {Null, Plant, Zombie, ZombieBoss}
 
 #region 植物
 ## 植物信息属性
@@ -154,6 +154,7 @@ enum ZombieInfoAttribute{
 #endregion
 
 
+#region 植物种植信息
 ## 紫卡植物种植前置植物
 @export var AllPrePlantPurple:Dictionary[PlantType, PlantType]= {
 	PlantType.P041GatlingPea:PlantType.P008PeaShooterDouble,
@@ -774,3 +775,41 @@ func get_zombie_info(zombie_type:ZombieType, info_attribute:ZombieInfoAttribute)
 		return null
 	var curr_zombie_info = ZombieInfo[zombie_type]
 	return curr_zombie_info[info_attribute]
+#endregion
+
+#region 僵王信息
+
+#region 僵王
+## 僵王使用独立类型，不参与普通僵尸的自然刷新列表；新增类型保持已有编号不变。
+enum ZombieBossType {
+	Null = 0,
+	ZB001Doctor = 1,
+}
+
+## 注册表只保存公共定义，血量和死亡状态由每局生成的僵王实例维护。
+enum ZombieBossInfoAttribute {
+	BossName,
+	BossScenes,
+}
+#endregion
+
+## 通过 Global.character_registry 查询场景，关卡只需保存 ZombieBossType。
+const ZombieBossInfo = {
+	ZombieBossType.ZB001Doctor: {
+		ZombieBossInfoAttribute.BossName: "ZB001Doctor",
+		ZombieBossInfoAttribute.BossScenes: preload("res://scenes/character/zombie_boss/zombie_boss_001_doctor.tscn"),
+	},
+}
+
+
+## 空类型或未注册类型返回 null，由生成入口决定如何处理，不回退成其他角色。
+func get_zombie_boss_info(boss_type: ZombieBossType, info_attribute: ZombieBossInfoAttribute):
+	if boss_type == ZombieBossType.Null:
+		print("warning: 获取空僵王信息")
+		return null
+	if not ZombieBossInfo.has(boss_type):
+		push_error("CharacterRegistry：未注册的僵王类型：%s" % boss_type)
+		return null
+	var curr_boss_info: Dictionary = ZombieBossInfo[boss_type]
+	return curr_boss_info.get(info_attribute)
+#endregion

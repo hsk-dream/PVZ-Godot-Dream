@@ -1873,3 +1873,17 @@ tracks/154/keys = {
 "update": 0,
 "values": [false, false]
 }
+tracks/155/type = "method"
+tracks/155/imported = false
+tracks/155/enabled = true
+tracks/155/path = NodePath("StateMachine")
+tracks/155/interp = 1
+tracks/155/loop_wrap = true
+tracks/155/keys = {
+"times": PackedFloat32Array(1.833333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_bungee_1_enter", &"bungee_release"],
+"method": &"notify_skill_event"
+}]
+}

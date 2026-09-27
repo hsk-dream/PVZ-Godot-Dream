@@ -82,6 +82,17 @@ func set_choose_level(curr_game_mode: MainSceneRegistry.MainScenes, curr_level_p
 @export var is_bungi := false
 ## 大波时生成的蹦极僵尸数量范围
 @export var range_num_bungi: Vector2i = Vector2i(3, 5)
+
+@export_subgroup("僵王参数")
+## 僵王场景通过 Global.character_registry 查询；Null 表示本关没有僵王。
+## 是否接受僵王奖杯请求由 monster_mode 决定，与是否配置僵王分开。
+@export var boss_type: CharacterRegistry.ZombieBossType = CharacterRegistry.ZombieBossType.Null
+## 正常模式：0 为正式开战时生成，1 起为指定波次生成；Boss 模式必须为 0。
+## 参数使用从 1 开始的波次，管理器接入时需与内部从 0 开始的 curr_wave 转换。
+@export_range(0, 999, 1, "or_greater") var boss_spawn_wave: int = 0
+## 相对于主游戏 ZombieBossRoot 的出生位置，不是植物格子行列或屏幕坐标。
+@export var boss_spawn_position: Vector2 = Vector2.ZERO
+
 @export_subgroup("锤僵尸出怪模式（需调整对应墓碑参数）")
 ## 墓碑出怪倍率
 @export var zombie_multy_hammer := 1
@@ -202,7 +213,13 @@ var save_game_data_main_game: ResourceSaveGameMainGame
 ## 游戏开始会根据参数初始化一些硬性的参数。
 ## 卡槽: 传送带禁止选卡、禁止天降阳光。预选卡用 0 补全。
 ## 出怪: 正常模式下刷新列表会按白名单过滤；禁止在列表中写 Z021Bungi，应使用 is_bungi。
-func init_para() -> void:
+## 返回是否初始化成功；僵王配置错误时先报错并返回 false，避免修改参数或读取存档。
+func init_para() -> bool:
+	var boss_parameter_errors := validate_boss_parameters()
+	if not boss_parameter_errors.is_empty():
+		for message: String in boss_parameter_errors:
+			push_error("ResourceLevelData：僵王配置无效：" + message)
+		return false
 	_apply_card_mode_constraints()
 	_pad_prechosen_cards()
 	_init_zombie_refresh_from_whitelist()
@@ -210,6 +227,52 @@ func init_para() -> void:
 	_init_pot_mode()
 	_apply_zombie_mode_rules()
 	_maybe_load_multi_round_save()
+	return true
+
+
+## 只查询是否配置了僵王，不代表使用 Boss 出怪模式或僵王奖杯规则。
+func has_boss() -> bool:
+	return boss_type != CharacterRegistry.ZombieBossType.Null
+
+
+## 返回全部僵王配置错误；空数组表示通过，不修改资源，也不实例化角色。
+## init_para() 统一处理校验错误并中止初始化；本方法仅返回错误，不修改关卡状态。
+## 无僵王的旧关卡忽略僵王专属字段，保留原有特殊模式及多轮游戏行为。
+func validate_boss_parameters() -> PackedStringArray:
+	var errors := PackedStringArray()
+	if not has_boss():
+		if monster_mode == ConstLevelData.E_MonsterMode.Boss:
+			errors.append("Boss 出怪模式必须配置 boss_type。")
+		return errors
+
+	# 注册表为静态公共定义，校验无需依赖 Global 节点已经完成 _ready()。
+	if not CharacterRegistry.ZombieBossInfo.has(boss_type):
+		errors.append("boss_type 未在角色注册表中注册：%s。" % boss_type)
+	else:
+		var boss_info: Dictionary = CharacterRegistry.ZombieBossInfo[boss_type]
+		var scene := boss_info.get(CharacterRegistry.ZombieBossInfoAttribute.BossScenes) as PackedScene
+		if scene == null or not scene.can_instantiate():
+			errors.append("注册的僵王场景无效或无法实例化。")
+
+	match monster_mode:
+		ConstLevelData.E_MonsterMode.Boss:
+			if boss_spawn_wave != 0:
+				errors.append("Boss 出怪模式的 boss_spawn_wave 必须为 0，表示正式开战时生成。")
+		ConstLevelData.E_MonsterMode.Norm:
+			if boss_spawn_wave < 0 or boss_spawn_wave > max_wave:
+				errors.append("正常出怪模式的 boss_spawn_wave 必须在 0 到 max_wave 之间。")
+		_:
+			errors.append("当前仅正常出怪模式和 Boss 出怪模式支持配置僵王。")
+
+	# 现有多轮存档不保存僵王的血量与生成状态，首版不能无提示地允许该组合。
+	if game_round != 1:
+		errors.append("配置僵王的关卡暂只支持单轮游戏，game_round 必须为 1。")
+	if is_pot_mode or pot_mode != ConstLevelData.E_PotMode.Null or is_zombie_mode:
+		errors.append("僵王配置暂不支持与罐子模式或我是僵尸模式组合。")
+	# 负坐标可用于场外入场；只拒绝 NaN、无穷等无法定位角色的坐标。
+	if not boss_spawn_position.is_finite():
+		errors.append("boss_spawn_position 必须为有限坐标。")
+	return errors
 
 
 func _apply_card_mode_constraints() -> void:

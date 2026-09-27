@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://brnfbv2sxv2qh" path="res://scenes/ui/plant_cell.tscn" id="3_656vs"]
 [ext_resource type="Script" uid="uid://bkeu6j2ek3su7" path="res://scripts/main_game_item/zombies_row.gd" id="4_6sinj"]
 [ext_resource type="PackedScene" uid="uid://dix4am6e6dehi" path="res://scenes/main_game_bg/slope.tscn" id="4_8ubs5"]
+[ext_resource type="Texture2D" uid="uid://deo4mo3s7clx4" path="res://assets/image/background/background6_gameover_mask.png" id="4_pjh2a"]
 
 [node name="MainGame03Roof" unique_id=684277935 node_paths=PackedStringArray("main_game_slope") instance=ExtResource("1_p4tip")]
 main_game_slope = NodePath("CanvasLayerBG/Background/RoofSlope")
@@ -25,8 +26,12 @@ offset_bottom = 187.0
 position = Vector2(117, 448)
 
 [node name="Background5GameoverMask" parent="CanvasLayerBG/Background/Home/Door/DoorMask" parent_id_path=PackedInt32Array(657693098) index="4" unique_id=1506117097]
-visible = true
 position = Vector2(108, 139)
+
+[node name="Background6GameoverMask" type="Sprite2D" parent="CanvasLayerBG/Background/Home/Door/DoorMask" parent_id_path=PackedInt32Array(657693098) index="5" unique_id=1525660907]
+visible = false
+position = Vector2(108, 139)
+texture = ExtResource("4_pjh2a")
 
 [node name="RoofSlope" type="Node2D" parent="CanvasLayerBG/Background" index="4" unique_id=1499682239]
 position = Vector2(420, 0)

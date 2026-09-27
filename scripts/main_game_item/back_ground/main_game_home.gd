@@ -9,6 +9,7 @@ class_name MainGameHome
 	$Door/DoorDown/Background3GameoverInteriorOverlay,
 	$Door/DoorDown/Background4GameoverInteriorOverlay,
 	null,
+	null
 ]
 
 @onready var door_masks: Array[Sprite2D] = [
@@ -16,7 +17,8 @@ class_name MainGameHome
 	$Door/DoorMask/Background2GameoverMask,
 	$Door/DoorMask/Background3GameoverMask,
 	$Door/DoorMask/Background4GameoverMask,
-	$Door/DoorMask/Background5GameoverMask
+	$Door/DoorMask/Background5GameoverMask,
+	$Door/DoorMask/Background6GameoverMask
 ]
 
 ## 根据当前背景初始化房门

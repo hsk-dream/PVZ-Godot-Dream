@@ -9,6 +9,7 @@ enum GameBg {
 	Pool,
 	Fog,
 	Roof,
+	RoofNight
 }
 
 ## 背景图
@@ -18,6 +19,8 @@ const GameBgTextureMap: Dictionary = {
 	GameBg.Pool: preload("res://assets/image/background/background3.jpg"),
 	GameBg.Fog: preload("res://assets/image/background/background4.jpg"),
 	GameBg.Roof: preload("res://assets/image/background/background5.jpg"),
+	GameBg.RoofNight: preload("res://assets/image/background/background6boss.jpg"),
+
 }
 #endregion
 

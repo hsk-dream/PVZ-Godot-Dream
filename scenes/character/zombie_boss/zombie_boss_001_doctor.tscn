@@ -76,6 +76,7 @@
 [ext_resource type="Animation" uid="uid://dfbbt55k3i8dp" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_spawn_4.tres" id="55_ucy2x"]
 [ext_resource type="Animation" uid="uid://cxlxx3qa58mgm" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_spawn_5.tres" id="56_0ipp6"]
 [ext_resource type="Animation" uid="uid://b38mnuyyjngqp" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_stomp_1.tres" id="57_cv78e"]
+[ext_resource type="Script" uid="uid://4o1wtnifn4tq" path="res://scripts/character/components/hp_component/component_hp_stage_change.gd" id="58_vtygo"]
 [ext_resource type="Animation" uid="uid://cbil41jqoxlfp" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_stomp_2.tres" id="58_yidin"]
 [ext_resource type="Animation" uid="uid://dj73kdbapjf2m" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_stomp_3.tres" id="59_s7h2a"]
 [ext_resource type="Animation" uid="uid://db3eqhvuantp4" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_stomp_4.tres" id="60_6swff"]
@@ -98,6 +99,15 @@
 [ext_resource type="Script" uid="uid://p7j7x5qfu052" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_bungee_prepare.gd" id="bungee_prepare_state"]
 [ext_resource type="Script" uid="uid://cpb4l6gd72bxb" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_bungee_wait.gd" id="bungee_wait_state"]
 [ext_resource type="Script" uid="uid://b5u4bnkxhnu07" path="res://scripts/state_machine/base/character_state_machine.gd" id="child_machine"]
+[ext_resource type="Texture2D" uid="uid://dftbckxum7olx" path="res://assets/reanim/Zombie_boss_foot_damage1.png" id="damage1_foot"]
+[ext_resource type="Texture2D" uid="uid://dtpdjspicfg5v" path="res://assets/reanim/Zombie_boss_head_damage1.png" id="damage1_head"]
+[ext_resource type="Texture2D" uid="uid://bteq54o80kfhc" path="res://assets/reanim/Zombie_boss_jaw_damage1.png" id="damage1_jaw"]
+[ext_resource type="Texture2D" uid="uid://c4mqgnq6m0dqb" path="res://assets/reanim/Zombie_boss_outerarm_hand_damage1.png" id="damage1_outerarm_hand"]
+[ext_resource type="Texture2D" uid="uid://g03jy2thf0dv" path="res://assets/reanim/Zombie_boss_foot_damage2.png" id="damage2_foot"]
+[ext_resource type="Texture2D" uid="uid://b780hpyklgxrk" path="res://assets/reanim/Zombie_boss_head_damage2.png" id="damage2_head"]
+[ext_resource type="Texture2D" uid="uid://bkvtyh0txx0ay" path="res://assets/reanim/Zombie_boss_jaw_damage2.png" id="damage2_jaw"]
+[ext_resource type="Texture2D" uid="uid://deh4fpdpf0hev" path="res://assets/reanim/Zombie_boss_outerarm_hand_damage2.png" id="damage2_outerarm_hand"]
+[ext_resource type="Script" uid="uid://jl0nl4a234bc" path="res://scripts/resources/resource_body_change.gd" id="doctor_body_change"]
 [ext_resource type="PackedScene" uid="uid://cv4obfp5v8idm" path="res://scenes/character/zombie_boss/z_b_001_doctor_objects/Zombie_boss_fireball.tscn" id="doctor_fire_ball"]
 [ext_resource type="PackedScene" uid="uid://cfb640e8a6cea" path="res://scenes/character/zombie_boss/z_b_001_doctor_objects/Zombie_boss_iceball.tscn" id="doctor_ice_ball"]
 [ext_resource type="Script" uid="uid://cq3auqs8nao7" path="res://scripts/character/zombie_boss/skills/001_doctor/z_b_001_doctor_skill_bungee.gd" id="effect_bungee"]
@@ -159,6 +169,18 @@ _data = {
 &"Zombie_Boss_driver_laugh": ExtResource("35_513t0"),
 &"Zombie_Boss_driver_swell": ExtResource("36_l6fqx")
 }
+
+[sub_resource type="Resource" id="DoctorDamageStage1"]
+script = ExtResource("doctor_body_change")
+sprite_change = Array[NodePath]([NodePath("../Body/BodyCorrect/InnerLeg/Boss_innerleg_foot"), NodePath("../Body/BodyCorrect/OuterLeg/Boss_outerleg_foot"), NodePath("../Body/BodyCorrect/Head/Boss_head"), NodePath("../Body/BodyCorrect/Head/Boss_jaw"), NodePath("../Body/BodyCorrect/OuterArm/Boss_outerarm_hand")])
+sprite_change_texture = Array[Texture2D]([ExtResource("damage1_foot"), ExtResource("damage1_foot"), ExtResource("damage1_head"), ExtResource("damage1_jaw"), ExtResource("damage1_outerarm_hand")])
+metadata/_custom_type_script = "uid://jl0nl4a234bc"
+
+[sub_resource type="Resource" id="DoctorDamageStage2"]
+script = ExtResource("doctor_body_change")
+sprite_change = Array[NodePath]([NodePath("../Body/BodyCorrect/InnerLeg/Boss_innerleg_foot"), NodePath("../Body/BodyCorrect/OuterLeg/Boss_outerleg_foot"), NodePath("../Body/BodyCorrect/Head/Boss_head"), NodePath("../Body/BodyCorrect/Head/Boss_jaw"), NodePath("../Body/BodyCorrect/OuterArm/Boss_outerarm_hand")])
+sprite_change_texture = Array[Texture2D]([ExtResource("damage2_foot"), ExtResource("damage2_foot"), ExtResource("damage2_head"), ExtResource("damage2_jaw"), ExtResource("damage2_outerarm_hand")])
+metadata/_custom_type_script = "uid://jl0nl4a234bc"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4atkk"]
 bg_color = Color(0.137255, 0.0196078, 0.027451, 1)
@@ -1388,7 +1410,13 @@ centered = false
 [node name="AnimComponent" parent="." index="3" unique_id=507004594]
 script = ExtResource("75_anim_player")
 
-[node name="HpComponent" parent="." index="4" unique_id=2107863698]
+[node name="HpStageChangeComponent" type="Node2D" parent="." index="4" unique_id=16482134]
+unique_name_in_owner = true
+script = ExtResource("58_vtygo")
+boundary_value_hp = Array[int]([2000, 1000, 0])
+body_change = Array[ExtResource("doctor_body_change")]([SubResource("DoctorDamageStage1"), SubResource("DoctorDamageStage2"), null])
+
+[node name="HpComponent" parent="." index="5" unique_id=2107863698]
 max_hp = 3000
 
 [node name="HpControl" type="Control" parent="HpComponent" index="0" unique_id=827349636]
@@ -1444,7 +1472,7 @@ label_settings = SubResource("LabelSettings_l4cxf")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HurtBoxComponent" parent="." index="5" unique_id=35856933]
+[node name="HurtBoxComponent" parent="." index="6" unique_id=35856933]
 position = Vector2(821, 324)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent/HurtBoxDetection" parent_id_path=PackedInt32Array(247294405) index="0" unique_id=221714381]
@@ -1454,10 +1482,10 @@ shape = SubResource("CapsuleShape2D_kx48i")
 [node name="CollisionShape2D" parent="HurtBoxComponent/HurtBoxReal" parent_id_path=PackedInt32Array(418655737) index="0" unique_id=1768661902]
 shape = SubResource("CapsuleShape2D_kx48i")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6" unique_id=1933216347]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="7" unique_id=1933216347]
 libraries/ = SubResource("AnimationLibrary_i61bf")
 
-[node name="StateMachine" type="Node" parent="." index="7" unique_id=979168503 node_paths=PackedStringArray("idle_state", "skill_state_weights", "initial_skill_sequence", "dying_state", "dead_state", "driver_animation_player", "character", "animation_player", "initial_state")]
+[node name="StateMachine" type="Node" parent="." index="8" unique_id=979168503 node_paths=PackedStringArray("idle_state", "skill_state_weights", "initial_skill_sequence", "dying_state", "dead_state", "driver_animation_player", "character", "animation_player", "initial_state")]
 unique_name_in_owner = true
 script = ExtResource("61_state_machine")
 idle_state = NodePath("Idle")
@@ -1655,7 +1683,7 @@ script = ExtResource("73_state_dying")
 [node name="Dead" type="Node" parent="StateMachine" index="8" unique_id=1151984638]
 script = ExtResource("74_state_dead")
 
-[node name="Skills" type="Node" parent="." index="8" unique_id=456107791]
+[node name="Skills" type="Node" parent="." index="9" unique_id=456107791]
 
 [node name="SpawnSkill" type="Node" parent="Skills" index="0" unique_id=1531831246 node_paths=PackedStringArray("spawn_marker")]
 script = ExtResource("effect_spawn")
@@ -1694,7 +1722,7 @@ inner_arm = NodePath("../../Body/BodyCorrect/InnerArm")
 [node name="StompSkill" type="Node" parent="Skills" index="4" unique_id=1322965971]
 script = ExtResource("effect_stomp")
 
-[node name="DeathRemainTimer" type="Timer" parent="." index="9" unique_id=1653272634]
+[node name="DeathRemainTimer" type="Timer" parent="." index="10" unique_id=1653272634]
 process_callback = 0
 one_shot = true
 script = ExtResource("75_speed_timer")

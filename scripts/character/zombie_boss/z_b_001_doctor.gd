@@ -24,6 +24,9 @@ var _played_enter_footsteps: Array[int] = []
 ## 死亡后保留角色的独立计时器，放在根节点下，避免被技能计时同步设为零速。
 @onready var death_remain_timer: SpeedTimer = $DeathRemainTimer
 
+## 按剩余血量切换机甲破损贴图；阶段阈值与各部件贴图在博士场景中配置。
+@onready var hp_stage_change_component: HpStageChangeComponent = %HpStageChangeComponent
+
 ## 博士场景的主状态机引用，负责入场、技能调度和死亡演出；缺失时为 null。
 @onready var state_machine: ZB001DoctorStateMachine = get_node_or_null("%StateMachine") as ZB001DoctorStateMachine
 
@@ -46,6 +49,19 @@ func ready_norm() -> void:
 ## [param _next_state] 切换后的主状态；此回调只广播状态更新，不读取新状态。
 func _on_state_changed(_previous_state: CharacterState, _next_state: CharacterState) -> void:
 	signal_status_update.emit()
+
+
+## 保留通用战斗信号连接，并让每次扣血同步更新机甲的破损外观。
+func ready_norm_signal_connect() -> void:
+	super.ready_norm_signal_connect()
+	hp_component.signal_hp_loss.connect(_on_hp_loss_update_appearance)
+
+
+## [param curr_hp] 本次扣血后的剩余血量，跨越多个阈值时由组件依次应用各阶段。
+## [param _is_drop] 通用伤害的肢体掉落开关；博士破损只替换贴图，不受此开关影响。
+func _on_hp_loss_update_appearance(curr_hp: int, _is_drop: bool) -> void:
+	# 致死伤害也要更新最终破损外观，不能因为已进入死亡状态而跳过。
+	hp_stage_change_component.judge_body_change(curr_hp, true)
 
 
 ## 由 Enter 在播放入场动画前调用，每次重新入场都允许各落脚关键帧触发一次。

@@ -166,8 +166,11 @@ func _attack_plant(plant:Plant000Base):
 func get_first_be_hit_plant_in_cell(plant:Plant000Base)->Plant000Base:
 	return plant
 
-## 攻击一次
+## [param enemy] 本次命中目标，可为空表示撞地或落空。[br]
+## 先确认僵王命中次数与受击状态，再进入 [method _attack_enemy] 结算伤害及子类附加效果。
 func attack_once(enemy:Character000Base):
+	if is_queued_for_deletion():
+		return
 	if enemy is ZB000Base:
 		if not _can_attack_character(enemy) or _hit_boss_ids.has(enemy.get_instance_id()):
 			return
@@ -185,7 +188,7 @@ func attack_once(enemy:Character000Base):
 		SoundManager.play_bullet_attack_SFX(type_bullet_SFX)
 	## 如果有子弹特效
 	if bullet_effect.is_bullet_effect:
-		if enemy is Character000Base:
+		if is_instance_valid(enemy) and enemy is Character000Base:
 			bullet_effect.global_position.x = enemy.hurt_box_component.global_position.x
 		bullet_effect.activate_bullet_effect()
 

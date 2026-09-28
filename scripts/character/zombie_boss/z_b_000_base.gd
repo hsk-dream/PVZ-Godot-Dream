@@ -13,6 +13,18 @@ signal signal_status_update
 var _is_fading := false
 
 
+## 所有普通与特殊植物伤害共用的最后检查，防止动画关键帧或旧碰撞结果绕过受击窗口。[br]
+## [param attack_value] 本次伤害；[param bullet_mode] 伤害类型。[br]
+## [param is_drop] 是否允许掉落表现；[param trigger_be_attack_SFX] 是否播放受击音效。
+## 致死伤害仅通过血量组件启动僵王死亡状态机，不套用普通僵尸的直接删除逻辑。
+func be_attacked_bullet(attack_value: int, bullet_mode: BulletRegistry.AttackMode = BulletRegistry.AttackMode.Norm, is_drop: bool = true, trigger_be_attack_SFX := true):
+	if is_death or character_init_type != E_CharacterInitType.IsNorm \
+		or not is_inside_tree() or is_queued_for_deletion() \
+		or not is_instance_valid(hurt_box_component) or not hurt_box_component.is_enabling:
+		return
+	super.be_attacked_bullet(attack_value, bullet_mode, is_drop, trigger_be_attack_SFX)
+
+
 ## 先发出原有死亡信号供管理器扣数，再关闭受击；重复调用不重复触发亡语或计数。
 func character_death() -> void:
 	if is_death:

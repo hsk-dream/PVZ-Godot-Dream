@@ -1,7 +1,10 @@
 extends BulletLinear000Base
 class_name Bullet1001Bowling
 
+## 坚果旋转的表现节点。
 @onready var body_correct: Node2D = $Body/BodyCorrect
+## 僵王没有普通僵尸的保龄球伤害特判，单独配置并默认沿用无防具目标的 1800 点伤害。
+@export_range(0, 10000, 1, "or_greater") var boss_attack_value: int = 1800
 ## 旋转速度
 var rotation_speed = 5.0
 ## 每行的y坐标
@@ -37,13 +40,12 @@ func _physics_process(delta: float) -> void:
 
 	## 如果到达目标行
 	if not in_curr_lane and (y_every_lane[lane] - 10 < global_position.y and global_position.y < y_every_lane[lane] + 10):
-		## 查看是否有僵尸在攻击范围内
-		if curr_enemy:
-			## 如果僵尸在子弹攻击行
-			if lane == curr_enemy.lane:
-				attack_once(curr_enemy)
-				_update_direction()
+		# 到达目标行时重新检查目标；死亡或已关闭受击的引用不能阻塞后续碰撞。
+		if is_instance_valid(curr_enemy) and _can_attack_character(curr_enemy) \
+			and (curr_enemy is ZB000Base or lane == curr_enemy.lane):
+			_hit_and_bounce(curr_enemy)
 		else:
+			curr_enemy = null
 			in_curr_lane = true
 
 	## 移动离开当前行后，更新当前
@@ -72,33 +74,41 @@ func _update_direction():
 
 	update_z_index_and_lane(lane, int(lane + direction.y))
 
-## 子弹与敌人碰撞
+## [param area] 与坚果重叠的区域；僵王按空间命中，普通僵尸继续等待坚果到达对应行。
 func _on_area_2d_attack_area_entered(area: Area2D) -> void:
-	var enemy:Character000Base = area.owner
-	## TODO:攻击植物子弹
-	if enemy is Plant000Base:
-		push_error("保龄球攻击植物敌人")
+	# 过滤地形和其他非角色，不再把僵王强制当作普通僵尸。
+	var enemy := area.owner as Character000Base
+	if not _can_attack_character(enemy, false):
 		return
-	elif enemy is Zombie000Base:
-		var zombie = enemy as Zombie000Base
-		## 如果不是可攻击状态敌人
-		if not zombie.curr_be_attack_status & can_attack_zombie_status:
-			return
-	else:
-		push_error("敌人不是植物,不是僵尸")
-	## 在当前行
-	if in_curr_lane:
-		#print(lane, enemy.lane)
-		## 如果僵尸在子弹攻击行
+	if enemy is ZB000Base:
+		_hit_and_bounce(enemy)
+	elif in_curr_lane:
 		if lane == enemy.lane:
-			## 攻击后修改为不再当前行，并已攻击
-			in_curr_lane = false
-			attack_once(enemy)
-			_update_direction()
-			first_attack_end = true
-			bullet_mode =BulletRegistry.AttackMode.BowlingSide
-	else :
-		curr_enemy = area.owner
+			_hit_and_bounce(enemy)
+	else:
+		curr_enemy = enemy
+
+
+## [param enemy] 准备命中的目标；同一坚果对同一僵王只扣血和改变方向一次。
+func _hit_and_bounce(enemy: Character000Base) -> void:
+	if is_queued_for_deletion() or not _can_attack_character(enemy):
+		return
+	if enemy is ZB000Base and _hit_boss_ids.has(enemy.get_instance_id()):
+		return
+	in_curr_lane = false
+	curr_enemy = null
+	attack_once(enemy)
+	_update_direction()
+	first_attack_end = true
+	bullet_mode = BulletRegistry.AttackMode.BowlingSide
+
+## [param enemy] 基类确认的命中目标；僵王使用独立伤害，普通僵尸仍使用原有正面与侧面保龄球规则。
+func _attack_enemy(enemy: Character000Base):
+	if enemy is ZB000Base:
+		enemy.be_attacked_bullet(boss_attack_value, BulletRegistry.AttackMode.Penetration, true, trigger_be_attack_sfx)
+	else:
+		super(enemy)
+
 
 ## 子弹离开当前敌人
 func _on_area_2d_attack_area_exited(area: Area2D) -> void:

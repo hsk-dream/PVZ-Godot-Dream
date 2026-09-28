@@ -3439,3 +3439,17 @@ tracks/283/keys = {
 "method": &"request_trophy"
 }]
 }
+tracks/284/type = "method"
+tracks/284/imported = false
+tracks/284/enabled = true
+tracks/284/path = NodePath("StateMachine")
+tracks/284/interp = 1
+tracks/284/loop_wrap = true
+tracks/284/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"driver_death"],
+"method": &"notify_animation_event"
+}]
+}

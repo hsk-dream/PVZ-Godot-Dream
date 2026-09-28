@@ -13,7 +13,6 @@
 [resource]
 resource_name = "Zombie_Boss_driver_drive"
 length = 1.411765
-loop_mode = 1
 step = 0.058824
 tracks/0/type = "value"
 tracks/0/imported = false

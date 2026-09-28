@@ -14,7 +14,8 @@ class_name ZB001DoctorStateHeadSkill
 ## 与 action_animations 下标一一对应的场景行号，从 0 开始；不存在的行不参与选取。
 @export var animation_lanes: Array[int] = [0, 1, 2, 3, 4]
 
-## 先确定目标行和冰火类型，再查找对应动画；整个低头动作沿用同一份参数。
+## 先确定目标行和冰火类型，再查找对应动画；整个低头动作沿用同一份参数。[br]
+## 目标行只用于选择吐球动画和生成球，不赋予僵王本身行归属。
 func prepare_action() -> void:
 	selected_animation = &""
 	action_parameters.clear()
@@ -33,7 +34,7 @@ func prepare_action() -> void:
 	selected_animation = action_animations[animation_index]
 	action_parameters["animation_variant"] = animation_index + 1
 
-## 正常完成或中断均关闭角色受击因素；父类负责停止子状态和全部技能计时器。
+## 正常完成或中断均关闭受击；父类负责清理子状态、技能参数和计时器。
 func exit() -> void:
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
 	super.exit()

@@ -58,15 +58,30 @@ func be_ice_decelerate(time: float) -> void:
 		super.be_ice_decelerate(time)
 
 
+## 仅在正常出战且受击窗口开启时接受冰冻；全场事件也不能绕过状态控制的受击开关。[br]
 ## 父类先扣血后创建冰冻效果；致死时在父类返回后补做清理，避免死后残留冰块。
 ## [param time] 本次完全冰冻持续时间，单位为秒。
 ## [param new_time_ice_end_decelerate] 冰冻解除后继续减速的时长，单位为秒。
 func be_ice_freeze(time: float, new_time_ice_end_decelerate: float) -> void:
-	if is_death:
+	if is_death or character_init_type != E_CharacterInitType.IsNorm \
+		or not is_inside_tree() or is_queued_for_deletion() \
+		or not is_instance_valid(hurt_box_component) or not hurt_box_component.is_enabling:
 		return
 	super.be_ice_freeze(time, new_time_ice_end_decelerate)
 	if is_death:
 		prepare_death_animation()
+
+
+## 任意行的火爆辣椒均可命中；受击窗口在此检查，通过后先解除冰冻和减速，再扣血。[br]
+## [param attack_value] 本次辣椒伤害；致死时由血量组件触发僵王死亡流程，不直接删除或播放普通僵尸灰烬。
+func be_jalapeno(attack_value: int) -> void:
+	if is_death or character_init_type != E_CharacterInitType.IsNorm \
+		or not is_inside_tree() or is_queued_for_deletion() \
+		or not is_instance_valid(hurt_box_component) or not hurt_box_component.is_enabling:
+		return
+	# 先解除控制再结算伤害，避免解冻回调覆盖随后启动的死亡演出速度。
+	cancel_ice()
+	hp_component.Hp_loss(attack_value, BulletRegistry.AttackMode.Penetration, false, false)
 
 
 ## 轨道仅发请求，不直接创建奖杯；存活、展示和正在卸载的角色不能请求奖励。

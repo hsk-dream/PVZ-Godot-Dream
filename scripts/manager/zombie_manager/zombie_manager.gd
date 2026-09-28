@@ -604,16 +604,23 @@ func delete_prepare_show_zombies():
 #endregion
 
 #region 植物调用相关，寒冰菇\火爆辣椒\三叶草
-## 冰冻所有僵尸
+## 寒冰菇处理普通僵尸及当前僵王；僵王自行检查存活状态和受击窗口。[br]
+## [param time_ice] 完全冻结时长，单位为游戏秒。[br]
+## [param time_decelerate] 解冻后的减速时长，单位为游戏秒。
 func ice_all_zombie(time_ice:float, time_decelerate: float):
-	## 冰消珊瑚
+	# 保留寒冰菇对珊瑚出怪的抑制计时。
 	is_ice = true
 	start_ice_timer(time_ice)
+	# 当前行的普通僵尸列表；僵王单独登记在 active_boss 中。
 	for zombie_row:Array in all_zombies_2d:
 		if zombie_row.is_empty():
 			continue
+		# 当前接受冻结效果的普通僵尸。
 		for zombie:Zombie000Base in zombie_row:
 			zombie.be_ice_freeze(time_ice, time_decelerate)
+	# 僵王不加入普通僵尸列表，避免重复计数或受到普通僵尸的删除规则影响。
+	if is_instance_valid(active_boss):
+		active_boss.be_ice_freeze(time_ice, time_decelerate)
 
 func start_ice_timer(wait_time:float):
 	if not is_instance_valid(ice_timer):
@@ -637,13 +644,18 @@ func jalapeno_bomb_item_lane(lane:int):
 		var ice_road:IceRoad = all_ice_roads[lane][i]
 		ice_road.ice_road_disappear()
 
-## 火爆辣椒爆炸整行僵尸
+## 火爆辣椒处理整行普通僵尸，并直接攻击当前僵王；僵王仅检查受击窗口，不限制行号。[br]
+## [param lane] 辣椒所在的零起始行号，仅用于选择受影响的普通僵尸。
 func jalapeno_bomb_lane_zombie(lane:int):
-	#print(all_zombies_2d[lane])
+	# 倒序遍历当前行，普通僵尸被炸死时可能立即从列表移除。
 	for i in range(all_zombies_2d[lane].size()-1,-1,-1) :
 		if is_instance_valid(all_zombies_2d[lane][i]):
+			# 当前接受爆炸伤害的普通僵尸，继续沿用其原有灰烬与删除规则。
 			var zombie:Zombie000Base = all_zombies_2d[lane][i]
 			zombie.be_bomb(1800, true)
+	# 任意行的辣椒都可命中僵王，使用专用入口检查受击窗口并保留完整死亡演出。
+	if is_instance_valid(active_boss):
+		active_boss.be_jalapeno(1800)
 
 ## 三叶草吹走空中僵尸
 func blover_blow_away_in_sky_zombie():

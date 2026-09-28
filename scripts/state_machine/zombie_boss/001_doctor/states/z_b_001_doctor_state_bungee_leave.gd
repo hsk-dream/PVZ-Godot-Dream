@@ -14,7 +14,7 @@ var _finished: bool = false
 func enter() -> void:
 	_finished = false
 	_animation = (skill_state as ZB001DoctorStateBungee).leave_animation
-	state_machine.animation_player.play(_animation)
+	doctor_state_machine.play_mech_animation(_animation)
 	doctor_state_machine.sync_action_timer_speed()
 
 

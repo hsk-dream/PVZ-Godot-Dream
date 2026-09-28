@@ -1288,3 +1288,20 @@ tracks/106/keys = {
 "update": 0,
 "values": [false, false]
 }
+tracks/107/type = "method"
+tracks/107/imported = false
+tracks/107/enabled = true
+tracks/107/path = NodePath(".")
+tracks/107/interp = 1
+tracks/107/loop_wrap = true
+tracks/107/keys = {
+"times": PackedFloat32Array(1, 2.583333),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [0],
+"method": &"play_enter_footstep"
+}, {
+"args": [1],
+"method": &"play_enter_footstep"
+}]
+}

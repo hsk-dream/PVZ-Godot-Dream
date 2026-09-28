@@ -14,7 +14,7 @@ func enter() -> void:
 	_released = false
 	_finished = false
 	_animation = skill_state.selected_animation
-	state_machine.animation_player.play(_animation)
+	doctor_state_machine.play_mech_animation(_animation)
 	doctor_state_machine.sync_action_timer_speed()
 
 ## [param event_name] 动画方法轨道传入的事件名，由当前活动状态判断是否处理。

@@ -2212,3 +2212,17 @@ tracks/182/keys = {
 "method": &"notify_skill_event"
 }]
 }
+tracks/183/type = "method"
+tracks/183/imported = false
+tracks/183/enabled = true
+tracks/183/path = NodePath(".")
+tracks/183/interp = 1
+tracks/183/loop_wrap = true
+tracks/183/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_stomp_3", &"gargantuar_thump"],
+"method": &"play_animation_sfx"
+}]
+}

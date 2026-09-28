@@ -2056,3 +2056,17 @@ tracks/169/keys = {
 "method": &"notify_skill_event"
 }]
 }
+tracks/170/type = "method"
+tracks/170/imported = false
+tracks/170/enabled = true
+tracks/170/path = NodePath(".")
+tracks/170/interp = 1
+tracks/170/loop_wrap = true
+tracks/170/keys = {
+"times": PackedFloat32Array(2.166667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_RV_1", &"RVthrow"],
+"method": &"play_animation_sfx"
+}]
+}

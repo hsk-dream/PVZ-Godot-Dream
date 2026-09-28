@@ -8,7 +8,7 @@ class_name ZB001DoctorStateSpawnInterval
 
 ## 在整轮技能内保持行动状态，仅借用待机动画表现两次放置之间的停顿。
 func enter() -> void:
-	state_machine.animation_player.play(ZB001DoctorStateMachine.IDLE_ANIMATION)
+	doctor_state_machine.play_mech_animation(ZB001DoctorStateMachine.IDLE_ANIMATION)
 	# 播放后再同步倍率，避免沿用上一段动画结束时的零倍率。
 	doctor_state_machine.sync_action_timer_speed()
 	spawn_interval_timer.start_scaled((skill_state as ZB001DoctorStateSpawn).spawn_interval_duration)

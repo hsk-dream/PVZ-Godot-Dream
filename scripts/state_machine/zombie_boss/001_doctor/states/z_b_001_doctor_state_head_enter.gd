@@ -5,7 +5,7 @@ class_name ZB001DoctorStateHeadEnter
 func enter() -> void:
 	boss.is_idle = false
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
-	state_machine.animation_player.play(ZB001DoctorStateMachine.HEAD_ENTER_ANIMATION)
+	doctor_state_machine.play_mech_animation(ZB001DoctorStateMachine.HEAD_ENTER_ANIMATION)
 
 ## 受击开关跟随动画时间；死亡或技能已退出时不处理迟到事件。[br]
 ## [param event_name] 低头方法轨道事件，仅 hurt_enable 开启角色受击因素。

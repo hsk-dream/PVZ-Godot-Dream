@@ -1724,3 +1724,17 @@ tracks/141/keys = {
 "method": &"notify_skill_event"
 }]
 }
+tracks/142/type = "method"
+tracks/142/imported = false
+tracks/142/enabled = true
+tracks/142/path = NodePath(".")
+tracks/142/interp = 1
+tracks/142/loop_wrap = true
+tracks/142/keys = {
+"times": PackedFloat32Array(1.25),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_head_attack_3", &"bossboulderattack"],
+"method": &"play_animation_sfx"
+}]
+}

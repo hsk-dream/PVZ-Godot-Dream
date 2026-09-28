@@ -8,7 +8,9 @@ class_name ZB001DoctorStateEnter
 func enter() -> void:
 	boss.is_idle = false
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
-	state_machine.animation_player.play(ZB001DoctorStateMachine.ENTER_ANIMATION)
+	# 每次入场重新允许两次落脚事件，声音和震动由动画方法关键帧同步触发。
+	boss.reset_enter_footsteps()
+	doctor_state_machine.play_mech_animation(ZB001DoctorStateMachine.ENTER_ANIMATION)
 
 
 ## 当前没有入场临时资源；后续增加效果时在此清理，不在退出时主动启动下一状态。

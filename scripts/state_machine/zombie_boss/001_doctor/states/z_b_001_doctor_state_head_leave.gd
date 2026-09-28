@@ -4,7 +4,7 @@ class_name ZB001DoctorStateHeadLeave
 
 func enter() -> void:
 	boss.is_idle = false
-	state_machine.animation_player.play(ZB001DoctorStateMachine.HEAD_LEAVE_ANIMATION)
+	doctor_state_machine.play_mech_animation(ZB001DoctorStateMachine.HEAD_LEAVE_ANIMATION)
 
 ## 抬头初段沿用受击窗口，关闭关键帧发生时立即通知检测器更新目标。[br]
 ## [param event_name] 抬头方法轨道事件，仅 hurt_disable 关闭角色受击因素。

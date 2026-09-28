@@ -205,6 +205,16 @@ const SFXCharacterMap := {
 	&"ladder_zombie": preload("res://assets/audio/SFX/zombie/ladder_zombie.ogg"),
 	## 篮球僵尸发射篮球子弹
 	&"basketball": preload("res://assets/audio/SFX/zombie/basketball.ogg"),
+	## 僵王吐出冰火球。
+	&"bossboulderattack": preload("res://assets/audio/SFX/zombie/bossboulderattack.ogg"),
+	## 僵王机甲死亡爆炸。
+	&"bossexplosion": preload("res://assets/audio/SFX/zombie/bossexplosion.ogg"),
+	## 僵王低头、抬头的液压动作。
+	&"hydraulic": preload("res://assets/audio/SFX/zombie/hydraulic.ogg"),
+	## 僵王放置僵尸及蹦极时的手臂动作。
+	&"hydraulic_short": preload("res://assets/audio/SFX/zombie/hydraulic_short.ogg"),
+	## 僵王丢车时的投掷动作。
+	&"RVthrow": preload("res://assets/audio/SFX/zombie/RVthrow.ogg"),
 
 	## 巨人僵尸攻击\倭瓜
 	&"gargantuar_thump": preload("res://assets/audio/SFX/zombie/gargantuar_thump.ogg"),

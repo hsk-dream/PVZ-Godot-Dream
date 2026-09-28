@@ -51,6 +51,19 @@ const DRIVER_DAMAGE_ANIMATION: StringName = &"Zombie_Boss_driver_damage"
 ## 一整轮放置僵尸只计 1 回合；首次吐球前也从入场后的技能选择开始累计。
 @export_range(1, 20, 1, "or_greater") var max_rounds_without_head_skill: int = 5
 
+@export_group("动画过渡")
+## 普通待机或放置间隔切入技能的姿势过渡时间，单位为动作秒；0 表示立即切换。
+@export_range(0.0, 0.5, 0.01) var idle_transition_duration: float = 0.15
+## 低头待机切入吐球或抬头的姿势过渡时间，单位为动作秒；不延后技能关键帧。
+@export_range(0.0, 0.5, 0.01) var head_transition_duration: float = 0.15
+## 死亡打断技能时的姿势及手臂偏移收回时间，单位为动作秒；随死亡动画倍率加速。
+@export_range(0.0, 0.5, 0.01) var death_transition_duration: float = 0.2
+## 本体开始或重播操纵、吐球动作，以及中断动作返回待机的过渡时间，单位为动作秒。
+@export_range(0.0, 0.5, 0.01) var driver_transition_duration: float = 0.1
+## 本体举旗末帧进入举旗循环的过渡时间，单位为动作秒；计时仍从进入循环时开始。
+@export_range(0.0, 0.5, 0.01) var flag_transition_duration: float = 0.12
+@export_group("")
+
 ## 是否已接收逻辑死亡请求；置位后禁止新的普通技能转换与释放。
 var _death_requested := false
 ## 死亡演出是否已经启动，用于阻止 stop/start 重复播放死亡流程。
@@ -96,12 +109,81 @@ func initialize(actor: Character000Base = null, player: AnimationPlayer = null) 
 	_last_selected_skill = null
 	_rounds_without_head_skill = 0
 	_initial_skill_index = 0
+	# 每个博士使用自己的捕获轨道副本，避免修改外部动画资源或其他实例的播放器。
+	_prepare_capture_animations(animation_player)
+	_prepare_capture_animations(driver_animation_player)
 	_connected_player.animation_started.connect(_on_mech_animation_started)
 	_connected_driver_player = driver_animation_player
 	_connected_driver_player.animation_finished.connect(_on_driver_animation_finished)
 	_sync_driver_animation_speed()
 	driver_animation_player.play(DRIVER_IDLE_ANIMATION)
 	return true
+
+
+## 为 [param player] 创建独立动画库，仅将姿势数值轨道改为捕获模式。
+## 显隐、贴图和方法轨道保留原配置；显式关闭自动捕获，避免完整收尾也产生额外过渡。
+func _prepare_capture_animations(player: AnimationPlayer) -> void:
+	player.playback_auto_capture = false
+	# 当前播放器注册的动画库名称；保留名称以维持状态和方法轨道中的动画标识。
+	for library_name: StringName in player.get_animation_library_list():
+		# 原动画库只用于读取，替换前先完整构建当前实例的副本。
+		var source_library: AnimationLibrary = player.get_animation_library(library_name)
+		# 当前实例专用的库，动画贴图仍共享，不复制纹理数据。
+		var capture_library := AnimationLibrary.new()
+		# 当前库中的动画名称；包括正常动作和死亡动作。
+		for animation_name: StringName in source_library.get_animation_list():
+			# 复制动画的轨道数据，后续设置不会写回外部 .tres 文件。
+			var animation: Animation = source_library.get_animation(animation_name).duplicate() as Animation
+			# 当前轨道下标，只捕获位置、旋转、缩放和斜切等连续姿势属性。
+			for track: int in animation.get_track_count():
+				if animation.track_get_type(track) != Animation.TYPE_VALUE:
+					continue
+				# 属性路径可能包含多个子属性，只接受直接的 Node2D 变换属性。
+				var track_path: NodePath = animation.track_get_path(track)
+				if track_path.get_subname_count() == 1 and track_path.get_subname(0) in [&"position", &"rotation", &"scale", &"skew"]:
+					animation.value_track_set_update_mode(track, Animation.UPDATE_CAPTURE)
+			capture_library.add_animation(animation_name, animation)
+		player.remove_animation_library(library_name)
+		player.add_animation_library(library_name, capture_library)
+
+
+## 播放 [param animation_name] 指定的机甲动作；[param transition_duration] 为动作秒，负数按来源动画选择。
+## 只对离开循环待机的切换默认捕获姿势，完整动作收尾及蹦极等待衔接保持直接播放。
+func play_mech_animation(animation_name: StringName, transition_duration: float = -1.0) -> void:
+	# 本次过渡时长；死亡可以显式覆盖，不改变新动画自身的播放时间轴。
+	var duration: float = transition_duration
+	if duration < 0.0:
+		duration = 0.0
+		if animation_player.assigned_animation == IDLE_ANIMATION and animation_name != IDLE_ANIMATION:
+			duration = idle_transition_duration
+		elif animation_player.assigned_animation == HEAD_IDLE_ANIMATION and animation_name != HEAD_IDLE_ANIMATION:
+			duration = head_transition_duration
+	_play_pose_transition(animation_player, animation_name, duration)
+
+
+## 播放 [param animation_name] 指定的本体动作；同名动作也从头开始，同时保留切换瞬间的可见姿势。
+## 完整操纵、吐球动作结束回待机时不增加过渡；中途打断及举旗进入循环使用专门时长。
+func play_driver_animation(animation_name: StringName) -> void:
+	# 本次本体过渡时间，单位为动作秒，默认保持已经对齐的首尾姿势。
+	var duration: float = 0.0
+	if animation_name in [DRIVER_DRIVE_ANIMATION, DRIVER_DAMAGE_ANIMATION] \
+		or (animation_name == DRIVER_IDLE_ANIMATION and driver_animation_player.is_playing()):
+		duration = driver_transition_duration
+	elif animation_name == DRIVER_FLAG_LOOP_ANIMATION:
+		duration = flag_transition_duration
+	_play_pose_transition(driver_animation_player, animation_name, duration)
+
+
+## 从当前节点姿势启动新动画；[param player] 为目标播放器，[param animation_name] 为已校验的动画名。
+## [param duration] 为动作秒，非有限值或非正数禁用过渡；捕获时间跟随播放器 speed_scale。
+## 不混播旧动画，避免旧技能方法轨道继续触发；新动画的关键帧时刻和完成时间保持原值。
+func _play_pose_transition(player: AnimationPlayer, animation_name: StringName, duration: float) -> void:
+	# 保留当前显示值再停止，使同名动作可以重播，并让捕获读取当前姿势而非重置后的首帧。
+	player.stop(true)
+	if is_finite(duration) and duration > 0.0:
+		player.play_with_capture(animation_name, duration, 0.0)
+	else:
+		player.play(animation_name, 0.0)
 
 
 ## 机甲每次开始播放动画时联动驾驶员；动画自身循环不重复触发操纵动作。[br]
@@ -116,9 +198,8 @@ func _on_mech_animation_started(animation_name: StringName) -> void:
 	if head_skill != null and head_skill.action_animations.has(animation_name):
 		driver_animation = DRIVER_DAMAGE_ANIMATION
 	_sync_driver_animation_speed()
-	# 同类动作连续触发也从头播放一次，不能沿用尚未结束的上一段操纵进度。
-	driver_animation_player.stop()
-	driver_animation_player.play(driver_animation)
+	# 同类动作也从当前姿势过渡到新一轮，不能先重置显示值再捕获。
+	play_driver_animation(driver_animation)
 
 
 ## 存活时单次动作结束回到待机，死亡时仅转发到 Dying 推进本体死亡序列。[br]
@@ -132,7 +213,7 @@ func _on_driver_animation_finished(animation_name: StringName) -> void:
 		return
 	if animation_name not in [DRIVER_DRIVE_ANIMATION, DRIVER_DAMAGE_ANIMATION]:
 		return
-	driver_animation_player.play(DRIVER_IDLE_ANIMATION)
+	play_driver_animation(DRIVER_IDLE_ANIMATION)
 
 
 ## 驾驶员与机甲使用相同的角色速度，跟随冰冻和死亡加速；全局时间倍率由引擎统一处理。[br]

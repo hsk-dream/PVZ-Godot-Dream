@@ -186,10 +186,508 @@ font = ExtResource("55_kx48i")
 radius = 20.0
 height = 700.0
 
+[sub_resource type="Animation" id="Animation_miqb2"]
+resource_name = "RESET"
+length = 0.001
+step = 0.083333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body/BodyCorrect/OuterLeg/Boss_outerleg_lower:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1012.9, 79.8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body/BodyCorrect/OuterLeg/Boss_outerleg_upper:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1036.7, -74.4)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body/BodyCorrect/OuterLeg/Boss_outerleg_bits:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1052.1, 80.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body/BodyCorrect/OuterLeg/Boss_outerleg_foot:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(948.3, 215)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Body/BodyCorrect/BodyBack/Boss_body2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(904, -152.2)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Body/BodyCorrect/InnerLeg/Boss_innerleg_lower:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(930.5, -6.9)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Body/BodyCorrect/InnerLeg/Boss_innerleg_upper:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(953.9, -120.4)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Body/BodyCorrect/InnerLeg/Boss_innerleg_bits:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(962.9, -6)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Body/BodyCorrect/InnerLeg/Boss_innerleg_foot:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(879.9, 104.6)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Body/BodyCorrect/OuterArm/Boss_outerarm_thumb2:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(806, 13.4)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Body/BodyCorrect/OuterArm/Boss_outerarm_hand:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(893.2, -30.5)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_finger4:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(869, 46)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_finger4/Marker2DSpawnZombie:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(44.77496, 78.85651)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_knuckle4:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(922.5, 85)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_finger3:position")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(853.3, 19.8)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_knuckle3:position")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(890.6, 65.6)]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_finger2:position")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(884.7, 13.9)]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_knuckle2:position")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(863.5, 48.2)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_finger1:position")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(834.3, 14.6)]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("Body/BodyCorrect/OuterArm/Boss-outerarm_knuckle1:position")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(846.9, 34)]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("Body/BodyCorrect/OuterArm/Boss_outerarm_thumb1:position")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(858, -27.4)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("Body/BodyCorrect/OuterArm/Boss_outerarm_bits:position")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(929.1, -127.3)]
+}
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("Body/BodyCorrect/OuterArm/Boss_outerarm_lower:position")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(941.8, -145)]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("Body/BodyCorrect/OuterArm/Boss_outerarm_upper:position")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(807.2, -289.3)]
+}
+tracks/24/type = "value"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("Body/BodyCorrect/BodyFront/Boss_body1:position")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(800.9, -267.8)]
+}
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("Body/BodyCorrect/Head/Boss_neck:position")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(803, -222.59999)]
+}
+tracks/26/type = "value"
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/path = NodePath("Body/BodyCorrect/Head/Boss_innerjaw:position")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(804, -150.29999)]
+}
+tracks/27/type = "value"
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/path = NodePath("Body/BodyCorrect/Head/Boss_mouthglow:position")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(811, -151.09999)]
+}
+tracks/28/type = "value"
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/path = NodePath("Body/BodyCorrect/Head/Boss_mouthglow_red:position")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/29/type = "value"
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/path = NodePath("Body/BodyCorrect/Head/Boss_jaw:position")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(782.7, -131.6)]
+}
+tracks/30/type = "value"
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/path = NodePath("Body/BodyCorrect/Head/Boss_eyeglow:position")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(776.8, -144.5)]
+}
+tracks/31/type = "value"
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/path = NodePath("Body/BodyCorrect/Head/Boss_eyeglow_red:position")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/32/type = "value"
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/path = NodePath("Body/BodyCorrect/Head/Boss_head2:position")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(792.8, -213.39998)]
+}
+tracks/33/type = "value"
+tracks/33/imported = false
+tracks/33/enabled = true
+tracks/33/path = NodePath("Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect:position")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/34/type = "value"
+tracks/34/imported = false
+tracks/34/enabled = true
+tracks/34/path = NodePath("Body/BodyCorrect/Head/Boss_eyeglow_black:position")
+tracks/34/interp = 1
+tracks/34/loop_wrap = true
+tracks/34/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/35/type = "value"
+tracks/35/imported = false
+tracks/35/enabled = true
+tracks/35/path = NodePath("Body/BodyCorrect/Head/Boss_antenna2:position")
+tracks/35/interp = 1
+tracks/35/loop_wrap = true
+tracks/35/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(741.6, -170.3)]
+}
+tracks/36/type = "value"
+tracks/36/imported = false
+tracks/36/enabled = true
+tracks/36/path = NodePath("Body/BodyCorrect/Head/Boss_head:position")
+tracks/36/interp = 1
+tracks/36/loop_wrap = true
+tracks/36/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(763.2, -203.9)]
+}
+tracks/37/type = "value"
+tracks/37/imported = false
+tracks/37/enabled = true
+tracks/37/path = NodePath("Body/BodyCorrect/Head/Boss_antenna:position")
+tracks/37/interp = 1
+tracks/37/loop_wrap = true
+tracks/37/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(968, -204.99998)]
+}
+tracks/38/type = "value"
+tracks/38/imported = false
+tracks/38/enabled = true
+tracks/38/path = NodePath("Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver:position")
+tracks/38/interp = 1
+tracks/38/loop_wrap = true
+tracks/38/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(46.159447, -64.06694)]
+}
+tracks/39/type = "value"
+tracks/39/imported = false
+tracks/39/enabled = true
+tracks/39/path = NodePath("Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body:position")
+tracks/39/interp = 1
+tracks/39/loop_wrap = true
+tracks/39/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/40/type = "value"
+tracks/40/imported = false
+tracks/40/enabled = true
+tracks/40/path = NodePath("Body/BodyCorrect/Head/Boss_head2/TrophySpawnPoint:position")
+tracks/40/interp = 1
+tracks/40/loop_wrap = true
+tracks/40/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(79.60669, 80.11557)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i61bf"]
 _data = {
 &"Anim_bungee_1_enter": ExtResource("39_gcw5w"),
 &"Anim_bungee_1_leave": ExtResource("bungee_leave_animation"),
+&"RESET": SubResource("Animation_miqb2"),
 &"Zombie_boss_RV_1": ExtResource("38_opvbh"),
 &"Zombie_boss_death": ExtResource("41_vigij"),
 &"Zombie_boss_enter": ExtResource("42_ifmfp"),
@@ -217,6 +715,9 @@ _data = {
 script = ExtResource("2_3pwt0")
 death_animation_speed_scale = 1.5
 death_remain_duration = 10.0
+enter_footstep_shake_amplitude = Vector2(2, 6)
+enter_footstep_shake_duration = 0.2
+enter_footstep_shake_frequency = 20.0
 
 [node name="Background5" type="Sprite2D" parent="." index="0" unique_id=1000219766]
 visible = false
@@ -225,7 +726,7 @@ texture = ExtResource("3_nfbsa")
 centered = false
 
 [node name="Shadow" parent="." index="1" unique_id=1595019345]
-visible = false
+position = Vector2(936, 454)
 
 [node name="BodyCorrect" parent="Body" parent_id_path=PackedInt32Array(218567138) index="0" unique_id=825799443]
 position = Vector2(100, 0)
@@ -257,7 +758,6 @@ visible = false
 centered = false
 
 [node name="Anim_spawn_1" type="Sprite2D" parent="Body/BodyCorrect/Anim" index="6" unique_id=244201554]
-visible = false
 centered = false
 
 [node name="Anim_bungee_1_enter" type="Sprite2D" parent="Body/BodyCorrect/Anim" index="7" unique_id=1306279430]
@@ -317,6 +817,7 @@ visible = false
 centered = false
 
 [node name="Anim_death" type="Sprite2D" parent="Body/BodyCorrect/Anim" index="21" unique_id=124888655]
+visible = false
 centered = false
 
 [node name="Anim_RV_1" type="Sprite2D" parent="Body/BodyCorrect/Anim" index="22" unique_id=1328750958]
@@ -329,23 +830,26 @@ centered = false
 [node name="InnerArmBack" type="Node2D" parent="Body/BodyCorrect/InnerArm" index="0" unique_id=1997454947]
 
 [node name="Boss_innerarm_bits" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="0" unique_id=965542180]
-position = Vector2(432.1, -230.5)
-rotation = 0.24100001
-scale = Vector2(0.791, 0.889)
+visible = false
+position = Vector2(528.9, -241.4)
+rotation = 0.354
+scale = Vector2(0.795, 0.894)
 texture = ExtResource("3_yjyvd")
 centered = false
 
 [node name="Boss_innerarm_lower" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="1" unique_id=827586080]
-position = Vector2(406.5, -131.9)
-rotation = -0.431
-scale = Vector2(0.788, 0.788)
+visible = false
+position = Vector2(538.3, -214)
+rotation = 1.089
+scale = Vector2(0.795, 0.795)
 texture = ExtResource("4_8fmg0")
 centered = false
 
 [node name="Boss_innerarm_finger4" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="2" unique_id=564955963]
-position = Vector2(562.8, 17.100006)
-rotation = -0.756
-scale = Vector2(0.611, 0.671)
+visible = false
+position = Vector2(375, -71.4)
+rotation = 1.26
+scale = Vector2(0.618, 0.679)
 texture = ExtResource("6_6oe8e")
 centered = false
 
@@ -353,16 +857,18 @@ centered = false
 position = Vector2(33.250984, 54.583748)
 
 [node name="Boss_innerarm_finger2" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="3" unique_id=1130635637]
-position = Vector2(518.6, 38.500008)
-rotation = -0.39299998
-scale = Vector2(0.784, 0.855)
+visible = false
+position = Vector2(355.6, -117)
+rotation = 1.461
+scale = Vector2(0.793, 0.865)
 texture = ExtResource("6_6oe8e")
 centered = false
 
 [node name="Boss_innerarm_finger1" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="4" unique_id=342585618]
-position = Vector2(485.6, 54.600002)
-rotation = -0.278
-scale = Vector2(0.785, 0.785)
+visible = false
+position = Vector2(349.4, -153.5)
+rotation = 1.576
+scale = Vector2(0.794, 0.794)
 texture = ExtResource("6_6oe8e")
 centered = false
 
@@ -370,9 +876,10 @@ centered = false
 position = Vector2(41.316055, 49.081253)
 
 [node name="Boss_innerarm_finger3" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="5" unique_id=91402363]
-position = Vector2(544.4, 28.300005)
-rotation = -0.606
-scale = Vector2(0.669, 0.704)
+visible = false
+position = Vector2(360.9, -90.1)
+rotation = 1.41
+scale = Vector2(0.676, 0.712)
 texture = ExtResource("6_6oe8e")
 centered = false
 
@@ -380,9 +887,10 @@ centered = false
 position = Vector2(34.045753, 46.127296)
 
 [node name="Boss_innerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="6" unique_id=1637418869]
-position = Vector2(442.8, -18.799994)
-rotation = -0.33499998
-scale = Vector2(0.786, 0.786)
+visible = false
+position = Vector2(432.8, -174.1)
+rotation = 1.518
+scale = Vector2(0.794, 0.794)
 texture = ExtResource("7_leylu")
 centered = false
 
@@ -413,99 +921,104 @@ centered = false
 [node name="InnerArmFront" type="Node2D" parent="Body/BodyCorrect/InnerArm" index="2" unique_id=1073141551]
 
 [node name="Boss_innerarm_thumb2" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmFront" index="0" unique_id=1283083894]
-position = Vector2(463.9, -1.199995)
-rotation = -0.33499998
-scale = Vector2(0.786, 0.786)
+visible = false
+position = Vector2(410, -158.4)
+rotation = 1.518
+scale = Vector2(0.794, 0.794)
 texture = ExtResource("10_kx48i")
 centered = false
 
 [node name="Boss_innerarm_thumb1" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmFront" index="1" unique_id=65147529]
-position = Vector2(460.2, -17.199995)
-rotation = -0.33499998
-scale = Vector2(0.786, 0.786)
+visible = false
+position = Vector2(426.4, -157.4)
+rotation = 1.518
+scale = Vector2(0.794, 0.794)
 texture = ExtResource("11_4atkk")
 centered = false
 
 [node name="Boss_innerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmFront" index="2" unique_id=1147161320]
-position = Vector2(435.3, -365.2)
-rotation = 0.24100001
-scale = Vector2(0.791, 0.791)
+visible = false
+position = Vector2(547.6, -375.7)
+rotation = 0.354
+scale = Vector2(0.795, 0.795)
 texture = ExtResource("12_exmbk")
 centered = false
 
 [node name="InnerLeg" type="Node2D" parent="Body/BodyCorrect" index="2" unique_id=843216882]
 
 [node name="Boss_innerleg_foot" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="0" unique_id=971144745]
-position = Vector2(661.3, 104.5)
+position = Vector2(879.9, 104.6)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_uq0v6")
 centered = false
 
 [node name="Boss_innerleg_bits" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="1" unique_id=341568164]
-position = Vector2(684, 37)
-rotation = -0.593
-scale = Vector2(0.793, 0.793)
+position = Vector2(962.9, -6)
+rotation = -0.2130001
+scale = Vector2(0.799, 0.799)
 texture = ExtResource("4_nryly")
 centered = false
 
 [node name="Boss_innerleg_upper" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="2" unique_id=124542618]
-position = Vector2(641.7, -96.799995)
-rotation = -0.15499999
-scale = Vector2(0.795, 0.795)
+position = Vector2(953.9, -120.4)
+rotation = 0.23200011
+scale = Vector2(0.798, 0.798)
 texture = ExtResource("5_kt7wm")
 centered = false
 
 [node name="Boss_innerleg_lower" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="3" unique_id=173477970]
-position = Vector2(656.3, 47.6)
-rotation = -0.545
-scale = Vector2(0.646, 0.646)
+position = Vector2(930.5, -6.9)
+rotation = -0.2130001
+scale = Vector2(0.65, 0.65)
 texture = ExtResource("6_tcx8o")
 centered = false
 
 [node name="BodyBack" type="Node2D" parent="Body/BodyCorrect" index="3" unique_id=172558831]
 
 [node name="Boss_body2" type="Sprite2D" parent="Body/BodyCorrect/BodyBack" index="0" unique_id=2110617389]
-position = Vector2(551.5, -168.2)
-rotation = -0.27899998
-scale = Vector2(0.795, 0.795)
+position = Vector2(904, -152.2)
+rotation = -0.07699996
+scale = Vector2(0.797, 0.797)
+skew = 0.009
 texture = ExtResource("7_513t0")
 centered = false
 
 [node name="OuterLeg" type="Node2D" parent="Body/BodyCorrect" index="4" unique_id=416799543]
 
 [node name="Boss_outerleg_foot" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="0" unique_id=551115959]
-position = Vector2(677.5, 277)
+position = Vector2(948.3, 215)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("3_uq0v6")
 centered = false
 
 [node name="Boss_outerleg_bits" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="1" unique_id=1176380558]
-position = Vector2(740.9, 137)
-rotation = -0.361
-scale = Vector2(0.993, 0.993)
+position = Vector2(1052.1, 80.5)
+rotation = -0.3670002
+scale = Vector2(0.999, 0.999)
 texture = ExtResource("4_nryly")
 centered = false
 
 [node name="Boss_outerleg_upper" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="2" unique_id=547847021]
-position = Vector2(697.5, -37.999992)
-rotation = -0.16899998
-scale = Vector2(0.796, 0.886)
+position = Vector2(1036.7, -74.4)
+rotation = 0.3510002
+scale = Vector2(0.798, 0.889)
 texture = ExtResource("8_l6fqx")
 centered = false
 
 [node name="Boss_outerleg_lower" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="3" unique_id=708027301]
-position = Vector2(705.3, 129.5)
-rotation = -0.239
-scale = Vector2(0.797, 0.797)
+position = Vector2(1012.9, 79.8)
+rotation = -0.3670002
+scale = Vector2(0.799, 0.799)
 texture = ExtResource("6_tcx8o")
 centered = false
 
 [node name="BodyFront" type="Node2D" parent="Body/BodyCorrect" index="5" unique_id=1667616256]
 
 [node name="Boss_body1" type="Sprite2D" parent="Body/BodyCorrect/BodyFront" index="0" unique_id=1719965813]
-position = Vector2(391.4, -387.2)
-rotation = -0.339
-scale = Vector2(0.795, 0.795)
+visible = false
+position = Vector2(800.9, -267.8)
+rotation = -0.127
+scale = Vector2(0.798, 0.798)
 texture = ExtResource("9_opvbh")
 centered = false
 
@@ -513,27 +1026,25 @@ centered = false
 
 [node name="Boss_neck" type="Sprite2D" parent="Body/BodyCorrect/Head" index="0" unique_id=1603125000]
 visible = false
-position = Vector2(838.1, -168.2)
-rotation = -0.03
-scale = Vector2(0.797, 0.797)
+position = Vector2(803, -222.59999)
+rotation = -0.12699997
+scale = Vector2(0.798, 0.798)
 texture = ExtResource("21_rti0c")
 centered = false
 
 [node name="Boss_innerjaw" type="Sprite2D" parent="Body/BodyCorrect/Head" index="1" unique_id=327693032]
 visible = false
-position = Vector2(838.2, -104.7)
-rotation = 0.003
-scale = Vector2(1.002, 0.989)
-skew = 0.023
+position = Vector2(804, -150.29999)
+rotation = -0.12699997
+scale = Vector2(0.997, 0.997)
 texture = ExtResource("22_sm7ee")
 centered = false
 
 [node name="Boss_mouthglow" type="Sprite2D" parent="Body/BodyCorrect/Head" index="2" unique_id=1085485207]
 visible = false
-position = Vector2(845.3, -104.5)
-rotation = 0.003
-scale = Vector2(1.002, 0.989)
-skew = 0.023
+position = Vector2(811, -151.09999)
+rotation = -0.12699997
+scale = Vector2(0.997, 0.997)
 texture = ExtResource("23_nlhln")
 centered = false
 
@@ -558,17 +1069,17 @@ centered = false
 
 [node name="Boss_jaw" type="Sprite2D" parent="Body/BodyCorrect/Head" index="4" unique_id=624544355]
 visible = false
-position = Vector2(814.5, -88.9)
-rotation = 0.003
-scale = Vector2(0.802, 0.791)
-skew = 0.023
+position = Vector2(782.7, -131.6)
+rotation = -0.12699997
+scale = Vector2(0.798, 0.798)
 texture = ExtResource("26_gueo1")
 centered = false
 
 [node name="Boss_eyeglow" type="Sprite2D" parent="Body/BodyCorrect/Head" index="5" unique_id=1378826478]
 visible = false
-position = Vector2(809.8, -99.2)
-scale = Vector2(0.796, 0.796)
+position = Vector2(776.8, -144.5)
+rotation = -0.12699997
+scale = Vector2(0.798, 0.798)
 texture = ExtResource("27_nnn5h")
 centered = false
 
@@ -579,8 +1090,9 @@ centered = false
 
 [node name="Boss_head2" type="Sprite2D" parent="Body/BodyCorrect/Head" index="7" unique_id=78865879]
 visible = false
-position = Vector2(834.4, -165.3)
-scale = Vector2(0.796, 0.796)
+position = Vector2(792.8, -213.39998)
+rotation = -0.12699997
+scale = Vector2(0.798, 0.798)
 texture = ExtResource("29_irhna")
 centered = false
 
@@ -591,192 +1103,205 @@ rotation = -0.11747604
 scale = Vector2(1.2256789, 1.2753907)
 skew = -0.004692197
 
+[node name="Zombie_Boss_driver" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head2" index="1" unique_id=439900858]
+position = Vector2(46.159447, -64.06694)
+
+[node name="Body" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver" index="0" unique_id=777087395]
+
+[node name="BodyCorrect" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body" index="0" unique_id=13340421]
+
+[node name="Anim" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="0" unique_id=1573878759]
+
+[node name="Anim_swell" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="0" unique_id=2091120236]
+visible = false
+centered = false
+
+[node name="Anim_idle" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="1" unique_id=827957039]
+visible = false
+centered = false
+
+[node name="Anim_drive" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="2" unique_id=330304529]
+visible = false
+centered = false
+
+[node name="Anim_damage" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="3" unique_id=1053185989]
+visible = false
+centered = false
+
+[node name="Anim_laugh" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="4" unique_id=1287981632]
+visible = false
+centered = false
+
+[node name="Anim_death" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="5" unique_id=1217013815]
+visible = false
+centered = false
+
+[node name="Anim_flag" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="6" unique_id=1198072345]
+visible = false
+centered = false
+
+[node name="Anim_flag_loop" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="7" unique_id=513596474]
+centered = false
+
+[node name="Flagpole" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="1" unique_id=427635560]
+position = Vector2(42.7, 39.1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("18_bwo12")
+centered = false
+
+[node name="Flag" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="2" unique_id=367394870]
+position = Vector2(44.4, 40.5)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("19_usv8s")
+centered = false
+
+[node name="Driver_innerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="3" unique_id=1676236758]
+position = Vector2(88.8, 111.8)
+rotation = 1.658
+scale = Vector2(0.627, 1.011)
+skew = -0.054
+texture = ExtResource("20_gk12t")
+centered = false
+
+[node name="Driver_innerarm_lower2" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="4" unique_id=1998026631]
+position = Vector2(34.2, 104.3)
+rotation = 0.59
+scale = Vector2(0.663, 0.758)
+skew = 0.283
+texture = ExtResource("21_fhfo7")
+centered = false
+
+[node name="Driver_innerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="5" unique_id=658312344]
+position = Vector2(38.4, 103.3)
+rotation = 1.607
+scale = Vector2(0.805, 0.81)
+skew = 0.248
+texture = ExtResource("22_54imc")
+centered = false
+
+[node name="Driver_innerrarm_lower" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="6" unique_id=2049487809]
+position = Vector2(46.3, 100.9)
+rotation = 0.651
+scale = Vector2(0.652, 0.768)
+skew = 0.267
+texture = ExtResource("23_qiqfr")
+centered = false
+
+[node name="Driver_body" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="7" unique_id=179478043]
+position = Vector2(85.2, 98.8)
+rotation = 0.372
+scale = Vector2(0.811, 0.657)
+skew = 0.311
+texture = ExtResource("24_gghaj")
+centered = false
+
+[node name="Driver_brain" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="8" unique_id=2024841768]
+position = Vector2(61.1, 97.6)
+rotation = 0.099
+scale = Vector2(0.687, 0.814)
+skew = -0.052
+texture = ExtResource("25_78cek")
+centered = false
+
+[node name="Driver_face" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="9" unique_id=1313670895]
+position = Vector2(55.6, 111.2)
+rotation = 0.045
+scale = Vector2(0.72, 0.72)
+skew = 0.108
+texture = ExtResource("41_rti0c")
+centered = false
+
+[node name="Driver_jaw" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="10" unique_id=235487683]
+position = Vector2(66.6, 119.3)
+rotation = 0.045
+scale = Vector2(0.72, 0.72)
+skew = 0.03
+texture = ExtResource("42_sm7ee")
+centered = false
+
+[node name="Driver_outerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="11" unique_id=2132642878]
+position = Vector2(94.6, 121.3)
+rotation = 1.93
+scale = Vector2(0.816, 1.056)
+skew = 0.115
+texture = ExtResource("20_gk12t")
+centered = false
+
+[node name="Driver_outerarm_lower2" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="12" unique_id=761639656]
+position = Vector2(46, 112.5)
+rotation = 0.438
+scale = Vector2(0.799, 0.838)
+skew = 0.307
+texture = ExtResource("21_fhfo7")
+centered = false
+
+[node name="Driver_outerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="13" unique_id=890331286]
+position = Vector2(48.8, 110.7)
+rotation = 2.189
+scale = Vector2(0.849, 0.979)
+skew = 0.278
+texture = ExtResource("28_cv78e")
+centered = false
+
+[node name="Driver_outerarm_lower" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" index="14" unique_id=270086453]
+position = Vector2(52.5, 107.1)
+rotation = 0.618
+scale = Vector2(0.786, 0.824)
+skew = 0.211
+texture = ExtResource("23_qiqfr")
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver" index="1" unique_id=846988033]
+libraries/ = SubResource("AnimationLibrary_r8440")
+
 [node name="Boss_eyeglow_black" type="Sprite2D" parent="Body/BodyCorrect/Head" index="8" unique_id=1909711814]
 visible = false
 centered = false
 
 [node name="Boss_antenna2" type="Sprite2D" parent="Body/BodyCorrect/Head" index="9" unique_id=2124007318]
 visible = false
-position = Vector2(780.3, -133.1)
-rotation = -0.176
-scale = Vector2(0.797, 0.797)
+position = Vector2(741.6, -170.3)
+rotation = -0.54599994
+scale = Vector2(0.799, 0.799)
 texture = ExtResource("31_kyqad")
 centered = false
 
 [node name="Boss_head" type="Sprite2D" parent="Body/BodyCorrect/Head" index="10" unique_id=1284253756]
 visible = false
-position = Vector2(804, -159.7)
-scale = Vector2(0.796, 0.796)
+position = Vector2(763.2, -203.9)
+rotation = -0.12699997
+scale = Vector2(0.798, 0.798)
 texture = ExtResource("32_0l7n2")
 centered = false
 
-[node name="Zombie_Boss_driver" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head" index="0" unique_id=439900858]
-position = Vector2(84.21646, -80.6981)
-
-[node name="Body" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver" index="0" unique_id=777087395]
-
-[node name="BodyCorrect" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body" index="0" unique_id=13340421]
-
-[node name="Anim" type="Node2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="0" unique_id=1573878759]
-
-[node name="Anim_swell" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="0" unique_id=2091120236]
-visible = false
-centered = false
-
-[node name="Anim_idle" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="1" unique_id=827957039]
-visible = false
-centered = false
-
-[node name="Anim_drive" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="2" unique_id=330304529]
-visible = false
-centered = false
-
-[node name="Anim_damage" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="3" unique_id=1053185989]
-visible = false
-centered = false
-
-[node name="Anim_laugh" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="4" unique_id=1287981632]
-visible = false
-centered = false
-
-[node name="Anim_death" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="5" unique_id=1217013815]
-centered = false
-
-[node name="Anim_flag" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="6" unique_id=1198072345]
-visible = false
-centered = false
-
-[node name="Anim_flag_loop" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect/Anim" index="7" unique_id=513596474]
-visible = false
-centered = false
-
-[node name="Flagpole" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="1" unique_id=427635560]
-visible = false
-position = Vector2(42.7, 39.1)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("18_bwo12")
-centered = false
-
-[node name="Flag" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="2" unique_id=367394870]
-visible = false
-position = Vector2(44.4, 40.5)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("19_usv8s")
-centered = false
-
-[node name="Driver_innerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="3" unique_id=1676236758]
-position = Vector2(42.5, 58.9)
-rotation = 0.791
-scale = Vector2(0.733, 0.733)
-texture = ExtResource("20_gk12t")
-centered = false
-
-[node name="Driver_innerarm_lower2" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="4" unique_id=1998026631]
-position = Vector2(14.4, 79.6)
-rotation = 0.145
-scale = Vector2(0.696, 0.696)
-texture = ExtResource("21_fhfo7")
-centered = false
-
-[node name="Driver_innerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="5" unique_id=658312344]
-position = Vector2(0.9, 74)
-rotation = -0.038
-scale = Vector2(0.799, 0.799)
-texture = ExtResource("22_54imc")
-centered = false
-
-[node name="Driver_innerrarm_lower" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="6" unique_id=2049487809]
-position = Vector2(16.2, 72.9)
-rotation = 0.201
-scale = Vector2(0.696, 0.696)
-texture = ExtResource("23_qiqfr")
-centered = false
-
-[node name="Driver_body" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="7" unique_id=179478043]
-position = Vector2(38, 43.8)
-rotation = -0.051
-scale = Vector2(0.799, 0.979)
-texture = ExtResource("24_gghaj")
-centered = false
-
-[node name="Driver_brain" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="8" unique_id=2024841768]
-position = Vector2(40.7, 4.5)
-rotation = 0.534
-scale = Vector2(0.797, 0.797)
-texture = ExtResource("25_78cek")
-centered = false
-
-[node name="Driver_face" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="9" unique_id=1313670895]
-position = Vector2(28.3, 24.3)
-rotation = 0.555
-scale = Vector2(0.799, 0.799)
-texture = ExtResource("41_rti0c")
-centered = false
-
-[node name="Driver_jaw" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="10" unique_id=235487683]
-position = Vector2(33.1, 43.9)
-rotation = 0.565
-scale = Vector2(0.799, 0.799)
-texture = ExtResource("42_sm7ee")
-centered = false
-
-[node name="Driver_outerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="11" unique_id=2132642878]
-position = Vector2(50.1, 56.9)
-rotation = 0.098
-scale = Vector2(0.798, 0.798)
-texture = ExtResource("20_gk12t")
-centered = false
-
-[node name="Driver_outerarm_lower2" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="12" unique_id=761639656]
-position = Vector2(34.8, 83.2)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("21_fhfo7")
-centered = false
-
-[node name="Driver_outerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="13" unique_id=890331286]
-position = Vector2(19.1, 78.3)
-rotation = 0.162
-scale = Vector2(0.9, 0.9)
-texture = ExtResource("28_cv78e")
-centered = false
-
-[node name="Driver_outerarm_lower" type="Sprite2D" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/Body/BodyCorrect" index="14" unique_id=270086453]
-position = Vector2(35.5, 75)
-rotation = 0.038
-scale = Vector2(0.799, 0.799)
-texture = ExtResource("23_qiqfr")
-centered = false
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver" index="1" unique_id=846988033]
-libraries/ = SubResource("AnimationLibrary_r8440")
-
 [node name="Boss_antenna" type="Sprite2D" parent="Body/BodyCorrect/Head" index="11" unique_id=633928670]
 visible = false
-position = Vector2(1005.3, -134)
-scale = Vector2(0.995, 0.995)
+position = Vector2(968, -204.99998)
+rotation = -0.12699997
+scale = Vector2(0.997, 0.997)
 texture = ExtResource("31_kyqad")
 centered = false
 
 [node name="OuterArm" type="Node2D" parent="Body/BodyCorrect" index="7" unique_id=1020694748]
 
 [node name="Boss_outerarm_thumb2" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="0" unique_id=1032467766]
-position = Vector2(663.9, -43.10001)
-rotation = -0.035000023
-scale = Vector2(0.857, 0.902)
+position = Vector2(806, 13.4)
+rotation = 0.51100063
+scale = Vector2(0.858, 0.904)
 texture = ExtResource("47_y0aev")
 centered = false
 
 [node name="Boss_outerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="1" unique_id=811320134]
-position = Vector2(720.7, -68.00001)
-rotation = -0.082000025
-scale = Vector2(0.792, 0.792)
+position = Vector2(893.2, -30.5)
+rotation = 0.4630001
+scale = Vector2(0.794, 0.794)
 texture = ExtResource("48_kx48i")
 centered = false
 
 [node name="Boss-outerarm_finger4" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="2" unique_id=137275460]
-position = Vector2(798, 69.59998)
-rotation = -0.57600003
-scale = Vector2(0.662, 0.608)
+position = Vector2(869, 46)
+rotation = -0.026000462
+scale = Vector2(0.66399986, 0.61)
 texture = ExtResource("49_4atkk")
 centered = false
 
@@ -784,79 +1309,79 @@ centered = false
 position = Vector2(44.77496, 78.85651)
 
 [node name="Boss-outerarm_knuckle4" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="3" unique_id=2055777930]
-position = Vector2(824.1, 46.799988)
-rotation = -0.73300004
-scale = Vector2(0.533, 0.585)
+position = Vector2(922.5, 85)
+rotation = -0.18300055
+scale = Vector2(0.534, 0.587)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss-outerarm_finger3" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="4" unique_id=1651129484]
-position = Vector2(766.2, 68.39999)
-rotation = -0.41000003
-scale = Vector2(0.685, 0.702)
+position = Vector2(853.3, 19.8)
+rotation = 0.13799953
+scale = Vector2(0.68699986, 0.704)
 texture = ExtResource("49_4atkk")
 centered = false
 
 [node name="Boss-outerarm_knuckle3" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="5" unique_id=1251663143]
-position = Vector2(796.5, 44.49999)
-rotation = -0.541
-scale = Vector2(0.564, 0.659)
+position = Vector2(890.6, 65.6)
+rotation = 0.008999599
+scale = Vector2(0.566, 0.661)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss-outerarm_finger2" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="6" unique_id=1985443453]
-position = Vector2(725.8, 66.299995)
-rotation = -0.37000003
-scale = Vector2(0.737, 0.805)
+position = Vector2(884.7, 13.9)
+rotation = 0.17599933
+scale = Vector2(0.739, 0.807)
 texture = ExtResource("49_4atkk")
 centered = false
 
 [node name="Boss-outerarm_knuckle2" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="7" unique_id=2096922334]
-position = Vector2(755.1, 43.49999)
-rotation = -0.47100002
-scale = Vector2(0.741, 0.791)
-skew = -0.002999998
+position = Vector2(863.5, 48.2)
+rotation = 0.07499978
+scale = Vector2(0.744, 0.793)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss-outerarm_finger1" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="8" unique_id=1913959746]
-position = Vector2(686.6, 34.49999)
-rotation = -0.09100002
-scale = Vector2(0.696, 0.765)
+position = Vector2(834.3, 14.6)
+rotation = 0.45399964
+scale = Vector2(0.69799995, 0.7670002)
 texture = ExtResource("49_4atkk")
 centered = false
 
 [node name="Boss-outerarm_knuckle1" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="9" unique_id=2105965060]
-position = Vector2(722, 18.899988)
-rotation = -0.035000023
-scale = Vector2(0.755, 0.755)
+position = Vector2(846.9, 34)
+rotation = 0.511
+scale = Vector2(0.756, 0.756)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss_outerarm_thumb1" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="10" unique_id=778898550]
-position = Vector2(702, -44.200012)
-rotation = -0.035000023
-scale = Vector2(0.857, 0.902)
+position = Vector2(858, -27.4)
+rotation = 0.5110001
+scale = Vector2(0.858, 0.904)
 texture = ExtResource("51_l4cxf")
 centered = false
 
 [node name="Boss_outerarm_bits" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="11" unique_id=636127959]
-position = Vector2(762.4, -164.8)
-rotation = -0.015999991
-scale = Vector2(0.794, 0.794)
+position = Vector2(929.1, -127.3)
+rotation = -0.1689998
+scale = Vector2(0.794, 1.0110002)
 texture = ExtResource("3_yjyvd")
 centered = false
 
 [node name="Boss_outerarm_lower" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="12" unique_id=1896278388]
-position = Vector2(733.5, -217.40001)
-scale = Vector2(0.793, 0.854)
+position = Vector2(941.8, -145)
+rotation = 0.08699997
+scale = Vector2(0.793, 1.0160002)
 texture = ExtResource("52_qhfrt")
 centered = false
 
 [node name="Boss_outerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="13" unique_id=992781487]
-position = Vector2(649.89996, -402.2)
-rotation = -0.26500002
-scale = Vector2(0.793, 0.793)
+position = Vector2(807.2, -289.3)
+rotation = -0.17499982
+scale = Vector2(0.793, 0.89300007)
 texture = ExtResource("37_pg5w1")
 centered = false
 
@@ -946,7 +1471,7 @@ NodePath("Stomp"): 1.0
 initial_skill_sequence = [NodePath("Spawn"), NodePath("Spawn"), NodePath("Spawn")]
 dying_state = NodePath("Dying")
 dead_state = NodePath("Dead")
-driver_animation_player = NodePath("../Body/BodyCorrect/Head/Boss_head/Zombie_Boss_driver/AnimationPlayer")
+driver_animation_player = NodePath("../Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/AnimationPlayer")
 idle_duration = 3.0
 character = NodePath("..")
 animation_player = NodePath("../AnimationPlayer")

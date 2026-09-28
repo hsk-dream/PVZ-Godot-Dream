@@ -2151,3 +2151,17 @@ tracks/177/keys = {
 "method": &"notify_skill_event"
 }]
 }
+tracks/178/type = "method"
+tracks/178/imported = false
+tracks/178/enabled = true
+tracks/178/path = NodePath(".")
+tracks/178/interp = 1
+tracks/178/loop_wrap = true
+tracks/178/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_spawn_1", &"hydraulic_short"],
+"method": &"play_animation_sfx"
+}]
+}

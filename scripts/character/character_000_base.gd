@@ -321,7 +321,7 @@ func be_ice_freeze(time:float, new_time_ice_end_decelerate:float):
 	## 冰冻效果
 	ice_effect = SceneRegistry.ICE_EFFECT.instantiate()
 	add_child(ice_effect)
-	ice_effect = ice_effect
+	ice_effect.global_position = shadow.global_position
 	ice_effect.start_ice_effect(time)
 
 ## 冰冻控制计时器结束

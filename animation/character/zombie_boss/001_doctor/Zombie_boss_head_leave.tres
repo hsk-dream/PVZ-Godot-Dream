@@ -1997,3 +1997,17 @@ tracks/164/keys = {
 "method": &"notify_skill_event"
 }]
 }
+tracks/165/type = "method"
+tracks/165/imported = false
+tracks/165/enabled = true
+tracks/165/path = NodePath(".")
+tracks/165/interp = 1
+tracks/165/loop_wrap = true
+tracks/165/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_head_leave", &"hydraulic"],
+"method": &"play_animation_sfx"
+}]
+}

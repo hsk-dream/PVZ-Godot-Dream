@@ -1887,3 +1887,17 @@ tracks/155/keys = {
 "method": &"notify_skill_event"
 }]
 }
+tracks/156/type = "method"
+tracks/156/imported = false
+tracks/156/enabled = true
+tracks/156/path = NodePath(".")
+tracks/156/interp = 1
+tracks/156/loop_wrap = true
+tracks/156/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Anim_bungee_1_enter", &"hydraulic_short"],
+"method": &"play_animation_sfx"
+}]
+}

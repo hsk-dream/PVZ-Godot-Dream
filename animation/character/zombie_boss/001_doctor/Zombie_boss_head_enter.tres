@@ -2785,3 +2785,17 @@ tracks/229/keys = {
 "method": &"notify_skill_event"
 }]
 }
+tracks/230/type = "method"
+tracks/230/imported = false
+tracks/230/enabled = true
+tracks/230/path = NodePath(".")
+tracks/230/interp = 1
+tracks/230/loop_wrap = true
+tracks/230/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_head_enter", &"hydraulic"],
+"method": &"play_animation_sfx"
+}]
+}

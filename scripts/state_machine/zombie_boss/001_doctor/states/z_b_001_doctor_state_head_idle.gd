@@ -16,7 +16,7 @@ func enter() -> void:
 	if wait_duration == 0.0:
 		state_machine.change_state(next_state)
 		return
-	state_machine.animation_player.play(ZB001DoctorStateMachine.HEAD_IDLE_ANIMATION)
+	doctor_state_machine.play_mech_animation(ZB001DoctorStateMachine.HEAD_IDLE_ANIMATION)
 	doctor_state_machine.sync_action_timer_speed()
 	wait_timer.start_scaled(wait_duration)
 

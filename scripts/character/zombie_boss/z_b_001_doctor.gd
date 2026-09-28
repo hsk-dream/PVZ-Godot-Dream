@@ -9,6 +9,18 @@ class_name ZB001Doctor
 ## 0 表示进入循环后立即开始淡出；场景暂停及全局时间倍率仍然生效。
 @export_range(0.0, 60.0, 0.1, "or_greater") var death_remain_duration: float = 10.0
 
+@export_group("入场踩地")
+## 每次落脚的横向、纵向镜头震动幅度，单位为像素；零向量关闭震动，仍播放声音。
+@export var enter_footstep_shake_amplitude: Vector2 = Vector2(2.0, 6.0)
+## 每次落脚震动的持续游戏秒数；0 关闭震动，不跟随博士个体动画倍率。
+@export_range(0.0, 1.0, 0.01) var enter_footstep_shake_duration: float = 0.2
+## 每秒振动次数；默认 20，震动幅度会在持续时间内衰减至零。
+@export_range(1.0, 60.0, 1.0) var enter_footstep_shake_frequency: float = 20.0
+@export_group("")
+
+## 本次入场已经触发的落脚编号，阻止重复方法事件再次播放同一步的音效和震动。
+var _played_enter_footsteps: Array[int] = []
+
 ## 死亡后保留角色的独立计时器，放在根节点下，避免被技能计时同步设为零速。
 @onready var death_remain_timer: SpeedTimer = $DeathRemainTimer
 
@@ -34,6 +46,45 @@ func ready_norm() -> void:
 ## [param _next_state] 切换后的主状态；此回调只广播状态更新，不读取新状态。
 func _on_state_changed(_previous_state: CharacterState, _next_state: CharacterState) -> void:
 	signal_status_update.emit()
+
+
+## 由 Enter 在播放入场动画前调用，每次重新入场都允许各落脚关键帧触发一次。
+func reset_enter_footsteps() -> void:
+	_played_enter_footsteps.clear()
+
+
+## 入场动画落脚关键帧的统一表现入口，同时播放声音并请求镜头震动，不造成伤害。
+## [param step_index] 本次入场的非负落脚编号；当前外侧脚为 0、内侧脚为 1，重复编号忽略。
+func play_enter_footstep(step_index: int) -> void:
+	if step_index < 0 or _played_enter_footsteps.has(step_index) or is_death \
+		or character_init_type != E_CharacterInitType.IsNorm or not is_inside_tree() or is_queued_for_deletion():
+		return
+	if not is_instance_valid(state_machine) or not state_machine.is_running \
+		or not state_machine.current_state is ZB001DoctorStateEnter:
+		return
+	# 入场被打断后仍可能收到延迟方法调用；动画名和活动状态共同限制有效事件。
+	var player: AnimationPlayer = state_machine.animation_player
+	if not is_instance_valid(player) or player.assigned_animation != ZB001DoctorStateMachine.ENTER_ANIMATION:
+		return
+	_played_enter_footsteps.append(step_index)
+	SoundManager.play_character_SFX(&"gargantuar_thump")
+	EventBus.push_event(MainGameCamera.SHAKE_EVENT, [enter_footstep_shake_amplitude, enter_footstep_shake_duration, enter_footstep_shake_frequency])
+
+
+## 由机甲动画的方法轨道播放角色音效；展示实例、离树实例及旧动画的延迟调用不播放。
+## [param animation_name] 发出调用的机甲动画名称，用于拒绝动作切换后才到达的旧调用。
+## [param sound_name] SoundManager 中注册的角色音效名称；音频保持正常播放速度。
+func play_animation_sfx(animation_name: StringName, sound_name: StringName) -> void:
+	if character_init_type != E_CharacterInitType.IsNorm or not is_inside_tree() or is_queued_for_deletion():
+		return
+	if not is_instance_valid(state_machine):
+		return
+	# 以机甲播放器当前指定的动画为准，驾驶员独立播放的动作不影响此处判断。
+	var player: AnimationPlayer = state_machine.animation_player
+	if not is_instance_valid(player) or player.assigned_animation != animation_name:
+		return
+	# 死亡动画同样需要音效，因此不按 is_death 拦截；复用全局音效池和短时间去重。
+	SoundManager.play_character_SFX(sound_name)
 
 
 ## 延迟执行期间角色可能离树或死亡；重复请求也不能重新初始化并重播入场。

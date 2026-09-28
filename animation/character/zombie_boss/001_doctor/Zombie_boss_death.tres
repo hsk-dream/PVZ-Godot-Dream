@@ -3446,10 +3446,24 @@ tracks/284/path = NodePath("StateMachine")
 tracks/284/interp = 1
 tracks/284/loop_wrap = true
 tracks/284/keys = {
-"times": PackedFloat32Array(2),
+"times": PackedFloat32Array(1.5),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [&"driver_death"],
 "method": &"notify_animation_event"
+}]
+}
+tracks/285/type = "method"
+tracks/285/imported = false
+tracks/285/enabled = true
+tracks/285/path = NodePath(".")
+tracks/285/interp = 1
+tracks/285/loop_wrap = true
+tracks/285/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_death", &"bossexplosion"],
+"method": &"play_animation_sfx"
 }]
 }

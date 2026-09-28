@@ -768,6 +768,37 @@ const ZombieInfo = {
 	},
 }
 
+## 僵尸初始出怪权重；各出怪系统复制后独立调整，不修改公共基础数据。[br]
+## 未列出的类型不参与此权重池，旗帜与小鬼等特殊生成仍由各自逻辑处理。
+const ZombieSpawnWeights: Dictionary[ZombieType, int] = {
+	ZombieType.Z001Norm: 4000,			# 普僵权重
+	ZombieType.Z003Cone: 4000,			# 路障权重
+	ZombieType.Z004PoleVaulter: 2000,	# 撑杆权重
+	ZombieType.Z005Bucket: 3000,		# 铁桶权重
+
+	ZombieType.Z006Paper: 1000,		# 读报权重
+	ZombieType.Z007ScreenDoor: 3500,	# 铁门权重
+	ZombieType.Z008Football: 2000,		# 橄榄球权重
+	ZombieType.Z009Jackson: 1000,		# 舞王权重
+	ZombieType.Z010Dancer: 4000,		# 伴舞权重
+
+	ZombieType.Z012Snorkle: 2000,		# 潜水
+	ZombieType.Z013Zamboni: 2000,		# 冰车
+	ZombieType.Z014Bobsled: 2000,		# 滑雪四兄弟
+	ZombieType.Z015Dolphinrider: 1500,	# 海豚僵尸
+
+	ZombieType.Z016Jackbox: 1000,		# 小丑
+	ZombieType.Z017Balloon: 2000,		# 气球
+	ZombieType.Z018Digger: 1000,		# 矿工
+	ZombieType.Z019Pogo: 1000,			# 跳跳
+	ZombieType.Z020Yeti: 1,			# 雪人
+
+	ZombieType.Z022Ladder: 1000,		# 扶梯
+	ZombieType.Z023Catapult: 1500,	# 投篮
+	ZombieType.Z024Gargantuar: 1500,	# 伽刚特尔
+}
+
+
 ## 获取僵尸属性方法
 func get_zombie_info(zombie_type:ZombieType, info_attribute:ZombieInfoAttribute):
 	if zombie_type == 0:

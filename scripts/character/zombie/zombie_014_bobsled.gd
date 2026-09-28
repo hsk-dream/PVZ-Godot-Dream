@@ -62,10 +62,12 @@ func death_language():
 	if is_can_death_language:
 		var zombie_row:ZombieRow = get_parent()
 		for sub_zombie_body in all_zombie_bobsled_single_body:
+			# 每位队员继承雪橇的刷新归属，博士放置的雪橇拆散后仍不参与自然提前刷新。
 			var zombie_init_para:Dictionary = {
 				Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsNorm,
 				Zombie000Base.E_ZInitAttr.Lane:lane,
 				Zombie000Base.E_ZInitAttr.CurrWave:curr_wave,
+				Zombie000Base.E_ZInitAttr.ParticipatesNaturalRefresh: participates_natural_refresh,
 			}
 			Global.main_game.zombie_manager.call_deferred(
 				"create_norm_zombie",

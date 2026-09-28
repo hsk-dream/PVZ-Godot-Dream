@@ -1,6 +1,6 @@
 extends ZB001DoctorStateSkillPrepare
 class_name ZB001DoctorStateSpawnPrepare
-## 放置专用准备阶段：先锁定目标行与类型，无有效目标时结束本轮，不进入空动画。
+## 放置专用准备阶段：读取本批清单的下一项，无有效任务时结束本轮，不进入空动画。
 
 
 ## 无目标时停止准备链，正常情况下进入 Place；其他技能继续使用原通用准备状态。

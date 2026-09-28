@@ -44,37 +44,9 @@ const zombie_power = {
 	CharacterRegistry.ZombieType.Z025Imp: 1,			# 小鬼
 }
 
-## 创建 zombie_weights 字典，存储初始权重,普僵权重会修改，
-var zombie_weights:Dictionary = zombie_weights_ori.duplicate_deep()
-const zombie_weights_ori = {
-	CharacterRegistry.ZombieType.Z001Norm: 4000,			# 普僵权重
-	#CharacterRegistry.ZombieType.Z002Flag: 0,			# 旗帜权重
-	CharacterRegistry.ZombieType.Z003Cone: 4000,			# 路障权重
-	CharacterRegistry.ZombieType.Z004PoleVaulter: 2000,	# 撑杆权重
-	CharacterRegistry.ZombieType.Z005Bucket: 3000,		# 铁桶权重
-
-	CharacterRegistry.ZombieType.Z006Paper: 1000,		# 读报权重
-	CharacterRegistry.ZombieType.Z007ScreenDoor: 3500,	# 铁门权重
-	CharacterRegistry.ZombieType.Z008Football: 2000,		# 橄榄球权重
-	CharacterRegistry.ZombieType.Z009Jackson: 1000,		# 舞王权重
-	CharacterRegistry.ZombieType.Z010Dancer: 4000,		# 舞王权重
-
-	CharacterRegistry.ZombieType.Z012Snorkle: 2000,		# 潜水
-	CharacterRegistry.ZombieType.Z013Zamboni: 2000,		# 冰车
-	CharacterRegistry.ZombieType.Z014Bobsled: 2000,		# 滑雪四兄弟
-	CharacterRegistry.ZombieType.Z015Dolphinrider: 1500,	# 海豚僵尸
-
-	CharacterRegistry.ZombieType.Z016Jackbox: 1000,		# 小丑
-	CharacterRegistry.ZombieType.Z017Balloon: 2000,		# 气球
-	CharacterRegistry.ZombieType.Z018Digger: 1000,		# 矿工
-	CharacterRegistry.ZombieType.Z019Pogo: 1000,			# 跳跳
-	CharacterRegistry.ZombieType.Z020Yeti: 1,			# 雪人
-
-	CharacterRegistry.ZombieType.Z022Ladder: 1000,		# 扶梯
-	CharacterRegistry.ZombieType.Z023Catapult: 1500,	# 投篮
-	CharacterRegistry.ZombieType.Z024Gargantuar: 1500,	# 伽刚特尔
-	#CharacterRegistry.ZombieType.Z025Imp: 0,		# 小鬼
-}
+## 本管理器独立维护的运行时权重，实例创建时复制注册表基础数据，后续按自然波次调整。[br]
+## 键和值均为整数值类型，普通复制即可隔离修改，无需深度复制。
+var zombie_weights: Dictionary[CharacterRegistry.ZombieType, int] = CharacterRegistry.ZombieSpawnWeights.duplicate()
 
 ## 僵尸随机选择池
 var zombie_choose_random_pool:RandomPicker
@@ -83,16 +55,14 @@ var zombie_choose_random_pool:RandomPicker
 @export var max_zombies_per_wave = 50
 ## 刷新类型最小战力
 var min_power:=100
-## 当前所有可能出怪僵尸权重上限和,每波修改
-var curr_zombie_weight_upper_limit :int
 ## 当前波次生成的僵尸
 var wave_all_zombies:Array[Zombie000Base]
 
-## 初始化创建波次僵尸管理器
+## 使用 [param game_para] 初始化波次生成配置、选行系统和随机池，保留本实例已有的运行时权重。
 func init_zombie_wave_create_manager(game_para:ResourceLevelData):
 	zombie_multy = game_para.zombie_multy
 	range_num_bungi = game_para.range_num_bungi
-	zombie_choose_row_system.init_zombie_choose_row_system()
+	zombie_choose_row_system.init_zombie_choose_row_system(zombie_manager.all_zombie_rows)
 	update_zombie_refresh_types()
 
 ## 更新可以刷新的僵尸列表
@@ -140,6 +110,9 @@ func create_curr_wave_all_zombies(wave:int, is_big_wave:bool):
 				lane = zombie_choose_row_system.select_spawn_row(Global.character_registry.ZombieInfo[zombie_type][CharacterRegistry.ZombieInfoAttribute.ZombieRowType], special_base_weight)
 		else:
 			lane = zombie_choose_row_system.select_spawn_row(Global.character_registry.ZombieInfo[zombie_type][CharacterRegistry.ZombieInfoAttribute.ZombieRowType])
+		# 选行失败时跳过该项，不能把 -1 作为最后一行索引使用。
+		if lane < 0:
+			continue
 		curr_wave_zombie_date.append(
 			{
 				"zombie_type":zombie_type,
@@ -152,7 +125,8 @@ func create_curr_wave_all_zombies(wave:int, is_big_wave:bool):
 			curr_wave_one_zombie_date["lane"],
 			wave
 		)
-		wave_all_zombies.append(zombie)
+		if is_instance_valid(zombie):
+			wave_all_zombies.append(zombie)
 
 	return wave_all_zombies
 
@@ -164,6 +138,9 @@ func wave_create_zombie(
 	curr_wave:int,		## 僵尸波次
 	init_zombie_special:Callable = Callable()		## 初始化僵尸特殊属性
 ):
+	# 直接调用者也必须使用真实存在的行，防止错误下标进入通用创建入口。
+	if lane < 0 or lane >= zombie_manager.all_zombie_rows.size():
+		return null
 	var zombie_init_para:Dictionary = {
 		Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsNorm,
 		Zombie000Base.E_ZInitAttr.Lane:lane,
@@ -177,13 +154,14 @@ func wave_create_zombie(
 	return zombie
 
 #region 创建当前波僵尸生成列表
-## 创建当前波僵尸生成列表
+## 根据零起始波次 [param wave] 和大波标记 [param is_big_wave] 返回本波僵尸类型列表。[br]
+## 每次生成前同步权重与随机池，确保直接载入后期波次也使用对应的衰减权重。
 func create_curr_wave_zombie_list(wave:int, is_big_wave:bool):
-	## 计算当前波僵尸战力上限
+	# 本波可分配给僵尸的战力总额。
 	var curr_wave_power_limit = calculate_wave_power_limit(wave, is_big_wave)
-	## 更新僵尸权重上限
-	update_curr_zombie_weight_upper_limit(wave)
-	## 获取当前波的生成僵尸列表
+	# 按当前波次直接计算，不能依赖先前波次曾经更新过权重。
+	_update_weights(wave)
+	# 按本波权重和战力预算抽取的僵尸类型列表。
 	var wave_spawn :Array[CharacterRegistry.ZombieType] = get_curr_wave_zombie_list(wave, is_big_wave, curr_wave_power_limit)
 
 	return wave_spawn
@@ -200,47 +178,19 @@ func calculate_wave_power_limit(wave:int, is_big_wave: bool) -> int:
 
 	return base_power_limit * zombie_multy
 
-## 计算当前波僵尸权重上限
-func update_curr_zombie_weight_upper_limit(wave:int):
-	## 如果是第0波
-	if wave == 0:
-		curr_zombie_weight_upper_limit = 0
-		# 计算所有可能僵尸的权重总和
-		for zombie_type in zombie_manager.zombie_refresh_types:
-			curr_zombie_weight_upper_limit += zombie_weights[zombie_type]
-	elif wave < 4:
-		pass
-	elif wave < 26:
-		_update_weights(wave)
-		curr_zombie_weight_upper_limit = 0
-		# 计算所有可能僵尸的权重总和
-		for zombie_type in zombie_manager.zombie_refresh_types:
-			curr_zombie_weight_upper_limit += zombie_weights[zombie_type]
-	else:
-		pass
-## 更新权重到达上限后最后一次已经更新
-var is_update_weight_on_limit:=false
-
-## 更新僵尸权重
-func _update_weights(wave: int):
-	if wave >= 5:
-		if wave >= 25:
-			if is_update_weight_on_limit:
-				return
-			is_update_weight_on_limit = true
-			print("更新权重")
-			wave = 25
-
-		var norm_weight = 4000 - (wave - 5) * 180
-		zombie_weights[CharacterRegistry.ZombieType.Z001Norm] = norm_weight
-		if CharacterRegistry.ZombieType.Z001Norm in zombie_manager.zombie_refresh_types:
-			zombie_choose_random_pool.update_item_weight(CharacterRegistry.ZombieType.Z001Norm, norm_weight, false)
-		var cone_weight = 4000 - (wave - 5) * 150
-		zombie_weights[CharacterRegistry.ZombieType.Z003Cone] = cone_weight
-		if CharacterRegistry.ZombieType.Z003Cone in zombie_manager.zombie_refresh_types:
-			zombie_choose_random_pool.update_item_weight(CharacterRegistry.ZombieType.Z003Cone, cone_weight, false)
-
-		zombie_choose_random_pool.rebuild_alias_table()
+## 按零起始自然波次 [param wave] 更新权重及随机池；本函数独立维护自然出怪的成长规则。[br]
+## 每次从注册表基础值计算，重复调用不会累加衰减，超过索引 25 后保持末档权重。
+func _update_weights(wave: int) -> void:
+	zombie_weights = CharacterRegistry.ZombieSpawnWeights.duplicate()
+	# 前六波保持基础权重，之后最多衰减二十档，保留原自然出怪公式。
+	var decay_steps: int = clampi(wave - 5, 0, 20)
+	zombie_weights[CharacterRegistry.ZombieType.Z001Norm] -= decay_steps * 180
+	zombie_weights[CharacterRegistry.ZombieType.Z003Cone] -= decay_steps * 150
+	# 只有这两种类型随进度衰减，其余随机池条目保持基础权重。
+	for zombie_type: CharacterRegistry.ZombieType in [CharacterRegistry.ZombieType.Z001Norm, CharacterRegistry.ZombieType.Z003Cone]:
+		if zombie_type in zombie_manager.zombie_refresh_types:
+			zombie_choose_random_pool.update_item_weight(zombie_type, zombie_weights[zombie_type], false)
+	zombie_choose_random_pool.rebuild_alias_table()
 
 ## 获取当前波僵尸列表
 func get_curr_wave_zombie_list(wave:int, is_big_wave: bool, curr_wave_power_limit:int) ->Array[CharacterRegistry.ZombieType]:
@@ -332,7 +282,8 @@ func spawn_sea_weed_zombies():
 		var lane:int= zombie_row_pool_i.pick_random()
 		var zombie_sea_weed:Zombie000Base = wave_create_zombie(zombie_type, lane, -1, _zombie_seaweed)
 
-		zombie_sea_weed.global_position.x = randf_range(500, 750)
+		if is_instance_valid(zombie_sea_weed):
+			zombie_sea_weed.global_position.x = randf_range(500, 750)
 
 ## 珊瑚僵尸
 func _zombie_seaweed(z:Zombie001Norm):

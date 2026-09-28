@@ -1,33 +1,32 @@
 extends ZB001DoctorSkillState
 class_name ZB001DoctorStateSpawn
-## 一轮技能放置若干只僵尸，两次放置之间播放待机动画；总数只在父技能进入时取样。
-## 单轮最少执行次数；每段放置动画的释放关键帧最多创建一只僵尸。
-@export_range(1, 20, 1) var spawn_count_min: int = 4
-## 单轮最大次数必须不小于最小次数；初始化时拒绝错误配置，不自动交换上下限。
-@export_range(1, 20, 1) var spawn_count_max: int = 6
+## 按技能组件提前准备的清单逐只放置，两次放置之间播放待机动画。
 ## 两次放置之间的等待时间，单位为正常动作速度下的秒；首轮前与最后一轮后不等待。
 @export_range(0.1, 60.0, 0.1) var spawn_interval_duration: float = 1.0
 ## 与 action_animations 下标一一对应的目标行号，从 0 开始；当前场景不存在的行不参与选择。
 @export var animation_lanes: Array[int] = [0, 1, 2, 3, 4]
 
 ## 计划次数与已完成动画次数描述动作流程，实际僵尸数量只由管理器登记。
-## 本轮计划播放的放置次数，仅在进入父技能时随机一次，退出时清零。
+## 本轮计划播放的放置次数，取技能组件清单长度，退出时清零。
 var planned_count := 0
 ## 本轮已完整结束的放置动画次数，用于决定继续准备下一只还是收尾。
 var completed_count := 0
 
+## 在启动子状态机前准备整批清单；空清单由 Prepare 正常结束，避免播放空动作。
 func enter() -> void:
-	planned_count = randi_range(spawn_count_min, spawn_count_max)
+	# 组件独立维护使用次数和权重，本状态只读取本批数量。
+	var spawn_effect: ZB001DoctorSkillSpawn = effect_component as ZB001DoctorSkillSpawn
+	planned_count = spawn_effect.prepare_spawn(animation_lanes)
 	completed_count = 0
 	super.enter()
 
-## 每次先准备行号与类型，再选择对应动画；空结果表示本轮已无可放置目标。
+## 按已完成动画数量读取清单项，再选择对应行动画；此处不重新抽取类型或行。
 func prepare_action() -> void:
 	selected_animation = &""
 	action_parameters.clear()
-	# 已在配置检查中确认类型的放置效果组件，负责筛选可用行与随机僵尸类型。
+	# 已准备完整清单的效果组件，返回副本以免附加动画字段修改原任务。
 	var spawn_effect: ZB001DoctorSkillSpawn = effect_component as ZB001DoctorSkillSpawn
-	action_parameters = spawn_effect.prepare_parameters(animation_lanes)
+	action_parameters = spawn_effect.get_spawn_parameters(completed_count)
 	if action_parameters.is_empty():
 		return
 	# 准备阶段锁定的行号，释放关键帧与动画选择共用同一份数据。
@@ -42,8 +41,10 @@ func prepare_action() -> void:
 	action_parameters["spawn_index"] = completed_count + 1
 	action_parameters["spawn_total"] = planned_count
 
+## 正常完成或死亡中断时丢弃剩余任务，但不回退组件的技能次数或选行历史。
 func exit() -> void:
 	super.exit()
+	(effect_component as ZB001DoctorSkillSpawn).clear_spawn()
 	planned_count = 0
 	completed_count = 0
 
@@ -55,10 +56,6 @@ func get_configuration_error() -> String:
 	var error := super.get_configuration_error()
 	if not error.is_empty():
 		return error
-	if spawn_count_min < 1 or spawn_count_max < spawn_count_min:
-		detected_error = "放置次数必须满足 1 <= spawn_count_min <= spawn_count_max。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
 	if not is_finite(spawn_interval_duration) or spawn_interval_duration <= 0.0:
 		detected_error = "放置间隔必须为有限正数。"
 		push_error("%s：%s" % [get_path(), detected_error])

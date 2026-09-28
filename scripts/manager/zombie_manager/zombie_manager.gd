@@ -51,6 +51,15 @@ var curr_zombie_num:int = 0:
 		label_zombie_sum.text = "当前僵尸数量：" + str(curr_zombie_num)
 		signal_curr_zombie_num_change.emit(v)
 
+## 参与自然提前刷新的实例集合；弱引用避免已释放对象残留，实例 ID 用于幂等移除。
+var _natural_refresh_zombies: Dictionary[int, WeakRef] = {}
+## 自然提前刷新只读取该数量，博士本体及其召唤物不在集合中。
+var natural_refresh_zombie_count: int:
+	get:
+		return _natural_refresh_zombies.size()
+## 自然刷新参与数量发生变化时发出；[param num] 不包含博士及其衍生僵尸。
+signal signal_natural_refresh_zombie_num_change(num: int)
+
 ## 是否为最后一波,最后一波时，僵尸数量为0后结束游戏
 var is_end_wave := false
 ## 被魅惑僵尸列表
@@ -117,8 +126,8 @@ func init_manager() -> void:
 			zombie_wave_manager.init_zombie_wave_manager(game_para)
 			## 波次刷新时判断是否为最后一波，删除多余魅惑僵尸
 			zombie_wave_manager.signal_wave_refresh.connect(wave_refresh)
-			## 僵尸数量改变时，剩余僵尸为0触发提前刷新
-			signal_curr_zombie_num_change.connect(zombie_wave_manager.zombie_wave_refresh_manager.judge_total_refresh)
+			## 使用独立的自然刷新数量，博士及其召唤物不阻塞旗前波提前刷新。
+			signal_natural_refresh_zombie_num_change.connect(zombie_wave_manager.zombie_wave_refresh_manager.judge_total_refresh)
 
 		ConstLevelData.E_MonsterMode.HammerZombie:
 			hammer_zombie_manager.init_hammer_zombie_manager(game_para)
@@ -308,6 +317,7 @@ func create_skill_zombie(zombie_type: CharacterRegistry.ZombieType, lane: int, s
 		Zombie000Base.E_ZInitAttr.CharacterInitType: Character000Base.E_CharacterInitType.IsNorm,
 		Zombie000Base.E_ZInitAttr.Lane: lane,
 		Zombie000Base.E_ZInitAttr.CurrWave: -1,
+		Zombie000Base.E_ZInitAttr.ParticipatesNaturalRefresh: false,
 	}
 	return create_norm_zombie(zombie_type, row, init_parameters, spawn_position)
 
@@ -336,6 +346,7 @@ func create_skill_bungi(target_cell: PlantCell, on_created: Callable = Callable(
 		Zombie000Base.E_ZInitAttr.CharacterInitType: Character000Base.E_CharacterInitType.IsNorm,
 		Zombie000Base.E_ZInitAttr.Lane: lane,
 		Zombie000Base.E_ZInitAttr.CurrWave: -1,
+		Zombie000Base.E_ZInitAttr.ParticipatesNaturalRefresh: false,
 	}
 	return create_norm_zombie(CharacterRegistry.ZombieType.Z021Bungi, row, init_parameters,
 		spawn_position, _initialize_skill_bungi.bind(target_cell, on_created)) as Zombie021Bungi
@@ -360,6 +371,7 @@ func create_norm_zombie(
 	global_pos:Vector2=Vector2.ZERO,
 	init_zombie_special:Callable = Callable()		## 初始化僵尸特殊属性
 ) -> Zombie000Base:
+	# 新实例入树前由初始化参数确定刷新归属；博士来源不会登记到自然刷新集合。
 	var zombie:Zombie000Base = Global.character_registry.get_zombie_info(zombie_type, CharacterRegistry.ZombieInfoAttribute.ZombieScenes).instantiate()
 	zombie_init_para[Zombie000Base.E_ZInitAttr.IsMiniZombie] = game_para.is_mini_zombie
 	zombie_init_para[Zombie000Base.E_ZInitAttr.IsZombieMode] = game_para.is_zombie_mode
@@ -379,6 +391,7 @@ func create_norm_zombie(
 	all_zombies_1d.append(zombie)
 
 	curr_zombie_num += 1
+	_register_natural_refresh_zombie(zombie)
 
 	return zombie
 
@@ -386,30 +399,73 @@ func create_norm_zombie(
 
 #region 僵尸死亡 魅惑信号 波次刷新 多轮游戏
 #region 魅惑 死亡
-## 僵尸被魅惑发射信号
-func _on_zombie_hypno(zombie:Zombie000Base):
-	## 出战僵尸保存列表删除该僵尸
+## [param zombie] 被魅惑时移出敌方及自然刷新计数，保留实例用于后续死亡清理。
+func _on_zombie_hypno(zombie: Zombie000Base) -> void:
+	if not all_zombies_1d.has(zombie) or all_zombies_be_hypno.has(zombie):
+		return
 	curr_zombie_num -= 1
 	all_zombies_2d[zombie.lane].erase(zombie)
-	## 掉血信号
-	zombie.signal_zombie_hp_loss.emit(zombie.hp_component.get_all_hp(), zombie.curr_wave)
-	var conns = zombie.signal_zombie_hp_loss.get_connections()
-	for conn in conns:
-		zombie.signal_zombie_hp_loss.disconnect(conn.callable)
 	all_zombies_be_hypno.append(zombie)
-
+	_remove_natural_refresh_zombie(zombie.get_instance_id())
+	zombie.signal_zombie_hp_loss.emit(zombie.hp_component.get_all_hp(), zombie.curr_wave)
+	# 魅惑之后不再把该实例的掉血记入原自然波次。
+	var connections: Array = zombie.signal_zombie_hp_loss.get_connections()
+	# 当前需要移除的掉血监听连接。
+	for connection: Dictionary in connections:
+		zombie.signal_zombie_hp_loss.disconnect(connection.callable)
 	_try_finish_wave(zombie.global_position)
 
-## 僵尸发射死亡信号后调用函数
+
+## [param zombie] 死亡时只结算一次；已魅惑实例不会再次减少敌方或自然刷新数量。
 func _on_zombie_dead(zombie: Zombie000Base) -> void:
+	if not all_zombies_1d.has(zombie):
+		return
 	all_zombies_1d.erase(zombie)
+	_remove_natural_refresh_zombie(zombie.get_instance_id())
 	if zombie.is_hypno:
 		all_zombies_be_hypno.erase(zombie)
 	else:
 		curr_zombie_num -= 1
 		all_zombies_2d[zombie.lane].erase(zombie)
-
 		_try_finish_wave(zombie.global_position)
+
+
+## 将 [param zombie] 登记到自然刷新集合；所有原有生成默认参与，博士来源在入树前明确关闭。
+func _register_natural_refresh_zombie(zombie: Zombie000Base) -> void:
+	if not zombie.participates_natural_refresh or zombie.is_death or zombie.is_hypno or zombie.is_queued_for_deletion():
+		return
+	# 集合以实例 ID 去重，死亡、魅惑和离树可重复请求移除而不重复扣数。
+	var instance_id: int = zombie.get_instance_id()
+	if _natural_refresh_zombies.has(instance_id):
+		return
+	_natural_refresh_zombies[instance_id] = weakref(zombie)
+	zombie.tree_exiting.connect(_on_natural_refresh_zombie_tree_exiting.bind(instance_id))
+	signal_natural_refresh_zombie_num_change.emit(natural_refresh_zombie_count)
+
+
+## 移除 [param instance_id] 的刷新登记；场景卸载期间只清理记录，不触发新的自然波次。
+func _remove_natural_refresh_zombie(instance_id: int) -> void:
+	if not _natural_refresh_zombies.erase(instance_id):
+		return
+	if _is_game_running():
+		signal_natural_refresh_zombie_num_change.emit(natural_refresh_zombie_count)
+
+
+## [param instance_id] 离树时延迟确认；僵尸换行会重挂父节点，不能误当成离开关卡。
+func _on_natural_refresh_zombie_tree_exiting(instance_id: int) -> void:
+	call_deferred("_remove_natural_refresh_zombie_if_absent", instance_id)
+
+
+## 仅当 [param instance_id] 真正释放或离开本关卡时清理刷新登记，正常换行保留。
+func _remove_natural_refresh_zombie_if_absent(instance_id: int) -> void:
+	if not _natural_refresh_zombies.has(instance_id):
+		return
+	# 弱引用返回值先保持 Variant，避免读取已释放的角色实例。
+	var zombie = _natural_refresh_zombies[instance_id].get_ref()
+	if is_instance_valid(zombie) and zombie.is_inside_tree() and not zombie.is_queued_for_deletion() \
+		and is_instance_valid(main_game) and main_game.is_ancestor_of(zombie):
+		return
+	_remove_natural_refresh_zombie(instance_id)
 
 
 ## 普通死亡、魅惑及僵王死亡共用原有清场条件；Boss 模式不通过此入口发奖。

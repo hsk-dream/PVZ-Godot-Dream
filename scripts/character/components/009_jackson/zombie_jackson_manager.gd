@@ -170,9 +170,11 @@ func call_zombie_dancer():
 			var new_zombie_dancer_lane_and_pos = get_new_zombie_dancer_lane_and_glo_pos(i, zombie_dancers[-1].lane, zombie_dancers[-1].global_position)
 			## 如果当前位置可以生成伴舞
 			if new_zombie_dancer_lane_and_pos:
+				# 伴舞继承舞王的刷新归属，后续补召唤也不会把博士敌人计入自然波次。
 				var zombie_init_para:Dictionary = {
 					Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsNorm,
 					Zombie000Base.E_ZInitAttr.Lane:new_zombie_dancer_lane_and_pos["lane"],
+					Zombie000Base.E_ZInitAttr.ParticipatesNaturalRefresh: zombie_dancers[-1].participates_natural_refresh,
 				}
 				var _new_zombie_dancer:Zombie010Dancer = Global.main_game.zombie_manager.create_norm_zombie(
 					CharacterRegistry.ZombieType.Z010Dancer,

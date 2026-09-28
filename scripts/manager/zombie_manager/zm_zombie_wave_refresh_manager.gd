@@ -119,12 +119,12 @@ func judge_half_refresh(all_loss_hp:int, wave:int):
 	if wave == curr_wave and curr_can_refresh_type == E_RefreshType.HalfRefresh:
 		wave_current_health -= all_loss_hp
 
-		if wave_current_health <= refresh_health or zombie_manager.curr_zombie_num <= 0:
+		if wave_current_health <= refresh_health or zombie_manager.natural_refresh_zombie_count <= 0:
 			_trigger_refresh()
 
-## 判断全部死亡刷新
-func judge_total_refresh(zombie_num:int):
-	if curr_can_refresh_type == E_RefreshType.TotalRefresh and zombie_num<=0:
+## [param zombie_num] 为自然刷新参与数量，博士及其召唤物不阻塞旗前波的清空刷新。
+func judge_total_refresh(zombie_num: int) -> void:
+	if curr_can_refresh_type == E_RefreshType.TotalRefresh and zombie_num <= 0:
 		_trigger_refresh()
 
 ## 触发提前刷新
@@ -142,6 +142,14 @@ func _trigger_refresh():
 func _on_wave_min_time_timer_timeout() -> void:
 	curr_refresh_status = E_RefreshStatus.AwaitRefresh
 	signal_start_await_refresh.emit()
+	# 选行失败可能产生空波；达到最短等待后重新检查，避免依赖一次不存在的死亡信号。
+	if curr_refresh_status != E_RefreshStatus.AwaitRefresh:
+		return
+	if curr_can_refresh_type == E_RefreshType.TotalRefresh:
+		judge_total_refresh(zombie_manager.natural_refresh_zombie_count)
+	elif curr_can_refresh_type == E_RefreshType.HalfRefresh:
+		if wave_current_health <= refresh_health or zombie_manager.natural_refresh_zombie_count <= 0:
+			_trigger_refresh()
 
 ## 正常刷新触发，以及其余刷新触发逻辑
 func _on_wave_norm_refresh_timer_timeout() -> void:

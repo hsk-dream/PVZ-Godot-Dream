@@ -13,37 +13,6 @@ var range_num_bungi:Vector2i = Vector2i(3,5)
 ## 僵尸选行系统
 @onready var zombie_choose_row_system: ZombieChooseRowSystem = %ZombieChooseRowSystem
 
-## 定义每个僵尸的战力值
-const zombie_power = {
-	CharacterRegistry.ZombieType.Z001Norm: 1,		# 普僵战力
-	CharacterRegistry.ZombieType.Z002Flag: 1,		# 旗帜战力
-	CharacterRegistry.ZombieType.Z003Cone: 2,		# 路障战力
-	CharacterRegistry.ZombieType.Z004PoleVaulter: 2,	# 撑杆战力
-	CharacterRegistry.ZombieType.Z005Bucket: 4,		# 铁桶战力
-
-	CharacterRegistry.ZombieType.Z006Paper: 2,		# 读报战力
-	CharacterRegistry.ZombieType.Z007ScreenDoor: 4,	# 铁门战力
-	CharacterRegistry.ZombieType.Z008Football: 7,	# 橄榄球战力
-	CharacterRegistry.ZombieType.Z009Jackson: 5,		# 舞王战力
-	CharacterRegistry.ZombieType.Z010Dancer: 1,		# 伴舞权重
-
-	CharacterRegistry.ZombieType.Z012Snorkle: 3,		# 潜水
-	CharacterRegistry.ZombieType.Z013Zamboni: 7,		# 冰车
-	CharacterRegistry.ZombieType.Z014Bobsled: 3,		# 滑雪四兄弟
-	CharacterRegistry.ZombieType.Z015Dolphinrider: 3,# 海豚僵尸
-
-	CharacterRegistry.ZombieType.Z016Jackbox: 3,		# 小丑
-	CharacterRegistry.ZombieType.Z017Balloon: 2,		# 气球
-	CharacterRegistry.ZombieType.Z018Digger: 4,		# 矿工
-	CharacterRegistry.ZombieType.Z019Pogo: 4,			# 跳跳
-	CharacterRegistry.ZombieType.Z020Yeti: 4,			# 雪人
-
-	CharacterRegistry.ZombieType.Z022Ladder: 4,		# 扶梯
-	CharacterRegistry.ZombieType.Z023Catapult: 5,		# 投篮
-	CharacterRegistry.ZombieType.Z024Gargantuar: 10,	# 伽刚特尔
-	CharacterRegistry.ZombieType.Z025Imp: 1,			# 小鬼
-}
-
 ## 本管理器独立维护的运行时权重，实例创建时复制注册表基础数据，后续按自然波次调整。[br]
 ## 键和值均为整数值类型，普通复制即可隔离修改，无需深度复制。
 var zombie_weights: Dictionary[CharacterRegistry.ZombieType, int] = CharacterRegistry.ZombieSpawnWeights.duplicate()
@@ -71,8 +40,8 @@ func update_zombie_refresh_types():
 	var zombie_choose_random_pool_data:Array[Array] = []
 	min_power = 100
 	for zombie_type in zombie_manager.zombie_refresh_types:
-		if min_power > zombie_power[zombie_type]:
-			min_power = zombie_power[zombie_type]
+		if min_power > CharacterRegistry.ZombieSpawnPower[zombie_type]:
+			min_power = CharacterRegistry.ZombieSpawnPower[zombie_type]
 		zombie_choose_random_pool_data.append([zombie_type, zombie_weights[zombie_type]])
 	print("更新僵尸随机选择池")
 	zombie_choose_random_pool = RandomPicker.new(zombie_choose_random_pool_data)
@@ -205,27 +174,28 @@ func get_curr_wave_zombie_list(wave:int, is_big_wave: bool, curr_wave_power_limi
 	if is_big_wave:
 		## 第一个旗帜僵尸
 		wave_spawn.append(CharacterRegistry.ZombieType.Z002Flag)
-		total_power += zombie_power[CharacterRegistry.ZombieType.Z002Flag]
+		total_power += CharacterRegistry.ZombieSpawnPower[CharacterRegistry.ZombieType.Z002Flag]
 		curr_spare_slot -= 1
 
 		# 第一次大波（第10波），刷新4个普通僵尸
 		if wave == 9:
 			for i in range(4):
 				wave_spawn.append(CharacterRegistry.ZombieType.Z001Norm)
-				total_power += zombie_power[CharacterRegistry.ZombieType.Z001Norm]
+				total_power += CharacterRegistry.ZombieSpawnPower[CharacterRegistry.ZombieType.Z001Norm]
 				curr_spare_slot -= 1
 		# 之后的大波（第20波、30波...），刷新8个普通僵尸
 		else:
 			for i in range(8):
 				wave_spawn.append(CharacterRegistry.ZombieType.Z001Norm)
-				total_power += zombie_power[CharacterRegistry.ZombieType.Z001Norm]
+				total_power += CharacterRegistry.ZombieSpawnPower[CharacterRegistry.ZombieType.Z001Norm]
 				curr_spare_slot -= 1
 
 	# 生成剩余僵尸，直到总战力符合当前战力上限
 	while curr_spare_slot > 0 and total_power < curr_wave_power_limit:
 
 		var selected_zombie:CharacterRegistry.ZombieType = zombie_choose_random_pool.get_random_item()
-		var zombie_power_value = zombie_power[selected_zombie]
+		# 本次抽中类型消耗的战力，统一读取角色注册表。
+		var zombie_power_value: int = CharacterRegistry.ZombieSpawnPower[selected_zombie]
 
 		#prints("当前剩余僵尸", curr_spare_slot, "当前战力:", total_power, "当前所选僵尸:", selected_zombie, "当前所选僵尸战力:", zombie_power_value)
 
@@ -237,7 +207,7 @@ func get_curr_wave_zombie_list(wave:int, is_big_wave: bool, curr_wave_power_limi
 		elif curr_wave_power_limit - total_power < min_power:
 			for i in range(curr_wave_power_limit - total_power):
 				wave_spawn.append(CharacterRegistry.ZombieType.Z001Norm)
-				total_power += zombie_power[CharacterRegistry.ZombieType.Z001Norm]
+				total_power += CharacterRegistry.ZombieSpawnPower[CharacterRegistry.ZombieType.Z001Norm]
 				curr_spare_slot -= 1
 			continue
 		else:

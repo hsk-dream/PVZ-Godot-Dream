@@ -34,6 +34,9 @@ script = ExtResource("3_8ubs5")
 [node name="Slope" parent="CanvasLayerBG/Background/RoofSlope" index="0" unique_id=2028472067 instance=ExtResource("4_8ubs5")]
 position = Vector2(-210, 0)
 
+[node name="WaveProgressRoot" parent="CanvasLayerUI/LevelInfo" parent_id_path=PackedInt32Array(1845922859) index="0"]
+anchors_preset = 0
+
 [node name="PlantCellsRow1" type="Control" parent="PlantCellsRoot" parent_id_path=PackedInt32Array(1977903182) index="0" unique_id=1393950284]
 z_index = 10
 layout_mode = 3

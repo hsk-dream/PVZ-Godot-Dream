@@ -768,6 +768,38 @@ const ZombieInfo = {
 	},
 }
 
+## 每种僵尸消耗的出怪战力，供自然波次和僵王放置技能只读访问，无需复制。[br]
+## 未列出的类型不能参与按战力预算生成；战力不包含生成后衍生出的其他僵尸。
+const ZombieSpawnPower: Dictionary[ZombieType, int] = {
+	ZombieType.Z001Norm: 1,		# 普僵战力
+	ZombieType.Z002Flag: 1,		# 旗帜战力
+	ZombieType.Z003Cone: 2,		# 路障战力
+	ZombieType.Z004PoleVaulter: 2,	# 撑杆战力
+	ZombieType.Z005Bucket: 4,		# 铁桶战力
+
+	ZombieType.Z006Paper: 2,		# 读报战力
+	ZombieType.Z007ScreenDoor: 4,	# 铁门战力
+	ZombieType.Z008Football: 7,	# 橄榄球战力
+	ZombieType.Z009Jackson: 5,		# 舞王战力
+	ZombieType.Z010Dancer: 1,		# 伴舞战力
+
+	ZombieType.Z012Snorkle: 3,		# 潜水
+	ZombieType.Z013Zamboni: 7,		# 冰车
+	ZombieType.Z014Bobsled: 3,		# 滑雪四兄弟
+	ZombieType.Z015Dolphinrider: 3,# 海豚僵尸
+
+	ZombieType.Z016Jackbox: 3,		# 小丑
+	ZombieType.Z017Balloon: 2,		# 气球
+	ZombieType.Z018Digger: 4,		# 矿工
+	ZombieType.Z019Pogo: 4,			# 跳跳
+	ZombieType.Z020Yeti: 4,			# 雪人
+
+	ZombieType.Z022Ladder: 4,		# 扶梯
+	ZombieType.Z023Catapult: 5,		# 投篮
+	ZombieType.Z024Gargantuar: 10,	# 伽刚特尔
+	ZombieType.Z025Imp: 1,			# 小鬼
+}
+
 ## 僵尸初始出怪权重；各出怪系统复制后独立调整，不修改公共基础数据。[br]
 ## 未列出的类型不参与此权重池，旗帜与小鬼等特殊生成仍由各自逻辑处理。
 const ZombieSpawnWeights: Dictionary[ZombieType, int] = {

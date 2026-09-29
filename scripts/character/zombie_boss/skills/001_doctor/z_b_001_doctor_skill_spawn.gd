@@ -1,10 +1,10 @@
 extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillSpawn
-## 博士放置技能：独立更新类型权重与选行历史，提前准备整批清单，在动画关键帧逐只创建。
+## 博士放置技能：独立更新类型权重、战力预算与选行历史，提前准备整批清单，在动画关键帧逐只创建。
 
 ## 手指下的生成标记，仅在释放时读取全局 X；Y 使用清单目标行的出生点。
 @export var spawn_marker: Marker2D
-## 每次技能计划放置的最少数量；死亡等中断可以使实际生成数量少于此值。
+## 每次成功准备的清单最少数量；预算不足时自动抬高，死亡等中断可以使实际生成数量少于此值。
 @export_range(1, 20, 1) var spawn_count_min: int = 3
 ## 每次技能计划放置的最多数量，不得小于最小值。
 @export_range(1, 20, 1) var spawn_count_max: int = 5
@@ -16,20 +16,32 @@ class_name ZB001DoctorSkillSpawn
 	CharacterRegistry.ZombieType.Z005Bucket,
 ]
 
+@export_group("放置战力成长")
+## 放置技能的初始战力预算；不足时自动提高到最低候选战力乘计划数量，相等时不调整。
+## 修正只影响当前实例并保留到后续批次，不回写场景文件；与自然波次预算独立。
+@export_range(1, 200, 1, "or_greater") var spawn_power_base: int = 10
+## 每成功准备多少次放置技能提高一档，至少为 1；不是逐只僵尸累计。
+@export_range(1, 100, 1, "or_greater") var spawn_power_growth_interval: int = 1
+## 每档增加的整批战力；0 表示保持初始预算，不随使用次数成长。
+@export_range(0, 100, 1, "or_greater") var spawn_power_growth_step: int = 2
+## 成长后的战力预算上限；低于修正后的初始预算时同步提高，剩余预算不结转到下一批。
+@export_range(1, 200, 1, "or_greater") var spawn_power_max: int = 30
+@export_group("")
+
 ## 博士独立维护的运行时权重；键和值均为整数，普通复制即可隔离修改。
 var zombie_weights: Dictionary[CharacterRegistry.ZombieType, int] = CharacterRegistry.ZombieSpawnWeights.duplicate()
-## 已成功准备的技能次数；先用于本次权重计算，再递增，中断时不回退。
+## 已成功准备的技能次数；先用于本次权重和战力预算计算，再递增，中断时不回退。
 var spawn_skill_use_count: int = 0
 ## 本次技能的有序清单，每项只保存实际类型 zombie_type 与零起始行号 lane。
 var spawn_entries: Array[Dictionary] = []
-## 博士独立使用的类型随机池，每次准备按最新权重和合法行重建。
+## 博士独立使用的类型随机池，每个名额按最新权重、合法行和剩余战力重建。
 var zombie_picker: RandomPicker
 ## 博士自己的选行实例；首次正式准备时初始化，技能之间保留历史。
 @onready var choose_row_system: ZombieChooseRowSystem = get_node_or_null("SpawnChooseRowSystem") as ZombieChooseRowSystem
 
 
 ## 为 [param allowed_lanes] 支持的动画行一次性准备完整清单，返回计划放置数量。[br]
-## 无可用组合时返回 0 且不累计技能次数；不会启动自然波次或修改其权重和选行记录。
+## 无可用组合时返回 0 且不累计技能次数；预算不足会自动修正，不修改自然波次数据。
 func prepare_spawn(allowed_lanes: Array[int]) -> int:
 	clear_spawn()
 	# 当前博士所属的战斗管理器，只读取场地数据和生成合法性。
@@ -38,15 +50,20 @@ func prepare_spawn(allowed_lanes: Array[int]) -> int:
 		return 0
 	if spawn_count_min < 1 or spawn_count_max < spawn_count_min:
 		return 0
+	if spawn_power_growth_interval < 1 or spawn_power_growth_step < 0:
+		return 0
 	if not choose_row_system.is_initialized:
 		choose_row_system.init_zombie_choose_row_system(manager.all_zombie_rows)
 	_update_spawn_weights()
 	# 以配置类型的权重抽样；雪橇无可用冰道时可以解析成冰车，不改变原抽样权重。
 	var candidates: Array[Dictionary] = []
+	# 当前场地合法候选中的最低战力；0 表示尚未找到候选，用于预算修正及名额预留。
+	var minimum_power: int = 0
 	# 当前配置类型，每个类型最多贡献一个随机项。
 	for zombie_type: CharacterRegistry.ZombieType in zombie_types:
-		# 当前类型的有效权重与实际待生成类型。
+		# 当前类型的有效概率权重，权重不参与战力预算计算。
 		var weight: int = zombie_weights.get(zombie_type, 0)
+		# 实际待生成的类型，雪橇缺少冰道时替换为冰车。
 		var actual_type: CharacterRegistry.ZombieType = zombie_type
 		if weight <= 0:
 			continue
@@ -55,26 +72,74 @@ func prepare_spawn(allowed_lanes: Array[int]) -> int:
 		if zombie_type == CharacterRegistry.ZombieType.Z014Bobsled and not row_weights.has(1.0):
 			actual_type = CharacterRegistry.ZombieType.Z013Zamboni
 			row_weights = _get_lane_weights(manager, actual_type, allowed_lanes)
-		if row_weights.has(1.0):
-			candidates.append({"data": {"zombie_type": actual_type, "row_weights": row_weights}, "weight": weight})
+		if not row_weights.has(1.0):
+			continue
+		# 必须按最终生成类型计费，例如雪橇替换为冰车后使用冰车战力。
+		var actual_power: int = CharacterRegistry.ZombieSpawnPower.get(actual_type, 0)
+		if actual_power <= 0:
+			push_error("%s：放置类型 %s 缺少正数战力配置。" % [get_path(), actual_type])
+			return 0
+		minimum_power = actual_power if minimum_power == 0 else mini(minimum_power, actual_power)
+		candidates.append({"data": {"zombie_type": actual_type, "row_weights": row_weights, "power": actual_power}, "weight": weight})
 	if candidates.is_empty():
 		return 0
-	zombie_picker = RandomPicker.new(candidates, false)
-	# 数量只在本次技能开始时取样，不受自然波次的战力预算限制。
+	# 先按配置确定本批数量，再抬高预算，避免低预算缩减数量或取消整批放置。
 	var spawn_count: int = randi_range(spawn_count_min, spawn_count_max)
-	# 当前计划项序号；每一项独立抽类型并依次更新博士的选行历史。
-	for _spawn_index: int in range(spawn_count):
+	_ensure_minimum_spawn_power(minimum_power, spawn_count)
+	# 修正初始预算和封顶值后计算成长；本批在使用次数递增前锁定，不结转余额。
+	var remaining_power: int = _calculate_spawn_power_limit()
+	# 当前计划项序号，用于计算本项之后还需保证的数量。
+	for spawn_index: int in range(spawn_count):
+		# 后续名额至少需要的预算，保证前面抽到强力僵尸后仍能填满整批清单。
+		var reserved_power: int = (spawn_count - spawn_index - 1) * minimum_power
+		# 本项能够负担的随机候选；保留各自概率权重，只排除战力超预算的类型。
+		var affordable_candidates: Array[Dictionary] = []
+		# 已通过场地筛选的候选及其实际生成类型数据。
+		for candidate: Dictionary in candidates:
+			# 候选数据中的 power 始终对应实际生成类型，不使用替换前类型的战力。
+			var candidate_data: Dictionary = candidate["data"]
+			if int(candidate_data["power"]) + reserved_power <= remaining_power:
+				affordable_candidates.append(candidate)
+		if affordable_candidates.is_empty():
+			clear_spawn()
+			return 0
+		# 先过滤再随机，避免对无法负担的类型反复重抽而卡住技能准备。
+		zombie_picker = RandomPicker.new(affordable_candidates, false)
 		# 已过滤的候选信息，清单只保存类型与行，不保存临时行权重数组。
 		var selected: Dictionary = zombie_picker.get_random_item()
+		# 本项最终生成类型，与候选中计费的战力一致。
 		var selected_type: CharacterRegistry.ZombieType = selected["zombie_type"]
+		# 实际类型允许的水陆行分类，交给博士独立的选行系统。
 		var row_type: CharacterRegistry.ZombieRowType = Global.character_registry.get_zombie_info(selected_type, CharacterRegistry.ZombieInfoAttribute.ZombieRowType)
+		# 本项锁定的零起始行号，播放动画和释放僵尸共用；负数表示选行失败。
 		var lane: int = choose_row_system.select_spawn_row(row_type, selected["row_weights"])
 		if lane < 0:
 			clear_spawn()
 			return 0
 		spawn_entries.append({"zombie_type": selected_type, "lane": lane})
+		remaining_power -= int(selected["power"])
 	spawn_skill_use_count += 1
 	return spawn_entries.size()
+
+
+## 保证初始预算大于等于最低总战力，只向上修正当前实例，不降低后续批次的预算。
+## [param minimum_power] 候选中的正数最低战力；准备时必须使用实际合法类型的战力。
+## [param spawn_count] 要保证的正数数量；配置校验使用最少数量，实际准备使用本批随机数量。
+func _ensure_minimum_spawn_power(minimum_power: int, spawn_count: int) -> void:
+	# 正好承担所有名额的最低战力即可，预算相等时不额外提高。
+	var required_power: int = minimum_power * spawn_count
+	spawn_power_base = maxi(spawn_power_base, required_power)
+	# 封顶不能压低数量所需的最低预算，否则成长计算后仍可能无法填满清单。
+	spawn_power_max = maxi(spawn_power_max, spawn_power_base)
+
+
+## 按准备前的成功使用次数计算本批战力；不依赖自然波次，也不修改计数。
+## 调用前需校验增长间隔并修正最低预算；返回值不超过修正后的最终上限。
+func _calculate_spawn_power_limit() -> int:
+	# 已完成的增长档数，整数除法使每档覆盖指定数量的技能使用次数。
+	@warning_ignore("integer_division")
+	var growth_steps: int = spawn_skill_use_count / spawn_power_growth_interval
+	return mini(spawn_power_base + growth_steps * spawn_power_growth_step, spawn_power_max)
 
 
 ## 按放置技能使用次数更新博士权重；本函数独立于自然波次规则，便于单独调整博士难度。[br]
@@ -144,7 +209,8 @@ func _has_ice_road(manager: ZombieManager, lane: int) -> bool:
 	return false
 
 
-## 启动前校验博士专属依赖、数量和类型；错误在检测位置报告，不依赖运行中的主场景。
+## 启动前校验博士专属依赖、数量和类型，并向上修正最低预算与封顶值。
+## 错误在检测位置报告，不依赖运行中的主场景；实际合法候选仍在准备时重新判断。
 func get_configuration_error() -> String:
 	# 当前检测分支的错误文本，在发现问题的位置报告，方便定位场景配置。
 	var detected_error: String = ""
@@ -160,13 +226,19 @@ func get_configuration_error() -> String:
 		detected_error = "放置数量必须满足 1 <= spawn_count_min <= spawn_count_max。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
+	if spawn_power_growth_interval < 1 or spawn_power_growth_step < 0:
+		detected_error = "放置战力的增长间隔必须 >= 1，增长量必须 >= 0。"
+		push_error("%s：%s" % [get_path(), detected_error])
+		return detected_error
 	if zombie_types.is_empty():
 		detected_error = "放置技能必须配置至少一种僵尸类型。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
 	# 拒绝重复类型，避免同一类型因重复填写获得额外权重。
 	var seen_types: Array[CharacterRegistry.ZombieType] = []
-	# 每个类型必须有已注册场景和正的基础权重，特殊蹦极不进入手部放置池。
+	# 配置候选的最低战力；用于提前抬高首批最低预算，合法行仍在运行时检查。
+	var minimum_configured_power: int = 0
+	# 每个类型必须有已注册场景、正的基础权重及战力，特殊蹦极不进入手部放置池。
 	for zombie_type: CharacterRegistry.ZombieType in zombie_types:
 		if not CharacterRegistry.ZombieInfo.has(zombie_type) or not CharacterRegistry.ZombieSpawnWeights.has(zombie_type):
 			detected_error = "放置类型必须同时具有角色注册信息和基础出怪权重。"
@@ -180,7 +252,20 @@ func get_configuration_error() -> String:
 			detected_error = "放置技能的基础出怪权重必须为正数。"
 			push_error("%s：%s" % [get_path(), detected_error])
 			return detected_error
+		# 每只候选的公共战力；缺失条目按 0 拒绝，不默认为普通僵尸战力。
+		var configured_power: int = CharacterRegistry.ZombieSpawnPower.get(zombie_type, 0)
+		if configured_power <= 0:
+			detected_error = "放置技能的每种僵尸必须配置正数战力。"
+			push_error("%s：%s" % [get_path(), detected_error])
+			return detected_error
+		if zombie_type == CharacterRegistry.ZombieType.Z014Bobsled \
+			and CharacterRegistry.ZombieSpawnPower.get(CharacterRegistry.ZombieType.Z013Zamboni, 0) <= 0:
+			detected_error = "雪橇的冰车替换类型必须配置正数战力。"
+			push_error("%s：%s" % [get_path(), detected_error])
+			return detected_error
+		minimum_configured_power = configured_power if minimum_configured_power == 0 else mini(minimum_configured_power, configured_power)
 		seen_types.append(zombie_type)
+	_ensure_minimum_spawn_power(minimum_configured_power, spawn_count_min)
 	return ""
 
 

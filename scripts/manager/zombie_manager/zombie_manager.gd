@@ -211,6 +211,9 @@ func create_boss() -> ZB000Base:
 		boss.free()
 		return null
 	zombie_boss_root.add_child(boss)
+	# 入树后血量组件已初始化；入场动画开始时立即切换为血量进度。
+	if is_instance_valid(boss) and not boss.is_queued_for_deletion() and not boss.is_death:
+		main_game.level_info.show_boss_progress(boss)
 	return boss
 
 
@@ -246,6 +249,11 @@ func _on_boss_dead(boss: ZB000Base) -> void:
 		# 不暂停场景树、不直接通关，也不改变现有僵尸进房等失败入口。
 		main_game.main_game_progress = MainGameManager.E_MainGameProgress.GAME_OVER
 	_try_finish_wave(boss.global_position)
+	# 死亡通知先于最后一次扣血信号：UI 立即填满进度并解绑，Boss 模式保留完成进度演出。
+	main_game.level_info.finish_boss_progress(
+		monster_mode == ConstLevelData.E_MonsterMode.Boss,
+		monster_mode == ConstLevelData.E_MonsterMode.Norm and _is_game_running()
+	)
 
 
 ## 只接受本关已登记并死亡的 Boss；动画末尾的延迟回调即使已进入 Dead 也可发奖。
@@ -269,6 +277,13 @@ func _on_boss_trophy_requested(global_pos: Vector2, boss: ZB000Base) -> void:
 func _on_boss_tree_exiting(boss: ZB000Base) -> void:
 	if boss != active_boss:
 		return
+	# 场景卸载时 UI 可能已经离树；正常移除则清理绑定，已死亡的 Boss 保留完成进度显示。
+	if is_instance_valid(main_game) and is_instance_valid(main_game.level_info) \
+		and main_game.level_info.is_inside_tree() and not main_game.level_info.is_queued_for_deletion():
+		main_game.level_info.clear_boss_progress(
+			monster_mode == ConstLevelData.E_MonsterMode.Boss and boss.is_death,
+			monster_mode == ConstLevelData.E_MonsterMode.Norm and _is_game_running()
+		)
 	active_boss = null
 	_boss_trophy_pending = false
 	if _boss_counted:

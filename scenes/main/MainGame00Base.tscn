@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b2soejmoqi7wd"]
 
+[ext_resource type="PackedScene" path="res://scenes/ui/boss_hp_progress_bar.tscn" id="boss_hp_progress"]
 [ext_resource type="Script" uid="uid://c7dr2016dfdoo" path="res://scripts/manager/main_game_manager.gd" id="1_7dde3"]
 [ext_resource type="Script" uid="uid://b2rst408m72au" path="res://scripts/manager/hand_manager/hand_manager.gd" id="3_acpf0"]
 [ext_resource type="Script" uid="uid://duphb7sb466c0" path="res://scripts/manager/hand_manager/hm_character.gd" id="4_ee3wa"]
@@ -606,10 +607,18 @@ grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("46_y1sge")
 
-[node name="FlagProgressBar" parent="CanvasLayerUI/LevelInfo" unique_id=417677167 instance=ExtResource("16_dc1ex")]
+[node name="WaveProgressRoot" type="Control" parent="CanvasLayerUI/LevelInfo"]
+layout_mode = 0
+mouse_filter = 2
+
+[node name="FlagProgressBar" parent="CanvasLayerUI/LevelInfo/WaveProgressRoot" unique_id=417677167 instance=ExtResource("16_dc1ex")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
+
+[node name="BossHpProgressBar" parent="CanvasLayerUI/LevelInfo" instance=ExtResource("boss_hp_progress")]
+visible = false
+layout_mode = 0
 
 [node name="RoundLabel" type="Label" parent="CanvasLayerUI/LevelInfo" unique_id=1795988872]
 visible = false

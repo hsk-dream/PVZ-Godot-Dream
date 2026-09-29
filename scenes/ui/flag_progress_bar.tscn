@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://brbdbxg2tocla"]
+[gd_scene format=3 uid="uid://brbdbxg2tocla"]
 
 [ext_resource type="Script" uid="uid://b17126kyvx43n" path="res://scripts/ui/main_game_ui/ui_flag_progress_bar.gd" id="1_dtp4m"]
 [ext_resource type="Texture2D" uid="uid://de2yt1rux7boj" path="res://assets/image/ui/ui_progress_bar/FlagMeterParts.png" id="1_l32th"]
@@ -26,13 +26,13 @@ region = Rect2(50, 1, 25, 25)
 atlas = ExtResource("1_l32th")
 region = Rect2(0, 0, 25, 25)
 
-[node name="FlagProgressBar" type="Control"]
+[node name="FlagProgressBar" type="Control" unique_id=1097651582]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("1_dtp4m")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="." unique_id=329412714]
 layout_mode = 0
 offset_right = 158.0
 offset_bottom = 27.0
@@ -43,7 +43,7 @@ fill_mode = 1
 texture_under = SubResource("AtlasTexture_42xtw")
 texture_progress = SubResource("AtlasTexture_780bs")
 
-[node name="Flag" type="Control" parent="."]
+[node name="Flag" type="Control" parent="." unique_id=630999590]
 anchors_preset = 0
 offset_left = 2.0
 offset_right = 42.0
@@ -51,21 +51,21 @@ offset_bottom = 40.0
 mouse_filter = 2
 script = ExtResource("3_dtp4m")
 
-[node name="Pole" type="TextureRect" parent="Flag"]
+[node name="Pole" type="TextureRect" parent="Flag" unique_id=383323603]
 layout_mode = 0
 offset_right = 25.0
 offset_bottom = 25.0
 mouse_filter = 2
 texture = SubResource("AtlasTexture_abset")
 
-[node name="Flag" type="TextureRect" parent="Flag"]
+[node name="Flag" type="TextureRect" parent="Flag" unique_id=1798839097]
 layout_mode = 0
 offset_right = 25.0
 offset_bottom = 25.0
 mouse_filter = 2
 texture = SubResource("AtlasTexture_wg8jo")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=472258872]
 layout_mode = 0
 offset_left = 37.0
 offset_top = 15.0
@@ -74,7 +74,7 @@ offset_bottom = 26.0
 mouse_filter = 2
 texture = ExtResource("5_bkxnl")
 
-[node name="MiniZombie" type="TextureRect" parent="."]
+[node name="MiniZombie" type="TextureRect" parent="." unique_id=945642427]
 layout_mode = 0
 offset_left = 142.0
 offset_top = -6.0

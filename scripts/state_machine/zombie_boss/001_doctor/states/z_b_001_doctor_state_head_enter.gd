@@ -5,7 +5,7 @@ class_name ZB001DoctorStateHeadEnter
 func enter() -> void:
 	boss.is_idle = false
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
-	doctor_state_machine.play_mech_animation(ZB001DoctorStateMachine.HEAD_ENTER_ANIMATION)
+	doctor_state_machine.animation_controller.play_mech_action(ZB001DoctorAnimations.HEAD_ENTER_ANIMATION, ZB001DoctorAnimationController.DriverReaction.DRIVE)
 
 ## 受击开关跟随动画时间；死亡或技能已退出时不处理迟到事件。[br]
 ## [param event_name] 低头方法轨道事件，仅 hurt_enable 开启角色受击因素。
@@ -18,5 +18,5 @@ func on_animation_event(event_name: StringName) -> void:
 
 ## [param anim_name] 本次结束的动画名称，供状态过滤无关动作的完成通知。
 func on_animation_finished(anim_name: StringName) -> void:
-	if anim_name == ZB001DoctorStateMachine.HEAD_ENTER_ANIMATION and skill_state.is_active_skill():
+	if anim_name == ZB001DoctorAnimations.HEAD_ENTER_ANIMATION and skill_state.is_active_skill():
 		state_machine.change_state((skill_state as ZB001DoctorStateHeadSkill).before_spit_idle_state)

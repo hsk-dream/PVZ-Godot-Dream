@@ -7,10 +7,9 @@ class_name ZB001DoctorStateSpawnPlace
 
 ## 动画完整结束后累计次数；只有需要继续放置时才插入等待。
 func get_next_state() -> CharacterState:
-	# 所属放置技能的类型化引用，用于累计已完成次数并读取本轮目标次数。
-	var spawn := skill_state as ZB001DoctorStateSpawn
-	spawn.completed_count += 1
-	if spawn.completed_count < spawn.planned_count:
+	# 批次推进归效果组件，状态只决定继续间隔还是进入收尾。
+	var spawn: ZB001DoctorSkillSpawn = skill_state.effect_component as ZB001DoctorSkillSpawn
+	if spawn.complete_action():
 		return interval_state
 	return next_state
 

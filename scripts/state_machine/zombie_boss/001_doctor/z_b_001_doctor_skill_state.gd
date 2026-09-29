@@ -1,15 +1,13 @@
 extends CharacterCompositeState
 class_name ZB001DoctorSkillState
-## 博士复合技能只组织流程、保存本次参数；效果由独立技能组件执行。
+## 博士复合技能只组织阶段和动画；运行数据与效果均由独立技能组件持有。
 
 ## 本技能的独立效果组件，负责执行效果，不负责状态切换。
 @export var effect_component: ZB001DoctorSkillBase
-## 对应同一技能的动画变体，不假定变体编号等于关卡行号。
-@export var action_animations: Array[StringName] = []
 ## 本技能认可的释放事件名；使用方法关键帧的技能必须配置，不使用关键帧的技能留空。
 @export var release_event: StringName
-## 当前动作的参数快照，包含动画变体及技能专属数据；准备时重建，退出时清空。
-var action_parameters: Dictionary = {}
+## 本轮组件是否成功开始；失败时准备阶段返回空动作并正常收尾。
+var _skill_begun: bool = false
 ## 本次准备阶段选定的动画名称，供动作子状态播放；退出时清空。
 var selected_animation: StringName
 ## 是否已提交正常完成请求，避免重复收尾以及完成后再次执行技能效果。
@@ -35,31 +33,46 @@ func setup(actor: Character000Base, machine: CharacterStateMachine) -> void:
 	if child_initialized and not child_state_machine.state_changed.is_connected(_on_child_state_changed):
 		child_state_machine.state_changed.connect(_on_child_state_changed)
 
+## 开始组件生命周期后启动子状态机，目标准备仍由 Prepare 阶段驱动。
 func enter() -> void:
 	_completed = false
-	action_parameters.clear()
 	selected_animation = &""
 	boss.is_idle = false
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
+	_skill_begun = effect_component.begin_skill()
 	super.enter()
 
 ## 主状态机选择前的只读条件；默认允许，具有目标要求的技能自行覆盖，不提前准备动作。
 func can_be_selected() -> bool:
-	return true
+	return is_instance_valid(effect_component) and effect_component.can_start()
+
+
+## 读取组件提供的动作清单，状态只校验释放事件，不保存另一份动作配置。
+func get_action_animations() -> Array[StringName]:
+	# 保持返回容器的元素类型；assign 按 StringName 接收组件列表，不依赖三元表达式推导。
+	var animations: Array[StringName] = []
+	if is_instance_valid(effect_component):
+		animations.assign(effect_component.get_action_animations())
+	return animations
 
 
 ## 动作准备时锁定一次，动画播放期间不重新选择目标或变体。
 func prepare_action() -> void:
-	# 本次随机选择的动画数组下标，从 0 开始；传给效果组件时转换为从 1 开始的编号。
-	var variant := randi_range(0, action_animations.size() - 1)
-	selected_animation = action_animations[variant]
-	action_parameters = {"animation_variant": variant + 1}
+	selected_animation = effect_component.prepare_action() if _skill_begun else &""
 
-## 子状态负责关键帧去重；组件只执行效果，不反向驱动状态转换。
-func execute_effect() -> void:
+
+## 关键帧只提交释放请求；组件持有准备结果并负责每个动作的幂等释放。
+func release_action() -> void:
 	if is_active_skill():
-		effect_component.execute(action_parameters.duplicate(true))
+		effect_component.release_action()
 
+
+## 是否需要死亡前抬头；只有低头技能根据自己的内部阶段覆盖此查询。
+func needs_head_return() -> bool:
+	return false
+
+
+## 当前技能仍由运行中的主状态机持有且角色存活时才接受释放和完成请求。
 func is_active_skill() -> bool:
 	return is_instance_valid(doctor_state_machine) and doctor_state_machine.is_running \
 		and doctor_state_machine.current_state == self and not boss.is_death and not _completed
@@ -72,10 +85,16 @@ func finish_skill() -> void:
 	stop_skill_timers()
 	doctor_state_machine.change_state(doctor_state_machine.idle_state)
 
+## 先退出子阶段，再按正常完成或中断调用组件清理，避免遗留监听与视觉偏移。
 func exit() -> void:
 	super.exit()
 	stop_skill_timers()
-	action_parameters.clear()
+	if is_instance_valid(effect_component):
+		if _completed:
+			effect_component.end_skill()
+		else:
+			effect_component.cancel_skill()
+	_skill_begun = false
 	selected_animation = &""
 
 func stop_skill_timers() -> void:
@@ -110,24 +129,26 @@ func get_configuration_error() -> String:
 		detected_error = "%s 必须绑定博士自身的技能组件。" % name
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if action_animations.is_empty() or (requires_release_keyframe() and release_event.is_empty()):
+	# 效果依赖与静态参数由组件自行校验，状态不重复读取其内部配置。
+	var effect_error: String = effect_component.get_configuration_error()
+	if not effect_error.is_empty():
+		return effect_error
+	# 通过统一只读入口取得动作清单，兼容行映射与普通变体数组。
+	var animations: Array[StringName] = get_action_animations()
+	if animations.is_empty() or (requires_release_keyframe() and release_event.is_empty()):
 		detected_error = "%s 未配置动作动画或释放事件。" % name
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
 	# 当前待检查的技能动画名称；按技能约定决定是否额外校验释放帧。
-	for animation_name in action_animations:
-		if not state_machine.animation_player.has_animation(animation_name):
-			detected_error = "%s 缺少动画 %s。" % [name, animation_name]
-			push_error("%s：%s" % [get_path(), detected_error])
-			return detected_error
-		# 当前技能动画资源，用于检查循环模式和方法轨道配置。
-		var animation := state_machine.animation_player.get_animation(animation_name)
-		if animation.loop_mode != Animation.LOOP_NONE:
-			detected_error = "%s 的技能动作动画必须为非循环。" % name
-			push_error("%s：%s" % [get_path(), detected_error])
-			return detected_error
-		if requires_release_keyframe() and not doctor_state_machine.has_skill_keyframe(animation, animation_name, release_event):
-			detected_error = "%s 缺少有效技能释放关键帧。" % animation_name
+	for animation_name in animations:
+		# 播放器和循环规则交给动画控制器，当前技能只决定其释放事件要求。
+		var animation_error: String = doctor_state_machine.animation_controller.get_animation_error(state_machine.animation_player, animation_name, Animation.LOOP_NONE)
+		if not animation_error.is_empty():
+			return animation_error
+		# 当前动作的事件时间；释放必须唯一且严格位于动画内部。
+		var times: Array[float] = AnimationMethodQuery.get_times(state_machine.animation_player.get_animation(animation_name), NodePath("StateMachine"), &"notify_skill_event", [animation_name, release_event], false)
+		if requires_release_keyframe() and times.size() != 1:
+			detected_error = "%s 必须具有唯一的有效技能释放关键帧。" % animation_name
 			push_error("%s：%s" % [get_path(), detected_error])
 			return detected_error
 	# 子状态机的当前直属节点；具有配置检查方法时继续验证其内部连线。

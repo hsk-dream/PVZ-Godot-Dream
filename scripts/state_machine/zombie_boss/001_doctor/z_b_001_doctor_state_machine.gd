@@ -1,34 +1,9 @@
 extends CharacterStateMachine
 class_name ZB001DoctorStateMachine
 ## 博士专用状态机：选择五种技能、同步计时倍率和校验配置，死亡始终优先。
-## 由博士正常出战初始化显式启动；动画播放由状态负责，速度仍由动画组件处理。
+## 由博士正常出战初始化显式启动；状态请求动画，专用控制器负责播放，速度仍由原动画组件处理。
 ## 每个技能管理自己的内部阶段与共享数据，根层不决定技能如何收尾。
 ## 场景中绑定角色、播放器、入场、待机、五技能和死亡状态。
-
-## 主体入场动画名；必须非循环，播放结束后进入普通待机。
-const ENTER_ANIMATION: StringName = &"Zombie_boss_enter"
-## 主体普通待机动画名；必须循环播放，技能选择由待机计时器触发。
-const IDLE_ANIMATION: StringName = &"Zombie_boss_idle"
-## 主体低头动画名；第 2 秒开启受击，播放到位后进入吐球前待机。
-const HEAD_ENTER_ANIMATION: StringName = &"Zombie_boss_head_enter"
-## 吐球前后共用的低头循环动画；两段等待分别由自己的 SpeedTimer 控制。
-const HEAD_IDLE_ANIMATION: StringName = &"Zombie_boss_head_idle"
-## 主体抬头收尾动画名；第 0.6667 秒关闭受击，完成后结束本轮低头技能。
-const HEAD_LEAVE_ANIMATION: StringName = &"Zombie_boss_head_leave"
-## 主体死亡动画名；其中的方法关键帧负责请求生成奖杯。
-const DEATH_ANIMATION: StringName = &"Zombie_boss_death"
-## 驾驶舱博士的单次死亡动画，启动时机由机甲死亡动画的方法关键帧决定。
-const DRIVER_DEATH_ANIMATION: StringName = &"Zombie_Boss_driver_death"
-## 本体死亡动作结束后播放一次的举旗动画。
-const DRIVER_FLAG_ANIMATION: StringName = &"Zombie_Boss_driver_flag"
-## 本体举旗后的最终循环动作，持续到死亡保留时间及淡出结束。
-const DRIVER_FLAG_LOOP_ANIMATION: StringName = &"Zombie_Boss_driver_flag_loop"
-## 驾驶员默认循环动作；单次操纵和吐球动作结束后回到此动画。
-const DRIVER_IDLE_ANIMATION: StringName = &"Zombie_Boss_driver_idle"
-## 机甲开始一段动画时播放一次的驾驶员操纵动作。
-const DRIVER_DRIVE_ANIMATION: StringName = &"Zombie_Boss_driver_drive"
-## 机甲播放吐球动作时使用的驾驶员单次动作，优先于普通操纵动作。
-const DRIVER_DAMAGE_ANIMATION: StringName = &"Zombie_Boss_driver_damage"
 
 ## 主层只选择完整技能，内部动画阶段与收尾由各复合技能管理。
 ## 普通待机状态引用；入场或技能收尾后进入，等待下一次技能选择。
@@ -43,26 +18,13 @@ const DRIVER_DAMAGE_ANIMATION: StringName = &"Zombie_Boss_driver_damage"
 @export var dying_state: ZB001DoctorStateDying
 ## 死亡演出完成后的终止状态引用，负责停止行动并清理角色。
 @export var dead_state: ZB001DoctorStateDead
-## 驾驶员独立播放器；联动待机、操纵、吐球及死亡，不参与机甲状态的完成事件分发。
-@export var driver_animation_player: AnimationPlayer
+## 博士自身的动画控制器，负责姿势过渡、实例动画副本及本体联动。
+@export var animation_controller: ZB001DoctorAnimationController
 ## 返回 Idle 后选择下一技能前等待的动作秒数；随主体动画倍率变化，必须为有限正数。
 @export_range(0.1, 60.0, 0.1) var idle_duration := 2.0
 ## 连续未选择吐球的技能回合上限；达到后下一回合强制吐球，默认 5 表示第 6 回合保底。
 ## 一整轮放置僵尸只计 1 回合；首次吐球前也从入场后的技能选择开始累计。
 @export_range(1, 20, 1, "or_greater") var max_rounds_without_head_skill: int = 5
-
-@export_group("动画过渡")
-## 普通待机或放置间隔切入技能的姿势过渡时间，单位为动作秒；0 表示立即切换。
-@export_range(0.0, 0.5, 0.01) var idle_transition_duration: float = 0.15
-## 低头待机切入吐球或抬头的姿势过渡时间，单位为动作秒；不延后技能关键帧。
-@export_range(0.0, 0.5, 0.01) var head_transition_duration: float = 0.15
-## 死亡打断技能时的姿势及手臂偏移收回时间，单位为动作秒；随死亡动画倍率加速。
-@export_range(0.0, 0.5, 0.01) var death_transition_duration: float = 0.2
-## 本体开始或重播操纵、吐球动作，以及中断动作返回待机的过渡时间，单位为动作秒。
-@export_range(0.0, 0.5, 0.01) var driver_transition_duration: float = 0.1
-## 本体举旗末帧进入举旗循环的过渡时间，单位为动作秒；计时仍从进入循环时开始。
-@export_range(0.0, 0.5, 0.01) var flag_transition_duration: float = 0.12
-@export_group("")
 
 ## 是否已接收逻辑死亡请求；置位后禁止新的普通技能转换与释放。
 var _death_requested := false
@@ -74,8 +36,10 @@ var _last_selected_skill: ZB001DoctorSkillState
 var _rounds_without_head_skill: int = 0
 ## 初始技能数组中下一项的下标；取用或跳过不可用项时递增，重新初始化时归零。
 var _initial_skill_index: int = 0
-## 实际连接过结束信号的驾驶员播放器，重新初始化或离树时据此断开旧连接。
-var _connected_driver_player: AnimationPlayer
+## 实际连接的动画控制器，重新初始化或离树时据此清理旧连接。
+var _connected_animation_controller: ZB001DoctorAnimationController
+## 初始化时收集的动作计时器；仅含状态机子树，不含博士根节点的 DeathRemainTimer。
+var _action_timers: Array[SpeedTimer] = []
 
 ## 提供博士类型引用，避免各状态重复转换；原始引用仍由通用状态机统一维护。
 var boss: ZB001Doctor:
@@ -99,6 +63,7 @@ func initialize(actor: Character000Base = null, player: AnimationPlayer = null) 
 	if not super.initialize(actor, player):
 		push_error("ZB001DoctorStateMachine：角色必须为博士，且状态节点和入口必须属于当前状态机。")
 		return false
+	_cache_action_timers()
 	# 具体检测分支已输出错误；这里只处理失败清理，避免日志统一指向 initialize()。
 	var configuration_error := _get_configuration_error()
 	if not configuration_error.is_empty():
@@ -109,128 +74,29 @@ func initialize(actor: Character000Base = null, player: AnimationPlayer = null) 
 	_last_selected_skill = null
 	_rounds_without_head_skill = 0
 	_initial_skill_index = 0
-	# 每个博士使用自己的捕获轨道副本，避免修改外部动画资源或其他实例的播放器。
-	_prepare_capture_animations(animation_player)
-	_prepare_capture_animations(driver_animation_player)
-	_connected_player.animation_started.connect(_on_mech_animation_started)
-	_connected_driver_player = driver_animation_player
-	_connected_driver_player.animation_finished.connect(_on_driver_animation_finished)
-	_sync_driver_animation_speed()
-	driver_animation_player.play(DRIVER_IDLE_ANIMATION)
+	# 只有全部校验通过后才修正技能运行时配置，查询错误不会改变战力预算。
+	for skill: ZB001DoctorSkillState in skill_state_weights:
+		skill.effect_component.initialize_skill()
+	_connected_animation_controller = animation_controller
+	_connected_animation_controller.driver_animation_finished.connect(_on_driver_animation_finished)
+	animation_controller.initialize(animation_player)
 	return true
 
 
-## 为 [param player] 创建独立动画库，仅将姿势数值轨道改为捕获模式。
-## 显隐、贴图和方法轨道保留原配置；显式关闭自动捕获，避免完整收尾也产生额外过渡。
-func _prepare_capture_animations(player: AnimationPlayer) -> void:
-	player.playback_auto_capture = false
-	# 当前播放器注册的动画库名称；保留名称以维持状态和方法轨道中的动画标识。
-	for library_name: StringName in player.get_animation_library_list():
-		# 原动画库只用于读取，替换前先完整构建当前实例的副本。
-		var source_library: AnimationLibrary = player.get_animation_library(library_name)
-		# 当前实例专用的库，动画贴图仍共享，不复制纹理数据。
-		var capture_library := AnimationLibrary.new()
-		# 当前库中的动画名称；包括正常动作和死亡动作。
-		for animation_name: StringName in source_library.get_animation_list():
-			# 复制动画的轨道数据，后续设置不会写回外部 .tres 文件。
-			var animation: Animation = source_library.get_animation(animation_name).duplicate() as Animation
-			# 当前轨道下标，只捕获位置、旋转、缩放和斜切等连续姿势属性。
-			for track: int in animation.get_track_count():
-				if animation.track_get_type(track) != Animation.TYPE_VALUE:
-					continue
-				# 属性路径可能包含多个子属性，只接受直接的 Node2D 变换属性。
-				var track_path: NodePath = animation.track_get_path(track)
-				if track_path.get_subname_count() == 1 and track_path.get_subname(0) in [&"position", &"rotation", &"scale", &"skew"]:
-					animation.value_track_set_update_mode(track, Animation.UPDATE_CAPTURE)
-			capture_library.add_animation(animation_name, animation)
-		player.remove_animation_library(library_name)
-		player.add_animation_library(library_name, capture_library)
-
-
-## 播放 [param animation_name] 指定的机甲动作；[param transition_duration] 为动作秒，负数按来源动画选择。
-## 只对离开循环待机的切换默认捕获姿势，完整动作收尾及蹦极等待衔接保持直接播放。
-func play_mech_animation(animation_name: StringName, transition_duration: float = -1.0) -> void:
-	# 本次过渡时长；死亡可以显式覆盖，不改变新动画自身的播放时间轴。
-	var duration: float = transition_duration
-	if duration < 0.0:
-		duration = 0.0
-		if animation_player.assigned_animation == IDLE_ANIMATION and animation_name != IDLE_ANIMATION:
-			duration = idle_transition_duration
-		elif animation_player.assigned_animation == HEAD_IDLE_ANIMATION and animation_name != HEAD_IDLE_ANIMATION:
-			duration = head_transition_duration
-	_play_pose_transition(animation_player, animation_name, duration)
-
-
-## 播放 [param animation_name] 指定的本体动作；同名动作也从头开始，同时保留切换瞬间的可见姿势。
-## 完整操纵、吐球动作结束回待机时不增加过渡；中途打断及举旗进入循环使用专门时长。
-func play_driver_animation(animation_name: StringName) -> void:
-	# 本次本体过渡时间，单位为动作秒，默认保持已经对齐的首尾姿势。
-	var duration: float = 0.0
-	if animation_name in [DRIVER_DRIVE_ANIMATION, DRIVER_DAMAGE_ANIMATION] \
-		or (animation_name == DRIVER_IDLE_ANIMATION and driver_animation_player.is_playing()):
-		duration = driver_transition_duration
-	elif animation_name == DRIVER_FLAG_LOOP_ANIMATION:
-		duration = flag_transition_duration
-	_play_pose_transition(driver_animation_player, animation_name, duration)
-
-
-## 从当前节点姿势启动新动画；[param player] 为目标播放器，[param animation_name] 为已校验的动画名。
-## [param duration] 为动作秒，非有限值或非正数禁用过渡；捕获时间跟随播放器 speed_scale。
-## 不混播旧动画，避免旧技能方法轨道继续触发；新动画的关键帧时刻和完成时间保持原值。
-func _play_pose_transition(player: AnimationPlayer, animation_name: StringName, duration: float) -> void:
-	# 保留当前显示值再停止，使同名动作可以重播，并让捕获读取当前姿势而非重置后的首帧。
-	player.stop(true)
-	if is_finite(duration) and duration > 0.0:
-		player.play_with_capture(animation_name, duration, 0.0)
-	else:
-		player.play(animation_name, 0.0)
-
-
-## 机甲每次开始播放动画时联动驾驶员；动画自身循环不重复触发操纵动作。[br]
-## [param animation_name] 本次机甲动画名；吐球变体使用 damage，其余存活动作使用 drive。
-func _on_mech_animation_started(animation_name: StringName) -> void:
-	if not is_running or _death_requested or boss.is_death:
-		return
-	# 当前要播放的驾驶员动作；吐球技能的动作列表准确区分吐球和低头、抬头阶段。
-	var driver_animation: StringName = DRIVER_DRIVE_ANIMATION
-	# 当前低头技能；其他主状态转换为 null，不通过动画名称前缀猜测是否正在吐球。
-	var head_skill := current_state as ZB001DoctorStateHeadSkill
-	if head_skill != null and head_skill.action_animations.has(animation_name):
-		driver_animation = DRIVER_DAMAGE_ANIMATION
-	_sync_driver_animation_speed()
-	# 同类动作也从当前姿势过渡到新一轮，不能先重置显示值再捕获。
-	play_driver_animation(driver_animation)
-
-
-## 存活时单次动作结束回到待机，死亡时仅转发到 Dying 推进本体死亡序列。[br]
-## [param animation_name] 已结束的驾驶员动画名，只接受当前仍被播放器持有的单次动作。
+## [param animation_name] 为已结束的本体动作；只有死亡状态可以推进本体死亡序列。
 func _on_driver_animation_finished(animation_name: StringName) -> void:
-	if not is_running or driver_animation_player.assigned_animation != animation_name:
-		return
-	if _death_requested or boss.is_death:
-		if current_state == dying_state:
-			dying_state.on_driver_animation_finished(animation_name)
-		return
-	if animation_name not in [DRIVER_DRIVE_ANIMATION, DRIVER_DAMAGE_ANIMATION]:
-		return
-	play_driver_animation(DRIVER_IDLE_ANIMATION)
+	if is_running and (_death_requested or boss.is_death) and current_state == dying_state:
+		dying_state.on_driver_animation_finished(animation_name)
 
 
-## 驾驶员与机甲使用相同的角色速度，跟随冰冻和死亡加速；全局时间倍率由引擎统一处理。[br]
-## 机甲为蹦极等待而暂停时仍允许驾驶员待机，因此读取倍率而不是机甲是否正在播放。
-func _sync_driver_animation_speed() -> void:
-	if is_instance_valid(animation_player) and is_instance_valid(driver_animation_player):
-		driver_animation_player.speed_scale = animation_player.speed_scale
-
-
-## 同时清理博士专用动画联动及父类动画结束连接，避免重新初始化后重复回调。
+## 清理本体事件、控制器播放器连接和通用机甲结束信号；重新初始化时重建计时器缓存。
 func _disconnect_animation_player() -> void:
-	if is_instance_valid(_connected_player) and _connected_player.animation_started.is_connected(_on_mech_animation_started):
-		_connected_player.animation_started.disconnect(_on_mech_animation_started)
-	if is_instance_valid(_connected_driver_player):
-		if _connected_driver_player.animation_finished.is_connected(_on_driver_animation_finished):
-			_connected_driver_player.animation_finished.disconnect(_on_driver_animation_finished)
-	_connected_driver_player = null
+	if is_instance_valid(_connected_animation_controller):
+		if _connected_animation_controller.driver_animation_finished.is_connected(_on_driver_animation_finished):
+			_connected_animation_controller.driver_animation_finished.disconnect(_on_driver_animation_finished)
+		_connected_animation_controller.disconnect_players()
+	_connected_animation_controller = null
+	_action_timers.clear()
 	super._disconnect_animation_player()
 
 
@@ -239,9 +105,10 @@ func request_death() -> void:
 	if _death_requested or not is_instance_valid(boss) or not boss.is_death:
 		return
 	_death_requested = true
+	animation_controller.cancel_driver_reaction()
 	_stop_action_timers()
 	# 子状态机停止后会清空当前阶段，必须提前记录死亡是否需要先抬头。
-	dying_state.prepare_head_return(current_state)
+	dying_state.prepare_interruption(current_state)
 	# 立即停止当前技能子层，不能等下一物理帧再取消内部排队动作。
 	if current_state is CharacterCompositeState:
 		current_state.child_state_machine.stop()
@@ -266,11 +133,19 @@ func _start_death() -> void:
 ## 已死亡的博士不能重新启动入场；死亡演出也不能通过 stop/start 重播。
 ## [param state] 指定启动状态；null 时使用已配置的 initial_state。
 func start(state: CharacterState = null) -> bool:
+	if is_running or _switching:
+		return false
 	if is_instance_valid(boss) and boss.is_death:
 		if state != dying_state or not _death_requested or _death_started:
 			return false
-	# 通用状态机启动是否成功；成功进入 Dying 时同步记录死亡演出已开始。
-	var started := super.start(state)
+	# 提前死亡可能在普通初始化之前启动；初始化清理结束后才允许本体完成事件。
+	if not _initialized and not initialize():
+		return false
+	animation_controller.set_active(true)
+	# 通用启动成功后才记录死亡已开始，失败则恢复控制器停止状态。
+	var started: bool = super.start(state)
+	if not started:
+		animation_controller.set_active(false)
 	if started and current_state == dying_state:
 		_death_started = true
 	return started
@@ -292,6 +167,8 @@ func change_state(next_state: CharacterState) -> bool:
 
 ## 停止、重新初始化与离树都会经过此入口，清理共享计时和非当前状态的遗留任务。
 func stop() -> void:
+	if is_instance_valid(animation_controller):
+		animation_controller.set_active(false)
 	_stop_action_timers()
 	super.stop()
 
@@ -380,31 +257,31 @@ func notify_skill_event(animation_name: StringName, event_name: StringName) -> v
 	notify_animation_event(event_name)
 
 
-## 计时节点只在博士层管理，通用状态机仍只负责状态调度。
-## 递归收集技能拥有的计时器，结构调整时不用在主层维护内部节点路径。
-func _get_action_timers() -> Array[SpeedTimer]:
-	# 博士状态机子树中的全部 SpeedTimer 引用，用于统一停止、同步速度或校验配置。
-	var timers: Array[SpeedTimer] = []
-	# 状态机子树中当前找到的 Timer 节点，筛选为 SpeedTimer 后才加入管理列表。
-	for node in find_children("*", "Timer", true, false):
+## 初始化时收集固定状态树的动作计时器；运行时不遍历节点，结构改变后需重新初始化。
+func _cache_action_timers() -> void:
+	_action_timers.clear()
+	# 只遍历主状态机子树，死亡保留计时器在博士根节点下，由博士单独管理。
+	for node: Node in find_children("*", "Timer", true, false):
 		if node is SpeedTimer:
-			timers.append(node)
-	return timers
+			_action_timers.append(node)
 
 
+## 停止本次初始化收集的动作计时器；忽略运行时已被释放的引用。
 func _stop_action_timers() -> void:
-	# 当前待停止、同步倍率或校验配置的动作计时器。
-	for timer in _get_action_timers():
-		timer.stop()
+	# 缓存可能保留已释放对象，先以 Variant 检查有效性，再访问计时器。
+	for timer in _action_timers:
+		if is_instance_valid(timer):
+			timer.stop()
 
 
 ## 跟随主体实际播放倍率，包括暂停与自定义播放倍率；全局倍率由 Timer 自行处理。
 func sync_action_timer_speed() -> void:
 	# 当前动作计时倍率；播放器暂停或停止时为零。
 	var action_speed := _get_action_speed()
-	# 当前待停止、同步倍率或校验配置的动作计时器。
-	for timer in _get_action_timers():
-		timer.set_speed_scale(action_speed)
+	# 缓存可能保留已释放对象，先以 Variant 检查有效性，再访问计时器。
+	for timer in _action_timers:
+		if is_instance_valid(timer):
+			timer.set_speed_scale(action_speed)
 
 
 ## 读取主体实际播放速度；蹦极等待改由事件结束，不需要额外推进计时。
@@ -417,12 +294,17 @@ func _get_action_speed() -> float:
 ## 更新前恢复死亡优先级；Timer 自行倒计时，这里只同步倍率并消化状态请求。
 ## [param delta] 本次更新步长，单位为秒；角色倍率是否已换算由调用层约定。
 func advance(delta: float) -> void:
-	_sync_driver_animation_speed()
+	if is_instance_valid(animation_controller):
+		animation_controller.sync_driver_speed()
 	if _death_requested and is_running and current_state != dying_state and current_state != dead_state:
 		_pending_state = dying_state
 	sync_action_timer_speed()
 	# 仍保留状态逐帧行为的动作时间语义；零速也必须处理死亡等待切换请求。
-	super.advance(maxf(delta, 0.0) * _get_action_speed())
+	# 动作秒只在主层换算一次，状态更新和视觉复位共用同一时间尺度。
+	var action_delta: float = maxf(delta, 0.0) * _get_action_speed()
+	super.advance(action_delta)
+	if is_instance_valid(animation_controller):
+		animation_controller.advance_visual_returns(action_delta)
 	if current_state == dying_state or current_state == dead_state:
 		_death_started = true
 
@@ -451,14 +333,14 @@ func _get_configuration_error() -> String:
 		detected_error = "character 必须绑定状态机所属的博士根节点。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if not is_instance_valid(animation_player):
-		detected_error = "未绑定有效的主体 AnimationPlayer。"
+	if not is_instance_valid(animation_controller) or animation_controller.get_parent() != boss:
+		detected_error = "animation_controller 必须绑定博士根节点下的动画控制器。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if animation_player != character.get_node_or_null("AnimationPlayer"):
-		detected_error = "animation_player 必须绑定博士根节点下的主体 AnimationPlayer。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
+	# 先验证播放器和基础动画，后续状态才可安全读取动画资源检查方法事件。
+	var animation_error: String = animation_controller.get_configuration_error(boss, animation_player)
+	if not animation_error.is_empty():
+		return animation_error
 	if not initial_state is ZB001DoctorStateEnter or not _is_registered(initial_state):
 		detected_error = "initial_state 必须绑定直属的 ZB001DoctorStateEnter 入场状态。"
 		push_error("%s：%s" % [get_path(), detected_error])
@@ -521,10 +403,8 @@ func _get_configuration_error() -> String:
 		detected_error = "Idle 必须配置 IdleWaitTimer。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	# 博士状态机子树中的全部 SpeedTimer 引用，用于统一停止、同步速度或校验配置。
-	var timers := _get_action_timers()
 	# 当前待停止、同步倍率或校验配置的动作计时器。
-	for timer in timers:
+	for timer: SpeedTimer in _action_timers:
 		if not timer.one_shot or timer.autostart or timer.process_callback != Timer.TIMER_PROCESS_PHYSICS \
 			or timer.process_mode != Node.PROCESS_MODE_INHERIT or timer.ignore_time_scale:
 			detected_error = "动作计时器必须单次触发、禁止自动启动，使用物理更新并继承场景暂停与全局时间倍率。"
@@ -534,130 +414,8 @@ func _get_configuration_error() -> String:
 		detected_error = "dying_state 和 dead_state 必须绑定直属的死亡状态。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if not is_instance_valid(driver_animation_player) or not boss.is_ancestor_of(driver_animation_player) \
-		or driver_animation_player == animation_player:
-		detected_error = "必须绑定博士自身独立的驾驶员 AnimationPlayer。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	if not is_finite(boss.death_remain_duration) or boss.death_remain_duration < 0.0:
-		detected_error = "死亡保留时间 death_remain_duration 必须为有限非负数。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	if not boss.get_node_or_null("DeathRemainTimer") is SpeedTimer:
-		detected_error = "博士根节点下必须配置 DeathRemainTimer。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	# 驾驶员必需的动作名称；idle 和最终举旗允许循环，其他动作必须产生一次结束通知。
-	for animation_name: StringName in [DRIVER_IDLE_ANIMATION, DRIVER_DRIVE_ANIMATION, DRIVER_DAMAGE_ANIMATION, DRIVER_DEATH_ANIMATION, DRIVER_FLAG_ANIMATION, DRIVER_FLAG_LOOP_ANIMATION]:
-		if not driver_animation_player.has_animation(animation_name):
-			detected_error = "驾驶员播放器缺少动画：%s。" % animation_name
-			push_error("%s：%s" % [get_path(), detected_error])
-			return detected_error
-		# 各动作应使用的循环模式；动作结束回到待机由信号回调处理。
-		var expected_loop: int = Animation.LOOP_LINEAR if animation_name in [DRIVER_IDLE_ANIMATION, DRIVER_FLAG_LOOP_ANIMATION] else Animation.LOOP_NONE
-		if driver_animation_player.get_animation(animation_name).loop_mode != expected_loop:
-			detected_error = "驾驶员 idle、flag_loop 必须循环，drive、damage、death 和 flag 必须单次播放：%s。" % animation_name
-			push_error("%s：%s" % [get_path(), detected_error])
-			return detected_error
-	if not character.get_node_or_null("%TrophySpawnPoint") is Marker2D:
-		detected_error = "博士场景必须具有唯一命名的 TrophySpawnPoint。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	# 当前待检查的必需动画名称，用于确认资源存在及循环方式正确。
-	for animation_name: StringName in [ENTER_ANIMATION, IDLE_ANIMATION, DEATH_ANIMATION, HEAD_ENTER_ANIMATION, HEAD_LEAVE_ANIMATION]:
-		if not animation_player.has_animation(animation_name):
-			detected_error = "主体播放器缺少动画：%s。" % animation_name
-			push_error("%s：%s" % [get_path(), detected_error])
-			return detected_error
-	if animation_player.get_animation(ENTER_ANIMATION).loop_mode != Animation.LOOP_NONE:
-		detected_error = "入场动画必须为非循环，否则无法依靠结束通知进入待机。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	if animation_player.get_animation(IDLE_ANIMATION).loop_mode != Animation.LOOP_LINEAR:
-		detected_error = "待机动画必须为线性循环。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	# 当前待检查的必需动画名称，用于确认资源存在及循环方式正确。
-	for animation_name: StringName in [HEAD_ENTER_ANIMATION, HEAD_LEAVE_ANIMATION]:
-		if animation_player.get_animation(animation_name).loop_mode != Animation.LOOP_NONE:
-			detected_error = "低头和抬头动画必须为非循环：%s。" % animation_name
-			push_error("%s：%s" % [get_path(), detected_error])
-			return detected_error
-	# 主体死亡动画资源，用于校验非循环播放和奖杯请求关键帧。
-	var death_animation := animation_player.get_animation(DEATH_ANIMATION)
-	if death_animation.loop_mode != Animation.LOOP_NONE:
-		detected_error = "死亡动画必须为非循环。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	if not _has_trophy_keyframe(death_animation):
-		detected_error = "死亡动画必须包含调用博士 request_trophy() 的有效方法关键帧。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	if not _has_driver_death_keyframe(death_animation):
-		detected_error = "机甲死亡动画有效时长内必须包含向 StateMachine 发送 driver_death 的方法关键帧。"
-		push_error("%s：%s" % [get_path(), detected_error])
-		return detected_error
-	return ""
-
-
-## 检查本体启动事件位于机甲动画有效时长内；具体时机由轨道配置，不固定秒数。[br]
-## 缺少有效事件时拒绝初始化，避免死亡状态永久等待；允许关键帧位于动画起点或终点。
-## [param animation] 机甲死亡动画资源；返回是否存在有效的方法关键帧，不修改资源。
-func _has_driver_death_keyframe(animation: Animation) -> bool:
-	# 当前轨道下标；只检查启用且指向本状态机的方法轨道。
-	for track: int in animation.get_track_count():
-		if animation.track_get_type(track) != Animation.TYPE_METHOD or not animation.track_is_enabled(track) \
-			or animation.track_get_path(track) != NodePath("StateMachine"):
-			continue
-		# 当前方法关键帧下标，用于核对方法名、参数和动画时间。
-		for key: int in animation.track_get_key_count(track):
-			# 方法调用内容，必须直接路由死亡事件而非普通技能事件。
-			var event: Dictionary = animation.track_get_key_value(track, key)
-			# 本体启动事件在机甲动画中的秒数，移动关键帧即可调整触发时机。
-			var event_time: float = animation.track_get_key_time(track, key)
-			if event.get("method") == &"notify_animation_event" and event.get("args") == [&"driver_death"] \
-				and event_time >= 0.0 and event_time <= animation.length:
-				return true
-	return false
-
-
-## 仅检查启用、指向角色根节点且位于动画时长内的方法轨道，不用定时器代替缺失的轨道。
-## [param animation] 待检查方法轨道的动画资源，不会在检查过程中修改。
-func _has_trophy_keyframe(animation: Animation) -> bool:
-	# 当前动画轨道的索引，从 0 开始；仅符合路径与类型要求的方法轨道参与检查。
-	for track in animation.get_track_count():
-		if animation.track_get_type(track) != Animation.TYPE_METHOD \
-			or not animation.track_is_enabled(track) or animation.track_get_path(track) != NodePath("."):
-			continue
-		# 当前方法轨道中的关键帧索引，用于读取回调内容与触发时间。
-		for key in animation.track_get_key_count(track):
-			# 方法关键帧的调用数据，包含 method 方法名与 args 参数数组。
-			var event: Dictionary = animation.track_get_key_value(track, key)
-			# 当前奖杯请求关键帧的时间，单位为动画秒，必须位于动画长度范围内。
-			var time := animation.track_get_key_time(track, key)
-			if event.get("method") == &"request_trophy" and event.get("args", []).is_empty() \
-				and time >= 0 and time <= animation.length:
-				return true
-	return false
-
-
-## 校验方法轨道确实路由到本状态机，且动画与事件参数一致；缺帧时拒绝开战。
-## [param animation] 待检查方法轨道的动画资源，不会在检查过程中修改。
-## [param animation_name] 需要匹配的动画资源名称，与方法关键帧中的动画参数保持一致。
-## [param event_name] 动画方法轨道传入的事件名，由当前活动状态判断是否处理。
-func has_skill_keyframe(animation: Animation, animation_name: StringName, event_name: StringName) -> bool:
-	# 匹配技能动画名、事件名和有效时间范围的释放关键帧数量，必须恰好为 1。
-	var count := 0
-	# 当前动画轨道的索引，从 0 开始；仅符合路径与类型要求的方法轨道参与检查。
-	for track in animation.get_track_count():
-		if animation.track_get_type(track) != Animation.TYPE_METHOD or not animation.track_is_enabled(track) \
-			or animation.track_get_path(track) != NodePath("StateMachine"):
-			continue
-		# 当前方法轨道中的关键帧索引，用于读取回调内容与触发时间。
-		for key in animation.track_get_key_count(track):
-			# 方法关键帧的调用数据，包含 method 方法名与 args 参数数组。
-			var event: Dictionary = animation.track_get_key_value(track, key)
-			if event.get("method") == &"notify_skill_event" and event.get("args") == [animation_name, event_name] \
-				and animation.track_get_key_time(track, key) > 0 and animation.track_get_key_time(track, key) < animation.length:
-				count += 1
-	return count == 1
+	# 死亡阶段负责本体启动事件，博士根节点负责奖杯与保留计时依赖。
+	var dying_error: String = dying_state.get_configuration_error()
+	if not dying_error.is_empty():
+		return dying_error
+	return boss.get_death_configuration_error()

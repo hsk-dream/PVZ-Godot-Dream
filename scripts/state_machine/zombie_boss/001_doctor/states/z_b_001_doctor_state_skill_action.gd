@@ -5,23 +5,19 @@ class_name ZB001DoctorStateSkillAction
 @export var next_state: CharacterState
 ## 本次进入时锁定的动画名，用于过滤不属于当前动作的完成通知。
 var _animation: StringName
-## 本次动作是否已消费释放关键帧；每次进入重置，防止重复执行效果。
-var _released := false
 ## 本次动作是否已处理完成通知；每次进入重置，防止重复计数或提交切换。
 var _finished := false
 
 func enter() -> void:
-	_released = false
 	_finished = false
 	_animation = skill_state.selected_animation
-	doctor_state_machine.play_mech_animation(_animation)
+	doctor_state_machine.animation_controller.play_mech_action(_animation, get_driver_reaction())
 	doctor_state_machine.sync_action_timer_speed()
 
 ## [param event_name] 动画方法轨道传入的事件名，由当前活动状态判断是否处理。
 func on_animation_event(event_name: StringName) -> void:
-	if skill_state.requires_release_keyframe() and not _released and event_name == skill_state.release_event and skill_state.is_active_skill():
-		_released = true
-		skill_state.execute_effect()
+	if skill_state.requires_release_keyframe() and event_name == skill_state.release_event and skill_state.is_active_skill():
+		skill_state.release_action()
 
 ## [param anim_name] 本次结束的动画名称，供状态过滤无关动作的完成通知。
 func on_animation_finished(anim_name: StringName) -> void:
@@ -43,3 +39,8 @@ func get_configuration_error() -> String:
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
 	return ""
+
+
+## 普通技能动作使用本体操纵，吐球子状态显式覆盖，控制器不识别状态类型。
+func get_driver_reaction() -> ZB001DoctorAnimationController.DriverReaction:
+	return ZB001DoctorAnimationController.DriverReaction.DRIVE

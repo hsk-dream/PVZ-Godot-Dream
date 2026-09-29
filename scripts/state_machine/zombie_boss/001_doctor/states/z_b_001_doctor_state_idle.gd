@@ -10,7 +10,7 @@ class_name ZB001DoctorStateIdle
 func enter() -> void:
 	boss.is_idle = true
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
-	doctor_state_machine.play_mech_animation(ZB001DoctorStateMachine.IDLE_ANIMATION)
+	doctor_state_machine.animation_controller.play_mech_action(ZB001DoctorAnimations.IDLE_ANIMATION, ZB001DoctorAnimationController.DriverReaction.DRIVE)
 	# 先播放再同步实际倍率，保证冻结入场及暂停恢复时计时与动画一致。
 	doctor_state_machine.sync_action_timer_speed()
 	idle_wait_timer.start_scaled(doctor_state_machine.idle_duration)

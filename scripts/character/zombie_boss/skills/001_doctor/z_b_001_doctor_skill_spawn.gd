@@ -2,6 +2,8 @@ extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillSpawn
 ## 博士放置技能：独立更新类型权重、战力预算与选行历史，提前准备整批清单，在动画关键帧逐只创建。
 
+## 零起始行号到放置动画的映射；缺失行在准备时排除。
+@export var lane_animations: Dictionary[int, StringName] = {}
 ## 手指下的生成标记，仅在释放时读取全局 X；Y 使用清单目标行的出生点。
 @export var spawn_marker: Marker2D
 ## 每次成功准备的清单最少数量；预算不足时自动抬高，死亡等中断可以使实际生成数量少于此值。
@@ -19,13 +21,13 @@ class_name ZB001DoctorSkillSpawn
 @export_group("放置战力成长")
 ## 放置技能的初始战力预算；不足时自动提高到最低候选战力乘计划数量，相等时不调整。
 ## 修正只影响当前实例并保留到后续批次，不回写场景文件；与自然波次预算独立。
-@export_range(1, 200, 1, "or_greater") var spawn_power_base: int = 10
+@export_range(1, 200, 1, "or_greater") var spawn_power_base: int = 4
 ## 每成功准备多少次放置技能提高一档，至少为 1；不是逐只僵尸累计。
-@export_range(1, 100, 1, "or_greater") var spawn_power_growth_interval: int = 1
+@export_range(1, 100, 1, "or_greater") var spawn_power_growth_interval: int = 3
 ## 每档增加的整批战力；0 表示保持初始预算，不随使用次数成长。
-@export_range(0, 100, 1, "or_greater") var spawn_power_growth_step: int = 2
+@export_range(0, 100, 1, "or_greater") var spawn_power_growth_step: int = 3
 ## 成长后的战力预算上限；低于修正后的初始预算时同步提高，剩余预算不结转到下一批。
-@export_range(1, 200, 1, "or_greater") var spawn_power_max: int = 30
+@export_range(1, 200, 1, "or_greater") var spawn_power_max: int = 100
 @export_group("")
 
 ## 博士独立维护的运行时权重；键和值均为整数，普通复制即可隔离修改。
@@ -33,17 +35,43 @@ var zombie_weights: Dictionary[CharacterRegistry.ZombieType, int] = CharacterReg
 ## 已成功准备的技能次数；先用于本次权重和战力预算计算，再递增，中断时不回退。
 var spawn_skill_use_count: int = 0
 ## 本次技能的有序清单，每项只保存实际类型 zombie_type 与零起始行号 lane。
-var spawn_entries: Array[Dictionary] = []
+var spawn_entries: Array[ZB001DoctorSpawnEntry] = []
+## 本批已完整播放的放置动作数；动画结束时推进，释放失败也沿用原有次数规则。
+var completed_count: int = 0
+## 当前动画绑定的放置任务，重复释放由技能基类阻止。
+var _current_entry: ZB001DoctorSpawnEntry
 ## 博士独立使用的类型随机池，每个名额按最新权重、合法行和剩余战力重建。
 var zombie_picker: RandomPicker
 ## 博士自己的选行实例；首次正式准备时初始化，技能之间保留历史。
 @onready var choose_row_system: ZombieChooseRowSystem = get_node_or_null("SpawnChooseRowSystem") as ZombieChooseRowSystem
 
 
-## 为 [param allowed_lanes] 支持的动画行一次性准备完整清单，返回计划放置数量。[br]
+## 配置全部通过后修正当前实例的最低预算；不累计技能次数，也不准备清单。
+## 此处按配置最少数量修正，实际放置时再按合法候选与本批随机数量向上修正。
+func initialize_skill() -> void:
+	# 已校验配置中的最低战力，不依赖尚未开始的关卡选行过程。
+	var minimum_power: int = 0
+	# 已验证具有正战力的配置类型；雪橇替换仍在实际准备阶段按冰车计费。
+	for zombie_type: CharacterRegistry.ZombieType in zombie_types:
+		# 当前配置类型的战力，用于计算首批可承担的最低总战力。
+		var power: int = CharacterRegistry.ZombieSpawnPower[zombie_type]
+		minimum_power = power if minimum_power == 0 else mini(minimum_power, power)
+	_ensure_minimum_spawn_power(minimum_power, spawn_count_min)
+
+
+## 开始本批放置，权重与预算使用次数只在完整清单成功准备后累计。
+func begin_skill() -> bool:
+	super.begin_skill()
+	return _prepare_spawn() > 0
+
+
+## 为映射支持的动画行一次性准备完整清单，返回计划放置数量。[br]
 ## 无可用组合时返回 0 且不累计技能次数；预算不足会自动修正，不修改自然波次数据。
-func prepare_spawn(allowed_lanes: Array[int]) -> int:
-	clear_spawn()
+func _prepare_spawn() -> int:
+	_clear_spawn_data()
+	# 当前组件支持的行号副本，准备算法不改写映射。
+	var allowed_lanes: Array[int] = []
+	allowed_lanes.assign(lane_animations.keys())
 	# 当前博士所属的战斗管理器，只读取场地数据和生成合法性。
 	var manager: ZombieManager = _get_active_manager()
 	if manager == null or not is_instance_valid(choose_row_system):
@@ -101,7 +129,7 @@ func prepare_spawn(allowed_lanes: Array[int]) -> int:
 			if int(candidate_data["power"]) + reserved_power <= remaining_power:
 				affordable_candidates.append(candidate)
 		if affordable_candidates.is_empty():
-			clear_spawn()
+			_clear_spawn_data()
 			return 0
 		# 先过滤再随机，避免对无法负担的类型反复重抽而卡住技能准备。
 		zombie_picker = RandomPicker.new(affordable_candidates, false)
@@ -114,9 +142,9 @@ func prepare_spawn(allowed_lanes: Array[int]) -> int:
 		# 本项锁定的零起始行号，播放动画和释放僵尸共用；负数表示选行失败。
 		var lane: int = choose_row_system.select_spawn_row(row_type, selected["row_weights"])
 		if lane < 0:
-			clear_spawn()
+			_clear_spawn_data()
 			return 0
-		spawn_entries.append({"zombie_type": selected_type, "lane": lane})
+		spawn_entries.append(ZB001DoctorSpawnEntry.new(selected_type, lane))
 		remaining_power -= int(selected["power"])
 	spawn_skill_use_count += 1
 	return spawn_entries.size()
@@ -124,7 +152,7 @@ func prepare_spawn(allowed_lanes: Array[int]) -> int:
 
 ## 保证初始预算大于等于最低总战力，只向上修正当前实例，不降低后续批次的预算。
 ## [param minimum_power] 候选中的正数最低战力；准备时必须使用实际合法类型的战力。
-## [param spawn_count] 要保证的正数数量；配置校验使用最少数量，实际准备使用本批随机数量。
+## [param spawn_count] 要保证的正数数量；初始化使用最少数量，实际准备使用本批随机数量。
 func _ensure_minimum_spawn_power(minimum_power: int, spawn_count: int) -> void:
 	# 正好承担所有名额的最低战力即可，预算相等时不额外提高。
 	var required_power: int = minimum_power * spawn_count
@@ -152,30 +180,46 @@ func _update_spawn_weights() -> void:
 	zombie_weights[CharacterRegistry.ZombieType.Z003Cone] -= decay_steps * 150
 
 
-## 返回 [param index] 对应清单项的独立副本，供状态添加动画参数；越界返回空字典。
-func get_spawn_parameters(index: int) -> Dictionary:
-	if index < 0 or index >= spawn_entries.size():
-		return {}
-	return spawn_entries[index].duplicate()
+## 按完整动画结束次数选择本批任务；不重新随机类型或行。
+func prepare_action() -> StringName:
+	_current_entry = null
+	if completed_count >= spawn_entries.size():
+		return _arm_action(&"")
+	_current_entry = spawn_entries[completed_count]
+	return _arm_action(lane_animations.get(_current_entry.lane, &""))
+
+
+## 完整动作结束时推进一次，返回是否还有下一次放置；不在释放关键帧累计。
+func complete_action() -> bool:
+	completed_count += 1
+	return completed_count < spawn_entries.size()
+
+
+## 清理本轮任务，保留独立权重、使用次数与选行历史。
+func cancel_skill() -> void:
+	super.cancel_skill()
+	_clear_spawn_data()
 
 
 ## 清理尚未执行的本批任务和临时随机池；保留使用次数、运行时权重及选行历史。
-func clear_spawn() -> void:
+func _clear_spawn_data() -> void:
 	spawn_entries.clear()
+	completed_count = 0
+	_current_entry = null
 	zombie_picker = null
 
 
-## 使用 [param parameters] 锁定的类型与行创建僵尸，释放时才读取手部 X。[br]
+## 使用当前任务的类型与行创建僵尸，释放时才读取手部 X。[br]
 ## 关卡结束、博士死亡或雪橇冰道消失时跳过本项，不临时换行或重新抽取。
-func execute(parameters: Dictionary) -> void:
+func _release_action() -> void:
 	# 重新确认释放时的生命周期，避免迟到方法轨道补生僵尸。
 	var manager: ZombieManager = _get_active_manager()
 	if manager == null or not is_instance_valid(spawn_marker) or not spawn_marker.is_inside_tree() \
-		or spawn_marker.is_queued_for_deletion() or not parameters.has_all(["lane", "zombie_type"]):
+		or spawn_marker.is_queued_for_deletion() or _current_entry == null:
 		return
 	# 类型与行必须和播放中的动画使用同一份准备结果。
-	var zombie_type: CharacterRegistry.ZombieType = parameters["zombie_type"]
-	var lane: int = parameters["lane"]
+	var zombie_type: CharacterRegistry.ZombieType = _current_entry.zombie_type
+	var lane: int = _current_entry.lane
 	if zombie_type == CharacterRegistry.ZombieType.Z014Bobsled and not _has_ice_road(manager, lane):
 		return
 	manager.create_skill_zombie(zombie_type, lane, spawn_marker.global_position.x)
@@ -209,9 +253,17 @@ func _has_ice_road(manager: ZombieManager, lane: int) -> bool:
 	return false
 
 
-## 启动前校验博士专属依赖、数量和类型，并向上修正最低预算与封顶值。
+## 只读校验博士专属依赖、数量和类型；预算修正由初始化与批次准备显式执行。
 ## 错误在检测位置报告，不依赖运行中的主场景；实际合法候选仍在准备时重新判断。
 func get_configuration_error() -> String:
+	if lane_animations.is_empty():
+		push_error("%s：必须配置行动画映射。" % get_path())
+		return "行动画映射为空。"
+	# 字典保证键唯一；负行号属于错误，地图缺失的正行号只在准备时排除。
+	for lane: int in lane_animations:
+		if lane < 0:
+			push_error("%s：行动画映射的行号必须非负。" % get_path())
+			return "动画行号无效。"
 	# 当前检测分支的错误文本，在发现问题的位置报告，方便定位场景配置。
 	var detected_error: String = ""
 	if not is_instance_valid(spawn_marker) or not is_instance_valid(owner) or not owner.is_ancestor_of(spawn_marker):
@@ -236,8 +288,6 @@ func get_configuration_error() -> String:
 		return detected_error
 	# 拒绝重复类型，避免同一类型因重复填写获得额外权重。
 	var seen_types: Array[CharacterRegistry.ZombieType] = []
-	# 配置候选的最低战力；用于提前抬高首批最低预算，合法行仍在运行时检查。
-	var minimum_configured_power: int = 0
 	# 每个类型必须有已注册场景、正的基础权重及战力，特殊蹦极不进入手部放置池。
 	for zombie_type: CharacterRegistry.ZombieType in zombie_types:
 		if not CharacterRegistry.ZombieInfo.has(zombie_type) or not CharacterRegistry.ZombieSpawnWeights.has(zombie_type):
@@ -263,21 +313,24 @@ func get_configuration_error() -> String:
 			detected_error = "雪橇的冰车替换类型必须配置正数战力。"
 			push_error("%s：%s" % [get_path(), detected_error])
 			return detected_error
-		minimum_configured_power = configured_power if minimum_configured_power == 0 else mini(minimum_configured_power, configured_power)
 		seen_types.append(zombie_type)
-	_ensure_minimum_spawn_power(minimum_configured_power, spawn_count_min)
 	return ""
 
 
 ## 返回本博士所在战斗的管理器；展示实例、死亡实例及离开关卡后均返回 null。
 func _get_active_manager() -> ZombieManager:
-	# 技能节点由博士场景持有，使用场景 owner 避免依赖 Skills 节点的固定层级。
-	var doctor: ZB001Doctor = owner as ZB001Doctor
-	if not is_instance_valid(doctor) or doctor.is_death or doctor.is_queued_for_deletion() \
-		or not doctor.is_inside_tree() or doctor.character_init_type != Character000Base.E_CharacterInitType.IsNorm:
+	# 公共入口先检查博士与关卡的生命周期，本技能只确认自己的管理器。
+	var game: MainGameManager = _get_active_game()
+	if game == null:
 		return null
-	if not is_instance_valid(Global.main_game) or Global.main_game.is_queued_for_deletion() \
-		or not Global.main_game.is_ancestor_of(doctor) \
-		or Global.main_game.main_game_progress != MainGameManager.E_MainGameProgress.MAIN_GAME:
-		return null
-	return Global.main_game.zombie_manager
+	# 管理器正在释放或已离树时不再读取场地及生成对象。
+	var manager: ZombieManager = game.zombie_manager
+	return manager if is_instance_valid(manager) and manager.is_inside_tree() and not manager.is_queued_for_deletion() else null
+
+
+## 返回映射中的动画集合，供状态检查资源和方法关键帧。
+func get_action_animations() -> Array[StringName]:
+	# 只读类型化副本，不允许校验修改技能配置。
+	var animations: Array[StringName] = []
+	animations.assign(lane_animations.values())
+	return animations

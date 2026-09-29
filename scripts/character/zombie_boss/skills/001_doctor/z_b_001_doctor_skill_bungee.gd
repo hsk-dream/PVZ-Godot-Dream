@@ -2,6 +2,15 @@
 extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillBungee
 
+## 固定进入动作，第 1 秒方法关键帧创建本批蹦极。
+@export var enter_animation: StringName = &"Anim_bungee_1_enter"
+## 等待全部返回或死亡之后播放的收尾动作。
+@export var leave_animation: StringName = &"Anim_bungee_1_leave"
+## 本轮固定列组起始列，从 1 开始；取消后为 0。
+var selected_start_column: int = 0
+## 每列锁定一个格子和原始手指槽位，组件独占此运行时清单。
+var targets: Array[ZB001DoctorBungeeTarget] = []
+
 ## 本批所有实例均死亡或结束偷取时发出一次，零只生成也立即完成。
 signal batch_finished()
 
@@ -42,24 +51,24 @@ var batch_state: BatchState = BatchState.NOT_STARTED
 
 
 ## 技能选择条件只读取目标，不消耗随机数，也不改变手臂位置。
-func has_available_target() -> bool:
+func can_start() -> bool:
 	return not _collect_ranges().is_empty()
 
 
-## 在准备阶段抽取一组连续三列，再逐列等权抽取一个格子；无目标返回空字典。
-func prepare_parameters() -> Dictionary:
+## 抽取连续三列后逐列锁定一个目标；返回进入动画，空名称表示没有目标。
+func prepare_action() -> StringName:
+	_arm_action(&"")
+	targets.clear()
 	cancel_batch_tracking()
 	reset_visual_offset()
 	# 每项包含整组范围与按列分开的目标快照，权重统一为 1。
 	var ranges: Array[Dictionary] = _collect_ranges()
 	if ranges.is_empty():
-		return {}
+		return &""
 	# 项目统一选择器，每轮只抽一次整组范围，不逐列拼凑范围。
 	var range_picker := RandomPicker.new(ranges, false)
 	# 此轮范围从准备到收尾保持不变。
 	var selected: Dictionary = range_picker.get_random_item()
-	# 每个目标保存格子和原始槽位，空列跳过时不能压缩左、中、右编号。
-	var targets: Array[Dictionary] = []
 	# 当前列在三列范围内的固定槽位：0 左、1 中、2 右。
 	for anchor_index: int in range(COLUMN_COUNT):
 		# 当前槽位对应的有效格子候选，不依赖最终生成数量。
@@ -73,7 +82,7 @@ func prepare_parameters() -> Dictionary:
 			items.append({"data": cell, "weight": 1.0})
 		# 每列独立选一个格子，空列不会由其他列补足。
 		var cell_picker := RandomPicker.new(items, false)
-		targets.append({"cell": cell_picker.get_random_item(), "anchor_index": anchor_index})
+		targets.append(ZB001DoctorBungeeTarget.new(cell_picker.get_random_item(), anchor_index))
 	# 原动画与目标范围的第一行格子，仅用于计算横向差值。
 	var reference_cell: PlantCell = selected["reference_cell"]
 	# 选中范围的首列格子，屋顶高度不会被应用到手臂 Y。
@@ -85,12 +94,13 @@ func prepare_parameters() -> Dictionary:
 	# 手臂父级坐标空间兼容博士自身的缩放，不硬编码单列像素宽度。
 	var arm_parent := inner_arm.get_parent() as Node2D
 	inner_arm.position.x = arm_parent.to_local(target_position).x - arm_parent.to_local(reference_position).x
-	return {"start_column": selected["start_column"], "targets": targets}
+	selected_start_column = selected["start_column"]
+	return _arm_action(enter_animation)
 
 
-## [param parameters] 准备时锁定的格子与连接点槽位；仅由进入动画第 1 秒关键帧释放一次。
+## 消费本轮格子与手指槽位；仅由进入动画第 1 秒关键帧释放。
 ## 生成前复查目标，空格跳过且不重新随机；重复释放不能清理并重建同一批僵尸。
-func execute(parameters: Dictionary) -> void:
+func _release_action() -> void:
 	if batch_state != BatchState.NOT_STARTED:
 		return
 	batch_state = BatchState.SPAWNING
@@ -102,17 +112,17 @@ func execute(parameters: Dictionary) -> void:
 		# 固定的连接点顺序；先保留未转换类型的引用，以便安全跳过已经释放的定位点。
 		var anchors: Array = [anchor_left, anchor_middle, anchor_right]
 		# 每条快照保存目标格子和原始槽位；其中的节点可能已释放。
-		for target: Dictionary in parameters.get("targets", []):
+		for target: ZB001DoctorBungeeTarget in targets.duplicate():
 			if executing_batch != _batch_id or batch_state != BatchState.SPAWNING:
 				return
 			if _get_active_manager() != manager:
 				break
 			# 先使用 Variant 验证格子，避免给类型变量赋入已释放实例。
-			var cell_reference: Variant = target.get("cell")
+			var cell_reference: Variant = instance_from_id(target.cell_id)
 			if not is_instance_valid(cell_reference) or not cell_reference is PlantCell:
 				continue
 			# 准备时记录的固定槽位，生成失败或空列不会使后面的连接点前移。
-			var anchor_index: int = target.get("anchor_index", -1)
+			var anchor_index: int = target.anchor_index
 			if anchor_index < 0 or anchor_index >= anchors.size() or not is_instance_valid(anchors[anchor_index]):
 				continue
 			# 本次生成对应的手部定位点，入树前交给蹦极自身持续跟随。
@@ -204,16 +214,18 @@ func reset_visual_offset() -> void:
 
 ## 场景卸载同样清除对外连接，不将卸载当作整批完成。
 func _exit_tree() -> void:
-	cancel_batch_tracking()
+	cancel_skill()
 
 
 ## 返回带等权权重的完整三列范围；空范围排除，范围中允许存在空列。
 func _collect_ranges() -> Array[Dictionary]:
+	# 所有提前退出路径共用的类型化空结果，不返回已经收集的局部网格。
+	var empty_ranges: Array[Dictionary] = []
 	# 当前角色所属的有效格子管理器。
 	var manager: PlantCellManager = _get_active_manager()
 	if manager == null or start_column_min < 1 or start_column_max > 3 \
 		or start_column_min > start_column_max or reference_start_column < 1:
-		return []
+		return empty_ranges
 	# 各行独立排序为画面从左到右，不修改格子管理器的公共数组。
 	var grid: Array[Array] = []
 	# 原始行引用只读，不在原数组上排序。
@@ -223,17 +235,17 @@ func _collect_ranges() -> Array[Dictionary]:
 		# 可能已释放的格子先检查，再进行类型转换。
 		for cell_reference: Variant in source_row:
 			if not is_instance_valid(cell_reference) or not cell_reference is PlantCell:
-				return []
+				return empty_ranges
 			# 种植点初始化后才可计算手臂基准。
 			var cell := cell_reference as PlantCell
 			if not cell.is_inside_tree() or cell.is_queued_for_deletion() \
 				or not cell.plant_postion_node_ori_global_position.has(CharacterRegistry.PlacePlantInCell.Norm):
-				return []
+				return empty_ranges
 			row.append(cell)
 		row.sort_custom(_is_cell_left_of)
 		grid.append(row)
 	if grid.is_empty() or grid[0].size() < reference_start_column:
-		return []
+		return empty_ranges
 	# 每个候选只保存一个起始列，天然不会出现非连续的组合。
 	var ranges: Array[Dictionary] = []
 	# 从 1 开始的范围起始列，默认遍历 1、2、3。
@@ -279,22 +291,20 @@ func _is_cell_left_of(left: PlantCell, right: PlantCell) -> bool:
 
 ## 只允许当前关卡正常战斗中的博士准备或执行技能。
 func _get_active_manager() -> PlantCellManager:
-	# 技能场景 owner 指向博士，避免依赖固定的 Skills 父层级。
-	var doctor := owner as ZB001Doctor
-	if not is_instance_valid(doctor) or doctor.is_death or doctor.is_queued_for_deletion() \
-		or not doctor.is_inside_tree() or doctor.character_init_type != Character000Base.E_CharacterInitType.IsNorm:
+	# 公共入口先检查博士与关卡的生命周期，本技能只确认自己的管理器。
+	var game: MainGameManager = _get_active_game()
+	if game == null:
 		return null
-	if not is_instance_valid(Global.main_game) or Global.main_game.is_queued_for_deletion() \
-		or not Global.main_game.is_ancestor_of(doctor) \
-		or Global.main_game.main_game_progress != MainGameManager.E_MainGameProgress.MAIN_GAME:
-		return null
-	# 离树或关卡结束后不再读取格子或创建僵尸。
-	var manager: PlantCellManager = Global.main_game.plant_cell_manager
+	# 管理器正在释放或已离树时不再读取场地及生成对象。
+	var manager: PlantCellManager = game.plant_cell_manager
 	return manager if is_instance_valid(manager) and manager.is_inside_tree() and not manager.is_queued_for_deletion() else null
 
 
 ## 配置错误在发现处分支报告；返回字符串供状态机停止初始化。
 func get_configuration_error() -> String:
+	if enter_animation.is_empty() or leave_animation.is_empty() or enter_animation == leave_animation:
+		push_error("BungeeSkill：必须分别配置不同的进入与离开动画。")
+		return "蹦极进入或离开动画配置无效。"
 	if not is_instance_valid(inner_arm) or not is_instance_valid(owner) \
 		or not owner.is_ancestor_of(inner_arm) or not inner_arm.get_parent() is Node2D:
 		push_error("BungeeSkill：必须绑定博士自身的 InnerArm，且父节点为 Node2D。")
@@ -312,3 +322,29 @@ func get_configuration_error() -> String:
 		push_error("BungeeSkill：起始列上下限和动画基准列必须位于 1～3，且上限不能小于下限。")
 		return "蹦极列范围配置无效。"
 	return ""
+
+
+## 清理本批监听、目标和手臂偏移；已经创建的蹦极继续自身行为。
+func cancel_skill() -> void:
+	super.cancel_skill()
+	cancel_batch_tracking()
+	targets.clear()
+	selected_start_column = 0
+	reset_visual_offset()
+
+
+## 返回进入动画，离开动画由等待阶段单独校验且没有释放帧。
+func get_action_animations() -> Array[StringName]:
+	# 单项列表也显式声明元素类型，避免把普通 Array 交给类型化调用方。
+	var animations: Array[StringName] = []
+	animations.append(enter_animation)
+	return animations
+
+
+## 蹦极只恢复手臂 X，保留场景当前 Y；死亡状态无需知道具体节点。
+func capture_visual_returns() -> Array[ZB001DoctorVisualReturn]:
+	# 空结果与单项结果保持同一元素类型，Y 仍沿用当前手臂位置。
+	var snapshots: Array[ZB001DoctorVisualReturn] = []
+	if is_instance_valid(inner_arm):
+		snapshots.append(ZB001DoctorVisualReturn.new(inner_arm, Vector2(0.0, inner_arm.position.y)))
+	return snapshots

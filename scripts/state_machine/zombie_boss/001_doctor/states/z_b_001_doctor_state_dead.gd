@@ -5,6 +5,6 @@ class_name ZB001DoctorStateDead
 
 ## 保留死亡锁，只停止状态机的物理更新；两个动画播放器和根节点计时器继续运行。
 func enter() -> void:
-	doctor_state_machine.play_driver_animation(ZB001DoctorStateMachine.DRIVER_FLAG_LOOP_ANIMATION)
+	doctor_state_machine.animation_controller.play_driver_animation(ZB001DoctorAnimations.DRIVER_FLAG_LOOP_ANIMATION)
 	boss.start_death_remain()
 	state_machine.set_physics_process(false)

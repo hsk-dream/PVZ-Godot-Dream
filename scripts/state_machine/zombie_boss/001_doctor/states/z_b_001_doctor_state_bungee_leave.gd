@@ -13,8 +13,8 @@ var _finished: bool = false
 ## 等待返回结束后从离开动画的零秒继续，零秒姿态对应进入动画的末帧。
 func enter() -> void:
 	_finished = false
-	_animation = (skill_state as ZB001DoctorStateBungee).leave_animation
-	doctor_state_machine.play_mech_animation(_animation)
+	_animation = (skill_state.effect_component as ZB001DoctorSkillBungee).leave_animation
+	doctor_state_machine.animation_controller.play_mech_action(_animation, ZB001DoctorAnimationController.DriverReaction.DRIVE)
 	doctor_state_machine.sync_action_timer_speed()
 
 
@@ -33,14 +33,6 @@ func get_configuration_error() -> String:
 	if not is_instance_valid(next_state) or next_state.get_parent() != state_machine or next_state == self:
 		push_error("BungeeLeave：必须绑定有效的同层后续状态。")
 		return "蹦极离开状态后续连线错误。"
-	# 复合技能提供单独的离开动画名，与进入动画的可选列表分离。
-	var bungee_state := skill_state as ZB001DoctorStateBungee
-	if bungee_state.leave_animation.is_empty() or not state_machine.animation_player.has_animation(bungee_state.leave_animation):
-		push_error("BungeeLeave：缺少配置的离开动画。")
-		return "蹦极离开动画不存在。"
-	# 离开动画必须能发出结束通知，随后由 Finish 完成整轮技能。
-	var animation: Animation = state_machine.animation_player.get_animation(bungee_state.leave_animation)
-	if animation.loop_mode != Animation.LOOP_NONE:
-		push_error("BungeeLeave：离开动画必须为非循环。")
-		return "蹦极离开动画循环模式错误。"
-	return ""
+	# 技能组件持有进入／离开配置，状态不再保存第二份动画名称。
+	var bungee: ZB001DoctorSkillBungee = skill_state.effect_component as ZB001DoctorSkillBungee
+	return doctor_state_machine.animation_controller.get_animation_error(state_machine.animation_player, bungee.leave_animation, Animation.LOOP_NONE)

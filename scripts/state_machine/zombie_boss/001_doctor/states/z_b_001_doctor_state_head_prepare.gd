@@ -6,7 +6,7 @@ class_name ZB001DoctorStateHeadPrepare
 ## 空结果不能进入低头流程，避免最终播放空动画；正常结果沿既有阶段链执行。
 func enter() -> void:
 	skill_state.prepare_action()
-	if skill_state.action_parameters.is_empty() or skill_state.selected_animation.is_empty():
+	if skill_state.selected_animation.is_empty():
 		skill_state.finish_skill()
 		return
 	state_machine.change_state(next_state)

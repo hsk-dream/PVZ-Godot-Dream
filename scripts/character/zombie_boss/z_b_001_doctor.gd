@@ -80,7 +80,7 @@ func play_enter_footstep(step_index: int) -> void:
 		return
 	# 入场被打断后仍可能收到延迟方法调用；动画名和活动状态共同限制有效事件。
 	var player: AnimationPlayer = state_machine.animation_player
-	if not is_instance_valid(player) or player.assigned_animation != ZB001DoctorStateMachine.ENTER_ANIMATION:
+	if not is_instance_valid(player) or player.assigned_animation != ZB001DoctorAnimations.ENTER_ANIMATION:
 		return
 	_played_enter_footsteps.append(step_index)
 	SoundManager.play_character_SFX(&"gargantuar_thump")
@@ -156,3 +156,22 @@ func start_death_remain() -> void:
 func _on_death_remain_timer_timeout() -> void:
 	if is_death:
 		_fade_and_remove()
+
+
+## 检查博士根节点负责的死亡保留与奖杯依赖；动画存在性由控制器提前验证。
+func get_death_configuration_error() -> String:
+	if not is_finite(death_remain_duration) or death_remain_duration < 0.0:
+		push_error("%s：死亡保留时间必须为有限非负数。" % get_path())
+		return "死亡保留时间无效。"
+	if not get_node_or_null("DeathRemainTimer") is SpeedTimer:
+		push_error("%s：根节点必须配置 DeathRemainTimer。" % get_path())
+		return "缺少死亡保留计时器。"
+	if not get_node_or_null("%TrophySpawnPoint") is Marker2D:
+		push_error("%s：必须配置唯一命名的 TrophySpawnPoint。" % get_path())
+		return "缺少奖杯生成点。"
+	# 奖杯请求属于根节点职责，检查目标路径和方法参数，不限制触发到固定秒数。
+	var animation: Animation = state_machine.animation_player.get_animation(ZB001DoctorAnimations.DEATH_ANIMATION)
+	if AnimationMethodQuery.get_times(animation, NodePath("."), &"request_trophy", []).is_empty():
+		push_error("%s：死亡动画必须包含有效的 request_trophy 方法关键帧。" % get_path())
+		return "缺少奖杯生成关键帧。"
+	return ""

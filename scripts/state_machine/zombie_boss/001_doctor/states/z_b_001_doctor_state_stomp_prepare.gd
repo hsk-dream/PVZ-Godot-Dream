@@ -6,7 +6,7 @@ class_name ZB001DoctorStateStompPrepare
 ## 锁定区域及对应动画后进入 Execute，每轮只播放一段脚踩动作。
 func enter() -> void:
 	skill_state.prepare_action()
-	if skill_state.action_parameters.is_empty() or skill_state.selected_animation.is_empty():
+	if skill_state.selected_animation.is_empty():
 		skill_state.finish_skill()
 		return
 	state_machine.change_state(next_state)

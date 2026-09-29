@@ -27,7 +27,6 @@ func exit() -> void:
 	if is_instance_valid(_bungee_effect):
 		if _bungee_effect.batch_finished.is_connected(_on_batch_finished):
 			_bungee_effect.batch_finished.disconnect(_on_batch_finished)
-		_bungee_effect.cancel_batch_tracking()
 	_bungee_effect = null
 
 

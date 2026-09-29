@@ -6,7 +6,7 @@ class_name ZB001DoctorStateBungeePrepare
 ## 只在此处随机一次并定位手臂，进入动画播放期间不重新选点。
 func enter() -> void:
 	skill_state.prepare_action()
-	if skill_state.action_parameters.is_empty() or skill_state.selected_animation.is_empty():
+	if skill_state.selected_animation.is_empty():
 		skill_state.finish_skill()
 		return
 	state_machine.change_state(next_state)

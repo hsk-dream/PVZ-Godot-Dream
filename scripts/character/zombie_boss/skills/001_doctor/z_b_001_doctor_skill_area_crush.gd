@@ -3,18 +3,31 @@ extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillAreaCrush
 
 
-## [param parameters] 准备阶段锁定的区域；在落地时读取植物，一次碾压所有种植层。
-func execute(parameters: Dictionary) -> void:
+## 本轮锁定的完整格子区域；只保存格子，落地时读取最新植物。
+var target_cells: Array[PlantCell] = []
+## 本轮零偏移基准之外的实际左上角，使用从 1 开始的行列。
+var target_top_left: Vector2i
+
+
+## 清理当前区域；已被碾压的植物不恢复，不影响其他技能实例。
+func cancel_skill() -> void:
+	super.cancel_skill()
+	target_cells.clear()
+	target_top_left = Vector2i.ZERO
+
+
+## 在落地关键帧读取锁定格子，一次碾压所有种植层。
+func _release_action() -> void:
 	# 当前关卡用于确认目标仍属于本次战斗，防止离树后的延迟事件执行。
 	var manager: PlantCellManager = _get_active_manager()
-	if manager == null or not parameters.has("cells"):
+	if manager == null or target_cells.is_empty():
 		return
 	# 先收集所有目标植物，再执行可能同步释放其他植物的死亡逻辑。
 	var plants: Array = []
 	# 用实例 ID 去重，防止跨格植物或共享引用被同一次区域攻击重复处理。
 	var seen_ids: Dictionary[int, bool] = {}
 	# 格子也可能已经释放，先保留 Variant，检查后才转换类型。
-	for cell_reference: Variant in parameters["cells"]:
+	for cell_reference: Variant in target_cells:
 		if not is_instance_valid(cell_reference):
 			continue
 		# 本次目标格子；只读取仍属于当前关卡的有效节点。
@@ -45,6 +58,8 @@ func execute(parameters: Dictionary) -> void:
 
 ## [param manager] 当前关卡格子管理器；返回独立排序的行数组，不改写公共行列信息。
 func _get_visual_grid(manager: PlantCellManager) -> Array[Array]:
+	# 格子失效时返回独立的类型化空网格，不能泄露已收集的不完整行。
+	var empty_grid: Array[Array] = []
 	# 行从上到下沿用管理器的顺序，列在副本中按世界 X 排序。
 	var grid: Array[Array] = []
 	# 当前待复制的原始行数组，不直接在其上排序。
@@ -54,12 +69,12 @@ func _get_visual_grid(manager: PlantCellManager) -> Array[Array]:
 		# 未转换类型的格子引用，保证失效实例不会在赋值时抛错。
 		for cell_reference: Variant in source_row:
 			if not is_instance_valid(cell_reference) or not cell_reference is PlantCell:
-				return []
+				return empty_grid
 			# 此格子的原始种植点必须已初始化，不能用动态容器坐标代替。
 			var cell := cell_reference as PlantCell
 			if cell.is_queued_for_deletion() or not cell.is_inside_tree() \
 				or not cell.plant_postion_node_ori_global_position.has(CharacterRegistry.PlacePlantInCell.Norm):
-				return []
+				return empty_grid
 			row.append(cell)
 		row.sort_custom(_is_cell_left_of)
 		grid.append(row)
@@ -76,16 +91,18 @@ func _is_cell_left_of(left: PlantCell, right: PlantCell) -> bool:
 ## [param top_left] 从 1 开始的左上角行列。[br]
 ## [param size] 区域行数和列数；仅返回完整矩形，越界时返回空数组。
 func _get_region(grid: Array[Array], top_left: Vector2i, size: Vector2i) -> Array[PlantCell]:
+	# 越界必须返回空区域；保持元素类型且不返回已经追加的部分格子。
+	var empty_cells: Array[PlantCell] = []
 	# 参数进入数组访问前统一转换为零起始索引。
 	var start: Vector2i = top_left - Vector2i.ONE
 	# 当前完整区域的格子，只有所有行列均存在时才返回。
 	var cells: Array[PlantCell] = []
 	if start.x < 0 or start.y < 0 or size.x < 1 or size.y < 1 or start.x + size.x > grid.size():
-		return []
+		return empty_cells
 	# 本次区域内的零起始行下标。
 	for row: int in range(start.x, start.x + size.x):
 		if start.y + size.y > grid[row].size():
-			return []
+			return empty_cells
 		# 本次区域内的零起始列下标。
 		for column: int in range(start.y, start.y + size.y):
 			cells.append(grid[row][column])
@@ -94,15 +111,10 @@ func _get_region(grid: Array[Array], top_left: Vector2i, size: Vector2i) -> Arra
 
 ## 仅返回本博士所属的有效战斗管理器；展示、死亡、退出及战斗结束后取消技能效果。
 func _get_active_manager() -> PlantCellManager:
-	# 场景 owner 指向博士，避免依赖 Skills 的固定父子层级。
-	var doctor := owner as ZB001Doctor
-	if not is_instance_valid(doctor) or doctor.is_death or doctor.is_queued_for_deletion() \
-		or not doctor.is_inside_tree() or doctor.character_init_type != Character000Base.E_CharacterInitType.IsNorm:
+	# 公共入口先检查博士与关卡的生命周期，本技能只确认自己的管理器。
+	var game: MainGameManager = _get_active_game()
+	if game == null:
 		return null
-	if not is_instance_valid(Global.main_game) or Global.main_game.is_queued_for_deletion() \
-		or not Global.main_game.is_ancestor_of(doctor) \
-		or Global.main_game.main_game_progress != MainGameManager.E_MainGameProgress.MAIN_GAME:
-		return null
-	# 当前关卡的格子管理器，离树或正在释放时不再使用。
-	var manager: PlantCellManager = Global.main_game.plant_cell_manager
+	# 管理器正在释放或已离树时不再读取场地及生成对象。
+	var manager: PlantCellManager = game.plant_cell_manager
 	return manager if is_instance_valid(manager) and manager.is_inside_tree() and not manager.is_queued_for_deletion() else null

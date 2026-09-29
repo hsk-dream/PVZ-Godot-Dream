@@ -6,7 +6,7 @@ class_name ZB001DoctorStateSpawnPrepare
 ## 无目标时停止准备链，正常情况下进入 Place；其他技能继续使用原通用准备状态。
 func enter() -> void:
 	skill_state.prepare_action()
-	if skill_state.action_parameters.is_empty() or skill_state.selected_animation.is_empty():
+	if skill_state.selected_animation.is_empty():
 		skill_state.finish_skill()
 		return
 	state_machine.change_state(next_state)

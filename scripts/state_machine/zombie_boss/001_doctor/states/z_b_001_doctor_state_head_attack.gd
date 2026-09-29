@@ -8,9 +8,7 @@ func enter() -> void:
 	boss.is_idle = false
 	# 初始化阶段已经校验的吐球效果组件，统一处理嘴部和眼部表现。
 	var ball_skill: ZB001DoctorSkillIceFireBall = skill_state.effect_component as ZB001DoctorSkillIceFireBall
-	# Prepare 锁定的球类型，与后续创建的球和喷吐粒子保持一致。
-	var ball_type: StringName = skill_state.action_parameters["ball_type"]
-	ball_skill.apply_charge_visuals(ball_type)
+	ball_skill.apply_charge_visuals()
 	super.enter()
 
 
@@ -21,3 +19,8 @@ func exit() -> void:
 	if is_instance_valid(ball_skill):
 		ball_skill.reset_charge_visuals()
 	super.exit()
+
+
+## 吐球动作明确要求本体 damage，其余头部阶段仍使用普通操纵动作。
+func get_driver_reaction() -> ZB001DoctorAnimationController.DriverReaction:
+	return ZB001DoctorAnimationController.DriverReaction.DAMAGE

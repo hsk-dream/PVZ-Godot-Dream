@@ -1415,6 +1415,20 @@ tracks/116/path = NodePath("StateMachine")
 tracks/116/interp = 1
 tracks/116/loop_wrap = true
 tracks/116/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_head_attack_3", &"position_move"],
+"method": &"notify_skill_event"
+}]
+}
+tracks/117/type = "method"
+tracks/117/imported = false
+tracks/117/enabled = true
+tracks/117/path = NodePath("StateMachine")
+tracks/117/interp = 1
+tracks/117/loop_wrap = true
+tracks/117/keys = {
 "times": PackedFloat32Array(1.25),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -1422,17 +1436,31 @@ tracks/116/keys = {
 "method": &"notify_skill_event"
 }]
 }
-tracks/117/type = "method"
-tracks/117/imported = false
-tracks/117/enabled = true
-tracks/117/path = NodePath(".")
-tracks/117/interp = 1
-tracks/117/loop_wrap = true
-tracks/117/keys = {
+tracks/118/type = "method"
+tracks/118/imported = false
+tracks/118/enabled = true
+tracks/118/path = NodePath(".")
+tracks/118/interp = 1
+tracks/118/loop_wrap = true
+tracks/118/keys = {
 "times": PackedFloat32Array(1.25),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [&"Zombie_boss_head_attack_3", &"bossboulderattack"],
 "method": &"play_animation_sfx"
+}]
+}
+tracks/119/type = "method"
+tracks/119/imported = false
+tracks/119/enabled = true
+tracks/119/path = NodePath("StateMachine")
+tracks/119/interp = 1
+tracks/119/loop_wrap = true
+tracks/119/keys = {
+"times": PackedFloat32Array(2.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_head_attack_3", &"position_return"],
+"method": &"notify_skill_event"
 }]
 }

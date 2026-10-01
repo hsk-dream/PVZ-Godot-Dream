@@ -1,6 +1,6 @@
 extends ZB001DoctorState
 class_name ZB001DoctorStateHeadEnter
-## 低头开始关闭受击，第 2 秒由动画事件开启；动作完成后进入吐球前待机。
+## 低头开始关闭受击，由动画中的 hurt_enable 事件开启；动作完成后进入吐球前待机。
 
 func enter() -> void:
 	boss.is_idle = false

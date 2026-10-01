@@ -3,15 +3,6 @@ class_name ZB001DoctorStateSpawnPrepare
 ## 放置专用准备阶段：读取本批清单的下一项，无有效任务时结束本轮，不进入空动画。
 
 
-## 无目标时停止准备链，正常情况下进入 Place；其他技能继续使用原通用准备状态。
-func enter() -> void:
-	skill_state.prepare_action()
-	if skill_state.selected_animation.is_empty():
-		skill_state.finish_skill()
-		return
-	state_machine.change_state(next_state)
-
-
 ## 限定所属技能与后续动作，避免在其他技能内误用放置准备规则。
 ## 错误由检测分支就地输出；返回值供上层中止初始化，转发时不重复报错。
 func get_configuration_error() -> String:

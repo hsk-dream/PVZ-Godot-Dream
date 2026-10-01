@@ -3,15 +3,6 @@ extends ZB001DoctorStateSkillPrepare
 class_name ZB001DoctorStateThrowRVPrepare
 
 
-## 准备阶段锁定格子并定位手臂，成功后才进入单次动作播放状态。
-func enter() -> void:
-	skill_state.prepare_action()
-	if skill_state.selected_animation.is_empty():
-		skill_state.finish_skill()
-		return
-	state_machine.change_state(next_state)
-
-
 ## 限定所属技能和下一状态类型，防止错误连线跳过落地事件处理。
 func get_configuration_error() -> String:
 	if not skill_state is ZB001DoctorStateThrowRV:

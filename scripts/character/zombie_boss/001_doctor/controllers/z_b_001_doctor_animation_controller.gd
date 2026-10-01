@@ -9,8 +9,8 @@ signal driver_animation_finished(animation_name: StringName)
 ## 博士自身的独立本体播放器，不接入机甲动画结束事件的分发链。
 @export var driver_animation_player: AnimationPlayer
 @export_group("动画过渡")
-## 普通待机或放置间隔切入技能的姿势过渡时间，单位为动作秒；0 表示立即切换。
-@export_range(0.0, 0.5, 0.01) var idle_transition_duration: float = 0.15
+## 普通待机或放置间隔切入技能的姿势过渡时间，单位为动作秒；默认 0，直接应用新动作姿势。
+@export_range(0.0, 0.5, 0.01) var idle_transition_duration: float = 0.0
 ## 低头待机切入吐球或抬头的姿势过渡时间，单位为动作秒；不延后技能关键帧。
 @export_range(0.0, 0.5, 0.01) var head_transition_duration: float = 0.15
 ## 死亡打断技能时的姿势及手臂偏移收回时间，单位为动作秒；随死亡动画倍率加速。
@@ -151,9 +151,13 @@ func _on_driver_animation_finished(animation_name: StringName) -> void:
 
 
 ## 跟随机甲的角色倍率；蹦极等待暂停机甲时，本体仍可待机，因此不读取机甲实际播放速度。
+## 与本体当前倍率一致时不重复写入，保留初始化、动作切换及速度变化时的同步入口。
 func sync_driver_speed() -> void:
 	if is_instance_valid(_mech_player) and is_instance_valid(driver_animation_player):
-		driver_animation_player.speed_scale = _mech_player.speed_scale
+		# 机甲的角色倍率与动作是否暂停分开处理，避免蹦极保持末帧时冻结本体待机。
+		var driver_speed: float = _mech_player.speed_scale
+		if driver_animation_player.speed_scale != driver_speed:
+			driver_animation_player.speed_scale = driver_speed
 
 
 ## 断开实际绑定的播放器，供重新初始化、配置失败和离树时共同清理。

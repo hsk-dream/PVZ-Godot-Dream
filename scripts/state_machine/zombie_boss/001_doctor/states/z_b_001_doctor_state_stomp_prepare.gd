@@ -3,15 +3,6 @@ extends ZB001DoctorStateSkillPrepare
 class_name ZB001DoctorStateStompPrepare
 
 
-## 锁定区域及对应动画后进入 Execute，每轮只播放一段脚踩动作。
-func enter() -> void:
-	skill_state.prepare_action()
-	if skill_state.selected_animation.is_empty():
-		skill_state.finish_skill()
-		return
-	state_machine.change_state(next_state)
-
-
 ## 限定准备状态属于脚踩技能，且后续状态能够处理动画踩踏事件。
 func get_configuration_error() -> String:
 	if not skill_state is ZB001DoctorStateStomp:

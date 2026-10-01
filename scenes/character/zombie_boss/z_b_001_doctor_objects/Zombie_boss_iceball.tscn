@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://6egcjmj5ims1" path="res://assets/reanim/Zombie_boss_iceball_highlight.png" id="8_bhq58"]
 [ext_resource type="Animation" uid="uid://dti8rh025sp0h" path="res://animation/character/zombie_boss/001_doctor/ball/Zombie_boss_iceball_form.tres" id="9_gtojm"]
 [ext_resource type="Animation" uid="uid://b35acvsk45x1g" path="res://animation/character/zombie_boss/001_doctor/ball/Zombie_boss_iceball_role.tres" id="10_6ojit"]
-[ext_resource type="Script" uid="uid://iamshwi08yib" path="res://scripts/character/zombie_boss/objects/001_doctor/z_b_001_doctor_ice_ball.gd" id="ball_script"]
-[ext_resource type="Script" uid="uid://lae0hyhwqrkw" path="res://scripts/character/zombie_boss/objects/001_doctor/z_b_001_doctor_ground_particles.gd" id="ground_script"]
+[ext_resource type="Script" uid="uid://iamshwi08yib" path="res://scripts/character/zombie_boss/001_doctor/objects/z_b_001_doctor_ice_ball.gd" id="ball_script"]
+[ext_resource type="Script" uid="uid://lae0hyhwqrkw" path="res://scripts/character/zombie_boss/001_doctor/objects/z_b_001_doctor_ground_particles.gd" id="ground_script"]
 [ext_resource type="Texture2D" uid="uid://dwxbch0uvhsr5" path="res://assets/image/particles/Zombie_boss_iceball_groundparticles.png" id="ground_texture"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4gl0v"]
@@ -51,7 +51,7 @@ script = ExtResource("ball_script")
 position = Vector2(-103.45, -179.45)
 
 [node name="BodyCorrect" type="Node2D" parent="Body" unique_id=1456638270]
-position = Vector2(-0.55000305, -2.550003)
+position = Vector2(-0.55000305, 3.449997)
 
 [node name="Anim_form" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1383808757]
 visible = false

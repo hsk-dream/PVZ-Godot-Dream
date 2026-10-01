@@ -168,6 +168,8 @@ func get_first_be_hit_plant_in_cell(plant:Plant000Base)->Plant000Base:
 
 ## [param enemy] 本次命中目标，可为空表示撞地或落空。[br]
 ## 先确认僵王命中次数与受击状态，再进入 [method _attack_enemy] 结算伤害及子类附加效果。
+## 命中类型在扣血前保存，致死攻击的命中特效同样显示在机甲前方。
+## 僵王命中特效保留命中时的位置；普通目标的特效继续对齐受击组件的全局 X。
 func attack_once(enemy:Character000Base):
 	if is_queued_for_deletion():
 		return
@@ -181,6 +183,8 @@ func attack_once(enemy:Character000Base):
 	curr_attack_num += 1
 	if max_attack_num != -1 and curr_attack_num > max_attack_num:
 		return
+	# 扣血可能触发目标死亡或释放，提前记录命中类型，供特效位置与层级处理使用。
+	var is_boss_hit: bool = is_instance_valid(enemy) and enemy is ZB000Base
 	## 对敌人造成伤害
 	_attack_enemy(enemy)
 	## 是否有音效
@@ -188,9 +192,10 @@ func attack_once(enemy:Character000Base):
 		SoundManager.play_bullet_attack_SFX(type_bullet_SFX)
 	## 如果有子弹特效
 	if bullet_effect.is_bullet_effect:
-		if is_instance_valid(enemy) and enemy is Character000Base:
+		# 僵王受击框较大，保留特效在子弹命中处的位置；普通目标继续使用原有 X 对齐规则。
+		if not is_boss_hit and is_instance_valid(enemy) and enemy is Character000Base:
 			bullet_effect.global_position.x = enemy.hurt_box_component.global_position.x
-		bullet_effect.activate_bullet_effect()
+		bullet_effect.activate_bullet_effect(is_boss_hit)
 
 	## 判断是否进入删除队列
 	if max_attack_num != -1 and curr_attack_num >= max_attack_num:

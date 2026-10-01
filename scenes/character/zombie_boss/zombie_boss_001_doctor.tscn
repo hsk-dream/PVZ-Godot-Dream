@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://b1gjdfa3qjj1n"]
 
 [ext_resource type="PackedScene" uid="uid://7y86ib4sacu4" path="res://scenes/character/zombie_boss/zombie_boss_000_base.tscn" id="1_dhbdl"]
-[ext_resource type="Script" uid="uid://c50rrgkl7u3i" path="res://scripts/character/zombie_boss/z_b_001_doctor.gd" id="2_3pwt0"]
-[ext_resource type="Texture2D" uid="uid://uh50cdkqdl67" path="res://assets/image/background/background1.jpg" id="3_7ftjx"]
+[ext_resource type="Script" uid="uid://c50rrgkl7u3i" path="res://scripts/character/zombie_boss/001_doctor/z_b_001_doctor.gd" id="2_3pwt0"]
 [ext_resource type="Texture2D" uid="uid://yrcmd1nqpt8i" path="res://assets/reanim/Zombie_boss_foot.png" id="3_uq0v6"]
 [ext_resource type="Texture2D" uid="uid://d0gnsuf88om6q" path="res://assets/reanim/Zombie_boss_arm_upper2.png" id="3_yjyvd"]
 [ext_resource type="Texture2D" uid="uid://cb7lvkchehhyj" path="res://assets/reanim/Zombie_boss_innerarm_lower.png" id="4_8fmg0"]
@@ -10,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cpn0fqjqj12ah" path="res://assets/reanim/Zombie_boss_innerleg_upper.png" id="5_kt7wm"]
 [ext_resource type="Texture2D" uid="uid://c77q3t07btgx3" path="res://assets/reanim/Zombie_boss_innerarm_finger.png" id="6_6oe8e"]
 [ext_resource type="Texture2D" uid="uid://bjxhbmwr06r3n" path="res://assets/reanim/Zombie_boss_leg_lower.png" id="6_tcx8o"]
+[ext_resource type="Texture2D" uid="uid://cvydoge11mp4" path="res://assets/image/background/background3.jpg" id="7_7ftjx"]
 [ext_resource type="Texture2D" uid="uid://bxsncalumj0c" path="res://assets/reanim/Zombie_boss_lowerbody.png" id="7_513t0"]
 [ext_resource type="Texture2D" uid="uid://b61wa16xujdnk" path="res://assets/reanim/Zombie_boss_innerarm_hand.png" id="7_leylu"]
 [ext_resource type="Texture2D" uid="uid://c533qswlsv8dw" path="res://assets/reanim/Zombie_boss_RVwheel.png" id="8_53h3c"]
@@ -23,26 +23,25 @@
 [ext_resource type="Texture2D" uid="uid://mbffsjw8tmah" path="res://assets/reanim/Zombie_boss_flag.png" id="19_usv8s"]
 [ext_resource type="Texture2D" uid="uid://sj6owkpr0cfk" path="res://assets/reanim/Zombie_bossdriver_upperarm.png" id="20_gk12t"]
 [ext_resource type="Texture2D" uid="uid://ba1ajlvpbir3f" path="res://assets/reanim/Zombie_bossdriver_lowerarm2.png" id="21_fhfo7"]
-[ext_resource type="Texture2D" uid="uid://hdhq0s4y5nlc" path="res://assets/reanim/Zombie_boss_neck.png" id="21_rti0c"]
 [ext_resource type="Texture2D" uid="uid://v4p10lusa25u" path="res://assets/reanim/Zombie_bossdriver_innerhand.png" id="22_54imc"]
-[ext_resource type="Texture2D" uid="uid://b1g33eigvbf34" path="res://assets/reanim/Zombie_boss_innerjaw.png" id="22_sm7ee"]
 [ext_resource type="Texture2D" uid="uid://cpfce4np462tn" path="res://assets/image/particles/Zombie_boss_iceball_particles_flip_h.png" id="22_t0xjl"]
-[ext_resource type="Texture2D" uid="uid://bpi1pc7gdc7e3" path="res://assets/reanim/Zombie_boss_mouthglow.png" id="23_nlhln"]
 [ext_resource type="Texture2D" uid="uid://dxcoxwwr4wead" path="res://assets/reanim/Zombie_bossdriver_lowerarm.png" id="23_qiqfr"]
 [ext_resource type="Texture2D" uid="uid://4a4nlhkc5nak" path="res://assets/reanim/Zombie_boss_mouthglow_red.png" id="23_r75td"]
 [ext_resource type="Texture2D" uid="uid://lagxt75xdc10" path="res://assets/reanim/Zombie_bossdriver_body.png" id="24_gghaj"]
+[ext_resource type="Texture2D" uid="uid://hdhq0s4y5nlc" path="res://assets/reanim/Zombie_boss_neck.png" id="25_5wk18"]
 [ext_resource type="Texture2D" uid="uid://i3y8pw036bm6" path="res://assets/reanim/Zombie_bossdriver_brain.png" id="25_78cek"]
+[ext_resource type="Texture2D" uid="uid://b1g33eigvbf34" path="res://assets/reanim/Zombie_boss_innerjaw.png" id="26_0nsdh"]
 [ext_resource type="Texture2D" uid="uid://bql5giivcflcr" path="res://assets/reanim/Zombie_boss_jaw.png" id="26_gueo1"]
 [ext_resource type="Texture2D" uid="uid://baeptg7m3bq68" path="res://assets/reanim/Zombie_boss_eyeglow_red.png" id="26_jurdd"]
-[ext_resource type="Texture2D" uid="uid://dk0ry1s32y2so" path="res://assets/reanim/Zombie_boss_eyeglow.png" id="27_nnn5h"]
+[ext_resource type="Texture2D" uid="uid://bpi1pc7gdc7e3" path="res://assets/reanim/Zombie_boss_mouthglow.png" id="27_2uy4y"]
 [ext_resource type="Texture2D" uid="uid://dqnrr5mlrqchx" path="res://assets/reanim/Zombie_bossdriver_outerhand.png" id="28_cv78e"]
 [ext_resource type="Animation" uid="uid://dc3c02xonkkqt" path="res://animation/character/zombie_boss/001_doctor/boss_driver/Zombie_Boss_driver_damage.tres" id="29_dhbdl"]
-[ext_resource type="Texture2D" uid="uid://cbanmp4jcvjfb" path="res://assets/reanim/Zombie_boss_head2.png" id="29_irhna"]
 [ext_resource type="Animation" uid="uid://rroymnkyti7o" path="res://animation/character/zombie_boss/001_doctor/boss_driver/Zombie_Boss_driver_death.tres" id="30_3pwt0"]
-[ext_resource type="Texture2D" uid="uid://b5owucpyftf8c" path="res://assets/reanim/Zombie_boss_antenna.png" id="31_kyqad"]
+[ext_resource type="Texture2D" uid="uid://dk0ry1s32y2so" path="res://assets/reanim/Zombie_boss_eyeglow.png" id="31_j3vfj"]
 [ext_resource type="Animation" uid="uid://rdnjbdgnpcl7" path="res://animation/character/zombie_boss/001_doctor/boss_driver/Zombie_Boss_driver_drive.tres" id="31_uq0v6"]
 [ext_resource type="Texture2D" uid="uid://dosj05ct71hmf" path="res://assets/reanim/Zombie_boss_head.png" id="32_0l7n2"]
 [ext_resource type="Animation" uid="uid://ck1dq4v1i0ex6" path="res://animation/character/zombie_boss/001_doctor/boss_driver/Zombie_Boss_driver_flag.tres" id="32_nryly"]
+[ext_resource type="Texture2D" uid="uid://cbanmp4jcvjfb" path="res://assets/reanim/Zombie_boss_head2.png" id="33_2fuv0"]
 [ext_resource type="Animation" uid="uid://dsmvs87mm7s6x" path="res://animation/character/zombie_boss/001_doctor/boss_driver/Zombie_Boss_driver_flag_loop.tres" id="33_kt7wm"]
 [ext_resource type="Animation" uid="uid://bhiqc2kevcagq" path="res://animation/character/zombie_boss/001_doctor/boss_driver/Zombie_Boss_driver_idle.tres" id="34_tcx8o"]
 [ext_resource type="Animation" uid="uid://bupm0kocsje0i" path="res://animation/character/zombie_boss/001_doctor/boss_driver/Zombie_Boss_driver_laugh.tres" id="35_513t0"]
@@ -62,7 +61,6 @@
 [ext_resource type="Texture2D" uid="uid://y7g8rfl3fp03" path="res://assets/reanim/Zombie_boss_outerarm_thumb2.png" id="47_y0aev"]
 [ext_resource type="Texture2D" uid="uid://c74eawoq1s7t2" path="res://assets/reanim/Zombie_boss_outerarm_hand.png" id="48_kx48i"]
 [ext_resource type="Animation" uid="uid://doey6lx2iwj8b" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_head_enter.tres" id="48_usv8s"]
-[ext_resource type="Texture2D" uid="uid://ce2qxcj384xxg" path="res://assets/reanim/Zombie_boss_eyeglow_black.png" id="48_ykjt2"]
 [ext_resource type="Texture2D" uid="uid://t8xlhlkacmq4" path="res://assets/reanim/Zombie_boss_outerarm_finger2.png" id="49_4atkk"]
 [ext_resource type="Animation" uid="uid://dfnxr4nk7vb8t" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_head_idle.tres" id="49_gk12t"]
 [ext_resource type="Texture2D" uid="uid://dtklsfuxl3iw0" path="res://assets/reanim/Zombie_boss_outerarm_finger1.png" id="50_exmbk"]
@@ -72,6 +70,7 @@
 [ext_resource type="Texture2D" uid="uid://itotbpb0blnd" path="res://assets/reanim/Zombie_boss_outerarm_lower.png" id="52_qhfrt"]
 [ext_resource type="Animation" uid="uid://bu1x360pe3s5x" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_spawn_1.tres" id="52_qiqfr"]
 [ext_resource type="Animation" uid="uid://dn015hlhgjxnf" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_spawn_2.tres" id="53_gghaj"]
+[ext_resource type="Texture2D" uid="uid://b5owucpyftf8c" path="res://assets/reanim/Zombie_boss_antenna.png" id="53_tdmkw"]
 [ext_resource type="Animation" uid="uid://dajmk6d36edg0" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_spawn_3.tres" id="54_78cek"]
 [ext_resource type="FontFile" uid="uid://cchqc1dtcle23" path="res://assets/fonts/Bake_Soda.otf" id="55_kx48i"]
 [ext_resource type="Animation" uid="uid://dfbbt55k3i8dp" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_spawn_4.tres" id="55_ucy2x"]
@@ -95,6 +94,7 @@
 [ext_resource type="Script" uid="uid://dye5cahoaws2l" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_dead.gd" id="74_state_dead"]
 [ext_resource type="Script" uid="uid://dric7f5r2jt8o" path="res://scripts/character/components/anim_component/component_anim_player.gd" id="75_anim_player"]
 [ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="75_speed_timer"]
+[ext_resource type="PackedScene" uid="uid://dn36gktmqp2h7" path="res://scenes/character/zombie_boss/z_b_001_doctor_objects/z_b_001_doctor_death_explosion_effect.tscn" id="133_rg3ie"]
 [ext_resource type="Animation" uid="uid://c8f6el73gvhps" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_bungee_1_leave.tres" id="bungee_leave_animation"]
 [ext_resource type="Script" uid="uid://ns1sd1q36j2w" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_bungee_leave.gd" id="bungee_leave_state"]
 [ext_resource type="Script" uid="uid://p7j7x5qfu052" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_bungee_prepare.gd" id="bungee_prepare_state"]
@@ -108,16 +108,20 @@
 [ext_resource type="Texture2D" uid="uid://b780hpyklgxrk" path="res://assets/reanim/Zombie_boss_head_damage2.png" id="damage2_head"]
 [ext_resource type="Texture2D" uid="uid://bkvtyh0txx0ay" path="res://assets/reanim/Zombie_boss_jaw_damage2.png" id="damage2_jaw"]
 [ext_resource type="Texture2D" uid="uid://deh4fpdpf0hev" path="res://assets/reanim/Zombie_boss_outerarm_hand_damage2.png" id="damage2_outerarm_hand"]
-[ext_resource type="Script" uid="uid://bqbafacgdkmna" path="res://scripts/character/zombie_boss/z_b_001_doctor_animation_controller.gd" id="doctor_animation_controller"]
-[ext_resource type="Script" uid="uid://b12aaa4bha10" path="res://scripts/character/zombie_boss/skills/001_doctor/data/z_b_001_doctor_area_action.gd" id="doctor_area_action"]
+[ext_resource type="Script" uid="uid://bqbafacgdkmna" path="res://scripts/character/zombie_boss/001_doctor/controllers/z_b_001_doctor_animation_controller.gd" id="doctor_animation_controller"]
+[ext_resource type="Resource" uid="uid://c4c378dcaa0" path="res://resources/zombie_boss/001_doctor/z_b_001_doctor_back_skill_config.tres" id="doctor_back_config"]
 [ext_resource type="Script" uid="uid://jl0nl4a234bc" path="res://scripts/resources/resource_body_change.gd" id="doctor_body_change"]
 [ext_resource type="PackedScene" uid="uid://cv4obfp5v8idm" path="res://scenes/character/zombie_boss/z_b_001_doctor_objects/Zombie_boss_fireball.tscn" id="doctor_fire_ball"]
+[ext_resource type="Resource" uid="uid://cebbc3aacdc" path="res://resources/zombie_boss/001_doctor/z_b_001_doctor_front_skill_config.tres" id="doctor_front_config"]
 [ext_resource type="PackedScene" uid="uid://cfb640e8a6cea" path="res://scenes/character/zombie_boss/z_b_001_doctor_objects/Zombie_boss_iceball.tscn" id="doctor_ice_ball"]
-[ext_resource type="Script" uid="uid://cq3auqs8nao7" path="res://scripts/character/zombie_boss/skills/001_doctor/z_b_001_doctor_skill_bungee.gd" id="effect_bungee"]
-[ext_resource type="Script" uid="uid://ctrnkoablaswu" path="res://scripts/character/zombie_boss/skills/001_doctor/z_b_001_doctor_skill_ice_fire_ball.gd" id="effect_ice_fire_ball"]
-[ext_resource type="Script" uid="uid://lkhwpvs8ntcv" path="res://scripts/character/zombie_boss/skills/001_doctor/z_b_001_doctor_skill_spawn.gd" id="effect_spawn"]
-[ext_resource type="Script" uid="uid://bs5bq1rwq8b18" path="res://scripts/character/zombie_boss/skills/001_doctor/z_b_001_doctor_skill_stomp.gd" id="effect_stomp"]
-[ext_resource type="Script" uid="uid://vo2ukfv75o5f" path="res://scripts/character/zombie_boss/skills/001_doctor/z_b_001_doctor_skill_throw_rv.gd" id="effect_throw_rv"]
+[ext_resource type="Script" uid="uid://cw6n2bdemvq5" path="res://scripts/character/zombie_boss/001_doctor/controllers/z_b_001_doctor_part_motion.gd" id="doctor_part_motion"]
+[ext_resource type="Resource" uid="uid://c1d5bc8baab" path="res://resources/zombie_boss/001_doctor/z_b_001_doctor_roof_skill_config.tres" id="doctor_roof_config"]
+[ext_resource type="Script" uid="uid://du4tibk3cemj7" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_scene_config.gd" id="doctor_scene_config_script"]
+[ext_resource type="Script" uid="uid://cq3auqs8nao7" path="res://scripts/character/zombie_boss/001_doctor/skills/z_b_001_doctor_skill_bungee.gd" id="effect_bungee"]
+[ext_resource type="Script" uid="uid://ctrnkoablaswu" path="res://scripts/character/zombie_boss/001_doctor/skills/z_b_001_doctor_skill_ice_fire_ball.gd" id="effect_ice_fire_ball"]
+[ext_resource type="Script" uid="uid://lkhwpvs8ntcv" path="res://scripts/character/zombie_boss/001_doctor/skills/z_b_001_doctor_skill_spawn.gd" id="effect_spawn"]
+[ext_resource type="Script" uid="uid://bs5bq1rwq8b18" path="res://scripts/character/zombie_boss/001_doctor/skills/z_b_001_doctor_skill_stomp.gd" id="effect_stomp"]
+[ext_resource type="Script" uid="uid://vo2ukfv75o5f" path="res://scripts/character/zombie_boss/001_doctor/skills/z_b_001_doctor_skill_throw_rv.gd" id="effect_throw_rv"]
 [ext_resource type="Texture2D" uid="uid://c4fvtioqnj6xa" path="res://assets/reanim/Zombie_boss_eyeglow_blue.png" id="eye_glow_blue"]
 [ext_resource type="Texture2D" uid="uid://imwctyv3o2to" path="res://assets/image/particles/Zombie_boss_fireball_particles_flip_h.png" id="fire_spit_flip_h"]
 [ext_resource type="Script" uid="uid://dhq2hjr1a125g" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_head_idle.gd" id="head_idle"]
@@ -208,7 +212,8 @@ corner_radius_bottom_left = 6
 font = ExtResource("55_kx48i")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kx48i"]
-radius = 20.0
+custom_solver_bias = 0.544
+radius = 240.0
 height = 700.0
 
 [sub_resource type="Animation" id="Animation_miqb2"]
@@ -777,7 +782,7 @@ tracks/46/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(414.06296, -47.793213)]
+"values": [Vector2(520.99994, -182)]
 }
 tracks/47/type = "value"
 tracks/47/imported = false
@@ -873,7 +878,7 @@ tracks/54/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(309.56296, -13.793182)]
+"values": [Vector2(465.00003, -265)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i61bf"]
@@ -904,33 +909,13 @@ _data = {
 &"Zombie_boss_stomp_4": ExtResource("60_6swff")
 }
 
-[sub_resource type="Resource" id="doctor_throwrv_action_0"]
-script = ExtResource("doctor_area_action")
-animation_name = &"Zombie_boss_RV_1"
-top_left = Vector2i(2, 2)
-
-[sub_resource type="Resource" id="doctor_stomp_action_0"]
-script = ExtResource("doctor_area_action")
-animation_name = &"Zombie_boss_stomp_1"
-top_left = Vector2i(1, 7)
-
-[sub_resource type="Resource" id="doctor_stomp_action_1"]
-script = ExtResource("doctor_area_action")
-animation_name = &"Zombie_boss_stomp_2"
-top_left = Vector2i(2, 7)
-
-[sub_resource type="Resource" id="doctor_stomp_action_2"]
-script = ExtResource("doctor_area_action")
-animation_name = &"Zombie_boss_stomp_3"
-top_left = Vector2i(3, 7)
-
-[sub_resource type="Resource" id="doctor_stomp_action_3"]
-script = ExtResource("doctor_area_action")
-animation_name = &"Zombie_boss_stomp_4"
-top_left = Vector2i(4, 7)
-
 [node name="ZB001Doctor" unique_id=1135427569 instance=ExtResource("1_dhbdl")]
 script = ExtResource("2_3pwt0")
+skill_scene_configs = Dictionary[int, ExtResource("doctor_scene_config_script")]({
+0: ExtResource("doctor_front_config"),
+1: ExtResource("doctor_back_config"),
+2: ExtResource("doctor_roof_config")
+})
 death_animation_speed_scale = 1.5
 death_remain_duration = 10.0
 enter_footstep_shake_amplitude = Vector2(2, 6)
@@ -940,7 +925,7 @@ enter_footstep_shake_frequency = 20.0
 [node name="Background5" type="Sprite2D" parent="." index="0" unique_id=1000219766]
 visible = false
 position = Vector2(-210, 0)
-texture = ExtResource("3_7ftjx")
+texture = ExtResource("7_7ftjx")
 centered = false
 
 [node name="Shadow" parent="." index="1" unique_id=1595019345]
@@ -954,25 +939,26 @@ position = Vector2(100, 0)
 [node name="InnerArmBack" type="Node2D" parent="Body/BodyCorrect/InnerArm" index="0" unique_id=1997454947]
 
 [node name="Boss_innerarm_bits" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="0" unique_id=965542180]
-position = Vector2(448.6, -204.7)
-rotation = 0.291
-scale = Vector2(0.791, 0.89)
+visible = false
+position = Vector2(470.3, -109.900085)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.893)
 texture = ExtResource("3_yjyvd")
 centered = false
 
 [node name="Boss_innerarm_lower" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="1" unique_id=827586080]
-position = Vector2(309.56296, -13.793182)
-rotation = -1.841
-scale = Vector2(0.764, 0.822)
-skew = 0.03
+visible = false
+position = Vector2(465.00003, -265)
+rotation = 0.18000071
+scale = Vector2(0.793, 0.793)
 texture = ExtResource("4_8fmg0")
 centered = false
 
 [node name="Boss_innerarm_finger4" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="2" unique_id=564955963]
+visible = false
 position = Vector2(490.36295, -127.99321)
-rotation = -0.546
-scale = Vector2(0.622, 0.669)
-skew = -0.066
+rotation = 0.15700038
+scale = Vector2(0.616, 0.676)
 texture = ExtResource("6_6oe8e")
 centered = false
 
@@ -980,18 +966,18 @@ centered = false
 position = Vector2(33.250984, 54.583748)
 
 [node name="Boss_innerarm_finger2" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="3" unique_id=1130635637]
+visible = false
 position = Vector2(500.26294, -99.39322)
-rotation = -0.831
-scale = Vector2(0.785, 0.867)
-skew = -0.075
+rotation = 0.15900071
+scale = Vector2(0.79, 0.861)
 texture = ExtResource("6_6oe8e")
 centered = false
 
 [node name="Boss_innerarm_finger1" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="4" unique_id=342585618]
+visible = false
 position = Vector2(506.06293, -65.89322)
-rotation = -1.147
-scale = Vector2(0.767, 0.81)
-skew = -0.054
+rotation = 0.2760007
+scale = Vector2(0.79, 0.79)
 texture = ExtResource("6_6oe8e")
 centered = false
 
@@ -999,10 +985,10 @@ centered = false
 position = Vector2(41.316055, 49.081253)
 
 [node name="Boss_innerarm_finger3" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="5" unique_id=91402363]
+visible = false
 position = Vector2(500.06293, -121.29321)
-rotation = -0.506
-scale = Vector2(0.686, 0.697)
-skew = -0.066
+rotation = 0.110000715
+scale = Vector2(0.673, 0.709)
 texture = ExtResource("6_6oe8e")
 centered = false
 
@@ -1010,155 +996,192 @@ centered = false
 position = Vector2(34.045753, 46.127296)
 
 [node name="Boss_innerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmBack" index="6" unique_id=1637418869]
-position = Vector2(414.06296, -47.793213)
-rotation = -1.398
-scale = Vector2(0.76, 0.822)
-skew = -0.031
+visible = false
+position = Vector2(520.99994, -182)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
 texture = ExtResource("7_leylu")
 centered = false
 
 [node name="RV" type="Node2D" parent="Body/BodyCorrect/InnerArm" index="1" unique_id=1869781273]
 
 [node name="Boss_RV_wheel1" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/RV" index="0" unique_id=1060034505]
+visible = false
 position = Vector2(260.8, -106.35574)
 rotation = 0.014
-scale = Vector2(1.0120002, 0.82599986)
+scale = Vector2(1.0530002, 0.8059999)
 texture = ExtResource("8_53h3c")
 centered = false
 
 [node name="Boss_RV_wheel2" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/RV" index="1" unique_id=299955947]
+visible = false
 position = Vector2(126.999985, -79.95575)
-rotation = 0.012000009
-scale = Vector2(1.0130004, 0.8079998)
-skew = 0.0019999908
+rotation = 0.014
+scale = Vector2(1.0850003, 0.75599974)
 texture = ExtResource("8_53h3c")
 centered = false
 
 [node name="Boss_RV" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/RV" index="2" unique_id=95567047]
+visible = false
 position = Vector2(73, -180.8558)
-rotation = -0.23000005
-scale = Vector2(0.897, 0.897)
+rotation = -0.24099979
+scale = Vector2(0.899, 0.899)
 texture = ExtResource("9_y0aev")
 centered = false
 
 [node name="InnerArmFront" type="Node2D" parent="Body/BodyCorrect/InnerArm" index="2" unique_id=1073141551]
 
 [node name="Boss_innerarm_thumb2" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmFront" index="0" unique_id=1283083894]
+visible = false
 position = Vector2(450.76294, -53.593216)
-rotation = -1.398
-scale = Vector2(0.76, 0.822)
-skew = -0.031
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
 texture = ExtResource("10_kx48i")
 centered = false
 
 [node name="Boss_innerarm_thumb1" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmFront" index="1" unique_id=65147529]
+visible = false
 position = Vector2(434.26294, -57.693207)
-rotation = -1.398
-scale = Vector2(0.76, 0.822)
-skew = -0.031
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
 texture = ExtResource("11_4atkk")
 centered = false
 
 [node name="Boss_innerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/InnerArm/InnerArmFront" index="2" unique_id=1147161320]
-position = Vector2(458.6, -339.1)
-rotation = 0.291
-scale = Vector2(0.791, 0.791)
+visible = false
+position = Vector2(456.70007, -225.10013)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.795)
 texture = ExtResource("12_exmbk")
 centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/InnerArm/InnerArmFront/Boss_innerarm_upper" index="0" unique_id=748552970]
+position = Vector2(113.5, 125)
 
 [node name="InnerLeg" type="Node2D" parent="Body/BodyCorrect" index="1" unique_id=843216882]
 
 [node name="Boss_innerleg_foot" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="0" unique_id=971144745]
 position = Vector2(879.9, 104.6)
-scale = Vector2(0.65, 0.65)
+rotation = 0.04399998
+scale = Vector2(0.64300007, 0.64299995)
 texture = ExtResource("3_uq0v6")
 centered = false
 
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/InnerLeg/Boss_innerleg_foot" index="0" unique_id=626607022]
+position = Vector2(183.5, 113)
+
 [node name="Boss_innerleg_bits" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="1" unique_id=341568164]
 position = Vector2(962.9, -6)
-scale = Vector2(0.8, 0.8)
+rotation = 0.016999988
+scale = Vector2(0.793, 0.79299986)
 texture = ExtResource("4_nryly")
 centered = false
 
 [node name="Boss_innerleg_upper" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="2" unique_id=124542618]
 position = Vector2(953.9, -120.4)
-scale = Vector2(0.8, 0.8)
+rotation = 0.37500024
+scale = Vector2(0.795, 0.795)
 texture = ExtResource("5_kt7wm")
 centered = false
 
 [node name="Boss_innerleg_lower" type="Sprite2D" parent="Body/BodyCorrect/InnerLeg" index="3" unique_id=173477970]
 position = Vector2(930.5, -6.9)
-scale = Vector2(0.65, 0.65)
+rotation = 0.016999988
+scale = Vector2(0.645, 0.64499986)
 texture = ExtResource("6_tcx8o")
 centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/InnerLeg/Boss_innerleg_lower" index="0" unique_id=2014362057]
+position = Vector2(134, 144)
 
 [node name="BodyBack" type="Node2D" parent="Body/BodyCorrect" index="2" unique_id=172558831]
 
 [node name="Boss_body2" type="Sprite2D" parent="Body/BodyCorrect/BodyBack" index="0" unique_id=2110617389]
 position = Vector2(904, -152.2)
-rotation = -0.168
-scale = Vector2(0.8, 0.8)
+rotation = 0.01700034
+scale = Vector2(0.799, 0.799)
 texture = ExtResource("7_513t0")
 centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/BodyBack/Boss_body2" index="0" unique_id=1330034197]
+position = Vector2(166.5, 125)
 
 [node name="OuterLeg" type="Node2D" parent="Body/BodyCorrect" index="3" unique_id=416799543]
 
 [node name="Boss_outerleg_foot" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="0" unique_id=551115959]
 position = Vector2(948.3, 215)
+rotation = -0.117
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("3_uq0v6")
 centered = false
 
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/OuterLeg/Boss_outerleg_foot" index="0" unique_id=1157765828]
+position = Vector2(183.5, 113)
+
 [node name="Boss_outerleg_bits" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="1" unique_id=1176380558]
 position = Vector2(1052.1, 80.5)
+rotation = -0.39299998
+scale = Vector2(0.99899995, 0.99899995)
 texture = ExtResource("4_nryly")
 centered = false
 
 [node name="Boss_outerleg_upper" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="2" unique_id=547847021]
 position = Vector2(1036.7, -74.4)
-scale = Vector2(0.8, 0.891)
+rotation = 0.4150002
+scale = Vector2(0.799, 0.89)
 texture = ExtResource("8_l6fqx")
 centered = false
 
 [node name="Boss_outerleg_lower" type="Sprite2D" parent="Body/BodyCorrect/OuterLeg" index="3" unique_id=708027301]
 position = Vector2(1012.9, 79.8)
-scale = Vector2(0.8, 0.8)
+rotation = -0.39299998
+scale = Vector2(0.79899997, 0.79899997)
 texture = ExtResource("6_tcx8o")
 centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/OuterLeg/Boss_outerleg_lower" index="0" unique_id=626621219]
+position = Vector2(134, 144)
 
 [node name="BodyFront" type="Node2D" parent="Body/BodyCorrect" index="4" unique_id=1667616256]
 
 [node name="Boss_body1" type="Sprite2D" parent="Body/BodyCorrect/BodyFront" index="0" unique_id=1719965813]
+visible = false
 position = Vector2(888, -515)
-rotation = 1.189
-scale = Vector2(0.823, 0.753)
-skew = -0.058
+rotation = -0.225
+scale = Vector2(0.799, 0.799)
 texture = ExtResource("9_opvbh")
 centered = false
+
+[node name="Marker2DDeathExplosionUpper" type="Marker2D" parent="Body/BodyCorrect/BodyFront/Boss_body1" index="0" unique_id=56640229]
+position = Vector2(260, 170)
+
+[node name="Marker2DDeathExplosionLower" type="Marker2D" parent="Body/BodyCorrect/BodyFront/Boss_body1" index="1" unique_id=1160625426]
+position = Vector2(280, 330)
 
 [node name="Head" type="Node2D" parent="Body/BodyCorrect" index="5" unique_id=77649204]
 
 [node name="Boss_neck" type="Sprite2D" parent="Body/BodyCorrect/Head" index="0" unique_id=1603125000]
+visible = false
 position = Vector2(803, -222.59999)
-rotation = -0.005
-scale = Vector2(0.814, 0.742)
-skew = 0.098
-texture = ExtResource("21_rti0c")
+rotation = -0.033
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("25_5wk18")
 centered = false
 
 [node name="Boss_innerjaw" type="Sprite2D" parent="Body/BodyCorrect/Head" index="1" unique_id=327693032]
+visible = false
 position = Vector2(804, -150.29999)
-rotation = 0.026
-scale = Vector2(0.993, 0.993)
-texture = ExtResource("22_sm7ee")
+rotation = -0.016000004
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("26_0nsdh")
 centered = false
 
 [node name="Boss_mouthglow" type="Sprite2D" parent="Body/BodyCorrect/Head" index="2" unique_id=1085485207]
-self_modulate = Color(1, 1, 1, 0)
+visible = false
 position = Vector2(811, -151.09999)
-rotation = 0.026
-scale = Vector2(1.011, 0.993)
-texture = ExtResource("23_nlhln")
+rotation = -0.016000004
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("27_2uy4y")
 centered = false
 
 [node name="Marker2DSpawnBall" type="Marker2D" parent="Body/BodyCorrect/Head/Boss_mouthglow" index="0" unique_id=700366283]
@@ -1176,34 +1199,48 @@ visibility_rect = Rect2(-300, -100, 500, 200)
 process_material = SubResource("ParticleProcessMaterial_spit")
 
 [node name="Boss_mouthglow_red" type="Sprite2D" parent="Body/BodyCorrect/Head" index="3" unique_id=296643281]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.051
+scale = Vector2(0.955, 0.998)
+skew = 0.045
 texture = ExtResource("23_r75td")
 centered = false
 
 [node name="Boss_jaw" type="Sprite2D" parent="Body/BodyCorrect/Head" index="4" unique_id=624544355]
+visible = false
 position = Vector2(782.7, -131.6)
-rotation = 0.026
-scale = Vector2(0.808, 0.794)
+rotation = -0.016000004
+scale = Vector2(0.796, 0.796)
 texture = ExtResource("26_gueo1")
 centered = false
 
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/Head/Boss_jaw" index="0" unique_id=1552799484]
+position = Vector2(104.5, 101.5)
+
 [node name="Boss_eyeglow" type="Sprite2D" parent="Body/BodyCorrect/Head" index="5" unique_id=1378826478]
+visible = false
 position = Vector2(776.8, -144.5)
-rotation = 0.113
-scale = Vector2(0.815, 0.785)
-skew = 0.014
-texture = ExtResource("27_nnn5h")
+rotation = -0.016000004
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("31_j3vfj")
 centered = false
 
 [node name="Boss_eyeglow_red" type="Sprite2D" parent="Body/BodyCorrect/Head" index="6" unique_id=240188531]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.049
+scale = Vector2(0.795, 0.796)
+skew = -0.002
 texture = ExtResource("26_jurdd")
 centered = false
 
 [node name="Boss_head2" type="Sprite2D" parent="Body/BodyCorrect/Head" index="7" unique_id=78865879]
+visible = false
 position = Vector2(792.8, -213.39998)
-rotation = 0.113
-scale = Vector2(0.815, 0.785)
-skew = 0.014
-texture = ExtResource("29_irhna")
+rotation = -0.016000004
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("33_2fuv0")
 centered = false
 
 [node name="TrophySpawnPoint" type="Marker2D" parent="Body/BodyCorrect/Head/Boss_head2" index="0" unique_id=1652841715]
@@ -1352,57 +1389,62 @@ centered = false
 libraries/ = SubResource("AnimationLibrary_r8440")
 
 [node name="Boss_eyeglow_black" type="Sprite2D" parent="Body/BodyCorrect/Head" index="8" unique_id=1909711814]
-self_modulate = Color(1, 1, 1, 0.88)
-rotation = 0.113
-scale = Vector2(0.815, 0.785)
-skew = 0.014
-texture = ExtResource("48_ykjt2")
+visible = false
 centered = false
 
 [node name="Boss_antenna2" type="Sprite2D" parent="Body/BodyCorrect/Head" index="9" unique_id=2124007318]
+visible = false
 position = Vector2(741.6, -170.3)
-rotation = -0.003
-scale = Vector2(0.852, 0.852)
-skew = 0.003
-texture = ExtResource("31_kyqad")
+rotation = 0.04499999
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("53_tdmkw")
 centered = false
 
 [node name="Boss_head" type="Sprite2D" parent="Body/BodyCorrect/Head" index="10" unique_id=1284253756]
+visible = false
 position = Vector2(763.2, -203.9)
-rotation = 0.113
-scale = Vector2(0.815, 0.785)
-skew = 0.014
+rotation = -0.016000004
+scale = Vector2(0.796, 0.796)
 texture = ExtResource("32_0l7n2")
 centered = false
 
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/Head/Boss_head" index="0" unique_id=256860876]
+position = Vector2(137, 113)
+
 [node name="Boss_antenna" type="Sprite2D" parent="Body/BodyCorrect/Head" index="11" unique_id=633928670]
+visible = false
 position = Vector2(968, -204.99998)
-rotation = 0.113
-scale = Vector2(1.019, 0.981)
-skew = 0.014
-texture = ExtResource("31_kyqad")
+rotation = -0.016000004
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("53_tdmkw")
 centered = false
 
 [node name="OuterArm" type="Node2D" parent="Body/BodyCorrect" index="6" unique_id=1020694748]
 
 [node name="Boss_outerarm_thumb2" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="0" unique_id=1032467766]
+visible = false
 position = Vector2(806, 13.4)
-rotation = 0.77
-scale = Vector2(0.852, 0.898)
+rotation = -0.41400018
+scale = Vector2(0.86, 0.906)
 texture = ExtResource("47_y0aev")
 centered = false
 
 [node name="Boss_outerarm_hand" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="1" unique_id=811320134]
+visible = false
 position = Vector2(893.2, -30.5)
-rotation = 1.141
-scale = Vector2(0.788, 0.788)
+rotation = -0.44300026
+scale = Vector2(0.795, 0.795)
 texture = ExtResource("48_kx48i")
 centered = false
 
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/OuterArm/Boss_outerarm_hand" index="0" unique_id=1133470058]
+position = Vector2(99, 99)
+
 [node name="Boss-outerarm_finger4" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="2" unique_id=137275460]
+visible = false
 position = Vector2(869, 46)
-rotation = 0.984
-scale = Vector2(0.659, 0.605)
+rotation = -0.93500024
+scale = Vector2(0.666, 0.611)
 texture = ExtResource("49_4atkk")
 centered = false
 
@@ -1410,83 +1452,95 @@ centered = false
 position = Vector2(44.77496, 78.85651)
 
 [node name="Boss-outerarm_knuckle4" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="3" unique_id=2055777930]
+visible = false
 position = Vector2(922.5, 85)
-rotation = 0.648
-scale = Vector2(0.531, 0.583)
+rotation = -1.0930003
+scale = Vector2(0.536, 0.588)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss-outerarm_finger3" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="4" unique_id=1651129484]
+visible = false
 position = Vector2(853.3, 19.8)
-rotation = 1.094
-scale = Vector2(0.682, 0.699)
+rotation = -0.76800025
+scale = Vector2(0.688, 0.705)
 texture = ExtResource("49_4atkk")
 centered = false
 
 [node name="Boss-outerarm_knuckle3" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="5" unique_id=1251663143]
+visible = false
 position = Vector2(890.6, 65.6)
-rotation = 0.688
-scale = Vector2(0.563, 0.657)
+rotation = -0.8990002
+scale = Vector2(0.567, 0.662)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss-outerarm_finger2" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="6" unique_id=1985443453]
+visible = false
 position = Vector2(884.7, 13.9)
-rotation = 1.15
-scale = Vector2(0.733, 0.801)
+rotation = -0.73000026
+scale = Vector2(0.74, 0.809)
 texture = ExtResource("49_4atkk")
 centered = false
 
 [node name="Boss-outerarm_knuckle2" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="7" unique_id=2096922334]
+visible = false
 position = Vector2(863.5, 48.2)
-rotation = 0.752
-scale = Vector2(0.739, 0.788)
+rotation = -0.83400023
+scale = Vector2(0.745, 0.795)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss-outerarm_finger1" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="8" unique_id=1913959746]
+visible = false
 position = Vector2(834.3, 14.6)
-rotation = 0.972
-scale = Vector2(0.693, 0.762)
+rotation = -0.45200026
+scale = Vector2(0.699, 0.769)
 texture = ExtResource("49_4atkk")
 centered = false
 
 [node name="Boss-outerarm_knuckle1" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="9" unique_id=2105965060]
+visible = false
 position = Vector2(846.9, 34)
-rotation = 0.923
-scale = Vector2(0.75, 0.75)
+rotation = -0.39600027
+scale = Vector2(0.758, 0.758)
 texture = ExtResource("50_exmbk")
 centered = false
 
 [node name="Boss_outerarm_thumb1" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="10" unique_id=778898550]
+visible = false
 position = Vector2(858, -27.4)
-rotation = 0.499
-scale = Vector2(0.853, 0.898)
+rotation = -0.39600027
+scale = Vector2(0.86, 0.906)
 texture = ExtResource("51_l4cxf")
 centered = false
 
 [node name="Boss_outerarm_bits" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="11" unique_id=636127959]
+visible = false
 position = Vector2(929.1, -127.3)
-rotation = 1.477
-scale = Vector2(0.803, 0.785)
-skew = -0.003
+rotation = -0.5760004
+scale = Vector2(0.797, 0.797)
 texture = ExtResource("3_yjyvd")
 centered = false
 
 [node name="Boss_outerarm_lower" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="12" unique_id=1896278388]
+visible = false
 position = Vector2(941.8, -145)
-rotation = 1.457
-scale = Vector2(0.791, 0.851)
+rotation = -0.2830005
+scale = Vector2(0.797, 0.858)
 texture = ExtResource("52_qhfrt")
 centered = false
 
 [node name="Boss_outerarm_upper" type="Sprite2D" parent="Body/BodyCorrect/OuterArm" index="13" unique_id=992781487]
+visible = false
 position = Vector2(807.2, -289.3)
-rotation = 1.473
-scale = Vector2(0.827, 0.769)
-skew = -0.026
+rotation = -0.5760004
+scale = Vector2(0.797, 0.797)
 texture = ExtResource("37_pg5w1")
 centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="Body/BodyCorrect/OuterArm/Boss_outerarm_upper" index="0" unique_id=954059892]
+position = Vector2(142.5, 178)
 
 [node name="AnimComponent" parent="." index="3" unique_id=507004594]
 script = ExtResource("75_anim_player")
@@ -1554,7 +1608,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HurtBoxComponent" parent="." index="6" unique_id=35856933]
-position = Vector2(821, 324)
+position = Vector2(908, 339)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent/HurtBoxDetection" parent_id_path=PackedInt32Array(247294405) index="0" unique_id=221714381]
 position = Vector2(0, -40)
@@ -1566,18 +1620,17 @@ shape = SubResource("CapsuleShape2D_kx48i")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="7" unique_id=1933216347]
 libraries/ = SubResource("AnimationLibrary_i61bf")
 
-[node name="StateMachine" type="Node" parent="." index="8" unique_id=979168503 node_paths=PackedStringArray("idle_state", "skill_state_weights", "initial_skill_sequence", "dying_state", "dead_state", "animation_controller", "character", "animation_player", "initial_state")]
+[node name="StateMachine" type="Node" parent="." index="8" unique_id=979168503 node_paths=PackedStringArray("idle_state", "dying_state", "dead_state", "animation_controller", "character", "animation_player", "initial_state")]
 unique_name_in_owner = true
 script = ExtResource("61_state_machine")
 idle_state = NodePath("Idle")
-skill_state_weights = {
-NodePath("Spawn"): 3.0,
-NodePath("HeadSkill"): 1.0,
-NodePath("Bungee"): 1.0,
-NodePath("ThrowRV"): 1.0,
-NodePath("Stomp"): 1.0
-}
-initial_skill_sequence = [NodePath("Spawn"), NodePath("Spawn"), NodePath("Spawn")]
+skill_state_weights = Dictionary[StringName, float]({
+&"Bungee": 0.0,
+&"HeadSkill": 0.0,
+&"Spawn": 0.0,
+&"Stomp": 1.0,
+&"ThrowRV": 0.0
+})
 dying_state = NodePath("Dying")
 dead_state = NodePath("Dead")
 animation_controller = NodePath("../AnimationController")
@@ -1753,38 +1806,33 @@ next_state = NodePath("../Finish")
 [node name="Finish" type="Node" parent="StateMachine/Stomp/StateMachine" index="2" unique_id=680051028]
 script = ExtResource("skill_finish")
 
-[node name="Dying" type="Node" parent="StateMachine" index="7" unique_id=1402952393]
+[node name="Dying" type="Node" parent="StateMachine" index="7" unique_id=1402952393 node_paths=PackedStringArray("explosion_points", "explosion_root")]
 script = ExtResource("73_state_dying")
+explosion_scene = ExtResource("133_rg3ie")
+explosion_points = [NodePath("../../Body/BodyCorrect/Head/Boss_head/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/Head/Boss_jaw/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/BodyFront/Boss_body1/Marker2DDeathExplosionUpper"), NodePath("../../Body/BodyCorrect/BodyFront/Boss_body1/Marker2DDeathExplosionLower"), NodePath("../../Body/BodyCorrect/BodyBack/Boss_body2/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/InnerArm/InnerArmFront/Boss_innerarm_upper/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/OuterArm/Boss_outerarm_upper/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/OuterArm/Boss_outerarm_hand/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/InnerLeg/Boss_innerleg_lower/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/OuterLeg/Boss_outerleg_lower/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/InnerLeg/Boss_innerleg_foot/Marker2DDeathExplosion"), NodePath("../../Body/BodyCorrect/OuterLeg/Boss_outerleg_foot/Marker2DDeathExplosion")]
+explosion_root = NodePath("../../DeathExplosionEffects")
+
+[node name="DeathExplosionIntervalTimer" type="Timer" parent="StateMachine/Dying" index="0" unique_id=155842437]
+process_callback = 0
+one_shot = true
+script = ExtResource("75_speed_timer")
 
 [node name="Dead" type="Node" parent="StateMachine" index="8" unique_id=1151984638]
 script = ExtResource("74_state_dead")
 
 [node name="Skills" type="Node" parent="." index="9" unique_id=456107791]
 
-[node name="SpawnSkill" type="Node" parent="Skills" index="0" unique_id=1531831246 node_paths=PackedStringArray("spawn_marker")]
+[node name="SpawnSkill" type="Node" parent="Skills" index="0" unique_id=1531831246 node_paths=PackedStringArray("spawn_marker", "part_motion")]
 script = ExtResource("effect_spawn")
-lane_animations = Dictionary[int, StringName]({
-0: &"Zombie_boss_spawn_1",
-1: &"Zombie_boss_spawn_2",
-2: &"Zombie_boss_spawn_3",
-3: &"Zombie_boss_spawn_4",
-4: &"Zombie_boss_spawn_5"
-})
 spawn_marker = NodePath("../../Body/BodyCorrect/OuterArm/Boss-outerarm_finger4/Marker2DSpawnZombie")
 zombie_types = Array[int]([1, 3, 4, 5, 6, 7, 8])
+part_motion = NodePath("../../PartMotions/OuterArmMotion")
 
 [node name="SpawnChooseRowSystem" type="Node" parent="Skills/SpawnSkill" index="0" unique_id=1648364301]
 script = ExtResource("spawn_choose_row")
 
-[node name="IceFireBallSkill" type="Node" parent="Skills" index="1" unique_id=725926059 node_paths=PackedStringArray("spawn_marker", "spit_particles", "mouth_glow", "eye_glow")]
+[node name="IceFireBallSkill" type="Node" parent="Skills" index="1" unique_id=725926059 node_paths=PackedStringArray("spawn_marker", "spit_particles", "mouth_glow", "eye_glow", "part_motion")]
 script = ExtResource("effect_ice_fire_ball")
-lane_animations = Dictionary[int, StringName]({
-0: &"Zombie_boss_head_attack_1",
-1: &"Zombie_boss_head_attack_2",
-2: &"Zombie_boss_head_attack_3",
-3: &"Zombie_boss_head_attack_4",
-4: &"Zombie_boss_head_attack_5"
-})
 ice_ball_scene = ExtResource("doctor_ice_ball")
 fire_ball_scene = ExtResource("doctor_fire_ball")
 spawn_marker = NodePath("../../Body/BodyCorrect/Head/Boss_mouthglow/Marker2DSpawnBall")
@@ -1797,22 +1845,23 @@ ice_mouth_texture = ExtResource("mouth_glow_blue")
 fire_mouth_texture = ExtResource("23_r75td")
 ice_eye_texture = ExtResource("eye_glow_blue")
 fire_eye_texture = ExtResource("26_jurdd")
+part_motion = NodePath("../../PartMotions/HeadMotion")
 
-[node name="BungeeSkill" type="Node" parent="Skills" index="2" unique_id=728010644 node_paths=PackedStringArray("inner_arm", "anchor_left", "anchor_middle", "anchor_right")]
+[node name="BungeeSkill" type="Node" parent="Skills" index="2" unique_id=728010644 node_paths=PackedStringArray("anchor_left", "anchor_middle", "anchor_right", "position_node")]
 script = ExtResource("effect_bungee")
-inner_arm = NodePath("../../Body/BodyCorrect/InnerArm")
 anchor_left = NodePath("../../Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger1/Marker2DBungeeAnchorLeft")
 anchor_middle = NodePath("../../Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger3/Marker2DBungeeAnchorMiddle")
 anchor_right = NodePath("../../Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger4/Marker2DBungeeAnchorRight")
+position_node = NodePath("../../Body/BodyCorrect/InnerArm")
 
-[node name="ThrowRVSkill" type="Node" parent="Skills" index="3" unique_id=1791176248 node_paths=PackedStringArray("inner_arm")]
+[node name="ThrowRVSkill" type="Node" parent="Skills" index="3" unique_id=1791176248 node_paths=PackedStringArray("position_node")]
 script = ExtResource("effect_throw_rv")
-inner_arm = NodePath("../../Body/BodyCorrect/InnerArm")
-action = SubResource("doctor_throwrv_action_0")
+position_node = NodePath("../../Body/BodyCorrect/InnerArm")
 
-[node name="StompSkill" type="Node" parent="Skills" index="4" unique_id=1322965971]
+[node name="StompSkill" type="Node" parent="Skills" index="4" unique_id=1322965971 node_paths=PackedStringArray("inner_leg_motion", "part_motion")]
 script = ExtResource("effect_stomp")
-actions = Array[ExtResource("doctor_area_action")]([SubResource("doctor_stomp_action_0"), SubResource("doctor_stomp_action_1"), SubResource("doctor_stomp_action_2"), SubResource("doctor_stomp_action_3")])
+inner_leg_motion = NodePath("../../PartMotions/InnerLegMotion")
+part_motion = NodePath("../../PartMotions/OuterLegMotion")
 
 [node name="DeathRemainTimer" type="Timer" parent="." index="10" unique_id=1653272634]
 process_callback = 0
@@ -1822,11 +1871,31 @@ script = ExtResource("75_speed_timer")
 [node name="AnimationController" type="Node" parent="." index="11" unique_id=1583858646 node_paths=PackedStringArray("driver_animation_player")]
 script = ExtResource("doctor_animation_controller")
 driver_animation_player = NodePath("../Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/AnimationPlayer")
-idle_transition_duration = 0.05
 head_transition_duration = 0.05
+
+[node name="DeathExplosionEffects" type="Node2D" parent="." index="12" unique_id=992644888]
+
+[node name="PartMotions" type="Node" parent="." index="13" unique_id=550207702]
+
+[node name="OuterArmMotion" type="Node" parent="PartMotions" index="0" unique_id=1354735043 node_paths=PackedStringArray("target_node")]
+script = ExtResource("doctor_part_motion")
+target_node = NodePath("../../Body/BodyCorrect/OuterArm")
+
+[node name="HeadMotion" type="Node" parent="PartMotions" index="1" unique_id=2032838317 node_paths=PackedStringArray("target_node")]
+script = ExtResource("doctor_part_motion")
+target_node = NodePath("../../Body/BodyCorrect/Head")
+
+[node name="OuterLegMotion" type="Node" parent="PartMotions" index="2" unique_id=1796109560 node_paths=PackedStringArray("target_node")]
+script = ExtResource("doctor_part_motion")
+target_node = NodePath("../../Body/BodyCorrect/OuterLeg")
+
+[node name="InnerLegMotion" type="Node" parent="PartMotions" index="3" unique_id=452176225 node_paths=PackedStringArray("target_node")]
+script = ExtResource("doctor_part_motion")
+target_node = NodePath("../../Body/BodyCorrect/InnerLeg")
 
 [connection signal="timeout" from="StateMachine/Idle/IdleWaitTimer" to="StateMachine/Idle" method="_on_idle_wait_timer_timeout"]
 [connection signal="timeout" from="StateMachine/Spawn/StateMachine/Interval/SpawnIntervalTimer" to="StateMachine/Spawn/StateMachine/Interval" method="_on_spawn_interval_timer_timeout"]
 [connection signal="timeout" from="StateMachine/HeadSkill/StateMachine/BeforeSpitIdle/BeforeSpitWaitTimer" to="StateMachine/HeadSkill/StateMachine/BeforeSpitIdle" method="_on_wait_timer_timeout"]
 [connection signal="timeout" from="StateMachine/HeadSkill/StateMachine/AfterSpitIdle/AfterSpitWaitTimer" to="StateMachine/HeadSkill/StateMachine/AfterSpitIdle" method="_on_wait_timer_timeout"]
+[connection signal="timeout" from="StateMachine/Dying/DeathExplosionIntervalTimer" to="StateMachine/Dying" method="_on_death_explosion_interval_timer_timeout"]
 [connection signal="timeout" from="DeathRemainTimer" to="." method="_on_death_remain_timer_timeout"]

@@ -1,11 +1,7 @@
-## 蹦极技能负责连续三列选点、手臂定位和本批实例管理；状态机只等待整批结束。
+## 蹦极技能按场地资源选择连续列组并管理整批实例；默认覆盖三列，状态机等待整批结束。
 extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillBungee
 
-## 固定进入动作，第 1 秒方法关键帧创建本批蹦极。
-@export var enter_animation: StringName = &"Anim_bungee_1_enter"
-## 等待全部返回或死亡之后播放的收尾动作。
-@export var leave_animation: StringName = &"Anim_bungee_1_leave"
 ## 本轮固定列组起始列，从 1 开始；取消后为 0。
 var selected_start_column: int = 0
 ## 每列锁定一个格子和原始手指槽位，组件独占此运行时清单。
@@ -26,22 +22,12 @@ enum BatchState {
 	COMPLETED,
 }
 
-## 可随机起始列的下限，列号从 1 开始，每组固定覆盖连续三列。
-@export_range(1, 3, 1) var start_column_min: int = 1
-## 可随机起始列的上限；默认候选为 123、234、345 三组。
-@export_range(1, 3, 1) var start_column_max: int = 3
-## 原动画对应范围的起始列，默认第 2 列，此时手臂 X 为 0。
-@export_range(1, 3, 1) var reference_start_column: int = 2
-## 代码只修改此节点的 X，子节点继续由进入和离开动画控制。
-@export var inner_arm: Node2D
 ## 本轮第一列对应的左侧手部连接点，空列跳过后也不改变对应关系。
 @export var anchor_left: Marker2D
 ## 本轮第二列对应的中间手部连接点。
 @export var anchor_middle: Marker2D
 ## 本轮第三列对应的右侧手部连接点。
 @export var anchor_right: Marker2D
-## 固定三列宽，不通过随机数量删减已选范围中的非空列。
-const COLUMN_COUNT: int = 3
 ## 尚未结束偷取的实例，使用 ID 作为键，信号回调不携带可能已释放的角色引用。
 var _pending_zombies: Dictionary[int, Zombie021Bungi] = {}
 ## 每次准备或取消批次都会递增，旧批次回调不能影响新批次。
@@ -55,7 +41,7 @@ func can_start() -> bool:
 	return not _collect_ranges().is_empty()
 
 
-## 抽取连续三列后逐列锁定一个目标；返回进入动画，空名称表示没有目标。
+## 抽取配置宽度的连续列组后逐列锁定一个目标；返回固定进入动画，无目标返回空名称。
 func prepare_action() -> StringName:
 	_arm_action(&"")
 	targets.clear()
@@ -70,7 +56,7 @@ func prepare_action() -> StringName:
 	# 此轮范围从准备到收尾保持不变。
 	var selected: Dictionary = range_picker.get_random_item()
 	# 当前列在三列范围内的固定槽位：0 左、1 中、2 右。
-	for anchor_index: int in range(COLUMN_COUNT):
+	for anchor_index: int in range(scene_config.bungee_column_count):
 		# 当前槽位对应的有效格子候选，不依赖最终生成数量。
 		var column_cells: Array = selected["columns"][anchor_index]
 		if column_cells.is_empty():
@@ -92,10 +78,13 @@ func prepare_action() -> StringName:
 	# 目标定位点转换到手臂父级的局部坐标后只取 X。
 	var target_position: Vector2 = start_cell.plant_postion_node_ori_global_position[CharacterRegistry.PlacePlantInCell.Norm]
 	# 手臂父级坐标空间兼容博士自身的缩放，不硬编码单列像素宽度。
-	var arm_parent := inner_arm.get_parent() as Node2D
-	inner_arm.position.x = arm_parent.to_local(target_position).x - arm_parent.to_local(reference_position).x
+	var arm_parent := position_node.get_parent() as Node2D
+	# 第一列标定位置加横向列差，Y 来自场地配置，不叠加屋顶高度。
+	var arm_position: Vector2 = scene_config.bungee_first_column_position
+	arm_position.x += arm_parent.to_local(target_position).x - arm_parent.to_local(reference_position).x
+	apply_visual_position(arm_position)
 	selected_start_column = selected["start_column"]
-	return _arm_action(enter_animation)
+	return _arm_action(ZB001DoctorAnimations.BUNGEE_ENTER_ANIMATION)
 
 
 ## 消费本轮格子与手指槽位；仅由进入动画第 1 秒关键帧释放。
@@ -206,87 +195,54 @@ func cancel_batch_tracking() -> void:
 	_batch_id += 1
 
 
-## 技能正常结束或死亡中断时恢复动画基准位置，Y 始终由原场景保留。
-func reset_visual_offset() -> void:
-	if is_instance_valid(inner_arm):
-		inner_arm.position.x = 0.0
-
-
 ## 场景卸载同样清除对外连接，不将卸载当作整批完成。
 func _exit_tree() -> void:
 	cancel_skill()
 
 
-## 返回带等权权重的完整三列范围；空范围排除，范围中允许存在空列。
+## 返回配置宽度的等权完整列组；默认三列，空范围排除，范围中允许存在空列。
 func _collect_ranges() -> Array[Dictionary]:
 	# 所有提前退出路径共用的类型化空结果，不返回已经收集的局部网格。
 	var empty_ranges: Array[Dictionary] = []
 	# 当前角色所属的有效格子管理器。
 	var manager: PlantCellManager = _get_active_manager()
-	if manager == null or start_column_min < 1 or start_column_max > 3 \
-		or start_column_min > start_column_max or reference_start_column < 1:
+	if manager == null or scene_config == null:
 		return empty_ranges
-	# 各行独立排序为画面从左到右，不修改格子管理器的公共数组。
-	var grid: Array[Array] = []
-	# 原始行引用只读，不在原数组上排序。
-	for source_row: Array in manager.all_plant_cells:
-		# 当前行有效格子的独立副本，失效格子不能被删除后导致列号压缩。
-		var row: Array[PlantCell] = []
-		# 可能已释放的格子先检查，再进行类型转换。
-		for cell_reference: Variant in source_row:
-			if not is_instance_valid(cell_reference) or not cell_reference is PlantCell:
-				return empty_ranges
-			# 种植点初始化后才可计算手臂基准。
-			var cell := cell_reference as PlantCell
-			if not cell.is_inside_tree() or cell.is_queued_for_deletion() \
-				or not cell.plant_postion_node_ori_global_position.has(CharacterRegistry.PlacePlantInCell.Norm):
-				return empty_ranges
-			row.append(cell)
-		row.sort_custom(_is_cell_left_of)
-		grid.append(row)
-	if grid.is_empty() or grid[0].size() < reference_start_column:
+	# 共用画面行列查询；每次重建网格，植物目标仍在本技能内实时筛选。
+	var grid: Array[Array] = ZB001DoctorCellQuery.get_visual_grid(manager)
+	if grid.is_empty() or grid[0].is_empty():
 		return empty_ranges
 	# 每个候选只保存一个起始列，天然不会出现非连续的组合。
 	var ranges: Array[Dictionary] = []
 	# 从 1 开始的范围起始列，默认遍历 1、2、3。
-	for start_column: int in range(start_column_min, start_column_max + 1):
-		# 范围必须在每一行完整存在，禁止截断成不足三列的范围。
-		var complete: bool = true
-		# 当前待验证列边界的行数组。
-		for row: Array in grid:
-			if row.size() < start_column + COLUMN_COUNT - 1:
-				complete = false
-				break
-		if not complete:
-			continue
-		# 当前范围三列的目标分别存储，后续每列只选一个。
+	for start_column: int in range(scene_config.bungee_start_column_range.x, scene_config.bungee_start_column_range.y + 1):
+		# 当前范围各列分别存储目标，后续每列只选一个。
 		var columns: Array[Array] = []
-		# 整组三列至少要有一个有效目标。
+		# 任一列不完整时排除整组，不能将地图边缘裁剪为不足配置宽度。
+		var complete: bool = true
+		# 整组至少要有一个有效目标。
 		var has_target: bool = false
 		# 当前列使用一起始展示列号，访问数组时减一。
-		for column: int in range(start_column, start_column + COLUMN_COUNT):
+		for column: int in range(start_column, start_column + scene_config.bungee_column_count):
+			# 共用查询保持完整列，空列目标与地图缺少该列是两种不同情况。
+			var column_cells: Array[PlantCell] = ZB001DoctorCellQuery.get_column(grid, column)
+			if column_cells.is_empty():
+				complete = false
+				break
 			# 当前列中可被蹦极偷取的格子，每格只记录一次。
 			var cells: Array[PlantCell] = []
-			# 当前扫描的行，目标可以出现在任意合法行。
-			for row: Array in grid:
-				# 该行该列的实际格子，检查管理器是否允许该行生成蹦极。
-				var cell: PlantCell = row[column - 1]
+			# 当前列各行的格子，按蹦极自身的偷取规则和水陆限制筛选。
+			for cell: PlantCell in column_cells:
 				if cell.get_bungi_target() != null \
 					and manager.main_game.zombie_manager.can_spawn_skill_zombie(CharacterRegistry.ZombieType.Z021Bungi, cell.row_col.x):
 					cells.append(cell)
 			has_target = has_target or not cells.is_empty()
 			columns.append(cells)
-		if has_target:
+		if complete and has_target:
 			ranges.append({"data": {"start_column": start_column, "columns": columns,
-				"reference_cell": grid[0][reference_start_column - 1], "start_cell": grid[0][start_column - 1]},
+				"reference_cell": grid[0][0], "start_cell": grid[0][start_column - 1]},
 				"weight": 1.0})
 	return ranges
-
-
-## [param left] 左侧候选格子。[br]
-## [param right] 右侧候选格子；按世界 X 排序得到画面列号。
-func _is_cell_left_of(left: PlantCell, right: PlantCell) -> bool:
-	return left.global_position.x < right.global_position.x
 
 
 ## 只允许当前关卡正常战斗中的博士准备或执行技能。
@@ -302,24 +258,23 @@ func _get_active_manager() -> PlantCellManager:
 
 ## 配置错误在发现处分支报告；返回字符串供状态机停止初始化。
 func get_configuration_error() -> String:
-	if enter_animation.is_empty() or leave_animation.is_empty() or enter_animation == leave_animation:
-		push_error("BungeeSkill：必须分别配置不同的进入与离开动画。")
-		return "蹦极进入或离开动画配置无效。"
-	if not is_instance_valid(inner_arm) or not is_instance_valid(owner) \
-		or not owner.is_ancestor_of(inner_arm) or not inner_arm.get_parent() is Node2D:
-		push_error("BungeeSkill：必须绑定博士自身的 InnerArm，且父节点为 Node2D。")
-		return "蹦极手臂配置无效。"
+	# 唯一的进入和离开动作使用共享常量；这里检查资源及博士自身定位节点。
+	var placement_error: String = super.get_configuration_error()
+	if not placement_error.is_empty():
+		return placement_error
 	# 三个定位点必须位于这只博士的手臂下，随同手臂偏移及手指动画移动。
 	for anchor: Marker2D in [anchor_left, anchor_middle, anchor_right]:
-		if not is_instance_valid(anchor) or not inner_arm.is_ancestor_of(anchor):
+		if not is_instance_valid(anchor) or not position_node.is_ancestor_of(anchor):
 			push_error("BungeeSkill：必须分别绑定 InnerArm 下的左、中、右三个手部定位点。")
 			return "蹦极绳子定位点配置无效。"
 	if anchor_left == anchor_middle or anchor_left == anchor_right or anchor_middle == anchor_right:
 		push_error("BungeeSkill：左、中、右定位点不能绑定同一个节点。")
 		return "蹦极绳子定位点重复。"
-	if start_column_min < 1 or start_column_max > 3 or start_column_min > start_column_max \
-		or reference_start_column < 1 or reference_start_column > 3:
-		push_error("BungeeSkill：起始列上下限和动画基准列必须位于 1～3，且上限不能小于下限。")
+	if scene_config.bungee_start_column_range.x < 1 \
+		or scene_config.bungee_start_column_range.y < scene_config.bungee_start_column_range.x \
+		or scene_config.bungee_column_count < 1 or scene_config.bungee_column_count > 3 \
+		or not scene_config.bungee_first_column_position.is_finite():
+		push_error("BungeeSkill：起始列必须为正且上限不小于下限，覆盖 1～3 列，基准位置必须有限。")
 		return "蹦极列范围配置无效。"
 	return ""
 
@@ -330,21 +285,11 @@ func cancel_skill() -> void:
 	cancel_batch_tracking()
 	targets.clear()
 	selected_start_column = 0
-	reset_visual_offset()
 
 
 ## 返回进入动画，离开动画由等待阶段单独校验且没有释放帧。
 func get_action_animations() -> Array[StringName]:
 	# 单项列表也显式声明元素类型，避免把普通 Array 交给类型化调用方。
 	var animations: Array[StringName] = []
-	animations.append(enter_animation)
+	animations.append(ZB001DoctorAnimations.BUNGEE_ENTER_ANIMATION)
 	return animations
-
-
-## 蹦极只恢复手臂 X，保留场景当前 Y；死亡状态无需知道具体节点。
-func capture_visual_returns() -> Array[ZB001DoctorVisualReturn]:
-	# 空结果与单项结果保持同一元素类型，Y 仍沿用当前手臂位置。
-	var snapshots: Array[ZB001DoctorVisualReturn] = []
-	if is_instance_valid(inner_arm):
-		snapshots.append(ZB001DoctorVisualReturn.new(inner_arm, Vector2(0.0, inner_arm.position.y)))
-	return snapshots

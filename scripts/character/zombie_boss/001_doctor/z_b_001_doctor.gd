@@ -1,6 +1,11 @@
+## 博士本体负责出战初始化和死亡通知；动画与状态转换交给专用状态机。
 extends ZB000Base
 class_name ZB001Doctor
-## 博士本体负责出战初始化和死亡通知；动画与状态转换交给专用状态机。
+
+## 博士场景持有的场地资源表；键为前院、后院、屋顶的主场景类型，资源仅保存静态技能参数。
+@export var skill_scene_configs: Dictionary[MainSceneRegistry.MainScenes, ZB001DoctorSceneConfig] = {}
+## 初始化前选定的只读资源；无活动关卡或对应资源未绑定时默认使用屋顶配置。
+var skill_scene_config: ZB001DoctorSceneConfig
 
 ## 死亡演出相对未受控制效果影响时的速度倍率；同时影响死亡前抬头、机甲与驾驶员死亡动作。
 ## 默认 2 表示两倍速；重复整理死亡状态时重新计算，不会累计乘算。
@@ -31,17 +36,36 @@ var _played_enter_footsteps: Array[int] = []
 @onready var state_machine: ZB001DoctorStateMachine = get_node_or_null("%StateMachine") as ZB001DoctorStateMachine
 
 
-## 保留父类的血量、方向和速度信号连接；展示、花园初始化不会经过此入口。
+## 保留父类信号连接，并连接独立于当前活动状态的死亡爆炸回调；展示和花园不经过此入口。
 func ready_norm() -> void:
 	# 延迟启动前先关闭受击，避免物理检测在 Enter 执行前把博士当作可攻击目标。
 	# 使用独立的 Character 因素，不能用默认禁用阻止后续低头开放受击。
 	hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
+	# 父类初始化期间也可能触发死亡，先选择场地资源，保证提前启动的死亡状态能够完成校验。
+	if not _select_skill_scene_config():
+		return
 	# 在父类连接死亡通知和延迟启动之前接线，覆盖首次入场及入场前死亡。
 	if is_instance_valid(state_machine) and not state_machine.state_changed.is_connected(_on_state_changed):
 		state_machine.state_changed.connect(_on_state_changed)
+	_connect_death_explosion_signals()
 	super.ready_norm()
 	# 父类先排队初始化随机速度，再启动入场，避免第一帧使用未初始化的速度。
 	_start_state_machine.call_deferred()
+
+
+## 由角色根节点接入死亡状态的持续表现；正常进入 Dead 后仍接收速度和机甲结束通知。
+## 重复初始化不会重复接线，原有状态机动画通知仍负责死亡前抬头与本体动作流程。
+func _connect_death_explosion_signals() -> void:
+	if not is_instance_valid(state_machine) or not is_instance_valid(state_machine.dying_state):
+		return
+	# 爆炸逻辑所属的死亡状态节点，进入 Dead 后节点仍在树中，计时器回调继续有效。
+	var dying: ZB001DoctorStateDying = state_machine.dying_state
+	if not signal_update_speed.is_connected(dying.set_death_explosion_speed):
+		signal_update_speed.connect(dying.set_death_explosion_speed)
+	# 直接连接主体播放器，避免主状态机切到 Dead 后丢弃机甲死亡的结束事件。
+	var player: AnimationPlayer = state_machine.animation_player
+	if is_instance_valid(player) and not player.animation_finished.is_connected(dying.on_mech_death_animation_finished):
+		player.animation_finished.connect(dying.on_mech_death_animation_finished)
 
 
 ## 通用状态机在 enter() 完成后发出通知，此时受击组件已经应用新状态的设置。
@@ -114,11 +138,32 @@ func _start_state_machine() -> void:
 		return
 	if state_machine.is_running:
 		return
+	# 场地资源由博士自身选择，状态及技能校验之前就固定本实例的资源引用。
+	if not _select_skill_scene_config():
+		return
 	# 配置校验由博士状态机报告具体原因；此处不覆盖场景中绑定的角色或播放器。
 	if not state_machine.initialize():
 		return
 	if not state_machine.start():
 		push_error("ZB001Doctor：状态机初始化成功，但无法启动入场状态。")
+
+
+## 根据所属关卡选择博士场景中的资源；缺省或未配置的场地使用屋顶，屋顶也缺失时报告错误。
+## 返回是否具有可交给五个技能校验的资源；只设置本实例引用，不修改共享资源内容。
+func _select_skill_scene_config() -> bool:
+	# 编辑器直接运行博士场景或没有关卡参数时，默认选择屋顶。
+	var scene_type: MainSceneRegistry.MainScenes = MainSceneRegistry.MainScenes.MainGameRoof
+	# 只读取实际包含当前博士的关卡，避免离树或切场景后错误采用其他关卡资源。
+	var game: MainGameManager = Global.main_game
+	if is_instance_valid(game) and game.is_ancestor_of(self) and game.game_para != null:
+		scene_type = game.game_para.game_sences
+	skill_scene_config = skill_scene_configs.get(scene_type)
+	if skill_scene_config == null:
+		skill_scene_config = skill_scene_configs.get(MainSceneRegistry.MainScenes.MainGameRoof)
+	if skill_scene_config == null:
+		push_error("ZB001Doctor：技能场地资源表缺少当前场地配置及默认屋顶配置。")
+		return false
+	return true
 
 
 ## 保留僵王共同死亡逻辑，再提交死亡状态请求；不通过可能被取消的亡语启动演出。

@@ -1,31 +1,34 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1w2cmehilec8"]
+[gd_scene format=3 uid="uid://c1w2cmehilec8"]
 
 [ext_resource type="PackedScene" uid="uid://b2soejmoqi7wd" path="res://scenes/main/MainGame00Base.tscn" id="1_aymxe"]
 [ext_resource type="PackedScene" uid="uid://brnfbv2sxv2qh" path="res://scenes/ui/plant_cell.tscn" id="2_awllt"]
-[ext_resource type="Resource" uid="uid://n4ag8qfqegwh" path="res://resources/level_date_resource/mode_adventure/adventure_01_day_test.tres" id="2_mevug"]
+[ext_resource type="Resource" uid="uid://bvnlx3nw6j1ey" path="res://resources/level_date_resource/mode_adventure/adventure_02_night_boss.tres" id="2_mevug"]
 [ext_resource type="Script" uid="uid://bkeu6j2ek3su7" path="res://scripts/main_game_item/zombies_row.gd" id="4_mevug"]
 
-[node name="MainGame" instance=ExtResource("1_aymxe")]
+[node name="MainGame" unique_id=65756965 instance=ExtResource("1_aymxe")]
 game_para = ExtResource("2_mevug")
 
-[node name="ZombieWaveManager" parent="Manager/ZombieManager" index="0"]
+[node name="ZombieWaveManager" parent="Manager/ZombieManager" parent_id_path=PackedInt32Array(1727066989) index="0" unique_id=584839612]
 zombie_type_candidate_tombstone = Array[int]([1, 3, 5])
 
-[node name="PanelZombieGoHome" parent="CanvasLayerBG/Background/Home/Door/DoorDown" index="4"]
+[node name="PanelZombieGoHome" parent="CanvasLayerBG/Background/Home/Door/DoorDown" parent_id_path=PackedInt32Array(1988059200) index="4" unique_id=51098949]
 offset_left = 92.0
 offset_right = 292.0004
 
-[node name="PlantCellsRow1" type="Control" parent="PlantCellsRoot" index="0"]
-layout_direction = 3
+[node name="WaveProgressRoot" parent="CanvasLayerUI/LevelInfo" parent_id_path=PackedInt32Array(1845922859) index="0"]
+anchors_preset = 0
+
+[node name="PlantCellsRow1" type="Control" parent="PlantCellsRoot" parent_id_path=PackedInt32Array(1977903182) index="0" unique_id=1231566258]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -776.0
 offset_top = 82.0
 offset_right = -45.0
 offset_bottom = 178.0
+layout_direction = 3
 mouse_filter = 2
 
-[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow1" index="0" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow1" index="0" unique_id=275985537 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -46,7 +49,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow1" index="1" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow1" index="1" unique_id=1758464122 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -67,7 +70,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow1" index="2" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow1" index="2" unique_id=946968302 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -88,7 +91,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow1" index="3" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow1" index="3" unique_id=1309133834 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -109,7 +112,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow1" index="4" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow1" index="4" unique_id=1968471091 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -130,7 +133,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow1" index="5" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow1" index="5" unique_id=476466319 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -151,7 +154,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow1" index="6" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow1" index="6" unique_id=107141276 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -172,7 +175,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow1" index="7" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow1" index="7" unique_id=916584681 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -193,7 +196,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow1" index="8" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow1" index="8" unique_id=1580526138 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -214,17 +217,17 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCellsRow2" type="Control" parent="PlantCellsRoot" index="1"]
-layout_direction = 3
+[node name="PlantCellsRow2" type="Control" parent="PlantCellsRoot" parent_id_path=PackedInt32Array(1977903182) index="1" unique_id=1675648131]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -776.0
 offset_top = 182.0
 offset_right = -45.0
 offset_bottom = 278.0
+layout_direction = 3
 mouse_filter = 2
 
-[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow2" index="0" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow2" index="0" unique_id=904115393 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -245,7 +248,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow2" index="1" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow2" index="1" unique_id=226799747 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -266,7 +269,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow2" index="2" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow2" index="2" unique_id=308368133 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -287,7 +290,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow2" index="3" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow2" index="3" unique_id=276432109 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -308,7 +311,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow2" index="4" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow2" index="4" unique_id=220068616 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -329,7 +332,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow2" index="5" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow2" index="5" unique_id=1026020857 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -350,7 +353,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow2" index="6" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow2" index="6" unique_id=1139117452 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -371,7 +374,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow2" index="7" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow2" index="7" unique_id=646440722 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -392,7 +395,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow2" index="8" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow2" index="8" unique_id=294856404 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -413,17 +416,17 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCellsRow3" type="Control" parent="PlantCellsRoot" index="2"]
-layout_direction = 3
+[node name="PlantCellsRow3" type="Control" parent="PlantCellsRoot" parent_id_path=PackedInt32Array(1977903182) index="2" unique_id=856547550]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -776.0
 offset_top = 282.0
 offset_right = -45.0
 offset_bottom = 378.0
+layout_direction = 3
 mouse_filter = 2
 
-[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow3" index="0" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow3" index="0" unique_id=789159792 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -444,7 +447,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow3" index="1" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow3" index="1" unique_id=1959367247 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -465,7 +468,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow3" index="2" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow3" index="2" unique_id=237299338 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -486,7 +489,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow3" index="3" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow3" index="3" unique_id=1828055950 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -507,7 +510,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow3" index="4" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow3" index="4" unique_id=383527486 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -528,7 +531,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow3" index="5" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow3" index="5" unique_id=1712756825 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -549,7 +552,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow3" index="6" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow3" index="6" unique_id=1113238027 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -570,7 +573,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow3" index="7" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow3" index="7" unique_id=1108924422 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -591,7 +594,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow3" index="8" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow3" index="8" unique_id=144222808 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -612,17 +615,17 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCellsRow4" type="Control" parent="PlantCellsRoot" index="3"]
-layout_direction = 3
+[node name="PlantCellsRow4" type="Control" parent="PlantCellsRoot" parent_id_path=PackedInt32Array(1977903182) index="3" unique_id=259925841]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -776.0
 offset_top = 381.0
 offset_right = -45.0
 offset_bottom = 477.0
+layout_direction = 3
 mouse_filter = 2
 
-[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow4" index="0" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow4" index="0" unique_id=247716759 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -643,7 +646,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow4" index="1" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow4" index="1" unique_id=1042914712 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -664,7 +667,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow4" index="2" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow4" index="2" unique_id=1843419534 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -685,7 +688,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow4" index="3" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow4" index="3" unique_id=502686596 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -706,7 +709,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow4" index="4" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow4" index="4" unique_id=196621390 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -727,7 +730,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow4" index="5" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow4" index="5" unique_id=607785416 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -748,7 +751,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow4" index="6" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow4" index="6" unique_id=954950464 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -769,7 +772,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow4" index="7" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow4" index="7" unique_id=778440054 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -790,7 +793,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow4" index="8" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow4" index="8" unique_id=369284349 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -811,17 +814,17 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCellsRow5" type="Control" parent="PlantCellsRoot" index="4"]
-layout_direction = 3
+[node name="PlantCellsRow5" type="Control" parent="PlantCellsRoot" parent_id_path=PackedInt32Array(1977903182) index="4" unique_id=47937326]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -776.0
 offset_top = 478.0
 offset_right = -45.0
 offset_bottom = 574.0
+layout_direction = 3
 mouse_filter = 2
 
-[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow5" index="0" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell1" parent="PlantCellsRoot/PlantCellsRow5" index="0" unique_id=417309655 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -842,7 +845,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow5" index="1" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell2" parent="PlantCellsRoot/PlantCellsRow5" index="1" unique_id=1267746704 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -863,7 +866,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow5" index="2" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell3" parent="PlantCellsRoot/PlantCellsRow5" index="2" unique_id=2006035206 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -884,7 +887,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow5" index="3" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell4" parent="PlantCellsRoot/PlantCellsRow5" index="3" unique_id=1465203276 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -905,7 +908,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow5" index="4" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell5" parent="PlantCellsRoot/PlantCellsRow5" index="4" unique_id=874902305 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -926,7 +929,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow5" index="5" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell6" parent="PlantCellsRoot/PlantCellsRow5" index="5" unique_id=1340044505 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -947,7 +950,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow5" index="6" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell7" parent="PlantCellsRoot/PlantCellsRow5" index="6" unique_id=1563073801 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -968,7 +971,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow5" index="7" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell8" parent="PlantCellsRoot/PlantCellsRow5" index="7" unique_id=724094689 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -989,7 +992,7 @@ plant_in_cell = {
 4: null
 }
 
-[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow5" index="8" node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
+[node name="PlantCell9" parent="PlantCellsRoot/PlantCellsRow5" index="8" unique_id=215740271 node_paths=PackedStringArray("plant_in_cell") instance=ExtResource("2_awllt")]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -1010,40 +1013,40 @@ plant_in_cell = {
 4: null
 }
 
-[node name="Zombies_row1" type="Node2D" parent="ZombiesRoot" index="0"]
+[node name="Zombies_row1" type="Node2D" parent="ZombiesRoot" parent_id_path=PackedInt32Array(1014060591) index="0" unique_id=1333759619]
 z_index = 10
 script = ExtResource("4_mevug")
 
-[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row1" index="0"]
+[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row1" index="0" unique_id=1166679464]
 position = Vector2(950, 166)
 
-[node name="Zombies_row2" type="Node2D" parent="ZombiesRoot" index="1"]
+[node name="Zombies_row2" type="Node2D" parent="ZombiesRoot" parent_id_path=PackedInt32Array(1014060591) index="1" unique_id=1242497039]
 z_index = 10
 script = ExtResource("4_mevug")
 
-[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row2" index="0"]
+[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row2" index="0" unique_id=2132033356]
 position = Vector2(950, 267)
 
-[node name="Zombies_row3" type="Node2D" parent="ZombiesRoot" index="2"]
+[node name="Zombies_row3" type="Node2D" parent="ZombiesRoot" parent_id_path=PackedInt32Array(1014060591) index="2" unique_id=1656590943]
 z_index = 10
 script = ExtResource("4_mevug")
 
-[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row3" index="0"]
+[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row3" index="0" unique_id=1352284062]
 position = Vector2(950, 363)
 
-[node name="Zombies_row4" type="Node2D" parent="ZombiesRoot" index="3"]
+[node name="Zombies_row4" type="Node2D" parent="ZombiesRoot" parent_id_path=PackedInt32Array(1014060591) index="3" unique_id=1457526931]
 z_index = 10
 script = ExtResource("4_mevug")
 
-[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row4" index="0"]
+[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row4" index="0" unique_id=1072533133]
 position = Vector2(950, 454)
 
-[node name="Zombies_row5" type="Node2D" parent="ZombiesRoot" index="4"]
+[node name="Zombies_row5" type="Node2D" parent="ZombiesRoot" parent_id_path=PackedInt32Array(1014060591) index="4" unique_id=1417752425]
 z_index = 10
 script = ExtResource("4_mevug")
 
-[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row5" index="0"]
+[node name="ZombieCreatePosition" type="Marker2D" parent="ZombiesRoot/Zombies_row5" index="0" unique_id=1210528462]
 position = Vector2(950, 554)
 
-[node name="DetectComponentGlobal" parent="." index="17"]
+[node name="DetectComponentGlobal" parent="." index="19" unique_id=617278287]
 visible = false

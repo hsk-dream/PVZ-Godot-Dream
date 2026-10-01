@@ -2,8 +2,22 @@
 extends ZB001DoctorSkillAreaCrush
 class_name ZB001DoctorSkillStomp
 
-## 每项同时保存动作动画、左上角和范围；不再依赖状态数组与区域数组的顺序对应。
-@export var actions: Array[ZB001DoctorAreaAction] = []
+## 脚踩动画 1、2 的内侧腿控制器；动画 3、4 使用基类 part_motion 绑定的外侧腿控制器。
+@export var inner_leg_motion: ZB001DoctorPartMotion
+
+
+## 分别保存两条腿的待机位置；控制器目标固定，不在切换脚踩动画时重新绑定或采集位置。
+func initialize_skill() -> void:
+	super.initialize_skill()
+	inner_leg_motion.initialize_motion((owner as ZB001Doctor).state_machine.animation_player)
+
+
+## [param animation_name] 为准备或校验的动作名；动画 1、2 移动内侧腿，其余动作使用外侧腿。
+## 只返回引用，实际开始平移仍等待 0 秒关键帧，校验调用不会改变当前动作。
+func get_part_motion_for_animation(animation_name: StringName) -> ZB001DoctorPartMotion:
+	if animation_name == &"Zombie_boss_stomp_1" or animation_name == &"Zombie_boss_stomp_2":
+		return inner_leg_motion
+	return super.get_part_motion_for_animation(animation_name)
 
 
 ## 只查询有无目标，不抽取随机数、不锁定参数，供主状态机过滤脚踩技能。
@@ -31,7 +45,13 @@ func prepare_action() -> StringName:
 	# 动作配置只读；运行时区域由实例保存。
 	var action: ZB001DoctorAreaAction = selected["action"]
 	target_top_left = action.top_left
-	return _arm_action(action.animation_name)
+	# 动画同时决定内侧腿或外侧腿；基类缓存本次控制器，准备期间不写入任何腿部位置。
+	return _arm_position_action(action.animation_name, action.part_position)
+
+
+## 当前场地的腿部平移参数；攻击区域已经锁定，平移期间不重新选择格子。
+func get_part_motion_config() -> ZB001DoctorPartMotionConfig:
+	return scene_config.stomp_part_motion if scene_config != null else null
 
 
 ## 可用性查询和动作准备共用区域检查，仅收集候选，不产生随机选择或攻击副作用。
@@ -44,13 +64,13 @@ func _get_candidates(require_plant: bool = true) -> Array[Dictionary]:
 	if manager == null or not get_configuration_error().is_empty():
 		return empty_candidates
 	# 只在副本内调整列顺序，避免场景的倒序节点编号改变技能的视觉列号。
-	var grid: Array[Array] = _get_visual_grid(manager)
+	var grid: Array[Array] = ZB001DoctorCellQuery.get_visual_grid(manager)
 	# 每个候选同时绑定动画和范围，不先选动画再裁剪越界区域。
 	var candidates: Array[Dictionary] = []
 	# 每个动作资源同时决定完整矩形与播放动画，过滤时不会失去两者的对应关系。
-	for action: ZB001DoctorAreaAction in actions:
+	for action: ZB001DoctorAreaAction in scene_config.stomp_actions:
 		# 当前完整区域；只在技能已经选中后的回退中允许无植物。
-		var cells: Array[PlantCell] = _get_region(grid, action.top_left, action.size)
+		var cells: Array[PlantCell] = ZB001DoctorCellQuery.get_region(grid, action.top_left, action.size)
 		if not cells.is_empty() and (not require_plant or _has_living_plant(cells)):
 			candidates.append({"data": {"action": action, "cells": cells}, "weight": 1.0})
 	return candidates
@@ -76,13 +96,28 @@ func _has_living_plant(cells: Array[PlantCell]) -> bool:
 
 ## 静态参数错误在检测分支报告；具体地图上区域越界时由准备阶段过滤。
 func get_configuration_error() -> String:
-	if actions.is_empty():
+	# 共享场地配置和技能定位节点先校验，再检查每项脚踩区域。
+	var placement_error: String = super.get_configuration_error()
+	if not placement_error.is_empty():
+		return placement_error
+	if not is_instance_valid(inner_leg_motion) or inner_leg_motion == part_motion:
+		push_error("%s：脚踩动画 1、2 必须绑定独立的内侧腿平移控制器。" % get_path())
+		return "内侧腿平移控制器缺失或重复。"
+	# 内侧腿节点的归属与位置有效性由控制器自身报告，外侧腿已经由基类校验。
+	var inner_leg_error: String = inner_leg_motion.get_configuration_error(owner)
+	if not inner_leg_error.is_empty():
+		return inner_leg_error
+	if inner_leg_motion.target_node == part_motion.target_node:
+		push_error("%s：内侧腿与外侧腿平移控制器必须绑定不同的部件节点。" % get_path())
+		return "脚踩腿部平移目标重复。"
+	if scene_config.stomp_actions.is_empty():
 		push_error("StompSkill：必须配置至少一个区域动作。")
 		return "脚踩动作配置为空。"
 	# 每项必须完整，不允许缺少资源或非正行列；地图越界由准备阶段排除。
-	for action: ZB001DoctorAreaAction in actions:
-		if action == null or action.top_left.x < 1 or action.top_left.y < 1 or action.size.x < 1 or action.size.y < 1:
-			push_error("StompSkill：每项动作必须具有从 1 开始的左上角和正数攻击范围。")
+	for action: ZB001DoctorAreaAction in scene_config.stomp_actions:
+		if action == null or action.animation_name.is_empty() or not action.part_position.is_finite() \
+			or action.top_left.x < 1 or action.top_left.y < 1 or action.size.x < 1 or action.size.y < 1:
+			push_error("StompSkill：每项动作必须具有有效动画、有限位置、从 1 开始的左上角和正数范围。")
 			return "脚踩动作区域无效。"
 	return ""
 
@@ -92,7 +127,9 @@ func get_action_animations() -> Array[StringName]:
 	# 只读副本，配置中缺失项交给组件校验报告。
 	var animations: Array[StringName] = []
 	# 每项动作的动画名称与范围来自同一资源。
-	for action: ZB001DoctorAreaAction in actions:
-		if action != null:
-			animations.append(action.animation_name)
+	if scene_config != null:
+		# 相同行为动画可以用于多个起始行，释放事件仅按唯一动画校验。
+		for action: ZB001DoctorAreaAction in scene_config.stomp_actions:
+			if action != null and not animations.has(action.animation_name):
+				animations.append(action.animation_name)
 	return animations

@@ -1,6 +1,6 @@
 extends ZB001DoctorState
 class_name ZB001DoctorStateHeadLeave
-## 吐球后待机结束再抬头，第 0.6667 秒由动画事件关闭受击，动画结束完成整轮技能。
+## 吐球后待机结束再抬头，由动画中的 hurt_disable 事件关闭受击，动画结束完成整轮技能。
 
 func enter() -> void:
 	boss.is_idle = false

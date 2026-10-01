@@ -1,11 +1,15 @@
 extends ZB001DoctorState
 class_name ZB001DoctorStateSkillPrepare
-## 多个技能共用准备行为，但每个技能拥有独立节点和独立参数。
+## 五个技能共用动作准备和失败收尾；专用子类只校验所属技能及后续连线。
 ## 本次动作参数准备完成后进入的同层状态，通常为动作播放或低头阶段。
 @export var next_state: CharacterState
 
+## 锁定本次动作；空动画表示准备失败，结束整轮技能，成功时进入同层后续状态。
 func enter() -> void:
 	skill_state.prepare_action()
+	if skill_state.selected_animation.is_empty():
+		skill_state.finish_skill()
+		return
 	state_machine.change_state(next_state)
 
 ## 错误由检测分支就地输出；返回值供上层中止初始化，转发时不重复报错。

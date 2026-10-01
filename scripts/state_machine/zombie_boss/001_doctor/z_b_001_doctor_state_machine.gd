@@ -1,16 +1,24 @@
-extends CharacterStateMachine
-class_name ZB001DoctorStateMachine
 ## 博士专用状态机：选择五种技能、同步计时倍率和校验配置，死亡始终优先。
 ## 由博士正常出战初始化显式启动；状态请求动画，专用控制器负责播放，速度仍由原动画组件处理。
 ## 每个技能管理自己的内部阶段与共享数据，根层不决定技能如何收尾。
 ## 场景中绑定角色、播放器、入场、待机、五技能和死亡状态。
+extends CharacterStateMachine
+class_name ZB001DoctorStateMachine
 
 ## 主层只选择完整技能，内部动画阶段与收尾由各复合技能管理。
 ## 普通待机状态引用；入场或技能收尾后进入，等待下一次技能选择。
 @export var idle_state: ZB001DoctorStateIdle
-## 键为直属技能状态，值为选择权重；零权重或当前不满足触发条件时不参与 Idle 随机选择。
+## 键为直属技能节点名，值为选择权重；名称必须与当前实例的技能节点完全一致。
+## 默认放置权重为 3，其余为 1，可直接在编辑器调整；零权重或不满足触发条件时不参与 Idle 随机选择。
 ## 权重由主状态机配置，技能自身提供可用性查询并管理动作；初始顺序与吐球保底不受零权重限制。
-@export var skill_state_weights: Dictionary[ZB001DoctorSkillState, float] = {}
+## 必须保留五个技能配置，空字典不自动补齐；修改节点名或字典键后需要重新初始化。
+@export var skill_state_weights: Dictionary[StringName, float] = {
+	&"Spawn": 3.0,
+	&"HeadSkill": 1.0,
+	&"Bungee": 1.0,
+	&"ThrowRV": 1.0,
+	&"Stomp": 1.0,
+}
 ## 开场按数组顺序选择完整技能，不可用项直接跳过；耗尽后改为加权随机，空数组直接随机。
 ## 可重复配置同一技能，固定顺序不执行随机去重；吐球保底插队时保留尚未执行的下一项。
 @export var initial_skill_sequence: Array[ZB001DoctorSkillState] = []
@@ -20,7 +28,7 @@ class_name ZB001DoctorStateMachine
 @export var dead_state: ZB001DoctorStateDead
 ## 博士自身的动画控制器，负责姿势过渡、实例动画副本及本体联动。
 @export var animation_controller: ZB001DoctorAnimationController
-## 返回 Idle 后选择下一技能前等待的动作秒数；随主体动画倍率变化，必须为有限正数。
+## 返回 Idle 后的最短待机动作秒数；到期仍等待当前动画周期结束，随主体倍率变化，必须为有限正数。
 @export_range(0.1, 60.0, 0.1) var idle_duration := 2.0
 ## 连续未选择吐球的技能回合上限；达到后下一回合强制吐球，默认 5 表示第 6 回合保底。
 ## 一整轮放置僵尸只计 1 回合；首次吐球前也从入场后的技能选择开始累计。
@@ -40,6 +48,11 @@ var _initial_skill_index: int = 0
 var _connected_animation_controller: ZB001DoctorAnimationController
 ## 初始化时收集的动作计时器；仅含状态机子树，不含博士根节点的 DeathRemainTimer。
 var _action_timers: Array[SpeedTimer] = []
+## 上次已同步给动作计时器的实际倍率；合法值非负，-1 表示缓存失效，需重新同步全部计时器。
+var _last_action_speed: float = -1.0
+## 初始化时解析的技能节点引用，键与导出权重表一致；只缓存节点，选择时仍读取最新权重。
+## 重新初始化或断开播放器时清空，避免继续引用旧状态树中的技能。
+var _skill_states: Dictionary[StringName, ZB001DoctorSkillState] = {}
 
 ## 提供博士类型引用，避免各状态重复转换；原始引用仍由通用状态机统一维护。
 var boss: ZB001Doctor:
@@ -63,6 +76,7 @@ func initialize(actor: Character000Base = null, player: AnimationPlayer = null) 
 	if not super.initialize(actor, player):
 		push_error("ZB001DoctorStateMachine：角色必须为博士，且状态节点和入口必须属于当前状态机。")
 		return false
+	_cache_skill_states()
 	_cache_action_timers()
 	# 具体检测分支已输出错误；这里只处理失败清理，避免日志统一指向 initialize()。
 	var configuration_error := _get_configuration_error()
@@ -75,12 +89,25 @@ func initialize(actor: Character000Base = null, player: AnimationPlayer = null) 
 	_rounds_without_head_skill = 0
 	_initial_skill_index = 0
 	# 只有全部校验通过后才修正技能运行时配置，查询错误不会改变战力预算。
-	for skill: ZB001DoctorSkillState in skill_state_weights:
-		skill.effect_component.initialize_skill()
+	# 当前已解析并通过校验的技能名称，按缓存引用初始化本实例的效果组件。
+	for state_name: StringName in _skill_states:
+		_skill_states[state_name].effect_component.initialize_skill()
 	_connected_animation_controller = animation_controller
 	_connected_animation_controller.driver_animation_finished.connect(_on_driver_animation_finished)
 	animation_controller.initialize(animation_player)
 	return true
+
+
+## 按导出的技能名称解析当前实例节点；每次初始化重建，不改变编辑器权重或自动补齐配置。
+## 缺失、类型不符的节点不写入缓存，后续配置校验在具体分支报告名称并阻止启动。
+func _cache_skill_states() -> void:
+	_skill_states.clear()
+	# 当前配置的技能名称，正常情况下是本状态机直属子节点的名称。
+	for state_name: StringName in skill_state_weights:
+		# 名称对应的实例技能；所属状态机及名称一致性由后续配置校验检查。
+		var skill: ZB001DoctorSkillState = get_node_or_null(NodePath(state_name)) as ZB001DoctorSkillState
+		if is_instance_valid(skill):
+			_skill_states[state_name] = skill
 
 
 ## [param animation_name] 为已结束的本体动作；只有死亡状态可以推进本体死亡序列。
@@ -96,7 +123,9 @@ func _disconnect_animation_player() -> void:
 			_connected_animation_controller.driver_animation_finished.disconnect(_on_driver_animation_finished)
 		_connected_animation_controller.disconnect_players()
 	_connected_animation_controller = null
+	_skill_states.clear()
 	_action_timers.clear()
+	_last_action_speed = -1.0
 	super._disconnect_animation_player()
 
 
@@ -181,16 +210,18 @@ func stop() -> void:
 func select_skill() -> ZB001DoctorSkillState:
 	# 本轮 RandomPicker 输入项，只包含正且有限权重、满足触发条件的技能。
 	var items: Array[Dictionary] = []
-	# 从注册字典中识别唯一的吐球技能；即使权重为 0，也保留它作为保底目标。
+	# 从已解析的配置中识别唯一的吐球技能；即使权重为 0，也保留它作为保底目标。
 	var head_skill: ZB001DoctorStateHeadSkill
-	# 当前遍历的技能状态键，用于构建随机池或检查状态归属与技能配置。
-	for skill: ZB001DoctorSkillState in skill_state_weights:
+	# 当前配置的技能名称；权重每轮重新读取，运行中调整数值无需重建节点缓存。
+	for state_name: StringName in skill_state_weights:
+		# 初始化时解析的当前实例技能；运行中新增键要重新初始化，不能临时接管未校验的节点。
+		var skill: ZB001DoctorSkillState = _skill_states.get(state_name)
 		if not is_instance_valid(skill):
 			continue
 		if skill is ZB001DoctorStateHeadSkill:
 			head_skill = skill
 		# 当前技能的选择权重；0 表示禁用，负数及非有限值属于非法配置。
-		var weight := skill_state_weights[skill]
+		var weight: float = skill_state_weights[state_name]
 		if not is_finite(weight) or weight <= 0:
 			continue
 		if not skill.can_be_selected():
@@ -260,6 +291,8 @@ func notify_skill_event(animation_name: StringName, event_name: StringName) -> v
 ## 初始化时收集固定状态树的动作计时器；运行时不遍历节点，结构改变后需重新初始化。
 func _cache_action_timers() -> void:
 	_action_timers.clear()
+	# 新收集的计时器尚未同步；即使重初始化后的倍率相同，也必须完成一次完整同步。
+	_last_action_speed = -1.0
 	# 只遍历主状态机子树，死亡保留计时器在博士根节点下，由博士单独管理。
 	for node: Node in find_children("*", "Timer", true, false):
 		if node is SpeedTimer:
@@ -274,14 +307,19 @@ func _stop_action_timers() -> void:
 			timer.stop()
 
 
-## 跟随主体实际播放倍率，包括暂停与自定义播放倍率；全局倍率由 Timer 自行处理。
-func sync_action_timer_speed() -> void:
+## 跟随主体实际播放倍率，包括暂停与自定义播放倍率；倍率未变时跳过整个计时器列表。
+## 返回本次读取的非负动作倍率，供逐帧更新复用；全局倍率由 Timer 自行处理。
+func sync_action_timer_speed() -> float:
 	# 当前动作计时倍率；播放器暂停或停止时为零。
-	var action_speed := _get_action_speed()
+	var action_speed: float = _get_action_speed()
+	if action_speed == _last_action_speed:
+		return action_speed
+	_last_action_speed = action_speed
 	# 缓存可能保留已释放对象，先以 Variant 检查有效性，再访问计时器。
 	for timer in _action_timers:
 		if is_instance_valid(timer):
 			timer.set_speed_scale(action_speed)
+	return action_speed
 
 
 ## 读取主体实际播放速度；蹦极等待改由事件结束，不需要额外推进计时。
@@ -291,17 +329,18 @@ func _get_action_speed() -> float:
 	return maxf(action_speed, 0.0) if is_finite(action_speed) else 0.0
 
 
-## 更新前恢复死亡优先级；Timer 自行倒计时，这里只同步倍率并消化状态请求。
+## 更新前恢复死亡优先级；每帧读取实际动作倍率，仅在变化时同步计时器，再消化状态请求。
 ## [param delta] 本次更新步长，单位为秒；角色倍率是否已换算由调用层约定。
 func advance(delta: float) -> void:
 	if is_instance_valid(animation_controller):
 		animation_controller.sync_driver_speed()
 	if _death_requested and is_running and current_state != dying_state and current_state != dead_state:
 		_pending_state = dying_state
-	sync_action_timer_speed()
+	# 本帧已经读取并同步的实际倍率，后续状态更新和视觉复位复用，不再重复读取播放器。
+	var action_speed: float = sync_action_timer_speed()
 	# 仍保留状态逐帧行为的动作时间语义；零速也必须处理死亡等待切换请求。
 	# 动作秒只在主层换算一次，状态更新和视觉复位共用同一时间尺度。
-	var action_delta: float = maxf(delta, 0.0) * _get_action_speed()
+	var action_delta: float = maxf(delta, 0.0) * action_speed
 	super.advance(action_delta)
 	if is_instance_valid(animation_controller):
 		animation_controller.advance_visual_returns(action_delta)
@@ -358,24 +397,26 @@ func _get_configuration_error() -> String:
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
 	if skill_state_weights.size() != 5:
-		detected_error = "必须绑定五个独立复合技能。"
+		detected_error = "技能权重字典必须配置五个直属复合技能的节点名称。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
 	# 所有已校验技能权重的累加值；必须有限且大于 0 才能启动战斗。
 	var total_weight := 0.0
 	# 字典中吐球技能的数量，必须恰好为 1，避免保底目标缺失或产生歧义。
 	var head_skill_count := 0
-	# 字典天然保证键唯一；此处检查状态归属与权重，避免非法数值污染随机选择。
-	# 当前遍历的技能状态键，用于构建随机池或检查状态归属与技能配置。
-	for skill: ZB001DoctorSkillState in skill_state_weights:
-		if not _is_registered(skill):
-			detected_error = "技能权重字典的键必须是已注册的直属复合状态。"
+	# 字典天然保证名称唯一；同时检查节点名称和注册归属，拒绝路径别名及其他状态机的节点。
+	# 当前配置的技能名称，必须与已经注册的直属技能节点名称一致。
+	for state_name: StringName in skill_state_weights:
+		# 名称对应的实例技能；缓存缺失或节点类型不符时为 null。
+		var skill: ZB001DoctorSkillState = _skill_states.get(state_name)
+		if not _is_registered(skill) or skill.name != state_name:
+			detected_error = "技能权重名称 \"%s\" 必须对应已注册的直属复合技能节点。" % state_name
 			push_error("%s：%s" % [get_path(), detected_error])
 			return detected_error
 		if skill is ZB001DoctorStateHeadSkill:
 			head_skill_count += 1
 		# 当前技能的选择权重；0 表示禁用，负数及非有限值属于非法配置。
-		var weight := skill_state_weights[skill]
+		var weight: float = skill_state_weights[state_name]
 		if not is_finite(weight) or weight < 0:
 			detected_error = "%s 的技能权重必须为有限非负数。" % skill.name
 			push_error("%s：%s" % [get_path(), detected_error])
@@ -395,8 +436,8 @@ func _get_configuration_error() -> String:
 		return detected_error
 	# 开场数组中的当前技能，允许重复但必须来自已注册且通过配置检查的五种技能。
 	for skill: ZB001DoctorSkillState in initial_skill_sequence:
-		if not _is_registered(skill) or not skill_state_weights.has(skill):
-			detected_error = "初始技能顺序必须绑定技能权重字典中的直属技能，不能留空或引用其他节点。"
+		if not _is_registered(skill) or _skill_states.get(skill.name) != skill:
+			detected_error = "初始技能顺序必须绑定权重表中名称对应的直属技能，不能留空或引用其他节点。"
 			push_error("%s：%s" % [get_path(), detected_error])
 			return detected_error
 	if not idle_state.get_node_or_null("IdleWaitTimer") is SpeedTimer:

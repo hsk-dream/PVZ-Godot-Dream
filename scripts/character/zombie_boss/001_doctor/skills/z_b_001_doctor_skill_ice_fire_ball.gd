@@ -1,9 +1,7 @@
+## 吐球效果组件：按锁定的冰火类型设置嘴部和眼部光效，释放关键帧创建球并喷出粒子。
 extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillIceFireBall
-## 吐球效果组件：按锁定的冰火类型设置嘴部和眼部光效，释放关键帧创建球并喷出粒子。
 
-## 零起始行号到吐球动画的映射，选行与动画共用此配置。
-@export var lane_animations: Dictionary[int, StringName] = {}
 ## 本轮锁定行号；取消后为 -1，博士本身仍无行归属。
 var target_lane: int = -1
 ## 本轮锁定冰火类型；准备后直到结束均不重新抽取。
@@ -75,7 +73,9 @@ func prepare_action() -> StringName:
 	# 本次技能的等权行选择器，复用项目 RandomPicker，排除不存在的行和重复行。
 	var lane_picker: RandomPicker = RandomPicker.new()
 	# 动画映射中的候选行号，从 0 开始。
-	for lane: int in lane_animations:
+	for row_number: int in scene_config.ice_fire_ball_row_actions:
+		# 场地资源使用显示行号；角色和球的运行时行属性仍使用零起始下标。
+		var lane: int = row_number - 1
 		if lane < 0 or lane >= game.zombie_manager.all_zombie_rows.size() or lane_picker.has_item(lane):
 			continue
 		# 当前候选行，出生标记为球提供地面基准 Y。
@@ -96,7 +96,14 @@ func prepare_action() -> StringName:
 	type_picker.rebuild_alias_table()
 	target_lane = lane_picker.get_random_item()
 	ball_type = type_picker.get_random_item()
-	return _arm_action(lane_animations[target_lane])
+	# Prepare 只锁定行、类型和目标位置；攻击动画开始时才平移 Head，低头进入与受击框不移动。
+	var action: ZB001DoctorRowAction = scene_config.ice_fire_ball_row_actions[target_lane + 1]
+	return _arm_position_action(action.animation_name, action.part_position)
+
+
+## 当前场地的头部平移参数；只作用于吐球攻击，不作用于低头进入或抬头离开。
+func get_part_motion_config() -> ZB001DoctorPartMotionConfig:
+	return scene_config.ice_fire_ball_part_motion if scene_config != null else null
 
 
 ## 创建时直接挂到 Items，成形和滚动均独立于博士的后续变换；球不增加关卡僵尸数量。[br]
@@ -148,14 +155,14 @@ func _play_spit_particles(released_type: StringName) -> void:
 ## 博士启动前检查类型权重、场景、嘴部标记、粒子与冰火光效绑定；实体在 launch() 中检查子类动画。
 ## 错误由检测分支就地输出；返回值供上层中止初始化，转发时不重复报错。
 func get_configuration_error() -> String:
-	if lane_animations.is_empty():
-		push_error("%s：必须配置行动画映射。" % get_path())
-		return "行动画映射为空。"
-	# 字典保证键唯一；负行号属于错误，地图缺失的正行号只在准备时排除。
-	for lane: int in lane_animations:
-		if lane < 0:
-			push_error("%s：行动画映射的行号必须非负。" % get_path())
-			return "动画行号无效。"
+	# 共用依赖与行资源先校验，后续只检查吐球自身的特效和实体资源。
+	var placement_error: String = super.get_configuration_error()
+	if not placement_error.is_empty():
+		return placement_error
+	# 不同行可以复用同一个攻击动画，但必须分别具有完整定位。
+	var row_error: String = scene_config.get_row_actions_error(scene_config.ice_fire_ball_row_actions, str(get_path()))
+	if not row_error.is_empty():
+		return row_error
 	# 权重错误已在具体检测分支输出，此处仅向调用者转发以中止初始化。
 	var weight_error: String = _get_ball_weight_configuration_error()
 	if not weight_error.is_empty():
@@ -243,5 +250,9 @@ func cancel_skill() -> void:
 func get_action_animations() -> Array[StringName]:
 	# 只读类型化副本，不允许校验修改技能配置。
 	var animations: Array[StringName] = []
-	animations.assign(lane_animations.values())
+	if scene_config != null:
+		# 重复行映射共用释放关键帧，只检查每个唯一动画一次。
+		for action: ZB001DoctorRowAction in scene_config.ice_fire_ball_row_actions.values():
+			if action != null and not animations.has(action.animation_name):
+				animations.append(action.animation_name)
 	return animations

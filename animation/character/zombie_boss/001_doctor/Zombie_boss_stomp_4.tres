@@ -2499,6 +2499,20 @@ tracks/206/path = NodePath("StateMachine")
 tracks/206/interp = 1
 tracks/206/loop_wrap = true
 tracks/206/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_stomp_4", &"position_move"],
+"method": &"notify_skill_event"
+}]
+}
+tracks/207/type = "method"
+tracks/207/imported = false
+tracks/207/enabled = true
+tracks/207/path = NodePath("StateMachine")
+tracks/207/interp = 1
+tracks/207/loop_wrap = true
+tracks/207/keys = {
 "times": PackedFloat32Array(1.5),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -2506,17 +2520,31 @@ tracks/206/keys = {
 "method": &"notify_skill_event"
 }]
 }
-tracks/207/type = "method"
-tracks/207/imported = false
-tracks/207/enabled = true
-tracks/207/path = NodePath(".")
-tracks/207/interp = 1
-tracks/207/loop_wrap = true
-tracks/207/keys = {
+tracks/208/type = "method"
+tracks/208/imported = false
+tracks/208/enabled = true
+tracks/208/path = NodePath(".")
+tracks/208/interp = 1
+tracks/208/loop_wrap = true
+tracks/208/keys = {
 "times": PackedFloat32Array(1.5),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [&"Zombie_boss_stomp_4", &"gargantuar_thump"],
 "method": &"play_animation_sfx"
+}]
+}
+tracks/209/type = "method"
+tracks/209/imported = false
+tracks/209/enabled = true
+tracks/209/path = NodePath("StateMachine")
+tracks/209/interp = 1
+tracks/209/loop_wrap = true
+tracks/209/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Zombie_boss_stomp_4", &"position_return"],
+"method": &"notify_skill_event"
 }]
 }

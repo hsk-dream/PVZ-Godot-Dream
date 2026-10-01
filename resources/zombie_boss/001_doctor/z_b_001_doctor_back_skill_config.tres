@@ -1,0 +1,126 @@
+[gd_resource type="Resource" script_class="ZB001DoctorSceneConfig" format=3 uid="uid://c4c378dcaa0"]
+
+[ext_resource type="Script" uid="uid://b12aaa4bha10" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_area_action.gd" id="area_action"]
+[ext_resource type="Script" uid="uid://c6kv7xx0xg43w" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_part_motion_config.gd" id="part_motion_config"]
+[ext_resource type="Script" uid="uid://cplnm8p2ixhm5" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_row_action.gd" id="row_action"]
+[ext_resource type="Script" uid="uid://du4tibk3cemj7" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_scene_config.gd" id="scene_config"]
+
+[sub_resource type="Resource" id="ice_fire_ball_motion"]
+script = ExtResource("part_motion_config")
+
+[sub_resource type="Resource" id="ball_row_1"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_head_attack_1"
+part_position = Vector2(0, -5)
+
+[sub_resource type="Resource" id="ball_row_2"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_head_attack_2"
+part_position = Vector2(0, 10)
+
+[sub_resource type="Resource" id="ball_row_3"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_head_attack_3"
+part_position = Vector2(0, 19.852)
+
+[sub_resource type="Resource" id="ball_row_4"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_head_attack_4"
+part_position = Vector2(0, 11)
+
+[sub_resource type="Resource" id="ball_row_5"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_head_attack_5"
+part_position = Vector2(0, 13)
+
+[sub_resource type="Resource" id="ball_row_6"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_head_attack_5"
+part_position = Vector2(0, 93)
+
+[sub_resource type="Resource" id="spawn_motion"]
+script = ExtResource("part_motion_config")
+
+[sub_resource type="Resource" id="spawn_row_1"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_spawn_1"
+part_position = Vector2(0, -5)
+
+[sub_resource type="Resource" id="spawn_row_2"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_spawn_2"
+part_position = Vector2(0, 10)
+
+[sub_resource type="Resource" id="spawn_row_3"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_spawn_3"
+part_position = Vector2(0, 19.852)
+
+[sub_resource type="Resource" id="spawn_row_4"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_spawn_4"
+part_position = Vector2(0, 11)
+
+[sub_resource type="Resource" id="spawn_row_5"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_spawn_5"
+part_position = Vector2(0, 13)
+
+[sub_resource type="Resource" id="spawn_row_6"]
+script = ExtResource("row_action")
+animation_name = &"Zombie_boss_spawn_5"
+part_position = Vector2(0, 93)
+
+[sub_resource type="Resource" id="stomp_row_1"]
+script = ExtResource("area_action")
+animation_name = &"Zombie_boss_stomp_1"
+top_left = Vector2i(1, 7)
+
+[sub_resource type="Resource" id="stomp_row_2"]
+script = ExtResource("area_action")
+animation_name = &"Zombie_boss_stomp_2"
+top_left = Vector2i(2, 7)
+
+[sub_resource type="Resource" id="stomp_row_3"]
+script = ExtResource("area_action")
+animation_name = &"Zombie_boss_stomp_3"
+top_left = Vector2i(3, 7)
+
+[sub_resource type="Resource" id="stomp_row_4"]
+script = ExtResource("area_action")
+animation_name = &"Zombie_boss_stomp_4"
+top_left = Vector2i(4, 7)
+
+[sub_resource type="Resource" id="stomp_row_5"]
+script = ExtResource("area_action")
+animation_name = &"Zombie_boss_stomp_4"
+part_position = Vector2(-10, 64)
+top_left = Vector2i(5, 7)
+
+[sub_resource type="Resource" id="stomp_motion"]
+script = ExtResource("part_motion_config")
+
+[resource]
+script = ExtResource("scene_config")
+spawn_row_actions = Dictionary[int, ExtResource("row_action")]({
+1: SubResource("spawn_row_1"),
+2: SubResource("spawn_row_2"),
+3: SubResource("spawn_row_3"),
+4: SubResource("spawn_row_4"),
+5: SubResource("spawn_row_5"),
+6: SubResource("spawn_row_6")
+})
+spawn_part_motion = SubResource("spawn_motion")
+ice_fire_ball_row_actions = Dictionary[int, ExtResource("row_action")]({
+1: SubResource("ball_row_1"),
+2: SubResource("ball_row_2"),
+3: SubResource("ball_row_3"),
+4: SubResource("ball_row_4"),
+5: SubResource("ball_row_5"),
+6: SubResource("ball_row_6")
+})
+ice_fire_ball_part_motion = SubResource("ice_fire_ball_motion")
+stomp_actions = Array[ExtResource("area_action")]([SubResource("stomp_row_1"), SubResource("stomp_row_2"), SubResource("stomp_row_3"), SubResource("stomp_row_4"), SubResource("stomp_row_5")])
+stomp_part_motion = SubResource("stomp_motion")
+bungee_first_column_position = Vector2(-99, 0)
+throw_rv_cell_one_position = Vector2(-78, -149)

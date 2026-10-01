@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="ResourceLevelData" format=3 uid="uid://4afm0h3lfasb"]
+
+[ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_552c1"]
+[ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="2_5ag5a"]
+
+[sub_resource type="Resource" id="Resource_hl02h"]
+script = ExtResource("1_552c1")
+plant_type = 34
+plant_cell_pos = Vector2i(0, 1)
+is_imitater_plant = true
+metadata/_custom_type_script = "uid://bke3sg5otco7s"
+
+[sub_resource type="Resource" id="Resource_i5mhj"]
+script = ExtResource("1_552c1")
+plant_type = 34
+plant_cell_pos = Vector2i(0, 2)
+metadata/_custom_type_script = "uid://bke3sg5otco7s"
+
+[sub_resource type="Resource" id="Resource_miqb2"]
+script = ExtResource("1_552c1")
+plant_type = 34
+plant_cell_pos = Vector2i(0, 3)
+metadata/_custom_type_script = "uid://bke3sg5otco7s"
+
+[resource]
+script = ExtResource("2_5ag5a")
+game_sences = 1
+game_BG = 3
+game_BGM = 6
+is_day = false
+is_day_sun = false
+all_pre_plant_data = Array[ExtResource("1_552c1")]([SubResource("Resource_hl02h"), SubResource("Resource_i5mhj"), SubResource("Resource_miqb2")])
+monster_mode = 3
+zombie_refresh_types = Array[int]([7, 1, 3, 5, 6, 8, 24, 22, 9, 15])
+is_bungi = true
+boss_type = 1
+card_mode = 2
+start_sun = 50000
+all_card_plant_type_probability = Dictionary[int, int]({
+3: 2,
+15: 3,
+21: 3,
+33: 3,
+34: 6,
+35: 2,
+38: 1,
+40: 2
+})
+card_order_plant = Dictionary[int, int]({
+1: 40,
+2: 33,
+9: 45
+})
+create_new_card_speed = 1.5
+metadata/_custom_type_script = "uid://bjt3l56exxmdw"

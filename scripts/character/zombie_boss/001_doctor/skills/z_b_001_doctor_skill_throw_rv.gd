@@ -3,13 +3,14 @@ extends ZB001DoctorSkillAreaCrush
 class_name ZB001DoctorSkillThrowRV
 
 ## 锁定区域并定位手臂；返回动画名，失败时返回空名称，由状态收尾。
+## 初始化已验证固定手臂绑定与场地参数，此处只重新检查战斗及当前地图上的完整区域。
 func prepare_action() -> StringName:
 	_arm_action(&"")
 	target_cells.clear()
 	reset_visual_offset()
 	# 本博士所在活动关卡的格子管理器，防止展示或死亡实例准备攻击。
-	var manager: PlantCellManager = _get_active_manager()
-	if manager == null or not get_configuration_error().is_empty():
+	var manager: PlantCellManager = _get_active_plant_cell_manager()
+	if manager == null:
 		return &""
 	# 行顺序沿用管理器，每行按画面从左到右排序，不改变公共数组。
 	var grid: Array[Array] = ZB001DoctorCellQuery.get_visual_grid(manager)
@@ -49,7 +50,6 @@ func prepare_action() -> StringName:
 	# 在手臂父节点的局部空间求差，兼容博士父级的缩放和旋转。
 	var arm_parent := position_node.get_parent() as Node2D
 	apply_visual_position(scene_config.throw_rv_cell_one_position + arm_parent.to_local(target_global) - arm_parent.to_local(reference_global))
-	target_top_left = selected
 	target_cells = cells
 	return _arm_action(ZB001DoctorAnimations.THROW_RV_ANIMATION)
 

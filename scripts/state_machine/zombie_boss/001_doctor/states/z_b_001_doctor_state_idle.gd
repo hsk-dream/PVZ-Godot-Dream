@@ -7,18 +7,14 @@ class_name ZB001DoctorStateIdle
 
 ## 计时已经结束、正在等待本轮动画播完；退出或消费结束通知后清除，防止重复选技能。
 var _waiting_for_cycle_end: bool = false
-## 动画控制器复制后的当前博士实例待机动画；仅在 Idle 活动期间保存，退出时恢复循环。
-var _idle_animation: Animation
 
 
-## 开始循环待机并计时；只修改当前实例动画副本，保持共享资源及其他博士的播放规则。
+## 通过动画控制器开始本实例循环待机并计时，循环副本由控制器统一管理。
 func enter() -> void:
 	boss.is_idle = true
 	boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
 	_waiting_for_cycle_end = false
-	_idle_animation = state_machine.animation_player.get_animation(ZB001DoctorAnimations.IDLE_ANIMATION)
-	_idle_animation.loop_mode = Animation.LOOP_LINEAR
-	doctor_state_machine.animation_controller.play_mech_action(ZB001DoctorAnimations.IDLE_ANIMATION, ZB001DoctorAnimationController.DriverReaction.DRIVE)
+	doctor_state_machine.animation_controller.play_idle_loop(ZB001DoctorAnimationController.DriverReaction.DRIVE)
 	# 先播放再同步实际倍率，保证冻结入场及暂停恢复时计时与动画一致。
 	doctor_state_machine.sync_action_timer_speed()
 	idle_wait_timer.start_scaled(doctor_state_machine.idle_duration)
@@ -29,9 +25,7 @@ func exit() -> void:
 	if is_instance_valid(idle_wait_timer):
 		idle_wait_timer.stop()
 	_waiting_for_cycle_end = false
-	if is_instance_valid(_idle_animation):
-		_idle_animation.loop_mode = Animation.LOOP_LINEAR
-	_idle_animation = null
+	doctor_state_machine.animation_controller.restore_idle_loop()
 
 
 ## 到期后保留当前播放进度，只关闭本实例的循环，等待这一轮自然结束，不立即选技能。
@@ -40,7 +34,7 @@ func _on_idle_wait_timer_timeout() -> void:
 	if not state_machine.is_running or state_machine.current_state != self or boss.is_death or _waiting_for_cycle_end:
 		return
 	_waiting_for_cycle_end = true
-	_idle_animation.loop_mode = Animation.LOOP_NONE
+	doctor_state_machine.animation_controller.request_idle_cycle_end()
 
 
 ## [param anim_name] 为已结束的机甲动画；仅消费计时到期后的待机结束通知，随后选择下一技能。
@@ -57,13 +51,6 @@ func on_animation_finished(anim_name: StringName) -> void:
 		state_machine.change_state(selected)
 		return
 	# 当前动画已经停止；空池时重新播放循环，而不是只重启计时器后停在待机末帧。
-	_idle_animation.loop_mode = Animation.LOOP_LINEAR
-	doctor_state_machine.animation_controller.play_mech_action(ZB001DoctorAnimations.IDLE_ANIMATION, ZB001DoctorAnimationController.DriverReaction.KEEP, 0.0)
+	doctor_state_machine.animation_controller.play_idle_loop(ZB001DoctorAnimationController.DriverReaction.KEEP, 0.0)
 	doctor_state_machine.sync_action_timer_speed()
 	idle_wait_timer.start_scaled(doctor_state_machine.idle_duration)
-
-
-## 默认不释放技能；如扩展待机表现事件，应与攻击事件分开处理。
-## [param _event_name] 收到的动画事件名；当前状态不处理技能释放事件。
-func on_animation_event(_event_name: StringName) -> void:
-	pass

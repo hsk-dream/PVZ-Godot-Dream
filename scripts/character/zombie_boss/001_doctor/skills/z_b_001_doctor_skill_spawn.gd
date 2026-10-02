@@ -2,6 +2,27 @@
 extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillSpawn
 
+## 本技能私有的同步准备候选；保存实际类型与抽样数据，不随放置清单跨帧保存。
+class SpawnCandidate extends RefCounted:
+	## 已解析雪橇替换后的实际生成类型，战力与选行均以此类型为准。
+	var zombie_type: CharacterRegistry.ZombieType
+	## 与当前场地行数一致的零起始行权重；合法行为 1，其他行为 0，仅在准备阶段读取。
+	var row_weights: Array[float] = []
+	## 实际生成类型的正数单体战力，用于最低预算与剩余名额预留。
+	var power: int
+	## 原配置类型的正数抽样权重；雪橇替换成冰车后仍保留雪橇权重。
+	var weight: int
+
+	## 创建准备阶段候选，并将行权重复制到固定类型容器，不共享调用方数组。[br]
+	## [param type] 实际生成类型；[param lanes] 零起始行权重。[br]
+	## [param zombie_power] 已校验为正数的单体战力；[param selection_weight] 原配置类型的正数抽样权重。
+	func _init(type: CharacterRegistry.ZombieType, lanes: Array[float], zombie_power: int, selection_weight: int) -> void:
+		zombie_type = type
+		row_weights.assign(lanes)
+		power = zombie_power
+		weight = selection_weight
+
+
 ## 手指下的生成标记，仅在释放时读取全局 X；Y 使用清单目标行的出生点。
 @export var spawn_marker: Marker2D
 ## 每次成功准备的清单最少数量；预算不足时自动抬高，死亡等中断可以使实际生成数量少于此值。
@@ -17,14 +38,13 @@ class_name ZB001DoctorSkillSpawn
 ]
 
 @export_group("放置战力成长")
-## 放置技能的初始战力预算；不足时自动提高到最低候选战力乘计划数量，相等时不调整。
-## 修正只影响当前实例并保留到后续批次，不回写场景文件；与自然波次预算独立。
+## 放置技能的原始初始战力配置；运行时最低预算修正另存，不改写此值。
 @export_range(1, 200, 1, "or_greater") var spawn_power_base: int = 4
 ## 每成功准备多少次放置技能提高一档，至少为 1；不是逐只僵尸累计。
 @export_range(1, 100, 1, "or_greater") var spawn_power_growth_interval: int = 3
 ## 每档增加的整批战力；0 表示保持初始预算，不随使用次数成长。
 @export_range(0, 100, 1, "or_greater") var spawn_power_growth_step: int = 3
-## 成长后的战力预算上限；低于修正后的初始预算时同步提高，剩余预算不结转到下一批。
+## 成长后的原始战力上限配置；运行时有效上限可向上修正，剩余预算不结转到下一批。
 @export_range(1, 200, 1, "or_greater") var spawn_power_max: int = 100
 @export_group("")
 
@@ -32,6 +52,10 @@ class_name ZB001DoctorSkillSpawn
 var zombie_weights: Dictionary[CharacterRegistry.ZombieType, int] = CharacterRegistry.ZombieSpawnWeights.duplicate()
 ## 已成功准备的技能次数；先用于本次权重和战力预算计算，再递增，中断时不回退。
 var spawn_skill_use_count: int = 0
+## 当前实例的有效初始战力预算；0 表示尚未修正，后续初始化与批次准备只允许提高。
+var _effective_spawn_power_base: int = 0
+## 当前实例的有效战力上限；不低于有效初始预算，取消及清单失败时保留。
+var _effective_spawn_power_max: int = 0
 ## 本次技能的有序清单，每项只保存实际类型 zombie_type 与零起始行号 lane。
 var spawn_entries: Array[ZB001DoctorSpawnEntry] = []
 ## 本批已完整播放的放置动作数；动画结束时推进，释放失败也沿用原有次数规则。
@@ -83,7 +107,7 @@ func _prepare_spawn() -> int:
 	for row: int in scene_config.spawn_row_actions:
 		allowed_lanes.append(row - 1)
 	# 先锁定合法候选；此阶段不选行、不消耗抽样随机数。
-	var candidates: Array[Dictionary] = _collect_spawn_candidates(manager, allowed_lanes)
+	var candidates: Array[SpawnCandidate] = _collect_spawn_candidates(manager, allowed_lanes)
 	if candidates.is_empty():
 		return 0
 	# 本批计划数量仍由配置上下限随机确定，不因初始预算较低而缩减。
@@ -105,11 +129,11 @@ func _prepare_spawn() -> int:
 ## 只读收集合法类型、行权重和战力；不准备任务、不改变选行历史。[br]
 ## [param manager] 当前关卡僵尸管理器；[param allowed_lanes] 本技能动画支持的零起始行号。[br]
 ## 雪橇无冰道时沿用原权重替换为冰车，按替换后的实际类型计费；战力配置错误时返回空池。
-func _collect_spawn_candidates(manager: ZombieManager, allowed_lanes: Array[int]) -> Array[Dictionary]:
+func _collect_spawn_candidates(manager: ZombieManager, allowed_lanes: Array[int]) -> Array[SpawnCandidate]:
 	# 配置错误必须拒绝整个候选池，不能返回已追加的部分类型。
-	var empty_candidates: Array[Dictionary] = []
+	var empty_candidates: Array[SpawnCandidate] = []
 	# 以配置类型的权重抽样；雪橇无可用冰道时可以解析成冰车，不改变原抽样权重。
-	var candidates: Array[Dictionary] = []
+	var candidates: Array[SpawnCandidate] = []
 	# 当前配置类型，每个类型最多贡献一个随机项。
 	for zombie_type: CharacterRegistry.ZombieType in zombie_types:
 		# 当前类型的有效概率权重，权重不参与战力预算计算。
@@ -130,18 +154,18 @@ func _collect_spawn_candidates(manager: ZombieManager, allowed_lanes: Array[int]
 		if actual_power <= 0:
 			push_error("%s：放置类型 %s 缺少正数战力配置。" % [get_path(), actual_type])
 			return empty_candidates
-		candidates.append({"data": {"zombie_type": actual_type, "row_weights": row_weights, "power": actual_power}, "weight": weight})
+		candidates.append(SpawnCandidate.new(actual_type, row_weights, actual_power, weight))
 	return candidates
 
 
 ## 返回 [param candidates] 中实际生成类型的最低战力；输入由合法候选收集产生，空池返回 0。
-func _get_minimum_candidate_power(candidates: Array[Dictionary]) -> int:
+func _get_minimum_candidate_power(candidates: Array[SpawnCandidate]) -> int:
 	# 首个候选初始化最低值，后续只比较已经验证为正数的战力。
 	var minimum_power: int = 0
-	# 每项为 RandomPicker 外层候选，实际战力位于 data 内。
-	for candidate: Dictionary in candidates:
+	# 每项直接保存实际生成类型及其正数战力。
+	for candidate: SpawnCandidate in candidates:
 		# 候选所代表的实际生成战力，雪橇替换已在收集阶段处理。
-		var power: int = int(candidate["data"]["power"])
+		var power: int = candidate.power
 		minimum_power = power if minimum_power == 0 else mini(minimum_power, power)
 	return minimum_power
 
@@ -150,7 +174,7 @@ func _get_minimum_candidate_power(candidates: Array[Dictionary]) -> int:
 ## [param candidates] 已筛选的合法类型；[param spawn_count] 本批计划数量。[br]
 ## [param minimum_power] 合法候选的最低战力；[param power_limit] 修正及成长后的整批预算。[br]
 ## 选行仍由博士独立选行系统完成并更新历史；此函数不累计技能次数。
-func _build_spawn_entries(candidates: Array[Dictionary], spawn_count: int, minimum_power: int, power_limit: int) -> Array[ZB001DoctorSpawnEntry]:
+func _build_spawn_entries(candidates: Array[SpawnCandidate], spawn_count: int, minimum_power: int, power_limit: int) -> Array[ZB001DoctorSpawnEntry]:
 	# 失败时不返回已准备的部分清单，保持类型明确且避免播放半批任务。
 	var empty_entries: Array[ZB001DoctorSpawnEntry] = []
 	# 本次局部清单，全部名额完成后由调用方统一提交。
@@ -162,49 +186,51 @@ func _build_spawn_entries(candidates: Array[Dictionary], spawn_count: int, minim
 		# 后续名额至少需要的预算，保证前面抽到强力僵尸后仍能填满整批清单。
 		var reserved_power: int = (spawn_count - spawn_index - 1) * minimum_power
 		# 后续名额的最低预算不可被本项消耗，候选过滤保留原有概率权重。
-		var affordable_candidates: Array[Dictionary] = _get_affordable_candidates(candidates, remaining_power - reserved_power)
+		var affordable_candidates: Array[SpawnCandidate] = _get_affordable_candidates(candidates, remaining_power - reserved_power)
 		if affordable_candidates.is_empty():
 			return empty_entries
 		# 先过滤再随机，避免对无法负担的类型反复重抽而卡住技能准备。
-		var picker := RandomPicker.new(affordable_candidates, false)
+		var picker := RandomPicker.new()
+		# 按原候选顺序加入并统一重建，保持别名表及每项抽样的随机数消费顺序。
+		for candidate: SpawnCandidate in affordable_candidates:
+			picker.add_item(candidate, candidate.weight, false, false)
+		picker.rebuild_alias_table()
 		# 已过滤的候选信息，清单只保存类型与行，不保存临时行权重数组。
-		var selected: Dictionary = picker.get_random_item()
+		var selected: SpawnCandidate = picker.get_random_item() as SpawnCandidate
 		# 本项最终生成类型，与候选中计费的战力一致。
-		var selected_type: CharacterRegistry.ZombieType = selected["zombie_type"]
+		var selected_type: CharacterRegistry.ZombieType = selected.zombie_type
 		# 实际类型允许的水陆行分类，交给博士独立的选行系统。
 		var row_type: CharacterRegistry.ZombieRowType = Global.character_registry.get_zombie_info(selected_type, CharacterRegistry.ZombieInfoAttribute.ZombieRowType)
 		# 本项锁定的零起始行号，播放动画和释放僵尸共用；负数表示选行失败。
-		var lane: int = choose_row_system.select_spawn_row(row_type, selected["row_weights"])
+		var lane: int = choose_row_system.select_spawn_row(row_type, selected.row_weights)
 		if lane < 0:
 			return empty_entries
 		entries.append(ZB001DoctorSpawnEntry.new(selected_type, lane))
-		remaining_power -= int(selected["power"])
+		remaining_power -= selected.power
 	return entries
 
 
 ## 返回 [param candidates] 中实际战力不超过 [param available_power] 的候选副本，保留原抽样权重。[br]
 ## available_power 已扣除后续名额预留，本函数只筛选、不抽样、不修改输入池。
-func _get_affordable_candidates(candidates: Array[Dictionary], available_power: int) -> Array[Dictionary]:
-	# 本项可负担的外层候选，字典只读共享，不改写原候选的数据或权重。
-	var affordable_candidates: Array[Dictionary] = []
+func _get_affordable_candidates(candidates: Array[SpawnCandidate], available_power: int) -> Array[SpawnCandidate]:
+	# 本项可负担的候选；对象只读共享，不改写原候选的数据或权重。
+	var affordable_candidates: Array[SpawnCandidate] = []
 	# 每个候选对应的战力均已在收集阶段验证为正数。
-	for candidate: Dictionary in candidates:
-		# data 中保存最终生成类型的战力和合法行权重。
-		var candidate_data: Dictionary = candidate["data"]
-		if int(candidate_data["power"]) <= available_power:
+	for candidate: SpawnCandidate in candidates:
+		if candidate.power <= available_power:
 			affordable_candidates.append(candidate)
 	return affordable_candidates
 
 
-## 保证初始预算大于等于最低总战力，只向上修正当前实例，不降低后续批次的预算。
+## 保证有效初始预算大于等于最低总战力，只向上修正当前实例，不改写原始导出配置。
 ## [param minimum_power] 候选中的正数最低战力；准备时必须使用实际合法类型的战力。
 ## [param spawn_count] 要保证的正数数量；初始化使用最少数量，实际准备使用本批随机数量。
 func _ensure_minimum_spawn_power(minimum_power: int, spawn_count: int) -> void:
 	# 正好承担所有名额的最低战力即可，预算相等时不额外提高。
 	var required_power: int = minimum_power * spawn_count
-	spawn_power_base = maxi(spawn_power_base, required_power)
+	_effective_spawn_power_base = maxi(_effective_spawn_power_base, maxi(spawn_power_base, required_power))
 	# 封顶不能压低数量所需的最低预算，否则成长计算后仍可能无法填满清单。
-	spawn_power_max = maxi(spawn_power_max, spawn_power_base)
+	_effective_spawn_power_max = maxi(_effective_spawn_power_max, maxi(spawn_power_max, _effective_spawn_power_base))
 
 
 ## 按准备前的成功使用次数计算本批战力；不依赖自然波次，也不修改计数。
@@ -213,7 +239,7 @@ func _calculate_spawn_power_limit() -> int:
 	# 已完成的增长档数，整数除法使每档覆盖指定数量的技能使用次数。
 	@warning_ignore("integer_division")
 	var growth_steps: int = spawn_skill_use_count / spawn_power_growth_interval
-	return mini(spawn_power_base + growth_steps * spawn_power_growth_step, spawn_power_max)
+	return mini(_effective_spawn_power_base + growth_steps * spawn_power_growth_step, _effective_spawn_power_max)
 
 
 ## 按放置技能使用次数更新博士权重；本函数独立于自然波次规则，便于单独调整博士难度。[br]
@@ -251,13 +277,13 @@ func get_part_motion_config() -> ZB001DoctorPartMotionConfig:
 	return scene_config.spawn_part_motion if scene_config != null else null
 
 
-## 清理本轮任务，保留独立权重、使用次数与选行历史。
+## 清理本轮任务，保留独立权重、使用次数、有效预算与选行历史。
 func cancel_skill() -> void:
 	super.cancel_skill()
 	_clear_spawn_data()
 
 
-## 清理尚未执行的本批任务；随机池只在准备函数内存在，保留使用次数、权重及选行历史。
+## 清理尚未执行的本批任务；随机池只在准备函数内存在，保留使用次数、权重、有效预算及选行历史。
 func _clear_spawn_data() -> void:
 	spawn_entries.clear()
 	completed_count = 0
@@ -383,13 +409,10 @@ func _get_active_manager() -> ZombieManager:
 	return manager if is_instance_valid(manager) and manager.is_inside_tree() and not manager.is_queued_for_deletion() else null
 
 
-## 返回映射中的动画集合，供状态检查资源和方法关键帧。
+## 返回行映射中首次出现的动画集合；场地资源统一查询，供状态检查资源和方法关键帧。
 func get_action_animations() -> Array[StringName]:
-	# 只读类型化副本，不允许校验修改技能配置。
-	var animations: Array[StringName] = []
 	if scene_config != null:
-		# 同一动画可以服务多行，校验时每个动画只加入一次。
-		for action: ZB001DoctorRowAction in scene_config.spawn_row_actions.values():
-			if action != null and not animations.has(action.animation_name):
-				animations.append(action.animation_name)
-	return animations
+		return scene_config.get_row_action_animations(scene_config.spawn_row_actions)
+	# 未绑定场地资源时仍返回元素类型明确的新空列表，保持状态层的返回约定。
+	var empty_animations: Array[StringName] = []
+	return empty_animations

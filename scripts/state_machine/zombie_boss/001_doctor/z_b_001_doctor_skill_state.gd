@@ -47,16 +47,17 @@ func enter() -> void:
 	super.enter()
 
 ## 主状态机选择前的只读条件；默认允许，具有目标要求的技能自行覆盖，不提前准备动作。
+## 仅在主状态机初始化成功后调用，效果组件的固定绑定已由配置阶段验证。
 func can_be_selected() -> bool:
-	return is_instance_valid(effect_component) and effect_component.can_start()
+	return effect_component.can_start()
 
 
 ## 读取组件提供的动作清单，状态只校验释放事件，不保存另一份动作配置。
+## 调用前由调用者验证 [member effect_component] 的绑定；返回独立的类型化动画数组。
 func get_action_animations() -> Array[StringName]:
 	# 保持返回容器的元素类型；assign 按 StringName 接收组件列表，不依赖三元表达式推导。
 	var animations: Array[StringName] = []
-	if is_instance_valid(effect_component):
-		animations.assign(effect_component.get_action_animations())
+	animations.assign(effect_component.get_action_animations())
 	return animations
 
 
@@ -160,7 +161,7 @@ func get_configuration_error() -> String:
 		if not animation_error.is_empty():
 			return animation_error
 		# 当前动作的事件时间；释放必须唯一且严格位于动画内部。
-		var times: Array[float] = AnimationMethodQuery.get_times(state_machine.animation_player.get_animation(animation_name), NodePath("StateMachine"), &"notify_skill_event", [animation_name, release_event], false)
+		var times: Array[float] = ZB001DoctorAnimationEvents.get_skill_event_times(state_machine.animation_player.get_animation(animation_name), animation_name, release_event, false)
 		if requires_release_keyframe() and times.size() != 1:
 			detected_error = "%s 必须具有唯一的有效技能释放关键帧。" % animation_name
 			push_error("%s：%s" % [get_path(), detected_error])
@@ -191,9 +192,9 @@ func _get_part_motion_animation_error(animation_name: StringName, release_times:
 	# 当前动作动画，以及两种必须唯一的部件平移事件。
 	var animation: Animation = state_machine.animation_player.get_animation(animation_name)
 	# 定位允许位于起点；复位要求在动画内部，避免与结束通知争用。
-	var move_times: Array[float] = AnimationMethodQuery.get_times(animation, ^"StateMachine", &"notify_skill_event", [animation_name, &"position_move"])
+	var move_times: Array[float] = ZB001DoctorAnimationEvents.get_skill_event_times(animation, animation_name, ZB001DoctorAnimationEvents.POSITION_MOVE)
 	# 复位触发时刻由轨道提供，不在场地资源中再配置同一个秒数。
-	var return_times: Array[float] = AnimationMethodQuery.get_times(animation, ^"StateMachine", &"notify_skill_event", [animation_name, &"position_return"], false)
+	var return_times: Array[float] = ZB001DoctorAnimationEvents.get_skill_event_times(animation, animation_name, ZB001DoctorAnimationEvents.POSITION_RETURN, false)
 	if move_times.size() != 1 or not is_zero_approx(move_times[0]) or return_times.size() != 1:
 		push_error("%s：%s 必须具有唯一的 0 秒定位事件和动画内部的复位事件。" % [get_path(), animation_name])
 		return "部件平移关键帧无效。"

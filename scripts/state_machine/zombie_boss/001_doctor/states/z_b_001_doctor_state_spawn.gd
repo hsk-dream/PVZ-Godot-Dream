@@ -20,8 +20,14 @@ func get_configuration_error() -> String:
 		detected_error = "放置间隔必须为有限正数。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if not child_state_machine.initial_state is ZB001DoctorStateSpawnPrepare:
-		detected_error = "放置技能入口必须使用专用 SpawnPrepare，处理无可用目标的情况。"
+	# 本技能的通用准备入口；所属技能和首条阶段连线在复合状态内统一检查。
+	var prepare_state: ZB001DoctorStateSkillPrepare = child_state_machine.initial_state as ZB001DoctorStateSkillPrepare
+	if prepare_state == null or prepare_state.skill_state != self:
+		detected_error = "放置技能入口必须使用自身的通用 Prepare，处理无可用目标的情况。"
+		push_error("%s：%s" % [get_path(), detected_error])
+		return detected_error
+	if not prepare_state.next_state is ZB001DoctorStateSpawnPlace:
+		detected_error = "放置准备入口必须连接放置动作 Place。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
 	return ""

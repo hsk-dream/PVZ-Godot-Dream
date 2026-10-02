@@ -150,7 +150,7 @@ func exit() -> void:
 ## 接收机甲轨道中的本体死亡事件；使用动画时间触发，使死亡加速后仍与机甲姿态对齐。[br]
 ## [param event_name] 方法轨道的事件名；仅接受本阶段的本体死亡启动事件，重复或迟到事件忽略。
 func on_animation_event(event_name: StringName) -> void:
-	if event_name != &"driver_death" or _returning_head or _driver_death_started \
+	if event_name != ZB001DoctorAnimationEvents.DRIVER_DEATH or _returning_head or _driver_death_started \
 		or state_machine.animation_player.assigned_animation != ZB001DoctorAnimations.DEATH_ANIMATION:
 		return
 	_driver_death_started = true
@@ -343,7 +343,7 @@ func _exit_tree() -> void:
 func get_configuration_error() -> String:
 	# 基础动画已由控制器校验，此处只负责死亡序列所需的方法事件。
 	var animation: Animation = state_machine.animation_player.get_animation(ZB001DoctorAnimations.DEATH_ANIMATION)
-	if AnimationMethodQuery.get_times(animation, NodePath("StateMachine"), &"notify_animation_event", [&"driver_death"]).is_empty():
+	if ZB001DoctorAnimationEvents.get_state_event_times(animation, ZB001DoctorAnimationEvents.DRIVER_DEATH).is_empty():
 		push_error("%s：机甲死亡动画必须具有有效的 driver_death 方法事件。" % get_path())
 		return "缺少本体死亡启动事件。"
 	return ""

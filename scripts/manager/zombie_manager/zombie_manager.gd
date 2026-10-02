@@ -49,7 +49,6 @@ var curr_zombie_num:int = 0:
 	set(v):
 		curr_zombie_num=v
 		label_zombie_sum.text = "当前僵尸数量：" + str(curr_zombie_num)
-		signal_curr_zombie_num_change.emit(v)
 
 ## 参与自然提前刷新的实例集合；弱引用避免已释放对象残留，实例 ID 用于幂等移除。
 var _natural_refresh_zombies: Dictionary[int, WeakRef] = {}
@@ -79,8 +78,6 @@ var all_zombies_2d:Array[Array]
 ## 是否被冻结，用于管理冰消珊瑚
 var is_ice:bool
 var ice_timer:Timer
-
-signal signal_curr_zombie_num_change(num:int)
 
 func _ready():
 	## 注册事件总线
@@ -339,8 +336,9 @@ func create_skill_zombie(zombie_type: CharacterRegistry.ZombieType, lane: int, s
 
 ## 创建技能召唤的蹦极僵尸，目标在入树前注入；失败时返回 null。[br]
 ## [param target_cell] 目标格子，其行号使用项目内部的零起始索引。[br]
+## [param anchor] 本列对应的博士手部绳子连接点，入树前与目标一起注入。[br]
 ## [param on_created] 可选初始化回调，接收僵尸实例；用于在入树前监听本批完成事件。
-func create_skill_bungi(target_cell: PlantCell, on_created: Callable = Callable()) -> Zombie021Bungi:
+func create_skill_bungi(target_cell: PlantCell, anchor: Marker2D, on_created: Callable = Callable()) -> Zombie021Bungi:
 	if not _is_game_running() or not is_instance_valid(target_cell) \
 		or target_cell.is_queued_for_deletion() or not target_cell.is_inside_tree() \
 		or not main_game.is_ancestor_of(target_cell) or target_cell.get_bungi_target() == null:
@@ -364,16 +362,16 @@ func create_skill_bungi(target_cell: PlantCell, on_created: Callable = Callable(
 		Zombie000Base.E_ZInitAttr.ParticipatesNaturalRefresh: false,
 	}
 	return create_norm_zombie(CharacterRegistry.ZombieType.Z021Bungi, row, init_parameters,
-		spawn_position, _initialize_skill_bungi.bind(target_cell, on_created)) as Zombie021Bungi
+		spawn_position, _initialize_skill_bungi.bind(target_cell, anchor, on_created)) as Zombie021Bungi
 
 
 ## [param zombie] 刚实例化且尚未入树的蹦极僵尸。[br]
 ## [param target_cell] 本轮锁定的格子。[br]
-## [param on_created] 技能提供的实例监听回调；先注入目标和入场参数，再交给调用方登记。
-func _initialize_skill_bungi(zombie: Zombie021Bungi, target_cell: PlantCell, on_created: Callable) -> void:
-	GlobalUtils.create_bungi(zombie, target_cell)
+## [param anchor] 本列对应的博士手部绳子连接点。[br]
+## [param on_created] 技能提供的实例监听回调；先统一注入出战参数，再交给调用方登记。
+func _initialize_skill_bungi(zombie: Zombie021Bungi, target_cell: PlantCell, anchor: Marker2D, on_created: Callable) -> void:
 	# 博士已经通过进入动画表现召唤，蹦极入树后隐藏靶子并立即下降。
-	zombie.skip_spawn_warning = true
+	zombie.initialize_spawn(target_cell, true, anchor)
 	if on_created.is_valid():
 		on_created.call(zombie)
 

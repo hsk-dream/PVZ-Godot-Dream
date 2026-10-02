@@ -9,7 +9,7 @@ func enter() -> void:
 ## 抬头初段沿用受击窗口，关闭关键帧发生时立即通知检测器更新目标。[br]
 ## [param event_name] 抬头方法轨道事件，仅 hurt_disable 关闭角色受击因素。
 func on_animation_event(event_name: StringName) -> void:
-	if event_name == &"hurt_disable" and skill_state.is_active_skill():
+	if event_name == ZB001DoctorAnimationEvents.HURT_DISABLE and skill_state.is_active_skill():
 		boss.hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Character)
 		doctor_state_machine.notify_skill_status_changed()
 

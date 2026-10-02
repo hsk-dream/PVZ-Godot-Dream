@@ -124,8 +124,9 @@ func get_special_zombie_callable(zombie_type:CharacterRegistry.ZombieType, plant
 			return create_bungi.bind(plant_cell)
 	return Callable()
 
-## 蹦极僵尸
+## 普通出怪在入树前注入蹦极目标，保留靶子与下降前预警。[br]
+## [param zombie_bungi] 尚未入树的蹦极实例；[param plant_cell] 本次偷取的目标格子。
 func create_bungi(zombie_bungi:Zombie021Bungi, plant_cell:PlantCell):
-	zombie_bungi.plant_cell = plant_cell
+	zombie_bungi.initialize_spawn(plant_cell)
 
 #endregion

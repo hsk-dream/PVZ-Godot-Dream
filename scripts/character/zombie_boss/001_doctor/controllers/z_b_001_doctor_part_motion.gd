@@ -44,10 +44,11 @@ func return_to_rest(configuration: ZB001DoctorPartMotionConfig) -> void:
 
 
 ## [param position] 为目标局部位置；[param duration] 为动作秒；[param configuration] 为曲线设置。
+## 仅由 [method move_to] 或 [method return_to_rest] 调用，配置非空已由这两个公开入口检查。
 ## Tween 绑定本节点并继承暂停；角色零速仅冻结推进，恢复速度后继续剩余路程。
 func _start_motion(position: Vector2, duration: float, configuration: ZB001DoctorPartMotionConfig) -> void:
 	cancel_motion()
-	if not _has_target() or configuration == null:
+	if not _has_target():
 		return
 	if duration <= 0.0 or target_node.position.is_equal_approx(position):
 		target_node.position = position

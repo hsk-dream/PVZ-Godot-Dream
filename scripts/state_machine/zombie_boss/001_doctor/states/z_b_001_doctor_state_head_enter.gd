@@ -10,7 +10,7 @@ func enter() -> void:
 ## 受击开关跟随动画时间；死亡或技能已退出时不处理迟到事件。[br]
 ## [param event_name] 低头方法轨道事件，仅 hurt_enable 开启角色受击因素。
 func on_animation_event(event_name: StringName) -> void:
-	if event_name == &"hurt_enable" and skill_state.is_active_skill():
+	if event_name == ZB001DoctorAnimationEvents.HURT_ENABLE and skill_state.is_active_skill():
 		boss.hurt_box_component.enable_component(ComponentNormBase.E_IsEnableFactor.Character)
 		# 同一状态内开关受击也要通知检测器，不能只依赖状态切换信号。
 		doctor_state_machine.notify_skill_status_changed()

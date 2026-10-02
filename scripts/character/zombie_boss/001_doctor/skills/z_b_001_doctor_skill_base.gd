@@ -117,10 +117,10 @@ func handle_position_event(event_name: StringName) -> void:
 	var motion: ZB001DoctorPartMotion = _get_active_part_motion()
 	if not _skill_active or not _action_ready or not is_instance_valid(motion):
 		return
-	if event_name == &"position_move" and not _position_move_started and not _position_return_started:
+	if event_name == ZB001DoctorAnimationEvents.POSITION_MOVE and not _position_move_started and not _position_return_started:
 		_position_move_started = true
 		motion.move_to(_action_part_position, get_part_motion_config())
-	elif event_name == &"position_return" and not _position_return_started:
+	elif event_name == ZB001DoctorAnimationEvents.POSITION_RETURN and not _position_return_started:
 		_position_return_started = true
 		motion.return_to_rest(get_part_motion_config())
 
@@ -217,6 +217,18 @@ func _get_active_game() -> MainGameManager:
 		or game.main_game_progress != MainGameManager.E_MainGameProgress.MAIN_GAME:
 		return null
 	return game
+
+
+## 实时返回本博士所在战斗的有效植物格管理器；关卡无效、管理器离树或待删除时返回 null。
+## 不缓存查询结果；区域攻击和蹦极在回调之后仍须再次查询，防止旧关卡继续产生效果。
+func _get_active_plant_cell_manager() -> PlantCellManager:
+	# 先沿用博士与所属关卡的资格检查，不给不使用格子的技能增加初始化依赖。
+	var game: MainGameManager = _get_active_game()
+	if game == null:
+		return null
+	# 本次调用的植物格管理器；正在释放或已离树时不再读取场地或执行攻击。
+	var manager: PlantCellManager = game.plant_cell_manager
+	return manager if is_instance_valid(manager) and manager.is_inside_tree() and not manager.is_queued_for_deletion() else null
 
 
 ## 只读检查具体技能的静态配置，空字符串表示有效；具体分支自行报告错误。

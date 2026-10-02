@@ -4,7 +4,7 @@ class_name ZB001DoctorFireBall
 
 ## 返回技能准备参数中的火球标识。
 func get_ball_type() -> StringName:
-	return &"Fire"
+	return BALL_TYPE_FIRE
 
 ## 火球从小到大形成的非循环动画。
 func get_form_animation() -> StringName:

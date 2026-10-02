@@ -39,6 +39,18 @@ class_name ZB001DoctorSceneConfig
 @export var throw_rv_size: Vector2i = Vector2i(2, 3)
 
 
+## 返回 [param actions] 中首次出现的动画名，沿用行映射的遍历顺序并跳过 null 动作。
+## 每次新建类型化数组，不缓存或修改共享配置；空动画名仍交给现有配置校验处理。
+func get_row_action_animations(actions: Dictionary[int, ZB001DoctorRowAction]) -> Array[StringName]:
+	# 本次查询的独立结果；相同行动画只保留首次出现的一项。
+	var animations: Array[StringName] = []
+	# 当前行对应的只读动作资源；不同行允许复用同一动画。
+	for action: ZB001DoctorRowAction in actions.values():
+		if action != null and not animations.has(action.animation_name):
+			animations.append(action.animation_name)
+	return animations
+
+
 ## 校验 [param actions] 的行号、动画与部件位置；[param context] 指示出错的技能或资源。
 ## 空字符串表示有效；错误在发现处报告，允许不同行复用同一动画。
 func get_row_actions_error(actions: Dictionary[int, ZB001DoctorRowAction], context: String) -> String:

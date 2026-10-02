@@ -4,7 +4,7 @@ class_name ZB001DoctorIceBall
 
 ## 返回技能准备参数中的冰球标识。
 func get_ball_type() -> StringName:
-	return &"Ice"
+	return BALL_TYPE_ICE
 
 ## 冰球从小到大形成的非循环动画。
 func get_form_animation() -> StringName:

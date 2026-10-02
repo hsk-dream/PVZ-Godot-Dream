@@ -42,6 +42,16 @@ var _is_raising: bool = false
 var _drop_tween: Tween
 
 
+## 在新实例入树前统一注入出战参数；只保存引用与标记，不访问 onready 节点或重置运行状态。[br]
+## [param target_cell] 本次偷取的目标格子，实际抓取时读取其中最新的植物。[br]
+## [param skip_warning] 是否跳过靶子和下降前预警，普通出怪默认为 false。[br]
+## [param rope_anchor] 博士手部绳子连接点；普通蹦极默认为 null，不启用裁切。
+func initialize_spawn(target_cell: PlantCell, skip_warning: bool = false, rope_anchor: Marker2D = null) -> void:
+	plant_cell = target_cell
+	skip_spawn_warning = skip_warning
+	bungee_anchor = rope_anchor
+
+
 ## 根据入场参数决定是否显示预警；两种模式共用下降和落地等待，每次异步恢复都检查中断。
 func ready_norm() -> void:
 	super()

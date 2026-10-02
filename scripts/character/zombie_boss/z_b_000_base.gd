@@ -13,14 +13,23 @@ signal signal_status_update
 var _is_fading := false
 
 
+## 只读检查普通伤害、冰冻和辣椒共用的受击资格，不扣血、不修改状态或发出信号。[br]
+## 存活的正常出战实例仍在树中、未排队删除且受击组件有效并启用时返回 true，否则返回 false。[br]
+## 保留拒绝条件的短路顺序，确认 [member hurt_box_component] 有效后才读取其启用状态。
+func _can_receive_damage() -> bool:
+	if is_death or character_init_type != E_CharacterInitType.IsNorm \
+		or not is_inside_tree() or is_queued_for_deletion() \
+		or not is_instance_valid(hurt_box_component) or not hurt_box_component.is_enabling:
+		return false
+	return true
+
+
 ## 所有普通与特殊植物伤害共用的最后检查，防止动画关键帧或旧碰撞结果绕过受击窗口。[br]
 ## [param attack_value] 本次伤害；[param bullet_mode] 伤害类型。[br]
 ## [param is_drop] 是否允许掉落表现；[param trigger_be_attack_SFX] 是否播放受击音效。
 ## 致死伤害仅通过血量组件启动僵王死亡状态机，不套用普通僵尸的直接删除逻辑。
 func be_attacked_bullet(attack_value: int, bullet_mode: BulletRegistry.AttackMode = BulletRegistry.AttackMode.Norm, is_drop: bool = true, trigger_be_attack_SFX := true):
-	if is_death or character_init_type != E_CharacterInitType.IsNorm \
-		or not is_inside_tree() or is_queued_for_deletion() \
-		or not is_instance_valid(hurt_box_component) or not hurt_box_component.is_enabling:
+	if not _can_receive_damage():
 		return
 	super.be_attacked_bullet(attack_value, bullet_mode, is_drop, trigger_be_attack_SFX)
 
@@ -75,9 +84,7 @@ func be_ice_decelerate(time: float) -> void:
 ## [param time] 本次完全冰冻持续时间，单位为秒。
 ## [param new_time_ice_end_decelerate] 冰冻解除后继续减速的时长，单位为秒。
 func be_ice_freeze(time: float, new_time_ice_end_decelerate: float) -> void:
-	if is_death or character_init_type != E_CharacterInitType.IsNorm \
-		or not is_inside_tree() or is_queued_for_deletion() \
-		or not is_instance_valid(hurt_box_component) or not hurt_box_component.is_enabling:
+	if not _can_receive_damage():
 		return
 	super.be_ice_freeze(time, new_time_ice_end_decelerate)
 	if is_death:
@@ -87,9 +94,7 @@ func be_ice_freeze(time: float, new_time_ice_end_decelerate: float) -> void:
 ## 任意行的火爆辣椒均可命中；受击窗口在此检查，通过后先解除冰冻和减速，再扣血。[br]
 ## [param attack_value] 本次辣椒伤害；致死时由血量组件触发僵王死亡流程，不直接删除或播放普通僵尸灰烬。
 func be_jalapeno(attack_value: int) -> void:
-	if is_death or character_init_type != E_CharacterInitType.IsNorm \
-		or not is_inside_tree() or is_queued_for_deletion() \
-		or not is_instance_valid(hurt_box_component) or not hurt_box_component.is_enabling:
+	if not _can_receive_damage():
 		return
 	# 先解除控制再结算伤害，避免解冻回调覆盖随后启动的死亡演出速度。
 	cancel_ice()

@@ -216,7 +216,7 @@ func get_death_configuration_error() -> String:
 		return "缺少奖杯生成点。"
 	# 奖杯请求属于根节点职责，检查目标路径和方法参数，不限制触发到固定秒数。
 	var animation: Animation = state_machine.animation_player.get_animation(ZB001DoctorAnimations.DEATH_ANIMATION)
-	if AnimationMethodQuery.get_times(animation, NodePath("."), &"request_trophy", []).is_empty():
+	if ZB001DoctorAnimationEvents.get_trophy_request_times(animation).is_empty():
 		push_error("%s：死亡动画必须包含有效的 request_trophy 方法关键帧。" % get_path())
 		return "缺少奖杯生成关键帧。"
 	return ""

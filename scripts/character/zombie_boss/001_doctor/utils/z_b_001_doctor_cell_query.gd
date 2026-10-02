@@ -1,6 +1,17 @@
-## 博士技能共用的格子查询；只返回本次调用的网格副本，不缓存植物、不修改管理器数组。
+## 博士技能共用的格子查询与植物资格判断；只返回本次调用的网格副本，不缓存植物、不修改管理器数组。
 extends RefCounted
 class_name ZB001DoctorCellQuery
+
+
+## 判断原始引用是否为仍在战斗中的存活植物；不限制行号或受击窗口，也不产生攻击副作用。[br]
+## [param plant_reference] 格子或碰撞区域提供的原始引用；失效、待删除、死亡或展示实例返回 false。
+static func is_living_normal_plant(plant_reference: Variant) -> bool:
+	if not is_instance_valid(plant_reference) or not plant_reference is Plant000Base:
+		return false
+	# 有效且类型明确后才转换，避免格子字典中的已释放引用触发类型赋值错误。
+	var plant: Plant000Base = plant_reference as Plant000Base
+	return plant.is_inside_tree() and not plant.is_queued_for_deletion() \
+		and not plant.is_death and plant.character_init_type == Character000Base.E_CharacterInitType.IsNorm
 
 
 ## 返回从上到下、从左到右的画面网格；任一格子失效或种植点未初始化时返回空网格。[br]

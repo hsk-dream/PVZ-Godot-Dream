@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ZB001DoctorSceneConfig" format=3 uid="uid://c4c378dcaa0"]
 
 [ext_resource type="Script" uid="uid://b12aaa4bha10" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_area_action.gd" id="area_action"]
-[ext_resource type="Script" uid="uid://c6kv7xx0xg43w" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_part_motion_config.gd" id="part_motion_config"]
+[ext_resource type="Script" uid="uid://cnbg36depmq1" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_part_motion_config.gd" id="part_motion_config"]
 [ext_resource type="Script" uid="uid://cplnm8p2ixhm5" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_row_action.gd" id="row_action"]
 [ext_resource type="Script" uid="uid://du4tibk3cemj7" path="res://scripts/character/zombie_boss/001_doctor/data/z_b_001_doctor_scene_config.gd" id="scene_config"]
 

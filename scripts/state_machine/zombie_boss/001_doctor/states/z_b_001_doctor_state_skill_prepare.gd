@@ -1,6 +1,6 @@
+## 五个技能共用动作准备和失败收尾；入口归属与专用阶段连线由所属复合技能校验。
 extends ZB001DoctorState
 class_name ZB001DoctorStateSkillPrepare
-## 五个技能共用动作准备和失败收尾；专用子类只校验所属技能及后续连线。
 ## 本次动作参数准备完成后进入的同层状态，通常为动作播放或低头阶段。
 @export var next_state: CharacterState
 

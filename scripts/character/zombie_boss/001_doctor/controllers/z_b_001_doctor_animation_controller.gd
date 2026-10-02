@@ -42,16 +42,19 @@ var _visual_returns: Array[ZB001DoctorVisualReturn] = []
 var _visual_return_elapsed: float = 0.0
 ## 初始化时绑定的主体播放器；速度仍由原动画组件控制。
 var _mech_player: AnimationPlayer
+## 配置通过并复制动画库后缓存的本实例 Idle 动画；未初始化或断线时为空，不访问共享原资源。
+var _idle_animation: Animation
 ## 实际连接过的本体播放器，导出引用被替换后仍能断开原有连接。
 var _connected_driver_player: AnimationPlayer
 
 
-## 配置通过后绑定 [param player] 主体播放器，复制实例动画并启动本体默认待机。
+## 配置通过后绑定 [param player] 主体播放器，复制实例动画、缓存本实例 Idle 并启动本体默认待机。
 ## 重复初始化会先断开旧信号，避免单个动画触发多次联动。
 func initialize(player: AnimationPlayer) -> void:
 	disconnect_players()
 	_mech_player = player
 	_prepare_capture_animations(_mech_player)
+	_idle_animation = _mech_player.get_animation(ZB001DoctorAnimations.IDLE_ANIMATION)
 	_prepare_capture_animations(driver_animation_player)
 	_connected_driver_player = driver_animation_player
 	_connected_driver_player.animation_finished.connect(_on_driver_animation_finished)
@@ -103,6 +106,26 @@ func play_mech_action(animation_name: StringName, driver_reaction: DriverReactio
 		play_driver_animation(ZB001DoctorAnimations.DRIVER_DAMAGE_ANIMATION if driver_reaction == DriverReaction.DAMAGE else ZB001DoctorAnimations.DRIVER_DRIVE_ANIMATION)
 
 
+## 恢复本实例 Idle 循环后播放待机；[param driver_reaction] 明确指定本体配合动作。
+## [param transition_duration] 为动作秒，负数沿用 [method play_mech_action] 的过渡规则。
+func play_idle_loop(driver_reaction: DriverReaction, transition_duration: float = -1.0) -> void:
+	restore_idle_loop()
+	play_mech_action(ZB001DoctorAnimations.IDLE_ANIMATION, driver_reaction, transition_duration)
+
+
+## 请求当前 Idle 周期自然结束；只关闭本实例副本的循环，不停止、重播或改变当前进度。
+## 初始化前或断线后没有副本可用时忽略请求，不读取并修改共享原资源。
+func request_idle_cycle_end() -> void:
+	if is_instance_valid(_idle_animation):
+		_idle_animation.loop_mode = Animation.LOOP_NONE
+
+
+## 幂等恢复本实例 Idle 副本的循环模式，不播放动画；初始化前或断线后直接忽略。
+func restore_idle_loop() -> void:
+	if is_instance_valid(_idle_animation):
+		_idle_animation.loop_mode = Animation.LOOP_LINEAR
+
+
 ## 播放 [param animation_name] 指定的本体动作；同名动作也从头开始，同时保留切换瞬间的可见姿势。
 ## 完整操纵、吐球动作结束回待机时不增加过渡；中途打断及举旗进入循环使用专门时长。
 func play_driver_animation(animation_name: StringName) -> void:
@@ -129,10 +152,11 @@ func _play_pose_transition(player: AnimationPlayer, animation_name: StringName, 
 		player.play(animation_name, 0.0)
 
 
-## [param active] 为主状态机是否运行；停止时取消待机回落，不停止仍需演出的机甲动画。
+## [param active] 为主状态机是否运行；停止时恢复 Idle 循环并取消待机回落，保留机甲当前播放进度。
 func set_active(active: bool) -> void:
 	_active = active
 	if not active:
+		restore_idle_loop()
 		cancel_driver_reaction()
 
 
@@ -160,13 +184,14 @@ func sync_driver_speed() -> void:
 			driver_animation_player.speed_scale = driver_speed
 
 
-## 断开实际绑定的播放器，供重新初始化、配置失败和离树时共同清理。
+## 恢复本实例 Idle 循环并断开实际绑定的播放器，供重新初始化、配置失败和离树时共同清理。
 func disconnect_players() -> void:
 	set_active(false)
 	finish_visual_returns()
 	if is_instance_valid(_connected_driver_player) and _connected_driver_player.animation_finished.is_connected(_on_driver_animation_finished):
 		_connected_driver_player.animation_finished.disconnect(_on_driver_animation_finished)
 	_mech_player = null
+	_idle_animation = null
 	_connected_driver_player = null
 
 

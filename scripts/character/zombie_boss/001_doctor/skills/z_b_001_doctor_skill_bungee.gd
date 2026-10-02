@@ -2,8 +2,34 @@
 extends ZB001DoctorSkillBase
 class_name ZB001DoctorSkillBungee
 
-## 本轮固定列组起始列，从 1 开始；取消后为 0。
-var selected_start_column: int = 0
+## 本技能私有的单列候选；仅在同步查询与准备期间使用，空容器仍保留原手指槽位。
+class ColumnCandidates extends RefCounted:
+	## 本列可偷取的格子引用，不跨帧缓存，也不延长格子节点寿命。
+	var cells: Array[PlantCell] = []
+
+	## [param candidate_cells] 按行排列的本列候选；复制数组容器，避免与查询方共享增删状态。
+	func _init(candidate_cells: Array[PlantCell]) -> void:
+		cells.assign(candidate_cells)
+
+
+## 本技能私有的连续列组候选；同步准备完成后由目标实例 ID 接管，不跨帧保存格子引用。
+class RangeCandidate extends RefCounted:
+	## 按原列顺序排列的完整槽位，空列不会压缩后续连接点下标。
+	var columns: Array[ColumnCandidates] = []
+	## 画面第一行第一列格子，用于计算手臂横向定位基准。
+	var reference_cell: PlantCell
+	## 画面第一行中本组首列格子，只提供横向列差，不叠加屋顶高度。
+	var start_cell: PlantCell
+
+	## 构造本次查询的完整列组，复制槽位容器但不延长格子节点寿命。[br]
+	## [param column_candidates] 含空列的完整槽位序列。[br]
+	## [param first_cell] 画面第一行第一列基准格子；[param range_start_cell] 本组第一行首列格子。
+	func _init(column_candidates: Array[ColumnCandidates], first_cell: PlantCell, range_start_cell: PlantCell) -> void:
+		columns.assign(column_candidates)
+		reference_cell = first_cell
+		start_cell = range_start_cell
+
+
 ## 每列锁定一个格子和原始手指槽位，组件独占此运行时清单。
 var targets: Array[ZB001DoctorBungeeTarget] = []
 
@@ -47,18 +73,22 @@ func prepare_action() -> StringName:
 	targets.clear()
 	cancel_batch_tracking()
 	reset_visual_offset()
-	# 每项包含整组范围与按列分开的目标快照，权重统一为 1。
-	var ranges: Array[Dictionary] = _collect_ranges()
+	# 每项保存完整列槽位与定位基准，仅在本次同步准备期间使用。
+	var ranges: Array[RangeCandidate] = _collect_ranges()
 	if ranges.is_empty():
 		return &""
 	# 项目统一选择器，每轮只抽一次整组范围，不逐列拼凑范围。
-	var range_picker := RandomPicker.new(ranges, false)
+	var range_picker := RandomPicker.new()
+	# 按原起始列顺序等权登记整组，不去重；一次重建保持原有随机调用顺序。
+	for candidate: RangeCandidate in ranges:
+		range_picker.add_item(candidate, 1.0, false, false)
+	range_picker.rebuild_alias_table()
 	# 此轮范围从准备到收尾保持不变。
-	var selected: Dictionary = range_picker.get_random_item()
+	var selected := range_picker.get_random_item() as RangeCandidate
 	# 当前列在三列范围内的固定槽位：0 左、1 中、2 右。
 	for anchor_index: int in range(scene_config.bungee_column_count):
 		# 当前槽位对应的有效格子候选，不依赖最终生成数量。
-		var column_cells: Array = selected["columns"][anchor_index]
+		var column_cells: Array[PlantCell] = selected.columns[anchor_index].cells
 		if column_cells.is_empty():
 			continue
 		# 当前列的格子全部等权，与同格植物层数无关。
@@ -68,11 +98,11 @@ func prepare_action() -> StringName:
 			items.append({"data": cell, "weight": 1.0})
 		# 每列独立选一个格子，空列不会由其他列补足。
 		var cell_picker := RandomPicker.new(items, false)
-		targets.append(ZB001DoctorBungeeTarget.new(cell_picker.get_random_item(), anchor_index))
+		targets.append(ZB001DoctorBungeeTarget.new(cell_picker.get_random_item() as PlantCell, anchor_index))
 	# 原动画与目标范围的第一行格子，仅用于计算横向差值。
-	var reference_cell: PlantCell = selected["reference_cell"]
+	var reference_cell: PlantCell = selected.reference_cell
 	# 选中范围的首列格子，屋顶高度不会被应用到手臂 Y。
-	var start_cell: PlantCell = selected["start_cell"]
+	var start_cell: PlantCell = selected.start_cell
 	# 使用相同的初始种植点，避免花盆容器移动改变对齐结果。
 	var reference_position: Vector2 = reference_cell.plant_postion_node_ori_global_position[CharacterRegistry.PlacePlantInCell.Norm]
 	# 目标定位点转换到手臂父级的局部坐标后只取 X。
@@ -83,7 +113,6 @@ func prepare_action() -> StringName:
 	var arm_position: Vector2 = scene_config.bungee_first_column_position
 	arm_position.x += arm_parent.to_local(target_position).x - arm_parent.to_local(reference_position).x
 	apply_visual_position(arm_position)
-	selected_start_column = selected["start_column"]
 	return _arm_action(ZB001DoctorAnimations.BUNGEE_ENTER_ANIMATION)
 
 
@@ -96,7 +125,7 @@ func _release_action() -> void:
 	# 本次调用对应的批次，用于发现生成过程中发生的死亡或场景中断。
 	var executing_batch: int = _batch_id
 	# 角色和格子必须属于当前仍在战斗的关卡。
-	var manager: PlantCellManager = _get_active_manager()
+	var manager: PlantCellManager = _get_active_plant_cell_manager()
 	if manager != null:
 		# 固定的连接点顺序；先保留未转换类型的引用，以便安全跳过已经释放的定位点。
 		var anchors: Array = [anchor_left, anchor_middle, anchor_right]
@@ -104,7 +133,7 @@ func _release_action() -> void:
 		for target: ZB001DoctorBungeeTarget in targets.duplicate():
 			if executing_batch != _batch_id or batch_state != BatchState.SPAWNING:
 				return
-			if _get_active_manager() != manager:
+			if _get_active_plant_cell_manager() != manager:
 				break
 			# 先使用 Variant 验证格子，避免给类型变量赋入已释放实例。
 			var cell_reference: Variant = instance_from_id(target.cell_id)
@@ -123,7 +152,7 @@ func _release_action() -> void:
 			if cell.is_queued_for_deletion() or not cell.is_inside_tree() \
 				or not manager.main_game.is_ancestor_of(cell) or cell.get_bungi_target() == null:
 				continue
-			manager.main_game.zombie_manager.create_skill_bungi(cell, _track_bungee.bind(executing_batch, anchor))
+			manager.main_game.zombie_manager.create_skill_bungi(cell, anchor, _track_bungee.bind(executing_batch))
 	if executing_batch != _batch_id or batch_state != BatchState.SPAWNING:
 		return
 	batch_state = BatchState.WAITING
@@ -131,12 +160,10 @@ func _release_action() -> void:
 
 
 ## [param zombie] 尚未入树的实例，先登记再连接，避免遗漏初始化期间的完成事件。[br]
-## [param generation] 创建该实例时的批次编号，已取消的批次不再接收实例。[br]
-## [param anchor] 该列对应的手部定位点，入树前注入以避免首帧显示完整绳子。
-func _track_bungee(zombie: Zombie021Bungi, generation: int, anchor: Marker2D) -> void:
+## [param generation] 创建该实例时的批次编号，已取消的批次不再接收实例；这里只登记与连接完成通知。
+func _track_bungee(zombie: Zombie021Bungi, generation: int) -> void:
 	if batch_state != BatchState.SPAWNING or generation != _batch_id:
 		return
-	zombie.bungee_anchor = anchor
 	# 完成通知统一按实例 ID 去重，不让回调保存角色参数。
 	var instance_id: int = zombie.get_instance_id()
 	_pending_zombies[instance_id] = zombie
@@ -201,23 +228,23 @@ func _exit_tree() -> void:
 
 
 ## 返回配置宽度的等权完整列组；默认三列，空范围排除，范围中允许存在空列。
-func _collect_ranges() -> Array[Dictionary]:
+func _collect_ranges() -> Array[RangeCandidate]:
 	# 所有提前退出路径共用的类型化空结果，不返回已经收集的局部网格。
-	var empty_ranges: Array[Dictionary] = []
+	var empty_ranges: Array[RangeCandidate] = []
 	# 当前角色所属的有效格子管理器。
-	var manager: PlantCellManager = _get_active_manager()
+	var manager: PlantCellManager = _get_active_plant_cell_manager()
 	if manager == null or scene_config == null:
 		return empty_ranges
 	# 共用画面行列查询；每次重建网格，植物目标仍在本技能内实时筛选。
 	var grid: Array[Array] = ZB001DoctorCellQuery.get_visual_grid(manager)
 	if grid.is_empty() or grid[0].is_empty():
 		return empty_ranges
-	# 每个候选只保存一个起始列，天然不会出现非连续的组合。
-	var ranges: Array[Dictionary] = []
+	# 每个候选保存同一起始列产生的完整槽位，天然不会出现非连续的组合。
+	var ranges: Array[RangeCandidate] = []
 	# 从 1 开始的范围起始列，默认遍历 1、2、3。
 	for start_column: int in range(scene_config.bungee_start_column_range.x, scene_config.bungee_start_column_range.y + 1):
 		# 当前范围各列分别存储目标，后续每列只选一个。
-		var columns: Array[Array] = []
+		var columns: Array[ColumnCandidates] = []
 		# 任一列不完整时排除整组，不能将地图边缘裁剪为不足配置宽度。
 		var complete: bool = true
 		# 整组至少要有一个有效目标。
@@ -237,23 +264,11 @@ func _collect_ranges() -> Array[Dictionary]:
 					and manager.main_game.zombie_manager.can_spawn_skill_zombie(CharacterRegistry.ZombieType.Z021Bungi, cell.row_col.x):
 					cells.append(cell)
 			has_target = has_target or not cells.is_empty()
-			columns.append(cells)
+			columns.append(ColumnCandidates.new(cells))
 		if complete and has_target:
-			ranges.append({"data": {"start_column": start_column, "columns": columns,
-				"reference_cell": grid[0][0], "start_cell": grid[0][start_column - 1]},
-				"weight": 1.0})
+			ranges.append(RangeCandidate.new(columns,
+				grid[0][0], grid[0][start_column - 1]))
 	return ranges
-
-
-## 只允许当前关卡正常战斗中的博士准备或执行技能。
-func _get_active_manager() -> PlantCellManager:
-	# 公共入口先检查博士与关卡的生命周期，本技能只确认自己的管理器。
-	var game: MainGameManager = _get_active_game()
-	if game == null:
-		return null
-	# 管理器正在释放或已离树时不再读取场地及生成对象。
-	var manager: PlantCellManager = game.plant_cell_manager
-	return manager if is_instance_valid(manager) and manager.is_inside_tree() and not manager.is_queued_for_deletion() else null
 
 
 ## 配置错误在发现处分支报告；返回字符串供状态机停止初始化。
@@ -284,7 +299,6 @@ func cancel_skill() -> void:
 	super.cancel_skill()
 	cancel_batch_tracking()
 	targets.clear()
-	selected_start_column = 0
 
 
 ## 返回进入动画，离开动画由等待阶段单独校验且没有释放帧。

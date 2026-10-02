@@ -32,8 +32,14 @@ func get_configuration_error() -> String:
 	var error := super.get_configuration_error()
 	if not error.is_empty():
 		return error
-	if not child_state_machine.initial_state is ZB001DoctorStateHeadPrepare:
-		detected_error = "低头技能必须使用 HeadPrepare 锁定行号并处理无目标的情况。"
+	# 本技能的通用准备入口；锁定参数由组件负责，这里检查归属和完整阶段链。
+	var prepare_state: ZB001DoctorStateSkillPrepare = child_state_machine.initial_state as ZB001DoctorStateSkillPrepare
+	if prepare_state == null or prepare_state.skill_state != self:
+		detected_error = "低头技能必须使用自身的通用 Prepare 锁定行号并处理无目标的情况。"
+		push_error("%s：%s" % [get_path(), detected_error])
+		return detected_error
+	if not prepare_state.next_state is ZB001DoctorStateHeadEnter:
+		detected_error = "低头准备入口必须连接 LowerHead。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
 	# 当前待检查的头部阶段节点，必须存在且直属本技能的子状态机。
@@ -46,17 +52,17 @@ func get_configuration_error() -> String:
 		detected_error = "吐球前后必须使用两个独立的低头待机节点。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if (child_state_machine.initial_state as ZB001DoctorStateSkillPrepare).next_state != head_enter_state \
+	if prepare_state.next_state != head_enter_state \
 		or before_spit_idle_state.next_state != head_attack_state \
 		or head_attack_state.next_state != after_spit_idle_state or after_spit_idle_state.next_state != head_leave_state:
 		detected_error = "低头技能必须按 Prepare、LowerHead、BeforeSpitIdle、SpitBall、AfterSpitIdle、RaiseHead 连接。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if not _has_unique_hurt_keyframe(ZB001DoctorAnimations.HEAD_ENTER_ANIMATION, &"hurt_enable"):
+	if not _has_unique_hurt_keyframe(ZB001DoctorAnimations.HEAD_ENTER_ANIMATION, ZB001DoctorAnimationEvents.HURT_ENABLE):
 		detected_error = "低头动画必须在动画内部配置唯一的 hurt_enable 事件，时刻由轨道决定。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
-	if not _has_unique_hurt_keyframe(ZB001DoctorAnimations.HEAD_LEAVE_ANIMATION, &"hurt_disable"):
+	if not _has_unique_hurt_keyframe(ZB001DoctorAnimations.HEAD_LEAVE_ANIMATION, ZB001DoctorAnimationEvents.HURT_DISABLE):
 		detected_error = "抬头动画必须在动画内部配置唯一的 hurt_disable 事件，时刻由轨道决定。"
 		push_error("%s：%s" % [get_path(), detected_error])
 		return detected_error
@@ -71,7 +77,7 @@ func _has_unique_hurt_keyframe(animation_name: StringName, event_name: StringNam
 	# 基础动画已由控制器校验，查询只读取方法事件，不改变资源。
 	var animation: Animation = state_machine.animation_player.get_animation(animation_name)
 	# 保留唯一性和时长范围检查，不再用固定秒数限制动画编辑。
-	var times: Array[float] = AnimationMethodQuery.get_times(animation, NodePath("StateMachine"), &"notify_skill_event", [animation_name, event_name], false)
+	var times: Array[float] = ZB001DoctorAnimationEvents.get_skill_event_times(animation, animation_name, event_name, false)
 	return times.size() == 1
 
 

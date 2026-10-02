@@ -97,7 +97,6 @@
 [ext_resource type="PackedScene" uid="uid://dn36gktmqp2h7" path="res://scenes/character/zombie_boss/z_b_001_doctor_objects/z_b_001_doctor_death_explosion_effect.tscn" id="133_rg3ie"]
 [ext_resource type="Animation" uid="uid://c8f6el73gvhps" path="res://animation/character/zombie_boss/001_doctor/Zombie_boss_bungee_1_leave.tres" id="bungee_leave_animation"]
 [ext_resource type="Script" uid="uid://ns1sd1q36j2w" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_bungee_leave.gd" id="bungee_leave_state"]
-[ext_resource type="Script" uid="uid://p7j7x5qfu052" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_bungee_prepare.gd" id="bungee_prepare_state"]
 [ext_resource type="Script" uid="uid://cpb4l6gd72bxb" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_bungee_wait.gd" id="bungee_wait_state"]
 [ext_resource type="Script" uid="uid://b5u4bnkxhnu07" path="res://scripts/state_machine/base/character_state_machine.gd" id="child_machine"]
 [ext_resource type="Texture2D" uid="uid://dftbckxum7olx" path="res://assets/reanim/Zombie_boss_foot_damage1.png" id="damage1_foot"]
@@ -125,17 +124,14 @@
 [ext_resource type="Texture2D" uid="uid://c4fvtioqnj6xa" path="res://assets/reanim/Zombie_boss_eyeglow_blue.png" id="eye_glow_blue"]
 [ext_resource type="Texture2D" uid="uid://imwctyv3o2to" path="res://assets/image/particles/Zombie_boss_fireball_particles_flip_h.png" id="fire_spit_flip_h"]
 [ext_resource type="Script" uid="uid://dhq2hjr1a125g" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_head_idle.gd" id="head_idle"]
-[ext_resource type="Script" uid="uid://bll1darvrt5sf" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_head_prepare.gd" id="head_prepare"]
 [ext_resource type="Script" uid="uid://by5s4di6e80mo" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_head_skill.gd" id="head_skill"]
 [ext_resource type="Texture2D" uid="uid://cfh6paph6itmu" path="res://assets/reanim/Zombie_boss_mouthglow_blue.png" id="mouth_glow_blue"]
 [ext_resource type="Script" uid="uid://otcag1i4sjab" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_skill_action.gd" id="skill_action"]
 [ext_resource type="Script" uid="uid://dh3jlvpqaexy" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_skill_finish.gd" id="skill_finish"]
+[ext_resource type="Script" uid="uid://co85uqf5euoci" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_skill_prepare.gd" id="skill_prepare"]
 [ext_resource type="Script" uid="uid://duv8spyw6f44n" path="res://scripts/manager/zombie_manager/zm_zombie_choose_row_system.gd" id="spawn_choose_row"]
 [ext_resource type="Script" uid="uid://dupibrot21w3u" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_spawn_interval.gd" id="spawn_interval"]
 [ext_resource type="Script" uid="uid://de1f2rgj25foj" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_spawn_place.gd" id="spawn_place"]
-[ext_resource type="Script" uid="uid://ckvl6pgjgho06" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_spawn_prepare.gd" id="spawn_prepare"]
-[ext_resource type="Script" uid="uid://d1k7nvnscpx2d" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_stomp_prepare.gd" id="stomp_prepare"]
-[ext_resource type="Script" uid="uid://ymw63vcrcxi7" path="res://scripts/state_machine/zombie_boss/001_doctor/states/z_b_001_doctor_state_throw_rv_prepare.gd" id="throw_rv_prepare"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_spit"]
 particles_animation = true
@@ -1620,17 +1616,11 @@ shape = SubResource("CapsuleShape2D_kx48i")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="7" unique_id=1933216347]
 libraries/ = SubResource("AnimationLibrary_i61bf")
 
-[node name="StateMachine" type="Node" parent="." index="8" unique_id=979168503 node_paths=PackedStringArray("idle_state", "dying_state", "dead_state", "animation_controller", "character", "animation_player", "initial_state")]
+[node name="StateMachine" type="Node" parent="." index="8" unique_id=979168503 node_paths=PackedStringArray("idle_state", "initial_skill_sequence", "dying_state", "dead_state", "animation_controller", "character", "animation_player", "initial_state")]
 unique_name_in_owner = true
 script = ExtResource("61_state_machine")
 idle_state = NodePath("Idle")
-skill_state_weights = Dictionary[StringName, float]({
-&"Bungee": 0.0,
-&"HeadSkill": 0.0,
-&"Spawn": 0.0,
-&"Stomp": 1.0,
-&"ThrowRV": 0.0
-})
+initial_skill_sequence = [NodePath("Spawn"), NodePath("Spawn"), NodePath("Spawn")]
 dying_state = NodePath("Dying")
 dead_state = NodePath("Dead")
 animation_controller = NodePath("../AnimationController")
@@ -1662,7 +1652,7 @@ initial_state = NodePath("Prepare")
 externally_driven = true
 
 [node name="Prepare" type="Node" parent="StateMachine/Spawn/StateMachine" index="0" unique_id=1197346608 node_paths=PackedStringArray("next_state")]
-script = ExtResource("spawn_prepare")
+script = ExtResource("skill_prepare")
 next_state = NodePath("../Place")
 
 [node name="Place" type="Node" parent="StateMachine/Spawn/StateMachine" index="1" unique_id=538442922 node_paths=PackedStringArray("interval_state", "next_state")]
@@ -1698,7 +1688,7 @@ initial_state = NodePath("Prepare")
 externally_driven = true
 
 [node name="Prepare" type="Node" parent="StateMachine/HeadSkill/StateMachine" index="0" unique_id=818073034 node_paths=PackedStringArray("next_state")]
-script = ExtResource("head_prepare")
+script = ExtResource("skill_prepare")
 next_state = NodePath("../LowerHead")
 
 [node name="LowerHead" type="Node" parent="StateMachine/HeadSkill/StateMachine" index="1" unique_id=1808057399]
@@ -1744,7 +1734,7 @@ initial_state = NodePath("Prepare")
 externally_driven = true
 
 [node name="Prepare" type="Node" parent="StateMachine/Bungee/StateMachine" index="0" unique_id=1791762928 node_paths=PackedStringArray("next_state")]
-script = ExtResource("bungee_prepare_state")
+script = ExtResource("skill_prepare")
 next_state = NodePath("../Enter")
 
 [node name="Enter" type="Node" parent="StateMachine/Bungee/StateMachine" index="1" unique_id=1225818481 node_paths=PackedStringArray("next_state")]
@@ -1774,7 +1764,7 @@ initial_state = NodePath("Prepare")
 externally_driven = true
 
 [node name="Prepare" type="Node" parent="StateMachine/ThrowRV/StateMachine" index="0" unique_id=697086016 node_paths=PackedStringArray("next_state")]
-script = ExtResource("throw_rv_prepare")
+script = ExtResource("skill_prepare")
 next_state = NodePath("../Execute")
 
 [node name="Execute" type="Node" parent="StateMachine/ThrowRV/StateMachine" index="1" unique_id=2058645558 node_paths=PackedStringArray("next_state")]
@@ -1796,7 +1786,7 @@ initial_state = NodePath("Prepare")
 externally_driven = true
 
 [node name="Prepare" type="Node" parent="StateMachine/Stomp/StateMachine" index="0" unique_id=903024885 node_paths=PackedStringArray("next_state")]
-script = ExtResource("stomp_prepare")
+script = ExtResource("skill_prepare")
 next_state = NodePath("../Execute")
 
 [node name="Execute" type="Node" parent="StateMachine/Stomp/StateMachine" index="1" unique_id=1843906731 node_paths=PackedStringArray("next_state")]

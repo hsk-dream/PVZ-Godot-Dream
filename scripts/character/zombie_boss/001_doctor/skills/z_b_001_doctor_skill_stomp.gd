@@ -2,6 +2,20 @@
 extends ZB001DoctorSkillAreaCrush
 class_name ZB001DoctorSkillStomp
 
+## 本技能私有的同步准备候选；绑定只读静态动作与完整区域，实际攻击目标由技能另行锁定。
+class StompCandidate extends RefCounted:
+	## 对应的只读动作资源，提供动画、部件位置和攻击范围。
+	var action: ZB001DoctorAreaAction
+	## 本次查询得到的完整区域副本；只在同步准备期间使用，不延长格子节点寿命。
+	var cells: Array[PlantCell] = []
+
+	## [param configuration] 为只读动作资源；[param region_cells] 为已通过完整性检查的格子区域。
+	## 复制格子容器以隔离后续数组修改；不修改共享动作资源。
+	func _init(configuration: ZB001DoctorAreaAction, region_cells: Array[PlantCell]) -> void:
+		action = configuration
+		cells.assign(region_cells)
+
+
 ## 脚踩动画 1、2 的内侧腿控制器；动画 3、4 使用基类 part_motion 绑定的外侧腿控制器。
 @export var inner_leg_motion: ZB001DoctorPartMotion
 
@@ -26,25 +40,28 @@ func can_start() -> bool:
 
 
 ## 优先选择有植物的完整区域；目标全部消失时从所有完整区域中随机选择，允许踩空。
-## 战斗结束、配置无效或没有完整区域时返回空动画名，由准备状态收尾。
+## 初始化校验通过后调用；战斗结束或没有完整区域时返回空动画名，由准备状态收尾。
 func prepare_action() -> StringName:
 	_arm_action(&"")
 	target_cells.clear()
 	# 选择技能与进入准备状态之间植物可能已被移除，不能复用之前的可用性结果。
-	var candidates: Array[Dictionary] = _get_candidates()
+	var candidates: Array[StompCandidate] = _get_candidates()
 	if candidates.is_empty():
 		# 技能已经选中，目标消失不取消动作；仍保留区域越界与关卡生命周期检查。
 		candidates = _get_candidates(false)
 	if candidates.is_empty():
 		return &""
 	# 项目统一随机选择器；区域内植物数量不影响区域被抽中的概率。
-	var picker := RandomPicker.new(candidates, false)
-	# 当前候选在组件内消费，不把内部候选字典传给状态。
-	var selected: Dictionary = picker.get_random_item()
-	target_cells.assign(selected["cells"])
+	var picker := RandomPicker.new()
+	# 按原候选顺序等权加入，只在全部加入后构建一次选择表，不执行去重。
+	for candidate: StompCandidate in candidates:
+		picker.add_item(candidate, 1.0, false, false)
+	picker.rebuild_alias_table()
+	# 只在选择器返回边界转换类型；状态仍只接收动画名，不接收候选对象。
+	var selected: StompCandidate = picker.get_random_item() as StompCandidate
+	target_cells.assign(selected.cells)
 	# 动作配置只读；运行时区域由实例保存。
-	var action: ZB001DoctorAreaAction = selected["action"]
-	target_top_left = action.top_left
+	var action: ZB001DoctorAreaAction = selected.action
 	# 动画同时决定内侧腿或外侧腿；基类缓存本次控制器，准备期间不写入任何腿部位置。
 	return _arm_position_action(action.animation_name, action.part_position)
 
@@ -55,24 +72,25 @@ func get_part_motion_config() -> ZB001DoctorPartMotionConfig:
 
 
 ## 可用性查询和动作准备共用区域检查，仅收集候选，不产生随机选择或攻击副作用。
+## 固定配置与腿部绑定已由状态机初始化校验；运行时只重新查询战斗和目标区域。
 ## [param require_plant] 默认要求区域内有有效植物；仅准备阶段的踩空回退传入 false。
-func _get_candidates(require_plant: bool = true) -> Array[Dictionary]:
+func _get_candidates(require_plant: bool = true) -> Array[StompCandidate]:
 	# 无法准备攻击时返回元素类型明确的空候选池。
-	var empty_candidates: Array[Dictionary] = []
+	var empty_candidates: Array[StompCandidate] = []
 	# 当前有效战斗的格子管理器，展示、死亡或退出后的实例不准备攻击。
-	var manager: PlantCellManager = _get_active_manager()
-	if manager == null or not get_configuration_error().is_empty():
+	var manager: PlantCellManager = _get_active_plant_cell_manager()
+	if manager == null:
 		return empty_candidates
 	# 只在副本内调整列顺序，避免场景的倒序节点编号改变技能的视觉列号。
 	var grid: Array[Array] = ZB001DoctorCellQuery.get_visual_grid(manager)
 	# 每个候选同时绑定动画和范围，不先选动画再裁剪越界区域。
-	var candidates: Array[Dictionary] = []
+	var candidates: Array[StompCandidate] = []
 	# 每个动作资源同时决定完整矩形与播放动画，过滤时不会失去两者的对应关系。
 	for action: ZB001DoctorAreaAction in scene_config.stomp_actions:
 		# 当前完整区域；只在技能已经选中后的回退中允许无植物。
 		var cells: Array[PlantCell] = ZB001DoctorCellQuery.get_region(grid, action.top_left, action.size)
 		if not cells.is_empty() and (not require_plant or _has_living_plant(cells)):
-			candidates.append({"data": {"action": action, "cells": cells}, "weight": 1.0})
+			candidates.append(StompCandidate.new(action, cells))
 	return candidates
 
 
@@ -82,19 +100,14 @@ func _has_living_plant(cells: Array[PlantCell]) -> bool:
 	for cell: PlantCell in cells:
 		if not is_instance_valid(cell) or cell.is_queued_for_deletion() or not cell.is_inside_tree():
 			continue
-		# 字典可能残留已释放的植物引用，先用 Variant 接收并验证，再转换类型。
+		# 字典可能残留已释放的植物引用，公共谓词先验证 Variant，并与攻击阶段保持相同资格。
 		for plant_reference: Variant in cell.plant_in_cell.values():
-			if not is_instance_valid(plant_reference):
-				continue
-			# 与区域碾压执行阶段使用相同的存活与出战类型条件。
-			var plant := plant_reference as Plant000Base
-			if plant != null and plant.is_inside_tree() and not plant.is_queued_for_deletion() \
-				and not plant.is_death and plant.character_init_type == Character000Base.E_CharacterInitType.IsNorm:
+			if ZB001DoctorCellQuery.is_living_normal_plant(plant_reference):
 				return true
 	return false
 
 
-## 静态参数错误在检测分支报告；具体地图上区域越界时由准备阶段过滤。
+## 状态机初始化时检查固定绑定与场地参数；具体地图上区域越界时由准备阶段过滤。
 func get_configuration_error() -> String:
 	# 共享场地配置和技能定位节点先校验，再检查每项脚踩区域。
 	var placement_error: String = super.get_configuration_error()

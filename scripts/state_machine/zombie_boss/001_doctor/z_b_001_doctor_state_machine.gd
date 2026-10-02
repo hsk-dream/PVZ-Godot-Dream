@@ -210,6 +210,22 @@ func stop() -> void:
 func select_skill() -> ZB001DoctorSkillState:
 	# 本轮 RandomPicker 输入项，只包含正且有限权重、满足触发条件的技能。
 	var items: Array[Dictionary] = []
+	# 候选收集完成后得到本轮吐球保底目标；不缓存到成员，也不延后可用性查询。
+	var head_skill: ZB001DoctorStateHeadSkill = _collect_skill_candidates(items)
+	# 按保底、开场、随机优先级得到本轮技能；各选择分支自行记录成功选择。
+	var selected: ZB001DoctorSkillState = _select_guaranteed_head_skill(head_skill)
+	if selected != null:
+		return selected
+	selected = _select_initial_skill()
+	if selected != null:
+		return selected
+	return _select_random_skill(items)
+
+
+## 一次遍历中先识别吐球，再按当前权重和触发条件收集候选；必须在任何选择分支之前完成。
+## [param items] 为本轮新建的输出数组；按配置遍历顺序追加 RandomPicker 项，不清空或修改已有项。
+## 返回本轮识别的吐球技能；没有有效引用时返回 null，零权重仍可作为保底目标。
+func _collect_skill_candidates(items: Array[Dictionary]) -> ZB001DoctorStateHeadSkill:
 	# 从已解析的配置中识别唯一的吐球技能；即使权重为 0，也保留它作为保底目标。
 	var head_skill: ZB001DoctorStateHeadSkill
 	# 当前配置的技能名称；权重每轮重新读取，运行中调整数值无需重建节点缓存。
@@ -227,6 +243,12 @@ func select_skill() -> ZB001DoctorSkillState:
 		if not skill.can_be_selected():
 			continue
 		items.append({"data": skill, "weight": weight})
+	return head_skill
+
+
+## 检查吐球保底；成功时记录回合，下一开场项相同则同时消费该项，未触发时返回 null。
+## [param head_skill] 为本轮候选遍历识别的吐球引用；无效引用不触发保底，不再查询可用性。
+func _select_guaranteed_head_skill(head_skill: ZB001DoctorStateHeadSkill) -> ZB001DoctorSkillState:
 	# 尚未消耗的开场技能；空数组或序列耗尽后为 null，不改变后续随机权重。
 	var initial_skill: ZB001DoctorSkillState = null
 	if _initial_skill_index < initial_skill_sequence.size():
@@ -237,6 +259,14 @@ func select_skill() -> ZB001DoctorSkillState:
 			_initial_skill_index += 1
 		_record_selected_skill(head_skill)
 		return head_skill
+	return null
+
+
+## 消费开场顺序，跳过无效或不可用项；成功时记录回合，空数组或耗尽后返回 null。
+## 每项都先推进索引再查询可用性，保留重复项与零随机权重项的固定顺序语义。
+func _select_initial_skill() -> ZB001DoctorSkillState:
+	# 本次消费的开场技能；无效或不可用时继续检查下一项。
+	var initial_skill: ZB001DoctorSkillState
 	# 固定顺序仍允许重复和零随机权重，但没有目标的技能直接跳过，不占用一个回合。
 	while _initial_skill_index < initial_skill_sequence.size():
 		initial_skill = initial_skill_sequence[_initial_skill_index]
@@ -245,6 +275,13 @@ func select_skill() -> ZB001DoctorSkillState:
 			continue
 		_record_selected_skill(initial_skill)
 		return initial_skill
+	return null
+
+
+## 从已收集的临时池加权抽取；多候选重复上次技能时移除后重抽一次，成功时记录回合。
+## [param items] 为本轮按当前权重和可用性构建的 RandomPicker 项；不重新查询技能或配置。
+## 空池仍交由 RandomPicker 处理并返回 null，保留其空池行为及上次选择记录。
+func _select_random_skill(items: Array[Dictionary]) -> ZB001DoctorSkillState:
 	# 字典键天然唯一；重抽只修改临时池，不改变检查器中的配置权重。
 	# 本轮临时加权选择器；重抽仅修改该实例，不改变导出的技能权重字典。
 	var picker := RandomPicker.new(items, false)

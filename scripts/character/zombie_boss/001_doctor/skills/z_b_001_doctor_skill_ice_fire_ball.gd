@@ -41,10 +41,10 @@ var ball_type: StringName
 ## 使用本轮锁定的类型，不重新随机；无效类型只清理光效。
 func apply_charge_visuals() -> void:
 	reset_charge_visuals()
-	if ball_type != &"Ice" and ball_type != &"Fire":
+	if ball_type != ZB001DoctorBallBase.BALL_TYPE_ICE and ball_type != ZB001DoctorBallBase.BALL_TYPE_FIRE:
 		return
-	mouth_glow.texture = ice_mouth_texture if ball_type == &"Ice" else fire_mouth_texture
-	eye_glow.texture = ice_eye_texture if ball_type == &"Ice" else fire_eye_texture
+	mouth_glow.texture = ice_mouth_texture if ball_type == ZB001DoctorBallBase.BALL_TYPE_ICE else fire_mouth_texture
+	eye_glow.texture = ice_eye_texture if ball_type == ZB001DoctorBallBase.BALL_TYPE_ICE else fire_eye_texture
 
 
 ## 正常结束或死亡中断时关闭两处叠加光效并恢复默认贴图，避免后续动作残留蓝光。
@@ -90,9 +90,9 @@ func prepare_action() -> StringName:
 	# 随机选择器只接受正权重；为 0 的类型不加入池，另一类型即可被确定选中。
 	var type_picker: RandomPicker = RandomPicker.new()
 	if ice_ball_weight > 0.0:
-		type_picker.add_item(&"Ice", ice_ball_weight, false)
+		type_picker.add_item(ZB001DoctorBallBase.BALL_TYPE_ICE, ice_ball_weight, false)
 	if fire_ball_weight > 0.0:
-		type_picker.add_item(&"Fire", fire_ball_weight, false)
+		type_picker.add_item(ZB001DoctorBallBase.BALL_TYPE_FIRE, fire_ball_weight, false)
 	type_picker.rebuild_alias_table()
 	target_lane = lane_picker.get_random_item()
 	ball_type = type_picker.get_random_item()
@@ -118,10 +118,10 @@ func _release_action() -> void:
 	var released_type: StringName = ball_type
 	# 生成可能引发同步回调，先保存行号，取消技能不会改变已提交的发射参数。
 	var released_lane: int = target_lane
-	if released_type != &"Ice" and released_type != &"Fire":
+	if released_type != ZB001DoctorBallBase.BALL_TYPE_ICE and released_type != ZB001DoctorBallBase.BALL_TYPE_FIRE:
 		return
 	# 根据已经锁定的类型取得场景，不在释放关键帧重新选择类型。
-	var scene: PackedScene = ice_ball_scene if released_type == &"Ice" else fire_ball_scene
+	var scene: PackedScene = ice_ball_scene if released_type == ZB001DoctorBallBase.BALL_TYPE_ICE else fire_ball_scene
 	if scene == null or not scene.can_instantiate():
 		return
 	# 实例尚未入树时检查脚本类型，错误配置立即释放，避免残留无行为的精灵。
@@ -146,7 +146,7 @@ func _release_action() -> void:
 func _play_spit_particles(released_type: StringName) -> void:
 	if not is_instance_valid(spit_particles) or spit_particles.is_queued_for_deletion():
 		return
-	spit_particles.texture = ice_particle_texture if released_type == &"Ice" else fire_particle_texture
+	spit_particles.texture = ice_particle_texture if released_type == ZB001DoctorBallBase.BALL_TYPE_ICE else fire_particle_texture
 	# 单次粒子使用 restart() 重置上一轮模拟，连续吐球也能从第一帧重新喷出。
 	# 已喷出的粒子在世界坐标中运动，自行消散，不被博士后续抬头拖动。
 	spit_particles.restart()
@@ -246,13 +246,10 @@ func cancel_skill() -> void:
 	reset_charge_visuals()
 
 
-## 返回映射中的动画集合，供状态检查资源和方法关键帧。
+## 返回行映射中首次出现的动画集合；场地资源统一查询，供状态检查资源和方法关键帧。
 func get_action_animations() -> Array[StringName]:
-	# 只读类型化副本，不允许校验修改技能配置。
-	var animations: Array[StringName] = []
 	if scene_config != null:
-		# 重复行映射共用释放关键帧，只检查每个唯一动画一次。
-		for action: ZB001DoctorRowAction in scene_config.ice_fire_ball_row_actions.values():
-			if action != null and not animations.has(action.animation_name):
-				animations.append(action.animation_name)
-	return animations
+		return scene_config.get_row_action_animations(scene_config.ice_fire_ball_row_actions)
+	# 未绑定场地资源时仍返回元素类型明确的新空列表，保持状态层的返回约定。
+	var empty_animations: Array[StringName] = []
+	return empty_animations

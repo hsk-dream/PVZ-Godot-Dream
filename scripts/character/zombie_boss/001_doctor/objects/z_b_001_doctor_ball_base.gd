@@ -4,6 +4,11 @@ class_name ZB001DoctorBallBase
 ## 博士冰火球共用基类：成形后沿目标行滚动并碾压植物和小推车，离场或被对应植物消除时销毁。
 ## 根节点代表落地点，Body 的静态偏移负责将导入动画对齐到该位置。
 
+## 冰球的协议标识，供技能抽取、贴图选择和球子类类型核对共用；保留原 StringName 值。
+const BALL_TYPE_ICE: StringName = &"Ice"
+## 火球的协议标识；取消前尚未锁定类型的空 StringName 不属于此标识。
+const BALL_TYPE_FIRE: StringName = &"Fire"
+
 ## 球自身的生命周期，独立于博士的技能状态机。
 enum Phase {
 	Inactive, ## 尚未通过 launch() 初始化，不播放或移动。
@@ -29,8 +34,8 @@ enum Phase {
 			push_error("ZB001DoctorBallBase：roll_animation_speed_scale 必须为有限正数。")
 			return
 		roll_animation_speed_scale = value
-		# 场景属性可能在入树前或成形时赋值，只有正在滚动时才同步播放器。
-		if is_instance_valid(animation_player) and _phase == Phase.Rolling:
+		# 入树前或成形时只保存配置；滚动阶段已通过 launch() 的固定播放器校验。
+		if _phase == Phase.Rolling:
 			animation_player.speed_scale = value
 ## 球自身的动画播放器；成形使用原速，滚动使用 roll_animation_speed_scale。
 @onready var animation_player: AnimationPlayer = get_node_or_null("AnimationPlayer") as AnimationPlayer
@@ -41,7 +46,8 @@ enum Phase {
 
 ## 本球锁定的目标行号，从 0 开始；未发射时为 -1。
 var lane: int = -1
-## 当前生命周期阶段，初始化后只允许成形、滚动、销毁的单向切换。
+## 当前生命周期阶段，初始化后只允许成形、滚动、销毁的单向切换。[br]
+## 只有 [method launch] 成功校验后才进入 Forming/Rolling；此后内部播放器和攻击区域保持固定，随球整体释放。
 var _phase: Phase = Phase.Inactive
 ## 目标行不含坡面偏移的全局 Y，发射时从行出生点读取。
 var _ground_y: float = 0.0
@@ -174,7 +180,8 @@ func _on_animation_finished(animation_name: StringName) -> void:
 
 ## 同行小推车直接碾压，植物按整格处理；每步格子去重，不跨帧缓存以允许碾压新种植物。
 func _crush_overlapping_targets() -> void:
-	if not is_instance_valid(attack_area) or not attack_area.monitoring:
+	# 仅由已成功发射的滚动阶段调用；攻击区域固定存在，延迟启用检测前仍须跳过重叠查询。
+	if not attack_area.monitoring:
 		return
 	# 本次物理更新已经处理的格子，避免花盆、普通植物和南瓜同时重叠时重复遍历。
 	var processed_cells: Array[PlantCell] = []
@@ -196,10 +203,10 @@ func _crush_overlapping_targets() -> void:
 				and not mower.is_destroyed and mower.lane == lane:
 				mower.be_flattened()
 			continue
-		# 受击区域所属的植物，沿用现有子弹从 owner 获取角色的方式。
-		var plant: Plant000Base = area.owner as Plant000Base
-		if not _can_crush_plant(plant):
+		if not _can_crush_plant(area.owner):
 			continue
+		# 先验证受击区域 owner 的植物资格，再转换类型并读取格子。
+		var plant: Plant000Base = area.owner as Plant000Base
 		# 命中任意一层后处理其整个格子，行号再校验一次以防无效格子引用。
 		var cell: PlantCell = plant.plant_cell
 		if not is_instance_valid(cell) or cell.is_queued_for_deletion() or cell.row_col.x != lane \
@@ -210,11 +217,13 @@ func _crush_overlapping_targets() -> void:
 
 
 ## 判断植物当前是否允许被本球碾压，不给相邻行、预览角色或死亡角色施加效果。[br]
-## [param plant] 待检查植物；无效引用、待删除和受击组件关闭时返回 false。
-func _can_crush_plant(plant: Plant000Base) -> bool:
-	return is_instance_valid(plant) and plant.is_inside_tree() and not plant.is_queued_for_deletion() \
-		and not plant.is_death and plant.lane == lane \
-		and plant.character_init_type == Character000Base.E_CharacterInitType.IsNorm \
+## [param plant_reference] 待检查的原始引用；无效、待删除、其他行或受击组件关闭时返回 false。
+func _can_crush_plant(plant_reference: Variant) -> bool:
+	if not ZB001DoctorCellQuery.is_living_normal_plant(plant_reference):
+		return false
+	# 基础存活资格统一检查，本球继续独立限制行号和受击窗口。
+	var plant: Plant000Base = plant_reference as Plant000Base
+	return plant.lane == lane \
 		and is_instance_valid(plant.hurt_box_component) and plant.hurt_box_component.is_enabling
 
 
@@ -228,13 +237,12 @@ func _crush_cell(cell: PlantCell) -> void:
 		# 植物死亡可能同步触发克制事件并移除本球，此时不能继续碾压下一层植物。
 		if _phase != Phase.Rolling or is_queued_for_deletion():
 			return
-		if not is_instance_valid(plant_reference):
+		if not _can_crush_plant(plant_reference):
 			continue
-		# 有效性检查通过后才转换类型；后续判断仍负责排除死亡或待删除植物。
+		# 球专属资格检查通过后才转换；下一种植层仍在死亡回调返回后重新验证。
 		var plant: Plant000Base = plant_reference as Plant000Base
-		if _can_crush_plant(plant):
-			# 使用无攻击者的压扁入口；冰火球不触发地刺针对角色攻击者的反击规则。
-			plant.be_flattened()
+		# 使用无攻击者的压扁入口；冰火球不触发地刺针对角色攻击者的反击规则。
+		plant.be_flattened()
 
 
 ## 被对应植物技能消除；仅成形和滚动阶段生效，重复通知或待删除时忽略。
@@ -254,10 +262,9 @@ func _remove_from_scene() -> void:
 	set_physics_process(false)
 	_unsubscribe_counter_events()
 	_stop_ground_particles()
-	if is_instance_valid(animation_player):
-		animation_player.stop()
-	if is_instance_valid(attack_area):
-		attack_area.set_deferred("monitoring", false)
+	# 此入口只移除已进入成形或滚动的球，固定内部节点已经过 launch() 校验且不会单独拆卸。
+	animation_player.stop()
+	attack_area.set_deferred("monitoring", false)
 	queue_free()
 
 

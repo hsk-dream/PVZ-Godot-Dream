@@ -1,7 +1,7 @@
 extends MainGameSubManager
 class_name ZombieManager
 
-## 最后一波僵尸每秒检测是否有僵尸离开当前视野
+## 无出怪模式或最后一波启用的场外清理计时器，每秒清理离开视野的普通僵尸。
 @onready var check_zombie_end_wave_timer: Timer = $CheckZombieEndWaveTimer
 ## 管理器
 @onready var zombie_wave_manager: ZombieWaveManager = $ZombieWaveManager
@@ -20,7 +20,7 @@ var active_boss: ZB000Base
 var _boss_spawned := false
 ## 首次死亡或离树时消费计数标记，避免重复通知扣减数量。
 var _boss_counted := false
-## Boss 死亡后等待动画关键帧；独立于存活计数，允许 GAME_OVER 阶段继续接收奖杯请求。
+## Boss 死亡胜利条件成立后等待动画关键帧；独立于存活计数，允许 GAME_OVER 阶段继续接收奖杯请求。
 var _boss_trophy_pending := false
 ## 在发出奖杯事件前置位，防止方法轨道或事件回调重复创建奖杯。
 var _boss_trophy_created := false
@@ -107,9 +107,12 @@ func init_manager() -> void:
 	## 出怪模式
 	monster_mode = game_para.monster_mode
 	match monster_mode:
-		## 没有僵尸刷新,直接启动最后一波僵尸检查计时器
+		# 不启动自然波次；无论胜利条件如何，都持续清理移出视野的普通僵尸。
 		ConstLevelData.E_MonsterMode.Null:
 			check_zombie_end_wave_timer.start()
+			if game_para.win_on_boss_death:
+				is_end_wave = false
+				zombie_wave_manager.flag_progress_bar.hide()
 
 		ConstLevelData.E_MonsterMode.Norm:
 			## 如果游戏是多轮游戏
@@ -131,42 +134,35 @@ func init_manager() -> void:
 			## 波次刷新时判断是否为最后一波，删除多余魅惑僵尸
 			hammer_zombie_manager.signal_wave_refresh.connect(wave_refresh)
 
-		ConstLevelData.E_MonsterMode.Boss:
-			# Boss 模式不初始化自然波次，也不连接数量变化触发的提前刷新。
-			is_end_wave = false
-			check_zombie_end_wave_timer.stop()
-			zombie_wave_manager.flag_progress_bar.hide()
-
 ## 开始第一波
 func start_game():
-	if not _is_game_running() or _start_requested:
+	if not is_game_running() or _start_requested:
 		return
 	_start_requested = true
-	# 普通模式仍继续下方首波计时；Boss 模式在生成后结束本入口。
+	# Boss 生成与自然波次分开；正常模式继续首波计时，无出怪模式在生成后返回。
 	if game_para.has_boss() and game_para.boss_spawn_wave == 0:
 		if create_boss() == null:
 			return
 	match monster_mode:
 		ConstLevelData.E_MonsterMode.Null:
 			return
-		ConstLevelData.E_MonsterMode.Boss:
-			return
 
 		ConstLevelData.E_MonsterMode.Norm:
 			## 10秒后开始刷新僵尸
 			await get_tree().create_timer(10).timeout
 			# 等待期间可能已经失败或离开关卡，不能让旧协程恢复后继续生成敌人。
-			if _is_game_running():
+			if is_game_running():
 				zombie_wave_manager.start_first_wave()
 
 		ConstLevelData.E_MonsterMode.HammerZombie:
 			await get_tree().create_timer(2).timeout
-			if _is_game_running():
+			if is_game_running():
 				hammer_zombie_manager.start_first_wave()
 
 
-## 判断本管理器仍属于正在战斗的关卡，供生成入口与延迟计时恢复时共用。
-func _is_game_running() -> bool:
+## 返回本管理器是否仍在树中、未排队删除且所属有效关卡处于正式战斗阶段。
+## 供生成入口和波次延迟恢复共用；只查询所属关卡，不读取可能已切换的 Global.main_game。
+func is_game_running() -> bool:
 	return is_inside_tree() and not is_queued_for_deletion() \
 		and is_instance_valid(main_game) and not main_game.is_queued_for_deletion() \
 		and main_game.main_game_progress == MainGameManager.E_MainGameProgress.MAIN_GAME
@@ -176,9 +172,9 @@ func _is_game_running() -> bool:
 func create_boss() -> ZB000Base:
 	if _boss_spawned:
 		return active_boss if is_instance_valid(active_boss) else null
-	if not _is_game_running() or not game_para.has_boss():
+	if not is_game_running() or not game_para.has_boss():
 		return null
-	if monster_mode != ConstLevelData.E_MonsterMode.Norm and monster_mode != ConstLevelData.E_MonsterMode.Boss:
+	if monster_mode != ConstLevelData.E_MonsterMode.Norm and monster_mode != ConstLevelData.E_MonsterMode.Null:
 		return null
 	if not is_instance_valid(zombie_boss_root):
 		push_error("ZombieManager：主游戏场景缺少有效的 %ZombieBossRoot。")
@@ -220,7 +216,7 @@ func register_boss(boss: ZB000Base) -> bool:
 		return false
 	if _boss_spawned:
 		return boss == active_boss
-	if not _is_game_running() or boss.is_death \
+	if not is_game_running() or boss.is_death \
 		or boss.character_init_type != Character000Base.E_CharacterInitType.IsNorm:
 		return false
 	if boss.get_parent() != null and boss.get_parent() != zombie_boss_root:
@@ -235,27 +231,36 @@ func register_boss(boss: ZB000Base) -> bool:
 	return true
 
 
-## 死亡信号只消费一次计数；Boss 模式结束战斗阶段，等待动画轨道，普通模式仍检查清场。
+## 死亡信号只消费一次计数；开启 Boss 死亡胜利时停止自然刷新并等待动画轨道，否则检查清场。
+## [param boss] 发出死亡通知的本关 Boss；重复通知及非当前实例不结算。
 func _on_boss_dead(boss: ZB000Base) -> void:
 	if boss != active_boss or not _boss_counted or not boss.is_death:
 		return
 	_boss_counted = false
 	curr_zombie_num -= 1
-	if monster_mode == ConstLevelData.E_MonsterMode.Boss and _is_game_running():
+	if game_para.win_on_boss_death and is_game_running():
 		_boss_trophy_pending = true
 		# 不暂停场景树、不直接通关，也不改变现有僵尸进房等失败入口。
 		main_game.main_game_progress = MainGameManager.E_MainGameProgress.GAME_OVER
+		# 停止自然波次；无出怪模式的场外清理在死亡演出期间继续运行。
+		zombie_wave_manager.stop_wave_refresh()
+		if monster_mode == ConstLevelData.E_MonsterMode.Norm:
+			check_zombie_end_wave_timer.stop()
+		if is_instance_valid(multi_round_end_wave_timer):
+			multi_round_end_wave_timer.stop()
 	_try_finish_wave(boss.global_position)
-	# 死亡通知先于最后一次扣血信号：UI 立即填满进度并解绑，Boss 模式保留完成进度演出。
+	# 死亡通知先于最后一次扣血信号：UI 立即填满进度并解绑，死亡胜利时保留完成进度演出。
 	main_game.level_info.finish_boss_progress(
-		monster_mode == ConstLevelData.E_MonsterMode.Boss,
-		monster_mode == ConstLevelData.E_MonsterMode.Norm and _is_game_running()
+		game_para.win_on_boss_death,
+		monster_mode == ConstLevelData.E_MonsterMode.Norm and is_game_running()
 	)
 
 
 ## 只接受本关已登记并死亡的 Boss；动画末尾的延迟回调即使已进入 Dead 也可发奖。
+## [param global_pos] 死亡动画请求的奖杯生成位置，使用世界坐标。
+## [param boss] 发出请求的本关 Boss；未开启死亡胜利条件或已发奖时忽略。
 func _on_boss_trophy_requested(global_pos: Vector2, boss: ZB000Base) -> void:
-	if monster_mode != ConstLevelData.E_MonsterMode.Boss or not _boss_trophy_pending or _boss_trophy_created:
+	if not game_para.win_on_boss_death or not _boss_trophy_pending or _boss_trophy_created:
 		return
 	if not is_inside_tree() or is_queued_for_deletion() or not is_instance_valid(main_game) \
 		or main_game.is_queued_for_deletion() or not main_game.is_inside_tree():
@@ -271,6 +276,7 @@ func _on_boss_trophy_requested(global_pos: Vector2, boss: ZB000Base) -> void:
 
 
 ## 直接移除角色只清理计数和引用，不把离树事件当作击杀触发奖杯。
+## [param boss] 即将离树的本关 Boss；死亡胜利演出已完成时保留血条完成显示。
 func _on_boss_tree_exiting(boss: ZB000Base) -> void:
 	if boss != active_boss:
 		return
@@ -278,8 +284,8 @@ func _on_boss_tree_exiting(boss: ZB000Base) -> void:
 	if is_instance_valid(main_game) and is_instance_valid(main_game.level_info) \
 		and main_game.level_info.is_inside_tree() and not main_game.level_info.is_queued_for_deletion():
 		main_game.level_info.clear_boss_progress(
-			monster_mode == ConstLevelData.E_MonsterMode.Boss and boss.is_death,
-			monster_mode == ConstLevelData.E_MonsterMode.Norm and _is_game_running()
+			game_para.win_on_boss_death and boss.is_death,
+			monster_mode == ConstLevelData.E_MonsterMode.Norm and is_game_running()
 		)
 	active_boss = null
 	_boss_trophy_pending = false
@@ -316,7 +322,7 @@ func can_spawn_skill_zombie(zombie_type: CharacterRegistry.ZombieType, lane: int
 ## [param lane] 本次准备阶段锁定的目标行号，从 0 开始。[br]
 ## [param spawn_x] 释放瞬间的全局 X 坐标；非法坐标或关卡已结束时返回 null。
 func create_skill_zombie(zombie_type: CharacterRegistry.ZombieType, lane: int, spawn_x: float) -> Zombie000Base:
-	if not _is_game_running() or not is_finite(spawn_x) or not can_spawn_skill_zombie(zombie_type, lane):
+	if not is_game_running() or not is_finite(spawn_x) or not can_spawn_skill_zombie(zombie_type, lane):
 		return null
 	# 新僵尸挂载到实际目标行，继续沿用该行的绘制层级和后续换行规则。
 	var row: ZombieRow = all_zombie_rows[lane]
@@ -339,7 +345,7 @@ func create_skill_zombie(zombie_type: CharacterRegistry.ZombieType, lane: int, s
 ## [param anchor] 本列对应的博士手部绳子连接点，入树前与目标一起注入。[br]
 ## [param on_created] 可选初始化回调，接收僵尸实例；用于在入树前监听本批完成事件。
 func create_skill_bungi(target_cell: PlantCell, anchor: Marker2D, on_created: Callable = Callable()) -> Zombie021Bungi:
-	if not _is_game_running() or not is_instance_valid(target_cell) \
+	if not is_game_running() or not is_instance_valid(target_cell) \
 		or target_cell.is_queued_for_deletion() or not target_cell.is_inside_tree() \
 		or not main_game.is_ancestor_of(target_cell) or target_cell.get_bungi_target() == null:
 		return null
@@ -460,7 +466,7 @@ func _register_natural_refresh_zombie(zombie: Zombie000Base) -> void:
 func _remove_natural_refresh_zombie(instance_id: int) -> void:
 	if not _natural_refresh_zombies.erase(instance_id):
 		return
-	if _is_game_running():
+	if is_game_running():
 		signal_natural_refresh_zombie_num_change.emit(natural_refresh_zombie_count)
 
 
@@ -481,9 +487,10 @@ func _remove_natural_refresh_zombie_if_absent(instance_id: int) -> void:
 	_remove_natural_refresh_zombie(instance_id)
 
 
-## 普通死亡、魅惑及僵王死亡共用原有清场条件；Boss 模式不通过此入口发奖。
+## 普通死亡、魅惑及僵王死亡共用原有清场条件；开启 Boss 死亡胜利时只接受其动画奖杯请求。
+## [param global_pos] 最后一个敌人的世界坐标，用于原清场胜利的奖杯位置。
 func _try_finish_wave(global_pos: Vector2) -> void:
-	if monster_mode == ConstLevelData.E_MonsterMode.Boss or not _is_game_running():
+	if game_para.win_on_boss_death or not is_game_running():
 		return
 	if is_end_wave and curr_zombie_num == 0:
 		if is_instance_valid(multi_round_end_wave_timer):
@@ -682,7 +689,7 @@ func blover_blow_away_in_sky_zombie():
 
 #endregion
 
-## 最后一波时每秒检查是否有僵尸离开当前视野
+## 无出怪模式或最后一波时，每秒清理离开当前视野的普通僵尸。
 func _on_check_zombie_end_wave_timer_timeout() -> void:
 	set_zombie_death_over_view()
 

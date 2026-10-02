@@ -23,7 +23,7 @@ func show_boss_progress(boss: ZB000Base) -> void:
 	boss_hp_progress_bar.show()
 
 
-## [param keep_depleted] Boss 模式死亡后保留 100% 击败进度，直到关卡退出。
+## [param keep_depleted] 开启 Boss 死亡胜利时保留 100% 击败进度，直到关卡退出。
 ## [param restore_wave] 普通模式且仍在战斗时恢复波次容器，子进度条保留原有显隐状态。
 func finish_boss_progress(keep_depleted: bool, restore_wave: bool) -> void:
 	boss_hp_progress_bar.show_depleted()

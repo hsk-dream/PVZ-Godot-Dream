@@ -13,6 +13,8 @@ var max_wave_one_round :int
 @onready var zombie_wave_refresh_manager: ZombieWaveRefreshManager = $ZombieWaveRefreshManager
 ## 波次创建管理器
 @onready var zombie_wave_create_manager: ZombieWaveCreateManager = $ZombieWaveCreateManager
+## 所属关卡的僵尸管理器；延迟流程只查询本关卡的战斗阶段。
+@onready var zombie_manager: ZombieManager = %ZombieManager
 ## 每秒进度条更新计时器
 @onready var every_wave_progress_timer: Timer = $EveryWaveProgressTimer
 
@@ -31,6 +33,7 @@ enum E_WaveType{
 	Flag,		## 旗帜波
 	Final,		## 最后一波
 }
+## 当前波次分类，决定提前刷新条件及大波额外生成内容。
 var curr_wave_type:E_WaveType
 ## 最大波次(多轮游戏时更新最大波次)
 var max_wave :int
@@ -80,52 +83,69 @@ func set_progress_bar(curr_flag:int=-1):
 	var curr_progress = curr_wave % max_wave_one_round * progress_bar_segment_every_wave
 	flag_progress_bar.set_progress(curr_progress, curr_flag)
 
-## 开始第一波
+## 战斗阶段开始第一波并启动进度计时；关卡已结束时不启动。
 func start_first_wave():
 	start_next_wave()
+	if not zombie_manager.is_game_running():
+		return
 	every_wave_progress_timer.start()
 	flag_progress_bar.visible = true
 
-## 开始刷新下一波,发射刷新下一波信号
+## 停止自然波次与进度计时；已排队回调及等待中的生成流程恢复后仍检查战斗阶段。
+func stop_wave_refresh() -> void:
+	every_wave_progress_timer.stop()
+	zombie_wave_refresh_manager.stop_refresh()
+
+## 战斗阶段生成下一波并发出刷新信号；大波提示等待结束后再次确认本关卡仍在战斗。
 func start_next_wave() -> void:
+	# 提前刷新信号通过 deferred 发出，Boss 死亡后仍可能有已排队的回调。
+	if not zombie_manager.is_game_running():
+		return
 	curr_wave += 1
+	# 本波正常生成的实例，用于接入掉血刷新和统计本波总血量。
 	var curr_wave_all_zombies:Array[Zombie000Base]
-	## 旗前波
+	# 旗前波
 	if curr_wave % 10 == 8:
 		curr_wave_type = E_WaveType.FlagFront
 		curr_wave_all_zombies = zombie_wave_create_manager.create_curr_wave_all_zombies(curr_wave, false)
-	## 旗帜波
+	# 旗帜波
 	elif curr_wave % 10 == 9 :
-		## 最后一波
+		# 最后一波
 		if curr_wave == max_wave - 1:
 			curr_wave_type = E_WaveType.Final
 			await ui_remind_word.zombie_approach(true)
+			if not zombie_manager.is_game_running():
+				return
 			curr_wave_all_zombies = zombie_wave_create_manager.create_curr_wave_all_zombies(curr_wave, true)
 			set_progress_bar(int(curr_wave%max_wave_one_round/10.0))
-			## 额外生成大波特殊僵尸,珊瑚僵尸,蹦极僵尸
+			# 额外生成大波特殊僵尸,珊瑚僵尸,蹦极僵尸
 			zombie_wave_create_manager.spawn_special_zombie_in_big_wave(true)
 
 		else:
 			curr_wave_type = E_WaveType.Flag
 			await ui_remind_word.zombie_approach(false)
+			if not zombie_manager.is_game_running():
+				return
 			curr_wave_all_zombies = zombie_wave_create_manager.create_curr_wave_all_zombies(curr_wave, true)
 			set_progress_bar(int(curr_wave%max_wave_one_round/10.0))
-			## 额外生成大波特殊僵尸,珊瑚僵尸,蹦极僵尸
+			# 额外生成大波特殊僵尸,珊瑚僵尸,蹦极僵尸
 			zombie_wave_create_manager.spawn_special_zombie_in_big_wave(false)
 
-		## 如果有墓碑
+		# 如果有墓碑
 		if is_have_tombston:
 			call_tombstone_create_zombie()
 
-	## 普通波
+	# 普通波
 	else:
 		curr_wave_type = E_WaveType.Norm
 		curr_wave_all_zombies = zombie_wave_create_manager.create_curr_wave_all_zombies(curr_wave, false)
 		set_progress_bar()
 
+	# 本波生成时的总血量，作为残半刷新的计算基准。
 	var wave_all_hp := 0
+	# 当前接入自然波次掉血统计的僵尸。
 	for zombie:Zombie000Base in curr_wave_all_zombies:
-		## 波次生成的僵尸额外连接掉血信号,旗前波死亡触发信号
+		# 波次生成的僵尸额外连接掉血信号,旗前波死亡触发信号
 		zombie.signal_zombie_hp_loss.connect(zombie_wave_refresh_manager.judge_half_refresh)
 		wave_all_hp += zombie.hp_component.get_all_hp()
 
@@ -133,12 +153,23 @@ func start_next_wave() -> void:
 
 	signal_wave_refresh.emit(curr_wave == max_wave - 1)
 
+## 请求生成墓碑后等待 1 个游戏秒，再从本关卡墓碑生成僵尸；等待期间结束战斗则取消生成。
 func call_tombstone_create_zombie():
+	if not zombie_manager.is_game_running():
+		return
 	EventBus.push_event("create_tombstone", [randi()%3+1])
 	await get_tree().create_timer(1.0, false).timeout
-	for i in range(Global.main_game.plant_cell_manager.tombstone_list.size()):
+	if not zombie_manager.is_game_running():
+		return
+	# 从所属关卡读取墓碑列表，避免旧协程恢复时访问新关卡的全局引用。
+	var plant_cell_manager: PlantCellManager = zombie_manager.main_game.plant_cell_manager
+	# 当前需要出怪的墓碑索引，维持原列表顺序。
+	for i in range(plant_cell_manager.tombstone_list.size()):
+		if not zombie_manager.is_game_running():
+			return
+		# 当前墓碑从候选池随机选择的僵尸类型。
 		var new_zombie_type = zombie_type_candidate_tombstone.pick_random()
-		Global.main_game.plant_cell_manager.tombstone_list[i].create_new_zombie(new_zombie_type)
+		plant_cell_manager.tombstone_list[i].create_new_zombie(new_zombie_type)
 
 ## 更新每秒旗帜进度(僵尸波次更新管理器信号触发)
 func update_progress_bar_segment_mini_every_sec(time:float):
@@ -150,7 +181,9 @@ func update_progress_bar_segment_mini_every_sec(time:float):
 
 	progress_bar_segment_mini_every_sec = progress_bar_segment_every_wave / time
 
-## 随时间每秒更新进度条
+## 战斗阶段随时间每秒更新进度条；停止前已排队的计时回调不再推进。
 func _on_every_wave_progress_timer_timeout() -> void:
+	if not zombie_manager.is_game_running():
+		return
 	# 每秒进度条增加对应的进度值
 	flag_progress_bar.set_progress_add_every_sec(progress_bar_segment_mini_every_sec)

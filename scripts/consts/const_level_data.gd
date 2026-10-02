@@ -52,10 +52,9 @@ const GameBGMMap: Dictionary[GameBGM, String] = {
 #region 出怪
 ## 出怪模式。新增模式追加在末尾，保留关卡资源中已保存的枚举编号。
 enum E_MonsterMode {
-	Null, ## 不出怪，测试使用
-	Norm, ## 正常出怪模式
-	HammerZombie, ## 锤僵尸出怪模式
-	Boss, ## 僵王出怪模式：不启动普通波次，由死亡动画方法轨道请求奖杯
+	Null = 0, ## 不启动自然波次，仍可配置开战时生成的僵王
+	Norm = 1, ## 正常出怪模式
+	HammerZombie = 2, ## 锤僵尸出怪模式
 }
 #endregion
 

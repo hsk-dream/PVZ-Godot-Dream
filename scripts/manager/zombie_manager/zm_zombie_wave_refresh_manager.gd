@@ -11,6 +11,7 @@ class_name ZombieWaveRefreshManager
 	触发提前刷新时需要当前波次已经开始 time_min_wave(6.0) 秒
 """
 
+## 所属关卡的僵尸管理器，提供自然刷新数量和本关卡战斗阶段。
 @onready var zombie_manager: ZombieManager = %ZombieManager
 
 ## 正常刷新计时器
@@ -67,6 +68,14 @@ signal signal_start_await_refresh
 
 func _ready() -> void:
 	wave_min_time_timer.wait_time = time_min_wave
+
+
+## 停止自然刷新和最短波间隔计时，并关闭提前刷新；已排队的回调仍检查战斗阶段。
+func stop_refresh() -> void:
+	wave_norm_refresh_timer.stop()
+	wave_min_time_timer.stop()
+	curr_can_refresh_type = E_RefreshType.Null
+	curr_refresh_status = E_RefreshStatus.DisableRefresh
 
 
 ## 每次刷新僵尸后获取当前波次生成僵尸血量值
@@ -127,19 +136,23 @@ func judge_total_refresh(zombie_num: int) -> void:
 	if curr_can_refresh_type == E_RefreshType.TotalRefresh and zombie_num <= 0:
 		_trigger_refresh()
 
-## 触发提前刷新
+## 等待最短波间隔后触发提前刷新；关卡结束或本波不再允许刷新时不新增等待。
 func _trigger_refresh():
+	if not zombie_manager.is_game_running() or curr_can_refresh_type == E_RefreshType.Null:
+		return
 	if curr_refresh_status == E_RefreshStatus.AwaitRefresh:
 		refresh_once()
 	else:
-		## 这地方可能会堆积，等待触发后,判断是否已经触发过了
+		# 多个掉血回调可能同时等待；恢复后只允许尚未消费的刷新状态继续。
 		await signal_start_await_refresh
-		## 如果还没触发刷新
+		# 如果还没触发刷新
 		if curr_refresh_status == E_RefreshStatus.AwaitRefresh:
 			refresh_once()
 
-## 波次最小时间到达后，可以提前刷新
+## 波次最小时间到达后允许提前刷新；结束战斗后不重新激活刷新状态。
 func _on_wave_min_time_timer_timeout() -> void:
+	if not zombie_manager.is_game_running() or curr_can_refresh_type == E_RefreshType.Null:
+		return
 	curr_refresh_status = E_RefreshStatus.AwaitRefresh
 	signal_start_await_refresh.emit()
 	# 选行失败可能产生空波；达到最短等待后重新检查，避免依赖一次不存在的死亡信号。
@@ -151,13 +164,16 @@ func _on_wave_min_time_timer_timeout() -> void:
 		if wave_current_health <= refresh_health or zombie_manager.natural_refresh_zombie_count <= 0:
 			_trigger_refresh()
 
-## 正常刷新触发，以及其余刷新触发逻辑
+## 正常计时到达后请求下一波；关卡已结束时忽略回调。
 func _on_wave_norm_refresh_timer_timeout() -> void:
 	if curr_refresh_status == E_RefreshStatus.AwaitRefresh:
 		refresh_once()
 
+## 消费本波刷新机会并延迟发出下一波信号；结束战斗后不再排队刷新请求。
 func refresh_once():
+	if not zombie_manager.is_game_running():
+		return
 	curr_refresh_status = E_RefreshStatus.CompleteRefresh
 	curr_can_refresh_type = E_RefreshType.Null
-	## 可能报错（“Can't change this state while flushing queries”），空闲后触发
+	# 物理查询刷新期间不能改变状态，空闲后由下一波入口再次确认战斗阶段。
 	call_deferred(&"emit_signal", "signal_refresh")

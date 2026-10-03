@@ -205,7 +205,7 @@ stretch_mode = 6
 [node name="Goods2" parent="Bg/Car2/Panel/HBoxContainer" instance=ExtResource("7_gw0he")]
 layout_mode = 2
 script = ExtResource("7_o853e")
-curr_goods_garden_bg = 2
+curr_goods_garden_bg = 1
 price = 30000
 dialog_detail = ExtResource("11_45f1l")
 

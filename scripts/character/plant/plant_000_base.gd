@@ -25,6 +25,10 @@ var plant_cell:PlantCell
 var is_death_free:= true
 ## 是否为模仿者材质
 var is_imitater_material:=false
+## 是否正在预铲；防止重复进入时再次增加层级。
+var _is_shovel_look_active: bool = false
+## 本次预铲实际增加的层级，取值为 0 或 10；结束时按记录撤销。
+var _shovel_z_offset: int = 0
 #endregion
 
 #region 植物动画
@@ -194,17 +198,31 @@ func character_death_not_disappear():
 #endregion
 
 #region 与铲子\种植交互
-## 被铲子威胁
-func be_shovel_look():
-	if Global.config_service.plant_be_shovel_front:
-		z_index += 10
-	body.set_other_color(BodyCharacter.E_ChangeColors.BeShovelLookColor, Color(2, 2, 2))
+## 开始预铲，提升显示层级并高亮；重复调用不再叠加。
+func be_shovel_look() -> void:
+	if _is_shovel_look_active:
+		return
 
-## 被铲子威胁结束
-func be_shovel_look_end():
-	if Global.config_service.plant_be_shovel_front:
-		z_index -= 10
-	body.set_other_color(BodyCharacter.E_ChangeColors.BeShovelLookColor, Color(1, 1, 1))
+	_is_shovel_look_active = true
+	_shovel_z_offset = 10 if Global.config_service.plant_be_shovel_front else 0
+	z_index += _shovel_z_offset
+	body.set_other_color(
+		BodyCharacter.E_ChangeColors.BeShovelLookColor,
+		Color(2, 2, 2)
+	)
+
+## 结束预铲，仅撤销本次实际增加的层级；重复调用无副作用。
+func be_shovel_look_end() -> void:
+	if not _is_shovel_look_active:
+		return
+
+	_is_shovel_look_active = false
+	z_index -= _shovel_z_offset
+	_shovel_z_offset = 0
+	body.set_other_color(
+		BodyCharacter.E_ChangeColors.BeShovelLookColor,
+		Color(1, 1, 1)
+	)
 
 ## 被铲子铲除,禁止亡语
 func be_shovel_kill():

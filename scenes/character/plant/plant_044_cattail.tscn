@@ -209,6 +209,7 @@ script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1" unique_id=248054501]
 script = ExtResource("17_eckv1")
+can_attack_zombie_status = 9
 
 [node name="Area2D" type="Area2D" parent="AttackComponent/DetectComponent" index="0" unique_id=534995025]
 position = Vector2(0, -25)

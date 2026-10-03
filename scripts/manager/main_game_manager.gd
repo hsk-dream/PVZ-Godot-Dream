@@ -348,7 +348,7 @@ func choosed_card_start_game():
 	await camera_2d.move_back_ori()
 	main_game_start()
 
-## 选卡结束，开始游戏
+## 选卡结束，恢复主游戏；浓雾自行决定继续三叶草等待或正常入场。
 func main_game_start():
 	if is_pause_on_re_choose_card:
 		end_pause_on_re_choose_card_progress()
@@ -356,7 +356,7 @@ func main_game_start():
 	## 主游戏进程阶段
 	main_game_progress = E_MainGameProgress.PREPARE
 	if game_para.is_fog:
-		background_manager.fog.come_back_game(5.0)
+		background_manager.fog.start_round()
 
 	## 删除展示僵尸
 	if game_para.look_show_zombie:

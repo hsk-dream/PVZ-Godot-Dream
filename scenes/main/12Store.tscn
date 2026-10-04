@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://clqecxrxm0peb"]
+[gd_scene format=3 uid="uid://clqecxrxm0peb"]
 
 [ext_resource type="Script" uid="uid://dj45uwooyxcqq" path="res://scripts/store/store_manager.gd" id="1_2eot4"]
 [ext_resource type="Texture2D" uid="uid://bbk4mkctblpfp" path="res://assets/image/store/Store_CarClosed.png" id="2_2q1s6"]
@@ -62,7 +62,7 @@ metadata/_custom_type_script = "uid://dlfnh7fjqyil6"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8c1ng"]
 
-[node name="Store" type="Control" node_paths=PackedStringArray("all_goods")]
+[node name="Store" type="Control" unique_id=1270475073 node_paths=PackedStringArray("all_goods")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,7 +72,7 @@ grow_vertical = 2
 script = ExtResource("1_2eot4")
 all_goods = [NodePath("Bg/Car2/Panel/HBoxContainer/Goods1"), NodePath("Bg/Car2/Panel/HBoxContainer/Goods2"), NodePath("Bg/Car2/Panel/HBoxContainer/Goods3"), NodePath("Bg/Car2/Panel/HBoxContainer/Goods4"), NodePath("Bg/Car2/Panel/HBoxContainer2/Goods1")]
 
-[node name="Bg" type="TextureRect" parent="."]
+[node name="Bg" type="TextureRect" parent="." unique_id=584223573]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -83,7 +83,7 @@ mouse_filter = 2
 texture = ExtResource("2_68plr")
 expand_mode = 1
 
-[node name="CarClosed" type="TextureRect" parent="Bg"]
+[node name="CarClosed" type="TextureRect" parent="Bg" unique_id=1128884219]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -97,7 +97,7 @@ grow_vertical = 0
 mouse_filter = 2
 texture = ExtResource("2_2q1s6")
 
-[node name="PrevPageButton" type="TextureButton" parent="Bg/CarClosed"]
+[node name="PrevPageButton" type="TextureButton" parent="Bg/CarClosed" unique_id=802671852]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -112,7 +112,7 @@ grow_horizontal = 2
 grow_vertical = 0
 texture_normal = ExtResource("10_vkx5w")
 
-[node name="NextPageButton2" type="TextureButton" parent="Bg/CarClosed"]
+[node name="NextPageButton2" type="TextureButton" parent="Bg/CarClosed" unique_id=1488789901]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -127,7 +127,7 @@ grow_horizontal = 2
 grow_vertical = 0
 texture_normal = ExtResource("11_36gbm")
 
-[node name="Car2" type="TextureRect" parent="Bg"]
+[node name="Car2" type="TextureRect" parent="Bg" unique_id=143994690]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -141,7 +141,7 @@ grow_vertical = 0
 mouse_filter = 2
 texture = ExtResource("4_u8m56")
 
-[node name="CarHatchbackOpen" type="TextureRect" parent="Bg/Car2"]
+[node name="CarHatchbackOpen" type="TextureRect" parent="Bg/Car2" unique_id=578947720]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -153,7 +153,7 @@ offset_bottom = 36.0
 grow_horizontal = 2
 texture = ExtResource("3_8gqjn")
 
-[node name="Panel" type="Panel" parent="Bg/Car2"]
+[node name="Panel" type="Panel" parent="Bg/Car2" unique_id=1447276857]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -162,7 +162,7 @@ grow_horizontal = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_o853e")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Bg/Car2/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Bg/Car2/Panel" unique_id=1501025855]
 layout_mode = 0
 offset_left = 199.0
 offset_top = 59.0
@@ -171,20 +171,20 @@ offset_bottom = 148.0
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Goods1" parent="Bg/Car2/Panel/HBoxContainer" instance=ExtResource("7_gw0he")]
+[node name="Goods1" parent="Bg/Car2/Panel/HBoxContainer" unique_id=538482387 instance=ExtResource("7_gw0he")]
 layout_mode = 2
 script = ExtResource("7_o853e")
 curr_goods_garden_bg = 0
 price = 30000
 dialog_detail = ExtResource("8_on4af")
 
-[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods1"]
+[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods1" unique_id=1393934461]
 z_index = -1
 layout_mode = 0
 mouse_filter = 2
 texture = ExtResource("5_1407h")
 
-[node name="TextureRect" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods1/StoreIcon"]
+[node name="TextureRect" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods1/StoreIcon" unique_id=1089773533]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -202,14 +202,14 @@ texture = ExtResource("6_e6man")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Goods2" parent="Bg/Car2/Panel/HBoxContainer" instance=ExtResource("7_gw0he")]
+[node name="Goods2" parent="Bg/Car2/Panel/HBoxContainer" unique_id=291178298 instance=ExtResource("7_gw0he")]
 layout_mode = 2
 script = ExtResource("7_o853e")
 curr_goods_garden_bg = 1
 price = 30000
 dialog_detail = ExtResource("11_45f1l")
 
-[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods2"]
+[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods2" unique_id=605740624]
 z_index = -1
 layout_mode = 0
 offset_right = 67.0
@@ -217,14 +217,14 @@ offset_bottom = 68.0
 mouse_filter = 2
 texture = ExtResource("5_1407h")
 
-[node name="Goods3" parent="Bg/Car2/Panel/HBoxContainer" instance=ExtResource("7_gw0he")]
+[node name="Goods3" parent="Bg/Car2/Panel/HBoxContainer" unique_id=1839821913 instance=ExtResource("7_gw0he")]
 layout_mode = 2
 script = ExtResource("7_o853e")
 curr_goods_garden_bg = 2
 price = 30000
 dialog_detail = ExtResource("12_2rser")
 
-[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods3"]
+[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods3" unique_id=1146063113]
 z_index = -1
 layout_mode = 0
 offset_right = 67.0
@@ -232,7 +232,7 @@ offset_bottom = 68.0
 mouse_filter = 2
 texture = ExtResource("8_uxw12")
 
-[node name="Goods4" parent="Bg/Car2/Panel/HBoxContainer" instance=ExtResource("7_gw0he")]
+[node name="Goods4" parent="Bg/Car2/Panel/HBoxContainer" unique_id=2115717034 instance=ExtResource("7_gw0he")]
 layout_mode = 2
 script = ExtResource("7_o853e")
 curr_goods_garden_bg = 0
@@ -240,7 +240,7 @@ price = 30000
 is_have_goods = false
 dialog_detail = ExtResource("14_vu7tl")
 
-[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods4"]
+[node name="StoreIcon" type="TextureRect" parent="Bg/Car2/Panel/HBoxContainer/Goods4" unique_id=201488007]
 z_index = -1
 layout_mode = 0
 offset_right = 67.0
@@ -248,7 +248,7 @@ offset_bottom = 68.0
 mouse_filter = 2
 texture = ExtResource("9_2eot4")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Bg/Car2/Panel"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Bg/Car2/Panel" unique_id=135004565]
 layout_mode = 0
 offset_left = 151.0
 offset_top = 163.0
@@ -257,51 +257,51 @@ offset_bottom = 252.0
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Goods1" parent="Bg/Car2/Panel/HBoxContainer2" instance=ExtResource("7_gw0he")]
+[node name="Goods1" parent="Bg/Car2/Panel/HBoxContainer2" unique_id=197859476 instance=ExtResource("7_gw0he")]
 layout_mode = 2
 script = ExtResource("16_ptakq")
 price = 2500
 dialog_detail = ExtResource("17_rv2dm")
 
-[node name="FlowerPot" parent="Bg/Car2/Panel/HBoxContainer2/Goods1" instance=ExtResource("18_68plr")]
+[node name="FlowerPot" parent="Bg/Car2/Panel/HBoxContainer2/Goods1" unique_id=1680915794 instance=ExtResource("18_68plr")]
 z_index = -1
 position = Vector2(32, 64)
 
 [node name="Pot_bottom" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/Body/BodyCorrect" index="6"]
-position = Vector2(13.5, 52.289783)
-scale = Vector2(0.8, 0.9333096)
+position = Vector2(13.5, 54.04331)
+scale = Vector2(0.8, 0.85311496)
 
 [node name="Pot_bottom2" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/Body/BodyCorrect" index="7"]
-position = Vector2(13.5, 52.289783)
-scale = Vector2(0.8, 0.9333096)
+position = Vector2(13.5, 54.04331)
+scale = Vector2(0.8, 0.85311496)
 
 [node name="Pot_stem" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/Body/BodyCorrect" index="8"]
-position = Vector2(23.369968, 10.769969)
-rotation = -0.2007236
-scale = Vector2(0.799, 0.799)
+position = Vector2(24.585356, 9.943307)
+rotation = 0.10466492
+scale = Vector2(0.79928666, 0.79928666)
 
 [node name="Pot_leaf1" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/Body/BodyCorrect" index="9"]
-position = Vector2(28.43003, 6.939938)
-rotation = 0.23632193
-scale = Vector2(0.799, 0.799)
+position = Vector2(26.928661, 7.5286613)
+rotation = -0.06952419
+scale = Vector2(0.79928666, 0.79928666)
 
 [node name="Pot_leaf2" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/Body/BodyCorrect" index="10"]
-position = Vector2(17.230032, 11.139938)
-rotation = -0.23928818
-scale = Vector2(0.799, 0.799)
+position = Vector2(17.771338, 8.414645)
+rotation = 0.059808467
+scale = Vector2(0.79928666, 0.79928666)
 
 [node name="Pot_top" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/Body/BodyCorrect" index="11"]
-position = Vector2(7.2, 11.679876)
+position = Vector2(7.2, 12.614645)
 
 [node name="DownPlantContainer" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot" index="4"]
-position = Vector2(0, -1.6201237)
+position = Vector2(0, -0.6853546)
 
-[node name="Plant1000Sprout" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/DownPlantContainer" index="0" node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("19_256br")]
+[node name="Plant1000Sprout" parent="Bg/Car2/Panel/HBoxContainer2/Goods1/FlowerPot/DownPlantContainer" index="0" unique_id=250862518 node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("19_256br")]
 position = Vector2(0, -26.78)
 node_no_change_direction = [NodePath("HpComponent"), NodePath("SleepComponent"), null]
 character_init_type = 1
 
-[node name="StoreSign" type="TextureRect" parent="Bg"]
+[node name="StoreSign" type="TextureRect" parent="Bg" unique_id=584370590]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -313,7 +313,7 @@ grow_horizontal = 0
 mouse_filter = 2
 texture = ExtResource("10_e6man")
 
-[node name="StoreMainMenuButton" type="TextureButton" parent="Bg"]
+[node name="StoreMainMenuButton" type="TextureButton" parent="Bg" unique_id=242352461]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -331,7 +331,7 @@ texture_normal = ExtResource("12_gw0he")
 texture_pressed = ExtResource("13_iukld")
 texture_hover = ExtResource("14_wb67t")
 
-[node name="Label" type="Label" parent="Bg/StoreMainMenuButton"]
+[node name="Label" type="Label" parent="Bg/StoreMainMenuButton" unique_id=867574303]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -352,11 +352,11 @@ text = "返回"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CrazyDave" parent="." instance=ExtResource("15_1407h")]
+[node name="CrazyDave" parent="." unique_id=1871139142 instance=ExtResource("15_1407h")]
 position = Vector2(44, 0)
 dialog_resource = SubResource("Resource_2rser")
 
-[node name="CoinBankLabel" parent="." instance=ExtResource("20_vkx5w")]
+[node name="CoinBankLabel" parent="." unique_id=1183719056 instance=ExtResource("20_vkx5w")]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -368,7 +368,7 @@ offset_bottom = -51.0
 grow_vertical = 0
 auto_hide = false
 
-[node name="ConfirmGoods" type="Control" parent="."]
+[node name="ConfirmGoods" type="Control" parent="." unique_id=284901287]
 visible = false
 z_index = 1000
 layout_mode = 1
@@ -380,7 +380,7 @@ grow_vertical = 2
 theme = ExtResource("22_iukld")
 script = ExtResource("22_wb67t")
 
-[node name="ChooseMouseStopPanel" type="Panel" parent="ConfirmGoods"]
+[node name="ChooseMouseStopPanel" type="Panel" parent="ConfirmGoods" unique_id=1319077120]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -389,7 +389,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_8c1ng")
 
-[node name="Panel" type="Panel" parent="ConfirmGoods"]
+[node name="Panel" type="Panel" parent="ConfirmGoods" unique_id=1499712484]
 custom_minimum_size = Vector2(345, 311)
 layout_mode = 1
 anchors_preset = 6
@@ -405,7 +405,7 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_type_variation = &"PanelDialogBG"
 
-[node name="MarginContainer" type="MarginContainer" parent="ConfirmGoods/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="ConfirmGoods/Panel" unique_id=2139862774]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -417,7 +417,7 @@ theme_override_constants/margin_top = 80
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 100
 
-[node name="ChooseContent" type="Label" parent="ConfirmGoods/Panel/MarginContainer"]
+[node name="ChooseContent" type="Label" parent="ConfirmGoods/Panel/MarginContainer" unique_id=1204191181]
 custom_minimum_size = Vector2(277, 0)
 layout_mode = 2
 text = "是否购买该商品"
@@ -425,7 +425,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ConfirmGoods/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ConfirmGoods/Panel" unique_id=978038027]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -438,8 +438,7 @@ offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="PVZButtonYes" type="BaseButton" parent="ConfirmGoods/Panel/HBoxContainer"]
-_import_path = NodePath("")
+[node name="PVZButtonYes" type="BaseButton" parent="ConfirmGoods/Panel/HBoxContainer" unique_id=1288777733]
 unique_name_in_owner = false
 process_mode = 0
 process_priority = 0
@@ -454,6 +453,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -463,14 +463,25 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(100, 40)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -507,7 +518,7 @@ shortcut_in_tooltip = true
 script = ExtResource("23_wb67t")
 metadata/_custom_type_script = "uid://parybxg7tb1k"
 
-[node name="Panel" type="Panel" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonYes"]
+[node name="Panel" type="Panel" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonYes" unique_id=1461496287]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -517,7 +528,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"PanelButtonBG"
 
-[node name="Label" type="Label" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonYes"]
+[node name="Label" type="Label" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonYes" unique_id=1220943249]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -528,8 +539,7 @@ text = "确认"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PVZButtonNo" type="BaseButton" parent="ConfirmGoods/Panel/HBoxContainer"]
-_import_path = NodePath("")
+[node name="PVZButtonNo" type="BaseButton" parent="ConfirmGoods/Panel/HBoxContainer" unique_id=1116135640]
 unique_name_in_owner = false
 process_mode = 0
 process_priority = 0
@@ -544,6 +554,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -553,14 +564,25 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(100, 40)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -597,7 +619,7 @@ shortcut_in_tooltip = true
 script = ExtResource("23_wb67t")
 metadata/_custom_type_script = "uid://parybxg7tb1k"
 
-[node name="Panel" type="Panel" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonNo"]
+[node name="Panel" type="Panel" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonNo" unique_id=1109167647]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -607,7 +629,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"PanelButtonBG"
 
-[node name="Label" type="Label" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonNo"]
+[node name="Label" type="Label" parent="ConfirmGoods/Panel/HBoxContainer/PVZButtonNo" unique_id=1485235795]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

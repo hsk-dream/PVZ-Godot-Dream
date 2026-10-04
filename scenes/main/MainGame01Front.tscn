@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b2soejmoqi7wd" path="res://scenes/main/MainGame00Base.tscn" id="1_aymxe"]
 [ext_resource type="PackedScene" uid="uid://brnfbv2sxv2qh" path="res://scenes/ui/plant_cell.tscn" id="2_awllt"]
-[ext_resource type="Resource" uid="uid://bvnlx3nw6j1ey" path="res://resources/level_date_resource/mode_adventure/adventure_02_night_boss.tres" id="2_mevug"]
+[ext_resource type="Resource" uid="uid://n4ag8qfqegwh" path="res://resources/level_date_resource/mode_adventure/adventure_01_day_test.tres" id="2_mevug"]
 [ext_resource type="Script" uid="uid://bkeu6j2ek3su7" path="res://scripts/main_game_item/zombies_row.gd" id="4_mevug"]
 
 [node name="MainGame" unique_id=65756965 instance=ExtResource("1_aymxe")]

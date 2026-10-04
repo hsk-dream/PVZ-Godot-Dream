@@ -36,4 +36,3 @@ func update_area_monitorable(area:Area2D, v:bool):
 	## INFO: 更新 monitoring 才会更新 monitorable
 	area.monitoring = not area.monitoring
 	area.monitoring = not area.monitoring
-

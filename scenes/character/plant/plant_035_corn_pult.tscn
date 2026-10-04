@@ -251,7 +251,6 @@ parameters/TimeScale/scale = 1.0
 script = ExtResource("24_t3okm")
 p_butter = 0.25
 sprite_2d_butter_in_body = NodePath("../Body/BodyCorrect/Cornpult_butter")
-can_attack_zombie_status = 5
 attack_cd = 3.0
 attack_bullet_type = 9
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Marker2DBullet")]
@@ -261,6 +260,7 @@ script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]
 script = ExtResource("25_btqik")
+can_attack_zombie_status = 5
 
 [node name="Area2D" type="Area2D" parent="AttackComponent/DetectComponent" index="0"]
 position = Vector2(0, -25)

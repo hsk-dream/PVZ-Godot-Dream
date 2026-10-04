@@ -185,7 +185,6 @@ parameters/TimeScale/scale = 1.0
 
 [node name="AttackComponent" type="Node2D" parent="." index="10" node_paths=PackedStringArray("markers_2d_bullet")]
 script = ExtResource("14_4tk23")
-can_attack_zombie_status = 5
 attack_cd = 3.0
 attack_bullet_type = 15
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Marker2DBullet")]
@@ -195,6 +194,7 @@ script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]
 script = ExtResource("15_uc7vn")
+can_attack_zombie_status = 5
 
 [node name="Area2D" type="Area2D" parent="AttackComponent/DetectComponent" index="0"]
 position = Vector2(0, -25)

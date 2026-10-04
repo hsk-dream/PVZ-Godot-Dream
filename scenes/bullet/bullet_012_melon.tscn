@@ -69,6 +69,7 @@ script = ExtResource("5_d0acj")
 sum_attack_value = 574
 range_attack_value = Vector2i(1, 26)
 spatter_lane_up_down = 1
+can_attack_zombie_status = 5
 
 [node name="Area2DSpatter" type="Area2D" parent="SpatterComponent" index="0" unique_id=1435741358]
 collision_layer = 8

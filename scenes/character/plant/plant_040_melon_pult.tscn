@@ -185,6 +185,7 @@ script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1" unique_id=946308062]
 script = ExtResource("15_myj7b")
+can_attack_zombie_status = 5
 
 [node name="Area2D" type="Area2D" parent="AttackComponent/DetectComponent" index="0" unique_id=1457073349]
 position = Vector2(0, -25)

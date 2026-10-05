@@ -105,6 +105,13 @@ enum E_MainGameProgress{
 
 ## 重新选卡是否暂停
 var is_pause_on_re_choose_card:=false
+## 正在保存、等待或重选下一轮时为 true，防止计时器与清场奖杯并发推进轮数。
+var _round_transition_pending: bool = false
+## 本轮已接受胜利或轮间计时请求；在发送事件或等待前置位，正式开战时重置。
+var _round_end_claimed: bool = false
+## 本轮实际由额外 Boss 条件结束，用于等待演出和跳过剩余自然波次。
+var _round_end_by_boss: bool = false
+## 当前关卡流程阶段；更新时同步通知卡槽与角色行为。
 var main_game_progress := E_MainGameProgress.NONE:
 	set(value):
 		main_game_progress = value
@@ -187,7 +194,8 @@ func _ready() -> void:
 	## 若有存档
 	if is_save_game_data_on_init:
 		load_game_main_game()
-		start_next_round_game()
+		# 存档表示上一轮已经结束，选卡阶段直接恢复过渡，不重新判胜。
+		_advance_to_next_round()
 	else:
 
 		## 如果有戴夫对话
@@ -271,16 +279,32 @@ func no_choosed_card_start_game():
 #endregion
 
 #region 多轮游戏下一轮
-func start_next_round_game():
-	## 多轮游戏僵尸管理器计时器触发时，判断是否为最后一轮
+## 末波计时器请求进入下一轮；末轮不占用结算状态，也不通过计时器创建奖杯。
+func start_next_round_game() -> void:
 	if curr_game_round == game_para.game_round:
 		return
+	if not try_claim_round_end():
+		return
+	_advance_to_next_round()
+
+
+## 执行已确认的轮间过渡，也供选卡阶段恢复轮末存档；正式开战后解除过渡锁定。
+func _advance_to_next_round() -> void:
+	## 多轮游戏僵尸管理器计时器触发时，判断是否为最后一轮
+	if curr_game_round == game_para.game_round or _round_transition_pending \
+		or TreePauseManager.curr_pause_factor.get(TreePauseManager.E_PauseFactor.GameOver, false):
+		return
+	_round_transition_pending = true
 	print("-----------------开始下一轮游戏---------------")
 	print("下一轮次：", curr_game_round + 1)
-	## 先存档
-	save_game_main_game()
 	## 等待3秒后进行下一轮
 	await get_tree().create_timer(3).timeout
+	# 轮间等待仍允许进房失败；旧协程不能继续推进轮数或重新写入已删除的存档。
+	if not is_inside_tree() or is_queued_for_deletion() \
+		or TreePauseManager.curr_pause_factor.get(TreePauseManager.E_PauseFactor.GameOver, false):
+		return
+	# 暂停选卡与清场前保存，将等待期间成功召唤的僵王和血量变化一并纳入快照。
+	save_game_main_game()
 	## 播放选卡bgm
 	if game_para.look_show_zombie:
 		## 重新选卡阶段暂停游戏
@@ -298,7 +322,7 @@ func start_next_round_game():
 	background_manager.start_next_game_background_manager_update()
 	coin_bank_label.visible = false
 	## 更新僵尸管理器
-	zombie_manager.start_next_game_zombie_mananger_update()
+	zombie_manager.start_next_game_zombie_mananger_update(_round_end_by_boss)
 	## 更新植物格子数据，（创建罐子） 清除植物数据需要等待两帧
 	await plant_cell_manager.start_next_game_plant_cell_manager_update()
 	game_item_manager.start_next_game_game_item_manager_update()
@@ -373,8 +397,13 @@ func main_game_start():
 	## 等待1秒红字出现
 	await get_tree().create_timer(1.0).timeout
 	await ui_remind_word.ready_set_plant()
-	## 主游戏进程阶段
+	# 先清除上一轮结算记录，再通知战斗阶段，避免同步事件看到旧轮锁定。
+	_round_end_claimed = false
+	_round_end_by_boss = false
+	_round_transition_pending = false
 	main_game_progress = E_MainGameProgress.MAIN_GAME
+	# 僵王只有在正式战斗阶段才能恢复；先恢复实例与血量，再启用出战卡片。
+	zombie_manager.restore_saved_bosses()
 	card_manager.card_slot_update_main_game()
 
 	## 红字结束后一秒修改bgm
@@ -430,23 +459,58 @@ func on_zombie_go_home(zombie:Zombie000Base):
 
 
 #region 奖杯
-## 创建奖杯
-func create_trophy(glo_pos:Vector2):
+## 接受本轮第一次结束请求，成功返回 true；只在正式战斗且未失败、未过渡时接受。
+## [param is_boss_win] 表示实际由额外 Boss 条件结束，不表示关卡是否启用了该选项。
+func try_claim_round_end(is_boss_win: bool = false) -> bool:
+	if not is_inside_tree() or is_queued_for_deletion() \
+		or main_game_progress != E_MainGameProgress.MAIN_GAME \
+		or _round_end_claimed or _round_transition_pending \
+		or TreePauseManager.curr_pause_factor.get(TreePauseManager.E_PauseFactor.GameOver, false):
+		return false
+	_round_end_claimed = true
+	_round_end_by_boss = is_boss_win
+	return true
+
+
+## 普通胜利请求共用一次性结算入口；[param glo_pos] 为奖杯生成的世界坐标。
+## 清场、罐子和脑子条件始终有效，与额外 Boss 胜利选项独立。
+func create_trophy(glo_pos: Vector2) -> void:
+	if not try_claim_round_end():
+		return
+	_finish_round_victory(glo_pos)
+
+
+## [param glo_pos] 为最后一只 Boss 请求的奖杯世界坐标；完成已接受的 Boss 胜利。
+## 动画和直接消失由僵王管理器保证只请求一次，此处不重新接受胜利条件。
+func complete_boss_victory(glo_pos: Vector2) -> void:
+	if not is_inside_tree() or is_queued_for_deletion() \
+		or not _round_end_claimed or not _round_end_by_boss or _round_transition_pending \
+		or main_game_progress != E_MainGameProgress.GAME_OVER \
+		or TreePauseManager.curr_pause_factor.get(TreePauseManager.E_PauseFactor.GameOver, false):
+		return
+	_finish_round_victory(glo_pos)
+
+
+## 完成已接受的胜利，非末轮直接过渡，末轮生成奖杯；[param glo_pos] 为世界坐标。
+func _finish_round_victory(glo_pos: Vector2) -> void:
 	print("胜利条件达成，创建奖杯")
 	## 如果不是最后一轮游戏，触发下一轮
 	if curr_game_round != game_para.game_round:
-		start_next_round_game()
+		_advance_to_next_round()
 		return
 
 
 	print("=======================游戏结束，您获胜了=======================")
+	# 本轮唯一奖杯，由已接受的胜利请求创建。
 	var trophy = SceneRegistry.TROPHY.instantiate()
-	Global.main_game.canvas_layer_temp.add_child(trophy)
+	canvas_layer_temp.add_child(trophy)
 	trophy.global_position = glo_pos
 	if trophy.global_position.x >= 750:
+		# 右侧奖杯向场内抛出的水平偏移。
 		var x_diff = trophy.global_position.x - 700
 		throw_to(trophy, trophy.position - Vector2(x_diff + randf_range(-50,50), 0))
 	elif trophy.global_position.x <= 50:
+		# 左侧奖杯向场内抛出的水平偏移。
 		var x_diff = trophy.global_position.x - 100
 		throw_to(trophy, trophy.position - Vector2(x_diff + randf_range(-50,50), 0))
 
@@ -469,8 +533,11 @@ func throw_to(node:Node2D, target_pos: Vector2, duration: float = 1.0):
 #endregion
 
 
-## 当前关卡完成
+## 当前关卡完成；奖杯点击的延迟回调在失败后到达时不能再登记通关。
 func win_main_game():
+	# 奖杯按钮等待期间仍可能进房失败，必须在清除暂停因素前拒绝晚到回调。
+	if TreePauseManager.curr_pause_factor.get(TreePauseManager.E_PauseFactor.GameOver, false):
+		return
 
 	## 游戏暂停因素、游戏速度
 	TreePauseManager.end_tree_pause_clear_all_pause_factors()
@@ -510,8 +577,9 @@ func change_is_mouse_visibel_on_hammer(value:bool):
 #region 存档
 ## 读档系统只能从空白场景读档
 
-## 存档
+## 保存轮末快照；实际由 Boss 提前结束的自然波次按已完成本轮保存，续关不补旧波。
 func save_game_main_game():
+	# 本轮结束后的快照，加载时直接进入下一轮。
 	var save_game_data_main_game:ResourceSaveGameMainGame = ResourceSaveGameMainGame.new()
 	save_game_data_main_game.curr_game_round = curr_game_round
 	## 植物数据
@@ -519,14 +587,21 @@ func save_game_main_game():
 	## 僵尸, gema_para 自动更新该值
 	save_game_data_main_game.curr_max_wave = zombie_manager.zombie_wave_manager.max_wave
 	save_game_data_main_game.curr_wave = zombie_manager.zombie_wave_manager.curr_wave
+	if _round_end_by_boss and game_para.monster_mode == ConstLevelData.E_MonsterMode.Norm:
+		# 只标准化实际 Boss 胜利的快照，不依据配置或死亡统计推断结束原因。
+		save_game_data_main_game.curr_wave = save_game_data_main_game.curr_max_wave - 1
 	## 天降阳光
 	save_game_data_main_game.day_sun_curr_sun_sum_value = day_suns_manager.curr_sun_sum_value
 	## 植物卡槽数据
 	save_game_data_main_game.card_manager_data = card_manager.get_save_game_data_card_manager()
 	## 小推车数据
 	save_game_data_main_game.lawn_mover_manager_data = game_item_manager.gim_lawn_mover.get_save_game_data_lawn_mover_manager()
+	# 僵王管理器保留存活实例与整局统计；读档后的待恢复数据也由其统一保存。
+	save_game_data_main_game.boss_manager_data = zombie_manager.get_save_game_data_bosses()
 
+	# 当前关卡轮间快照的保存路径。
 	var path = game_para.get_save_game_path()
+	# 资源保存结果，失败时保留错误码供诊断。
 	var err = ResourceSaver.save(save_game_data_main_game, path)
 	if err != OK:
 		push_error("关卡数据存档失败:%s, 错误代码 %d" % [path, err])
@@ -558,6 +633,8 @@ func load_game_main_game():
 		day_suns_manager.curr_sun_sum_value = save_game_data_main_game.day_sun_curr_sun_sum_value
 		## 植物卡槽数据
 		card_manager.load_game_data_card_manager(save_game_data_main_game.card_manager_data)
+		# 选卡和准备阶段只缓存僵王数据，正式进入 MAIN_GAME 后再恢复角色实例。
+		zombie_manager.load_game_data_bosses(save_game_data_main_game.boss_manager_data)
 
 #endregion
 #region 更新全局关卡数据

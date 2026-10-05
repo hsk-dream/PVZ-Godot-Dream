@@ -42,7 +42,7 @@ signal signal_card_click(card: Card)
 signal signal_card_use_end(card: Card)
 
 
-## 初始化参数与模仿外观；展示型内容不显示费用、快捷键和冷却遮罩。
+## 初始化参数与模仿外观；僵王的选卡和战斗实例显示费用，目录及图鉴实例只保留外观。
 func _ready() -> void:
 	super()
 	_cool_mask.value = 0
@@ -50,6 +50,8 @@ func _ready() -> void:
 		is_can_click = false
 		return
 	if card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		# 源模板隐藏了费用，复制实例入树时必须按用途显式恢复可见性。
+		cost.visible = card_context == CardContext.Selection or card_context == CardContext.Battle
 		short_cut.hide()
 		_cool_mask.hide()
 	if card_reference.is_imitater:
@@ -103,7 +105,7 @@ func judge_sun_enough(curr_sun_value: int) -> void:
 	judge_card_ready()
 
 
-## 结合类别、费用、冷却和紫卡前置条件更新可用状态；非战斗卡牌不能就绪。
+## 结合类别、费用、冷却、僵王召唤资格和紫卡前置条件更新可用状态；非出战卡牌不能就绪。
 func judge_card_ready() -> void:
 	if not AllCards.is_battle_card(card_reference):
 		is_can_click = false
@@ -111,9 +113,16 @@ func judge_card_ready() -> void:
 	if not is_sun_enough or _is_cooling:
 		card_not_can_click()
 		return
+	if card_context == CardContext.Battle and card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		# 选卡阶段不检查战斗状态；正式使用时以当前场景的实际召唤条件为准。
+		# 通用内容编号在召唤接口处显式解释为僵王枚举。
+		if not is_instance_valid(Global.main_game) or not is_instance_valid(Global.main_game.zombie_manager) \
+			or not Global.main_game.zombie_manager.can_summon_boss(card_reference.content_id as CharacterRegistry.ZombieBossType):
+			card_not_can_click()
+			return
 	if is_purple_card:
-		# 紫卡只可能来自植物，编号在调用种植条件时解释为植物枚举。
-		var plant_type: CharacterRegistry.PlantType = card_reference.content_id
+		# 紫卡只可能来自植物，通用内容编号在调用种植条件时显式转换为植物枚举。
+		var plant_type: CharacterRegistry.PlantType = card_reference.content_id as CharacterRegistry.PlantType
 		if not plant_condition.judge_purple_card_can_plant(Global.main_game.plant_cell_manager.all_plant_cells, plant_type):
 			card_not_can_click()
 			return
@@ -159,15 +168,22 @@ func _on_button_pressed() -> void:
 		CardContext.Battle:
 			if not is_instance_valid(Global.main_game) or Global.main_game.main_game_progress != MainGameManager.E_MainGameProgress.MAIN_GAME:
 				return
+			# 显式禁用的卡片不能由点击时的就绪重算重新启用。
+			if not is_can_click:
+				SoundManager.play_other_SFX("buzzer")
+				return
+			if card_reference != null and card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+				# 点击前重验场景资格，不依赖上次阳光或冷却刷新留下的可用状态。
+				judge_card_ready()
 			if is_can_click and AllCards.is_battle_card(card_reference):
 				EventBus.push_event("main_game_click_card", [self])
 			else:
 				SoundManager.play_other_SFX("buzzer")
 
 
-## 显示 [param i] 对应的卡槽快捷键编号；展示型内容不分配快捷键。
+## 显示 [param i] 对应的卡槽快捷键编号；僵王只在战斗用途下分配快捷键。
 func set_shortcut(i: int) -> void:
-	if card_reference != null and card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+	if card_reference != null and card_reference.card_type == ResourceCardReference.CardType.ZombieBoss and card_context != CardContext.Battle:
 		return
 	short_cut.text = str(i)
 	short_cut.show()

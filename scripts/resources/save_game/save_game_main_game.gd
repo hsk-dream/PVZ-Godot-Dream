@@ -21,3 +21,7 @@ class_name ResourceSaveGameMainGame
 
 @export_group("小推车数据")
 @export var lawn_mover_manager_data:Dictionary = {}
+
+@export_group("僵王数据")
+## 保存存活僵王及本局召唤、死亡统计和自动生成记录；旧存档缺失时按空字典恢复。
+@export var boss_manager_data: Dictionary = {}

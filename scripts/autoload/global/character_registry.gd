@@ -853,6 +853,8 @@ enum ZombieBossType {
 enum ZombieBossInfoAttribute {
 	BossName,
 	BossScenes,
+	SunCost, ## 僵王卡每次成功召唤的阳光费用，取非负整数。
+	CoolTime, ## 僵王卡每次成功召唤后的冷却时长，单位为游戏秒，0 表示无冷却。
 }
 #endregion
 
@@ -861,6 +863,8 @@ const ZombieBossInfo = {
 	ZombieBossType.ZB001Doctor: {
 		ZombieBossInfoAttribute.BossName: "ZB001Doctor",
 		ZombieBossInfoAttribute.BossScenes: preload("res://scenes/character/zombie_boss/zombie_boss_001_doctor.tscn"),
+		ZombieBossInfoAttribute.SunCost: 50,
+		ZombieBossInfoAttribute.CoolTime: 7.5,
 	},
 }
 

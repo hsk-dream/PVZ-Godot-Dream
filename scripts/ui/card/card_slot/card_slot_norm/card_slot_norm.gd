@@ -51,12 +51,12 @@ func _on_texture_button_pressed() -> void:
 		Global.global_game_state.selected_cards.append(card.card_reference.copy_reference())
 	Global.save_service.save_selected_cards()
 
-## 按 [param references] 的顺序创建不可取消的预选卡；僵王及无效引用不会进入卡槽。
+## 按 [param references] 的顺序创建不可取消的预选卡；无效或未注册的出战引用不会进入卡槽。
 func init_pre_choosed_card(references: Array[ResourceCardReference]) -> void:
 	# 单个预选引用表示一个完整卡片，不再依赖两个补零数组的同下标组合。
 	for reference: ResourceCardReference in references:
 		if not AllCards.is_battle_card(reference):
-			push_error("CardSlotNorm：预选卡必须是已注册的植物或普通僵尸。")
+			push_error("CardSlotNorm：预选卡必须是已注册的出战卡牌。")
 			continue
 		if card_slot_battle.curr_cards.size() >= card_slot_battle.cards_placeholder.size():
 			break

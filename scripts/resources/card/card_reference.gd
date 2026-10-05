@@ -8,7 +8,7 @@ enum CardType {
 	Null = 0, ## 编辑器中尚未配置的引用，不参与注册。
 	Plant = 1, ## 植物卡牌。
 	Zombie = 2, ## 普通僵尸卡牌。
-	ZombieBoss = 3, ## 僵王卡牌，当前只用于展示。
+	ZombieBoss = 3, ## 僵王卡牌，用于图鉴展示、普通卡槽和临时卡召唤。
 }
 
 ## 内容类别；切换类别时清空角色编号，要求重新选择该类别的角色。
@@ -31,11 +31,12 @@ enum CardType {
 ## [param imitater] 仅适用于具体植物；非法组合可由 [method is_valid] 检出。
 static func create(type: int, id: int, imitater: bool = false) -> ResourceCardReference:
 	# 新引用不与模板或关卡共享可写属性。
-	var reference := ResourceCardReference.new()
-	reference.card_type = type
-	reference.content_id = id
-	reference.is_imitater = imitater
-	return reference
+	var card_ref := ResourceCardReference.new()
+	# 类别可能来自存档整数，赋值时显式转换为卡牌枚举，合法性仍由 is_valid 判断。
+	card_ref.card_type = type as CardType
+	card_ref.content_id = id
+	card_ref.is_imitater = imitater
+	return card_ref
 
 
 ## 返回独立身份副本；显式构造确保类别先于角色编号赋值，不依赖 Resource 属性复制顺序。
@@ -87,8 +88,8 @@ static func from_dict(data: Dictionary) -> ResourceCardReference:
 	if typeof(data.get("is_imitater")) != TYPE_BOOL:
 		return null
 	# 已通过字段类型检查的新引用。
-	var reference := create(int(data["card_type"]), int(data["content_id"]), data["is_imitater"])
-	return reference if reference.is_valid() else null
+	var card_ref := create(int(data["card_type"]), int(data["content_id"]), data["is_imitater"])
+	return card_ref if card_ref.is_valid() else null
 
 
 ## 为 [param property] 中的角色编号提供当前类别的枚举选项；不依赖运行中的 Global。

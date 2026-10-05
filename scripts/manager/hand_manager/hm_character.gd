@@ -1,4 +1,4 @@
-## 手持出战卡的预览、格子判定和创建；显式区分植物与普通僵尸。
+## 手持出战卡的预览、格子判定和创建；僵王在植物格子内预览并确认固定位置召唤。
 extends Node
 class_name HM_Character
 
@@ -35,7 +35,7 @@ func character_process() -> void:
 		characte_static.global_position = temporary_character.get_global_mouse_position()
 
 ## 开始手持 [param card]，建立独立预览并读取本类型条件。
-## 返回是否成功初始化；僵王、无效引用和缺少静态预览的卡片不进入手持。
+## 返回是否成功初始化；无效引用和缺少静态预览的卡片不进入手持，不创建战斗角色。
 func click_card(card: Card) -> bool:
 	if not AllCards.is_battle_card(card.card_reference):
 		return false
@@ -63,7 +63,7 @@ func click_card(card: Card) -> bool:
 				start_preplant_purple_light(plant_condition, curr_card.card_reference.content_id)
 		ResourceCardReference.CardType.Zombie:
 			zombie_row_type = Global.character_registry.get_zombie_info(curr_card.card_reference.content_id, CharacterRegistry.ZombieInfoAttribute.ZombieRowType)
-	if is_mode_column:
+	if is_mode_column and curr_card.card_reference.card_type != ResourceCardReference.CardType.ZombieBoss:
 		click_card_column()
 	EventBus.push_event("hm_character_hand_card", [curr_card])
 	return true
@@ -110,7 +110,7 @@ func mouse_enter(plant_cell: PlantCell) -> void:
 		_mouse_enter_column(plant_cell)
 
 ## 更新 [param plant_cell] 上的 [param curr_characte_static_shadow] 并返回能否放置。
-## 只支持植物与普通僵尸，其他类别隐藏虚影并返回 false。
+## 僵王只检查召唤资格，在当前格子的普通植物位置显示虚影，不读取格子占用或行地形。
 func _update_cell_shadow(plant_cell: PlantCell, curr_characte_static_shadow: Node2D) -> bool:
 	curr_characte_static_shadow.modulate.a = 0
 	if not AllCards.is_battle_card(curr_card.card_reference):
@@ -129,6 +129,16 @@ func _update_cell_shadow(plant_cell: PlantCell, curr_characte_static_shadow: Nod
 			if zombie_row_type != CharacterRegistry.ZombieRowType.Both and zombie_row_type != Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type:
 				return false
 			curr_characte_static_shadow.global_position = get_zombie_static_shadow_global_position(plant_cell)
+			curr_characte_static_shadow.modulate.a = 0.5
+			return true
+		ResourceCardReference.CardType.ZombieBoss:
+			# 召唤资格由所属关卡判断，虚影位置使用当前植物格子的已有锚点。
+			var manager: ZombieManager = hand_manager.main_game.zombie_manager
+			if not is_instance_valid(plant_cell) or plant_cell.is_queued_for_deletion() \
+				or not hand_manager.main_game.is_ancestor_of(plant_cell) or not is_instance_valid(manager) \
+				or not curr_card.is_can_click or not manager.can_summon_boss(curr_card.card_reference.content_id):
+				return false
+			curr_characte_static_shadow.global_position = plant_cell.get_new_plant_static_shadow_global_position(CharacterRegistry.PlacePlantInCell.Norm)
 			curr_characte_static_shadow.modulate.a = 0.5
 			return true
 	return false
@@ -152,17 +162,36 @@ func mouse_exit(_plant_cell: PlantCell) -> void:
 	if is_mode_column:
 		_mouse_exit_column()
 
-## 在 [param plant_cell] 成功创建后完成同列创建，仅发送一次卡片使用结算。
+## 在 [param plant_cell] 确认时重验卡片可用性；成功创建后仅发送一次使用结算。
+## 僵王再次检查召唤资格且不执行柱子复制，失败不扣费用或进入冷却。
 func click_cell(plant_cell: PlantCell) -> void:
-	if not is_shadow_in_cell or not AllCards.is_battle_card(curr_card.card_reference):
+	if not is_instance_valid(curr_card) or curr_card.is_queued_for_deletion() \
+		or not is_shadow_in_cell or not AllCards.is_battle_card(curr_card.card_reference):
 		return
+	# 先保留卡槽的显式禁用状态，再重算费用、冷却及本类型的出战条件。
+	if not curr_card.is_can_click:
+		SoundManager.play_other_SFX("buzzer")
+		return
+	curr_card.judge_card_ready()
+	if not curr_card.is_can_click:
+		SoundManager.play_other_SFX("buzzer")
+		return
+	if curr_card.card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		if not is_instance_valid(plant_cell) or plant_cell.is_queued_for_deletion() \
+			or not hand_manager.main_game.is_ancestor_of(plant_cell) \
+			or not hand_manager.main_game.zombie_manager.can_summon_boss(curr_card.card_reference.content_id):
+			SoundManager.play_other_SFX("buzzer")
+			return
 	if not _create_character_at_cell(plant_cell):
+		if curr_card.card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+			SoundManager.play_other_SFX("buzzer")
 		return
-	if is_mode_column:
+	if is_mode_column and curr_card.card_reference.card_type != ResourceCardReference.CardType.ZombieBoss:
 		_click_cell_column(plant_cell)
 	curr_card.signal_card_use_end.emit(curr_card)
 
-## 在 [param plant_cell] 创建当前植物或普通僵尸并返回是否创建成功，不进行卡槽结算。
+## 在 [param plant_cell] 创建植物或普通僵尸，僵王使用所属关卡的固定位置；返回创建成功与否。
+## 本函数不进行卡槽结算，僵王必须返回新实例才算成功。
 func _create_character_at_cell(plant_cell: PlantCell) -> bool:
 	match curr_card.card_reference.card_type:
 		ResourceCardReference.CardType.Plant:
@@ -183,6 +212,8 @@ func _create_character_at_cell(plant_cell: PlantCell) -> bool:
 				),
 				GlobalUtils.get_special_zombie_callable(curr_card.card_reference.content_id, plant_cell)
 			) != null
+		ResourceCardReference.CardType.ZombieBoss:
+			return hand_manager.main_game.zombie_manager.try_create_boss_from_card(curr_card.card_reference.content_id) != null
 	return false
 
 ## 退出手持角色状态并清理所有预览。

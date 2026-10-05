@@ -154,10 +154,11 @@ func card_slot_disappear_choose():
 #region 临时卡片
 ## 在 [param global_pos] 创建 [param reference] 的临时出战卡。[br]
 ## [param exist_time] 是正常存在秒数；负数表示永久存在，非负数结束后另有 5 秒闪烁。
-## 返回独立卡实例；僵王、无效引用或未注册模板返回 null，不修改当前临时卡。
+## 支持已注册的植物、普通僵尸和僵王，返回独立卡实例；无效引用或未注册模板返回 null。[br]
+## 临时卡成功使用即释放，不扣阳光或启动冷却；僵王沿用固定位置召唤。
 func create_temp_card(reference: ResourceCardReference, global_pos: Vector2, exist_time: float = -1.0) -> Card:
 	if not AllCards.is_battle_card(reference):
-		push_error("CardManager：临时卡只允许已注册的植物和普通僵尸。")
+		push_error("CardManager：临时卡只允许已注册的植物、普通僵尸和僵王。")
 		return null
 	# 目录统一复制模板、引用并在入树前设定战斗上下文。
 	var temp_card: Card = AllCards.create_card(reference, Card.CardContext.Battle)

@@ -46,6 +46,7 @@ var sun_cost: int = 0:
 
 
 ## 根据已配置的身份初始化参数与外观；空模板仅供编辑器布局，不参与注册。
+## 引用合法性确认后，将通用整数编号按类别显式转换为枚举，再查询角色注册表。
 func _ready() -> void:
 	if card_reference == null or not card_reference.is_valid():
 		cost.hide()
@@ -53,7 +54,7 @@ func _ready() -> void:
 	match card_reference.card_type:
 		ResourceCardReference.CardType.Plant:
 			# 在植物边界解释角色编号，不能依靠其他类别的空字段推导。
-			var plant_type: CharacterRegistry.PlantType = card_reference.content_id
+			var plant_type: CharacterRegistry.PlantType = card_reference.content_id as CharacterRegistry.PlantType
 			sun_cost = Global.character_registry.get_plant_info(plant_type, CharacterRegistry.PlantInfoAttribute.SunCost)
 			cool_time = Global.character_registry.get_plant_info(plant_type, CharacterRegistry.PlantInfoAttribute.CoolTime)
 			plant_condition = Global.character_registry.get_plant_info(plant_type, CharacterRegistry.PlantInfoAttribute.PlantConditionResource)
@@ -64,10 +65,12 @@ func _ready() -> void:
 				curr_card_gb = E_CardBg.CB03Gray
 		ResourceCardReference.CardType.Zombie:
 			# 普通僵尸的费用和冷却沿用角色注册表。
-			var zombie_type: CharacterRegistry.ZombieType = card_reference.content_id
+			var zombie_type: CharacterRegistry.ZombieType = card_reference.content_id as CharacterRegistry.ZombieType
 			sun_cost = Global.character_registry.get_zombie_info(zombie_type, CharacterRegistry.ZombieInfoAttribute.SunCost)
 			cool_time = Global.character_registry.get_zombie_info(zombie_type, CharacterRegistry.ZombieInfoAttribute.CoolTime)
 		ResourceCardReference.CardType.ZombieBoss:
-			cost.hide()
-			_cool_mask.hide()
+			# 每张僵王卡独立维护费用和冷却，实际召唤实例不共享卡片运行状态。
+			var boss_type: CharacterRegistry.ZombieBossType = card_reference.content_id as CharacterRegistry.ZombieBossType
+			sun_cost = Global.character_registry.get_zombie_boss_info(boss_type, CharacterRegistry.ZombieBossInfoAttribute.SunCost)
+			cool_time = Global.character_registry.get_zombie_boss_info(boss_type, CharacterRegistry.ZombieBossInfoAttribute.CoolTime)
 	card_bg.texture = CARD_BG_MAP[curr_card_gb]

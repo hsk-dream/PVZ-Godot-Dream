@@ -1,4 +1,4 @@
-## 按目录顺序生成植物、普通僵尸及植物模仿卡页面，僵王不进入出战选卡。
+## 按目录顺序生成植物、普通僵尸、僵王及植物模仿卡页面，按可用角色列表筛选。
 extends TextureRect
 class_name CardSlotCandidate
 
@@ -6,7 +6,7 @@ class_name CardSlotCandidate
 @onready var all_card_page: Control = $AllCardPage
 ## 植物页面的占位布局模板。
 @onready var grid_container_plant: GridContainer = $AllCardPage/GridContainerPlant
-## 普通僵尸页面的占位布局模板。
+## 普通僵尸和僵王共用的占位布局模板。
 @onready var grid_container_zombie: GridContainer = $AllCardPage/GridContainerZombie
 ## 类型、内容和模仿修饰共同确定的备选容器索引。
 var candidate_containers: Dictionary[Vector3i, CardCandidateContainer] = {}
@@ -43,6 +43,7 @@ func _ready() -> void:
 
 ## 使用 [param card_type] 的目录顺序复制 [param grid_template] 到 [param page_root]。
 ## [param imitate] 为 true 时为植物创建模仿修饰，不修改目录共享引用。
+## 普通僵尸页末尾追加僵王目录，各引用保留自身类别，不受关卡自动出场类型影响。
 func _create_candidate_pages(card_type: int, grid_template: GridContainer, page_root: Control, imitate: bool = false) -> void:
 	# 页面容量沿用场景占位，内容编号不再承担布局索引。
 	var page_capacity: int = grid_template.get_child_count()
@@ -54,14 +55,20 @@ func _create_candidate_pages(card_type: int, grid_template: GridContainer, page_
 	var pages: Array[GridContainer] = []
 	# 有效出战卡的连续布局索引，跳过独立模仿者入口。
 	var card_index: int = 0
-	# 本类型目录的引用。
-	for catalog_reference: ResourceCardReference in AllCards.get_references(card_type):
+	# 本批分页的有序目录引用，僵王复用普通僵尸页面布局。
+	var page_references: Array[ResourceCardReference] = AllCards.get_references(card_type)
+	if card_type == ResourceCardReference.CardType.Zombie:
+		page_references.append_array(AllCards.get_references(ResourceCardReference.CardType.ZombieBoss))
+	# 当前源引用只读使用，混合页面也保留真实内容类别。
+	for catalog_reference: ResourceCardReference in page_references:
 		if not AllCards.is_battle_card(catalog_reference):
 			continue
 		# 模仿修饰只写入新引用。
-		var reference: ResourceCardReference = ResourceCardReference.create(card_type, catalog_reference.content_id, imitate)
-		# 当前卡片所属的零起点页。
-		var page_index: int = int(card_index / page_capacity)
+		var reference: ResourceCardReference = catalog_reference.copy_reference()
+		if imitate:
+			reference.is_imitater = true
+		# 当前卡片所属的零起点页；浮点除法后显式向下取整，保留分页规则。
+		var page_index: int = floori(float(card_index) / page_capacity)
 		if page_index >= pages.size():
 			# 新页保留模板中的栅格占位，首次生成时先隐藏。
 			var new_page: GridContainer = grid_template.duplicate() as GridContainer
@@ -95,13 +102,15 @@ func _create_candidate_pages(card_type: int, grid_template: GridContainer, page_
 				all_show_page.append(page)
 	grid_template.queue_free()
 
-## 返回 [param reference] 是否已由植物或普通僵尸解锁表解锁。
+## 返回 [param reference] 是否存在于对应类别的当前可用角色列表。
 func _is_unlocked(reference: ResourceCardReference) -> bool:
 	match reference.card_type:
 		ResourceCardReference.CardType.Plant:
 			return Global.global_game_state.curr_plant.has(reference.content_id)
 		ResourceCardReference.CardType.Zombie:
 			return Global.global_game_state.curr_zombie.has(reference.content_id)
+		ResourceCardReference.CardType.ZombieBoss:
+			return Global.global_game_state.curr_zombie_boss.has(reference.content_id)
 	return false
 
 ## 查询 [param reference] 对应的普通或模仿卡容器，未生成内容返回 null。

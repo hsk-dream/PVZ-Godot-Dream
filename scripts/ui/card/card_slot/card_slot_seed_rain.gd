@@ -33,8 +33,8 @@ func _on_create_new_card_timer_timeout() -> void:
 func _create_new_card() -> void:
 	# 有序表和权重池使用相同的完整引用。
 	var reference: ResourceCardReference = card_order.get(all_num_card) if card_order.has(all_num_card) else card_random_pool.get_random_reference()
-	if not AllCards.is_battle_card(reference):
-		push_error("CardSlotSeedRain：生成引用不是有效的出战卡。")
+	if not AllCards.is_battle_card(reference) or reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		push_error("CardSlotSeedRain：生成引用必须是已注册的植物或普通僵尸。")
 		return
 	# 保留原有全局随机位置分布。
 	var global_pos: Vector2 = Vector2(randf_range(card_area_x_range.x, card_area_x_range.y), randf_range(card_area_y_range.x, card_area_y_range.y))

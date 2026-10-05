@@ -11862,10 +11862,11 @@ position = Vector2(0, 22)
 position = Vector2(-1, 5)
 
 [node name="BodyCorrect" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body" unique_id=676407091]
-position = Vector2(-152, -77)
+position = Vector2(-152, -90)
 scale = Vector2(0.25, 0.25)
 
 [node name="InnerArm" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect" unique_id=953478479]
+visible = false
 
 [node name="InnerArmBack" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=364483274]
 
@@ -11990,6 +11991,7 @@ centered = false
 position = Vector2(113.5, 125)
 
 [node name="InnerLeg" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect" unique_id=1635572612]
+visible = false
 
 [node name="Boss_innerleg_foot" type="Sprite2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=762478341]
 visible = false
@@ -12030,6 +12032,7 @@ centered = false
 position = Vector2(134, 144)
 
 [node name="BodyBack" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect" unique_id=1499300266]
+visible = false
 
 [node name="Boss_body2" type="Sprite2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect/BodyBack" unique_id=2137951501]
 visible = false
@@ -12043,6 +12046,7 @@ centered = false
 position = Vector2(166.5, 125)
 
 [node name="OuterLeg" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect" unique_id=184445529]
+visible = false
 
 [node name="Boss_outerleg_foot" type="Sprite2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=1609133244]
 visible = false
@@ -12083,6 +12087,7 @@ centered = false
 position = Vector2(134, 144)
 
 [node name="BodyFront" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect" unique_id=1466200048]
+visible = false
 
 [node name="Boss_body1" type="Sprite2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect/BodyFront" unique_id=1297403480]
 position = Vector2(527.8, 156.09998)
@@ -12100,6 +12105,7 @@ position = Vector2(280, 330)
 [node name="Head" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect" unique_id=1860114788]
 
 [node name="Boss_neck" type="Sprite2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect/Head" unique_id=471672474]
+visible = false
 position = Vector2(553.5, 174.2)
 rotation = -0.033
 scale = Vector2(0.797, 0.797)
@@ -12348,6 +12354,7 @@ texture = ExtResource("809_f5cox")
 centered = false
 
 [node name="OuterArm" type="Node2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect" unique_id=1574861696]
+visible = false
 
 [node name="Boss_outerarm_thumb2" type="Sprite2D" parent="BossCards/Card1/CardBg/CharacterStatic/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=791635750]
 visible = false

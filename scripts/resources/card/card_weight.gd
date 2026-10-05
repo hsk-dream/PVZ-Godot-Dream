@@ -2,7 +2,7 @@
 extends Resource
 class_name ResourceCardWeight
 
-## 参与抽取的卡牌引用；当前只能配置允许出战的卡牌。
+## 参与抽取的植物或普通僵尸引用；随机池入口明确拒绝僵王。
 @export var card_reference: ResourceCardReference
 ## 相对权重；0 不参与抽取，负数和全部为零的池由初始化入口拒绝。
 @export_range(0, 100000, 1, "or_greater") var weight: int = 1

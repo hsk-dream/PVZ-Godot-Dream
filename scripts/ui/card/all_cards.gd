@@ -51,7 +51,7 @@ func create_card(reference: ResourceCardReference, context: Card.CardContext = C
 		push_error("AllCards：无法创建未注册卡牌")
 		return null
 	if (context == Card.CardContext.Battle or context == Card.CardContext.Selection) and not is_battle_card(reference):
-		push_error("AllCards：此卡牌只支持目录或图鉴展示")
+		push_error("AllCards：此卡牌不支持选卡或出战用途")
 		return null
 	# 入树前完成身份与用途设置，让 _ready 使用正确角色参数。
 	var card := template.duplicate() as Card
@@ -89,7 +89,8 @@ func get_references(card_type: int) -> Array[ResourceCardReference]:
 	return result
 
 
-## 返回 [param reference] 是否为已注册的可出战卡牌；僵王和模仿者选择入口只支持展示/辅助选卡。
+## 返回 [param reference] 是否为已注册的可出战卡牌；模仿者选择入口只用于辅助选卡。
+## 僵王具有普通卡槽出战能力，具体场景的召唤资格由僵尸管理器确认。
 func is_battle_card(reference: ResourceCardReference) -> bool:
 	if get_template(reference) == null:
 		return false
@@ -97,5 +98,7 @@ func is_battle_card(reference: ResourceCardReference) -> bool:
 		ResourceCardReference.CardType.Plant:
 			return reference.content_id != CharacterRegistry.PlantType.P999Imitater
 		ResourceCardReference.CardType.Zombie:
+			return true
+		ResourceCardReference.CardType.ZombieBoss:
 			return true
 	return false

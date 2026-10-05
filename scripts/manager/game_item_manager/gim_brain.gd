@@ -38,7 +38,7 @@ func _create_one_brain(lane:int):
 	curr_brain.append(brain)
 	curr_brain_num += 1
 
-## 当脑子死亡时
+## [param brain] 死亡后移除其计数；全部脑子耗尽时按原规则请求奖杯，与额外 Boss 胜利独立。
 func _on_brain_death(brain:BrainOnZombieMode):
 	curr_brain.erase(brain)
 	curr_brain_num -= 1

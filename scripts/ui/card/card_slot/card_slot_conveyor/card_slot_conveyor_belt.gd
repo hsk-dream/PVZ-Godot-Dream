@@ -82,8 +82,8 @@ func _create_new_card() -> void:
 		create_new_card_timer.start()
 	# 有序表及随机池都返回相同引用类型，无需植物/僵尸分支。
 	var reference: ResourceCardReference = card_order.get(all_num_card) if card_order.has(all_num_card) else card_random_pool.get_random_reference()
-	if not AllCards.is_battle_card(reference):
-		push_error("CardSlotConveyorBelt：生成引用不是有效的出战卡。")
+	if not AllCards.is_battle_card(reference) or reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		push_error("CardSlotConveyorBelt：生成引用必须是已注册的植物或普通僵尸。")
 		return
 	# 卡片入树前已绑定完整引用和战斗交互上下文。
 	var new_card: Card = AllCards.create_card(reference, Card.CardContext.Battle)

@@ -417,9 +417,8 @@ func plant_cell_creat_pot(plant_cell:PlantCell, pot_para:Dictionary):
 	curr_pot_num += 1
 	#print("创建一个罐子")
 
-## 若为罐子模式 罐子打开后更新是否结束，连接信号
-## [is_zombie:bool] 是否为僵尸
-## [glo_pos:bool] 最后一个罐子创建奖杯的位置
+## 罐子模式打开最后一个罐子时按原规则检查清场，与额外 Boss 胜利独立。
+## [param is_zombie] 表示最后一个罐子是否生成僵尸；[param glo_pos] 为普通奖杯的全局位置。
 func pot_open_update(is_zombie:bool, glo_pos:Vector2):
 	curr_pot_num -= 1
 	if curr_pot_num == 0:

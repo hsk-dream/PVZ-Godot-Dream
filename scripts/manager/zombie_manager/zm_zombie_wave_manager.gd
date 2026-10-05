@@ -43,6 +43,8 @@ var curr_wave := -1
 var progress_bar_segment_every_wave:float
 ## 每段根据当前波次时间，每秒多长
 var progress_bar_segment_mini_every_sec:float
+## 每次停止或切轮递增；等待中的旧波流程不能在下一轮重新进入战斗后恢复。
+var _refresh_generation: int = 0
 
 ## 波次刷新信号,给zombie_manager,删除魅惑僵尸，更新是否为最后一波
 signal signal_wave_refresh(is_end_wave:bool)
@@ -71,8 +73,12 @@ func init_zombie_wave_manager(game_para:ResourceLevelData):
 
 	zombie_wave_create_manager.init_zombie_wave_create_manager(game_para)
 
-## 多轮游戏开始下一轮僵尸波次管理器更新数据
-func start_next_game_zombie_wave_mananger_update():
+## 切换下一轮波次并取消旧轮等待；[param finish_current_round] 表示本轮实际由 Boss 条件结束。
+## 仅实际 Boss 提前胜利时跳过未生成波次，先推进到原末波，再扩大下一轮的波次上界。
+func start_next_game_zombie_wave_mananger_update(finish_current_round: bool = false):
+	stop_wave_refresh()
+	if finish_current_round:
+		curr_wave = max_wave - 1
 	max_wave += max_wave_one_round
 	flag_progress_bar.start_next_game_flag_progress_bar_update()
 	flag_progress_bar.visible = false
@@ -85,21 +91,30 @@ func set_progress_bar(curr_flag:int=-1):
 
 ## 战斗阶段开始第一波并启动进度计时；关卡已结束时不启动。
 func start_first_wave():
+	# 第一波生成期间若停止或切轮，不再重启旧轮进度计时器。
+	var refresh_generation: int = _refresh_generation
 	start_next_wave()
-	if not zombie_manager.is_game_running():
+	if not _is_wave_refresh_current(refresh_generation):
 		return
 	every_wave_progress_timer.start()
 	flag_progress_bar.visible = true
 
-## 停止自然波次与进度计时；已排队回调及等待中的生成流程恢复后仍检查战斗阶段。
+## 停止自然波次与进度计时并失效旧轮等待；下一轮进入战斗也不会恢复旧波流程。
 func stop_wave_refresh() -> void:
+	_refresh_generation += 1
 	every_wave_progress_timer.stop()
 	zombie_wave_refresh_manager.stop_refresh()
 
-## 战斗阶段生成下一波并发出刷新信号；大波提示等待结束后再次确认本关卡仍在战斗。
+## 返回 [param refresh_generation] 是否仍属于当前刷新流程，且所属关卡仍处于正式战斗。
+func _is_wave_refresh_current(refresh_generation: int) -> bool:
+	return refresh_generation == _refresh_generation and zombie_manager.is_game_running()
+
+## 战斗阶段生成下一波并发出刷新信号；大波提示等待后检查战斗阶段及停止版本。
 func start_next_wave() -> void:
+	# 捕获当前刷新版本，避免旧提示在下一轮恢复后继续生成旧波。
+	var refresh_generation: int = _refresh_generation
 	# 提前刷新信号通过 deferred 发出，Boss 死亡后仍可能有已排队的回调。
-	if not zombie_manager.is_game_running():
+	if not _is_wave_refresh_current(refresh_generation):
 		return
 	curr_wave += 1
 	# 本波正常生成的实例，用于接入掉血刷新和统计本波总血量。
@@ -114,7 +129,7 @@ func start_next_wave() -> void:
 		if curr_wave == max_wave - 1:
 			curr_wave_type = E_WaveType.Final
 			await ui_remind_word.zombie_approach(true)
-			if not zombie_manager.is_game_running():
+			if not _is_wave_refresh_current(refresh_generation):
 				return
 			curr_wave_all_zombies = zombie_wave_create_manager.create_curr_wave_all_zombies(curr_wave, true)
 			set_progress_bar(int(curr_wave%max_wave_one_round/10.0))
@@ -124,7 +139,7 @@ func start_next_wave() -> void:
 		else:
 			curr_wave_type = E_WaveType.Flag
 			await ui_remind_word.zombie_approach(false)
-			if not zombie_manager.is_game_running():
+			if not _is_wave_refresh_current(refresh_generation):
 				return
 			curr_wave_all_zombies = zombie_wave_create_manager.create_curr_wave_all_zombies(curr_wave, true)
 			set_progress_bar(int(curr_wave%max_wave_one_round/10.0))
@@ -141,6 +156,9 @@ func start_next_wave() -> void:
 		curr_wave_all_zombies = zombie_wave_create_manager.create_curr_wave_all_zombies(curr_wave, false)
 		set_progress_bar()
 
+	# 生成回调可能结束本轮，不能再重启刷新计时或发出旧波信号。
+	if not _is_wave_refresh_current(refresh_generation):
+		return
 	# 本波生成时的总血量，作为残半刷新的计算基准。
 	var wave_all_hp := 0
 	# 当前接入自然波次掉血统计的僵尸。
@@ -153,19 +171,21 @@ func start_next_wave() -> void:
 
 	signal_wave_refresh.emit(curr_wave == max_wave - 1)
 
-## 请求生成墓碑后等待 1 个游戏秒，再从本关卡墓碑生成僵尸；等待期间结束战斗则取消生成。
+## 请求生成墓碑后等待 1 个游戏秒，再从本关卡墓碑生成僵尸；停止、切轮或结束战斗时取消。
 func call_tombstone_create_zombie():
-	if not zombie_manager.is_game_running():
+	# 墓碑等待也必须属于同一刷新版本，不能跨轮恢复生成。
+	var refresh_generation: int = _refresh_generation
+	if not _is_wave_refresh_current(refresh_generation):
 		return
 	EventBus.push_event("create_tombstone", [randi()%3+1])
 	await get_tree().create_timer(1.0, false).timeout
-	if not zombie_manager.is_game_running():
+	if not _is_wave_refresh_current(refresh_generation):
 		return
 	# 从所属关卡读取墓碑列表，避免旧协程恢复时访问新关卡的全局引用。
 	var plant_cell_manager: PlantCellManager = zombie_manager.main_game.plant_cell_manager
 	# 当前需要出怪的墓碑索引，维持原列表顺序。
 	for i in range(plant_cell_manager.tombstone_list.size()):
-		if not zombie_manager.is_game_running():
+		if not _is_wave_refresh_current(refresh_generation):
 			return
 		# 当前墓碑从候选池随机选择的僵尸类型。
 		var new_zombie_type = zombie_type_candidate_tombstone.pick_random()

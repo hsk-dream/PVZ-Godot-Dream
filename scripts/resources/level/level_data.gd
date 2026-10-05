@@ -66,7 +66,8 @@ func set_choose_level(curr_game_mode: MainSceneRegistry.MainScenes, curr_level_p
 ## 是否为小僵尸模式
 @export var is_mini_zombie := false
 @export_subgroup("额外胜利条件")
-## 开启后僵王死亡即结束战斗，不等待全部波次或普通僵尸清场；奖杯仍由死亡动画请求。
+## 额外胜利途径：至少生成一只僵王且全部已生成僵王死亡即可结束战斗，不等待普通僵尸清场。
+## 原有清场、罐子、脑子胜利及多轮计时规则仍有效；仅实际由 Boss 条件结束时等待动画或直接消失接口请求奖杯。
 @export var win_on_boss_death: bool = false
 
 @export_subgroup("正常出怪模式")
@@ -88,7 +89,7 @@ func set_choose_level(curr_game_mode: MainSceneRegistry.MainScenes, curr_level_p
 @export var range_num_bungi: Vector2i = Vector2i(3, 5)
 
 @export_subgroup("僵王参数")
-## 僵王场景通过 Global.character_registry 查询；Null 表示本关没有僵王。
+## 自动僵王场景通过 Global.character_registry 查询；Null 表示不自动生成，不限制卡片召唤。
 ## 是否接受僵王奖杯请求由 [member win_on_boss_death] 决定，与是否配置僵王分开。
 @export var boss_type: CharacterRegistry.ZombieBossType = CharacterRegistry.ZombieBossType.Null
 ## 正常模式：0 为正式开战时生成，1 起为指定波次生成；无出怪模式必须为 0。
@@ -232,20 +233,18 @@ func init_para() -> bool:
 	return true
 
 
-## 返回是否配置了僵王；胜利规则独立由 [member win_on_boss_death] 决定。
+## 返回是否配置了自动僵王；卡片召唤与胜利规则独立于该配置。
 func has_boss() -> bool:
 	return boss_type != CharacterRegistry.ZombieBossType.Null
 
 
-## 返回全部僵王配置错误；空数组表示通过，不修改资源，也不实例化角色。
+## 返回全部自动僵王配置错误；空数组表示通过，不修改资源，也不实例化角色。
 ## init_para() 统一处理校验错误并中止初始化；本方法仅返回错误，不修改关卡状态。
-## 无僵王且未开启僵王死亡胜利条件时忽略僵王专属字段，保留原有特殊模式及多轮游戏行为。
+## 未配置自动僵王时忽略其专属字段；额外胜利可由卡片召唤触发，不限制原有判胜，也不要求强制预选。
 func validate_boss_parameters() -> PackedStringArray:
 	# 收集全部错误供初始化入口统一报告，不在校验过程中修改关卡资源。
 	var errors := PackedStringArray()
 	if not has_boss():
-		if win_on_boss_death:
-			errors.append("僵王死亡胜利条件必须配置 boss_type。")
 		return errors
 
 	# 注册表为静态公共定义，校验无需依赖 Global 节点已经完成 _ready()。

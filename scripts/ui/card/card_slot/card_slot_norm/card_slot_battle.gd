@@ -46,7 +46,7 @@ func main_game_refresh_card():
 	update_card_purple_sun_cost()
 	# 出战卡顺序决定快捷键位置。
 	for i: int in range(curr_cards.size()):
-		# 当前槽位卡片，由目录能力再次确认不能使用僵王。
+		# 当前槽位卡片，统一确认出战能力后再按内容判断使用资格。
 		var card: Card = curr_cards[i]
 		if not AllCards.is_battle_card(card.card_reference):
 			card.set_card_disable()

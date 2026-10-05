@@ -48,9 +48,16 @@ func hm_status_change(ori_status:E_HandManagerStatus, _new_status:E_HandManagerS
 func init_manager() -> void:
 	hm_character.init_hm_character()
 
-## 手持 [param card] 前确认出战能力；僵王和独立模仿者入口不会改变手持状态。
+## 手持 [param card] 前确认卡片可用性；僵王只建立预览，召唤等待战场格子确认。
 func _click_card(card:Card) -> void:
-	if not is_instance_valid(card) or not AllCards.is_battle_card(card.card_reference):
+	if not is_instance_valid(card) or card.is_queued_for_deletion() or not AllCards.is_battle_card(card.card_reference):
+		return
+	if not card.is_can_click:
+		SoundManager.play_other_SFX("buzzer")
+		return
+	if card.card_reference.card_type == ResourceCardReference.CardType.ZombieBoss \
+		and not main_game.zombie_manager.can_summon_boss(card.card_reference.content_id):
+		SoundManager.play_other_SFX("buzzer")
 		return
 	SoundManager.play_other_SFX("seedlift")
 	curr_hm_status = E_HandManagerStatus.Character

@@ -30,6 +30,11 @@ var curr_all_level_state_data: Dictionary = DEFAULT_CURR_ALL_LEVEL_STATE_DATA.du
 ## 上次出战卡片的身份引用，按卡槽顺序保存；不含价格、冷却等运行状态。
 var selected_cards: Array[ResourceCardReference] = []
 
+## 当前可用僵王角色，普通选卡按此列表筛选；默认包含博士，不受关卡自动出场配置影响。
+var curr_zombie_boss: Array[CharacterRegistry.ZombieBossType] = [
+	CharacterRegistry.ZombieBossType.ZB001Doctor,
+]
+
 var curr_plant :Array[CharacterRegistry.PlantType]= [
 	CharacterRegistry.PlantType.P001PeaShooterSingle,
 	CharacterRegistry.PlantType.P002SunFlower,

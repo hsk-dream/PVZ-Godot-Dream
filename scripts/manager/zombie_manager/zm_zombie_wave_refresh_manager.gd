@@ -45,6 +45,8 @@ enum E_RefreshStatus{
 
 ## 当前刷新状态
 var curr_refresh_status:=E_RefreshStatus.DisableRefresh
+## 停止或切波时递增，最短波间隔的旧等待不能消费新波次的刷新机会。
+var _refresh_generation: int = 0
 ## 当前可以的刷新类型,不可以选Norm正常刷新
 var curr_can_refresh_type = E_RefreshType.Null
 ## 波次总血量
@@ -72,6 +74,7 @@ func _ready() -> void:
 
 ## 停止自然刷新和最短波间隔计时，并关闭提前刷新；已排队的回调仍检查战斗阶段。
 func stop_refresh() -> void:
+	_refresh_generation += 1
 	wave_norm_refresh_timer.stop()
 	wave_min_time_timer.stop()
 	curr_can_refresh_type = E_RefreshType.Null
@@ -80,6 +83,7 @@ func stop_refresh() -> void:
 
 ## 每次刷新僵尸后获取当前波次生成僵尸血量值
 func update_wave_health_data(curr_wave_total_health:int, new_curr_wave_type:ZombieWaveManager.E_WaveType, new_curr_wave:int):
+	_refresh_generation += 1
 	self.curr_wave_type = new_curr_wave_type
 	self.curr_wave = new_curr_wave
 	curr_refresh_status = E_RefreshStatus.DisableRefresh
@@ -143,10 +147,10 @@ func _trigger_refresh():
 	if curr_refresh_status == E_RefreshStatus.AwaitRefresh:
 		refresh_once()
 	else:
-		# 多个掉血回调可能同时等待；恢复后只允许尚未消费的刷新状态继续。
+		# 多个掉血回调可能同时等待，绑定本次刷新版本，停止或切波后旧等待失效。
+		var refresh_generation: int = _refresh_generation
 		await signal_start_await_refresh
-		# 如果还没触发刷新
-		if curr_refresh_status == E_RefreshStatus.AwaitRefresh:
+		if refresh_generation == _refresh_generation and curr_refresh_status == E_RefreshStatus.AwaitRefresh:
 			refresh_once()
 
 ## 波次最小时间到达后允许提前刷新；结束战斗后不重新激活刷新状态。

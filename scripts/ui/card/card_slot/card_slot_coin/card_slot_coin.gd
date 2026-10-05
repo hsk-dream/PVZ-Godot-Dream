@@ -14,7 +14,7 @@ func init_card_slot_coin(game_para: ResourceLevelData) -> void:
 func init_pre_choosed_card(references: Array[ResourceCardReference]) -> void:
 	# 每个引用表示一张完整卡片，不再组合植物、僵尸补零数组。
 	for reference: ResourceCardReference in references:
-		if not AllCards.is_battle_card(reference):
+		if not AllCards.is_battle_card(reference) or reference.card_type == ResourceCardReference.CardType.ZombieBoss:
 			push_error("CardSlotCoin：预选卡必须是已注册的植物或普通僵尸。")
 			continue
 		if card_slot_battle_coin.curr_cards.size() >= card_slot_battle_coin.cards_placeholder.size():

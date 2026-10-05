@@ -1,13 +1,15 @@
+## 僵王共用逻辑死亡、控制效果清理和奖杯请求；具体死亡动画由各自状态机负责。
 extends Character000Base
 class_name ZB000Base
-## 僵王共用逻辑死亡、控制效果清理和奖杯请求；具体死亡动画由各自状态机负责。
 
-## 由死亡动画方法轨道请求奖励，是否允许生成由关卡管理器判断。
+## 由死亡动画或直接消失接口请求奖励，是否允许生成由关卡管理器判断。
 signal signal_trophy_requested(global_pos: Vector2)
 ## 状态进入完成后通知检测器重新索敌；状态内单独修改受击开关时也应发出此信号。
+## 由具体僵王及其状态机发送、检测组件监听，基类只声明共用接口。
+@warning_ignore("unused_signal")
 signal signal_status_update
 
-## 死亡动画请求奖杯时使用的世界位置标记；缺失时回退到角色根节点位置。
+## 请求奖杯时使用的世界位置标记；缺失时回退到角色根节点位置。
 @onready var trophy_spawn_point: Marker2D = get_node_or_null("%TrophySpawnPoint") as Marker2D
 ## 是否已经启动死亡淡出，防止重复创建补间或重复安排释放。
 var _is_fading := false
@@ -41,6 +43,19 @@ func character_death() -> void:
 	super.character_death()
 	hurt_box_component.disable_component(ComponentNormBase.E_IsEnableFactor.Death)
 	prepare_death_animation()
+
+
+## 正常出战实例扣尽生命并登记击杀，不等待死亡演出；已死亡实例不重复扣血或计数。[br]
+## 释放前通过 [method request_trophy] 请求奖励，关卡仍检查胜利条件、全部僵王死亡及重复请求。
+## 死亡演出中的实例也可调用此接口，立即请求结算并移除；已排队释放时不再处理。
+func character_death_disappear() -> void:
+	if is_queued_for_deletion():
+		return
+	if not is_death:
+		hp_component.Hp_loss_death(false)
+	# 请求必须先于 queue_free，角色进入待删除状态后奖杯入口会拒绝请求。
+	request_trophy()
+	queue_free()
 
 
 ## 死亡演出只保留初始随机速度，解除停滞并停止旧计时器，防止结束回调覆盖演出速度。
@@ -101,7 +116,7 @@ func be_jalapeno(attack_value: int) -> void:
 	hp_component.Hp_loss(attack_value, BulletRegistry.AttackMode.Penetration, false, false)
 
 
-## 轨道仅发请求，不直接创建奖杯；存活、展示和正在卸载的角色不能请求奖励。
+## 死亡动画和直接消失共用请求入口，不直接创建奖杯；存活、展示和正在卸载的角色不能请求奖励。
 func request_trophy() -> void:
 	if not is_death or character_init_type != E_CharacterInitType.IsNorm \
 		or not is_inside_tree() or is_queued_for_deletion():
@@ -111,7 +126,7 @@ func request_trophy() -> void:
 	signal_trophy_requested.emit(spawn_position)
 
 
-## 死亡状态完成后沿用普通僵尸的一秒淡出；不更改基类的直接删除入口。
+## 正常死亡状态完成后沿用一秒淡出；直接消失使用 [method character_death_disappear]。
 func _fade_and_remove() -> void:
 	if _is_fading or not is_inside_tree() or is_queued_for_deletion():
 		return

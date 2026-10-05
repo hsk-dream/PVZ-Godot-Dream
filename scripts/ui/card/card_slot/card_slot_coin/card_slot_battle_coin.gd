@@ -65,7 +65,7 @@ func main_game_refresh_card():
 	for i: int in range(curr_cards.size()):
 		# 当前槽位中需要启用战斗交互的卡片。
 		var card: Card = curr_cards[i]
-		if not AllCards.is_battle_card(card.card_reference):
+		if not AllCards.is_battle_card(card.card_reference) or card.card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
 			card.set_card_disable()
 			continue
 		card.card_context = Card.CardContext.Battle

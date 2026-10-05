@@ -36,6 +36,9 @@ func update_move_dir_y_correct(curr_move_dir_y_correct_slope:Vector2):
 
 ## 启动小推车
 func _start_mower():
+	# 覆盖基类的启动入口也要拦截销毁当帧的延迟信号。
+	if is_destroyed or is_queued_for_deletion():
+		return
 	is_moving = true
 	animation_player.play("RoofCleaner")
 	SoundManager.play_other_SFX("lawnmower")

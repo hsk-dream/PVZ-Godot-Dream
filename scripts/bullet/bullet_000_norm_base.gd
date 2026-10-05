@@ -13,6 +13,8 @@ class_name Bullet000NormBase
 @export var max_attack_num:=1
 ## 当前攻击次数
 var curr_attack_num:=0
+## 一颗子弹对同一僵王只结算一次，避免多个受击区域或追踪补判重复命中。
+var _hit_boss_ids: Dictionary[int, bool] = {}
 ## 子弹伤害
 @export var attack_value := 20
 ## 子弹默认移动速度
@@ -98,39 +100,50 @@ func get_bullet_paras()->Dictionary[E_InitParasAttr,Variant]:
 
 ## 子弹与敌人碰撞
 func _on_area_2d_attack_area_entered(area: Area2D) -> void:
-	var enemy:Character000Base = area.owner
+	var enemy := area.owner as Character000Base
+	if not _can_attack_character(enemy):
+		return
+	if max_attack_num != -1 and curr_attack_num >= max_attack_num:
+		return
+	attack_once(enemy)
+
+
+## 碰撞和追踪补判共用目标检查；追踪子弹可跳过普通角色行号，僵王始终由空间碰撞决定。
+func _can_attack_character(enemy: Character000Base, check_lane: bool = true) -> bool:
+	if not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.is_death:
+		return false
+	if not is_instance_valid(enemy.hurt_box_component) or not enemy.hurt_box_component.is_enabling:
+		return false
+	if enemy is ZB000Base:
+		return bullet_camp == CharacterRegistry.CharacterType.Plant \
+			and enemy.character_init_type == Character000Base.E_CharacterInitType.IsNorm \
+			and (can_attack_zombie_status & Zombie000Base.E_BeAttackStatusZombie.IsNorm) != 0
 	## TODO:攻击植物子弹
 	if enemy is Plant000Base:
 		## 子弹阵营为植物
 		if bullet_camp == CharacterRegistry.CharacterType.Plant:
-			return
+			return false
 		if not enemy.curr_be_attack_status & can_attack_plant_status:
-			return
+			return false
 	elif enemy is Zombie000Base:
 		## 子弹阵营为植物
 		if bullet_camp == CharacterRegistry.CharacterType.Zombie:
-			return
+			return false
 		## 如果不是可攻击状态敌人
 		if not enemy.curr_be_attack_status & can_attack_zombie_status:
 			#print("敌人状态：", enemy.curr_be_attack_status, "可以攻击敌人状态：", can_attack_zombie_status)
-			return
+			return false
 	else:
-		push_error("敌人不是植物,不是僵尸")
-	## 子弹没有攻击次数
-	if max_attack_num != -1 and curr_attack_num >= max_attack_num:
-		return
-
-	## 如果子弹有行属性
-	if is_activate_lane:
-		if lane == enemy.lane:
-			attack_once(enemy)
-	else:
-		attack_once(enemy)
+		return false
+	return not check_lane or not is_activate_lane or lane == enemy.lane
 
 
 ## 对敌人造成伤害
 func _attack_enemy(enemy:Character000Base):
-	if enemy is Zombie000Base:
+	if enemy is ZB000Base:
+		# 僵王直接使用角色伤害入口，不转换成普通僵尸或套用其防具规则。
+		enemy.be_attacked_bullet(attack_value, bullet_mode, true, trigger_be_attack_sfx)
+	elif enemy is Zombie000Base:
 		_attack_zombie(enemy)
 	elif enemy is Plant000Base:
 		_attack_plant(enemy)
@@ -153,11 +166,25 @@ func _attack_plant(plant:Plant000Base):
 func get_first_be_hit_plant_in_cell(plant:Plant000Base)->Plant000Base:
 	return plant
 
-## 攻击一次
+## [param enemy] 本次命中目标，可为空表示撞地或落空。[br]
+## 先确认僵王命中次数与受击状态，再进入 [method _attack_enemy] 结算伤害及子类附加效果。
+## 命中类型在扣血前保存，致死攻击的命中特效同样显示在机甲前方。
+## 僵王命中特效保留命中时的位置；普通目标的特效继续对齐受击组件的全局 X。
 func attack_once(enemy:Character000Base):
+	if is_queued_for_deletion():
+		return
+	if enemy is ZB000Base:
+		if not _can_attack_character(enemy) or _hit_boss_ids.has(enemy.get_instance_id()):
+			return
+		if max_attack_num != -1 and curr_attack_num >= max_attack_num:
+			return
+		# 在发出伤害前登记，抵御伤害信号引发的重入；不持有已经释放的僵王引用。
+		_hit_boss_ids[enemy.get_instance_id()] = true
 	curr_attack_num += 1
 	if max_attack_num != -1 and curr_attack_num > max_attack_num:
 		return
+	# 扣血可能触发目标死亡或释放，提前记录命中类型，供特效位置与层级处理使用。
+	var is_boss_hit: bool = is_instance_valid(enemy) and enemy is ZB000Base
 	## 对敌人造成伤害
 	_attack_enemy(enemy)
 	## 是否有音效
@@ -165,9 +192,10 @@ func attack_once(enemy:Character000Base):
 		SoundManager.play_bullet_attack_SFX(type_bullet_SFX)
 	## 如果有子弹特效
 	if bullet_effect.is_bullet_effect:
-		if enemy is Character000Base:
+		# 僵王受击框较大，保留特效在子弹命中处的位置；普通目标继续使用原有 X 对齐规则。
+		if not is_boss_hit and is_instance_valid(enemy) and enemy is Character000Base:
 			bullet_effect.global_position.x = enemy.hurt_box_component.global_position.x
-		bullet_effect.activate_bullet_effect()
+		bullet_effect.activate_bullet_effect(is_boss_hit)
 
 	## 判断是否进入删除队列
 	if max_attack_num != -1 and curr_attack_num >= max_attack_num:

@@ -1,6 +1,6 @@
 [gd_resource type="Animation" load_steps=2 format=3 uid="uid://iaaxsn2sp5mc"]
 
-[ext_resource type="Texture2D" uid="uid://b20h77g62nvj3" path="res://assets/reanim/Threepeater_blink1.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://b20h77g62nvj3" path="res://assets/reanim/ThreePeater_blink1.png" id="0_fuck"]
 
 [resource]
 resource_name = "ThreePeater_blink1"

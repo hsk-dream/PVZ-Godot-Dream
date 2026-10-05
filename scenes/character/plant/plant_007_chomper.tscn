@@ -1,5 +1,6 @@
-[gd_scene load_steps=44 format=3 uid="uid://br23cxiijg77s"]
+[gd_scene load_steps=45 format=3 uid="uid://br23cxiijg77s"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_lv0cd"]
 [ext_resource type="Texture2D" uid="uid://bxi5txsx8yu3x" path="res://assets/reanim/Chomper_groundleaf4.png" id="2_b40dc"]
 [ext_resource type="Script" uid="uid://ndby176l8utj" path="res://scripts/character/plant/plant_007_chomper.gd" id="2_kp108"]
@@ -327,6 +328,7 @@ position = Vector2(45, 0)
 shape = SubResource("RectangleShape2D_b40dc")
 
 [node name="ChewTimer" type="Timer" parent="." index="11"]
+script = ExtResource("speed_timer")
 one_shot = true
 
 [connection signal="timeout" from="ChewTimer" to="." method="_on_chew_timer_timeout"]

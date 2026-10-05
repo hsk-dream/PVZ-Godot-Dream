@@ -1,12 +1,12 @@
 [gd_resource type="Animation" load_steps=8 format=3 uid="uid://cy5tkkel0nmpp"]
 
-[ext_resource type="Texture2D" uid="uid://i81mtytc2pod" path="res://assets/reanim/Threepeater_headleaf1.png" id="0_fuck"]
-[ext_resource type="Texture2D" uid="uid://xcqhwarudb01" path="res://assets/reanim/Threepeater_head.png" id="1_fuck"]
-[ext_resource type="Texture2D" uid="uid://b20h77g62nvj3" path="res://assets/reanim/Threepeater_blink1.png" id="2_fuck"]
-[ext_resource type="Texture2D" uid="uid://806ya6s6keow" path="res://assets/reanim/Threepeater_mouth.png" id="3_fuck"]
-[ext_resource type="Texture2D" uid="uid://bvcab6e1lqyff" path="res://assets/reanim/Threepeater_headleaf3.png" id="4_fuck"]
-[ext_resource type="Texture2D" uid="uid://ctjycabm2oguh" path="res://assets/reanim/Threepeater_headleaf2.png" id="5_fuck"]
-[ext_resource type="Texture2D" uid="uid://bfojcqkxyd66q" path="res://assets/reanim/Threepeater_blink2.png" id="6_fuck"]
+[ext_resource type="Texture2D" uid="uid://i81mtytc2pod" path="res://assets/reanim/ThreePeater_headleaf1.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://xcqhwarudb01" path="res://assets/reanim/ThreePeater_head.png" id="1_fuck"]
+[ext_resource type="Texture2D" uid="uid://b20h77g62nvj3" path="res://assets/reanim/ThreePeater_blink1.png" id="2_fuck"]
+[ext_resource type="Texture2D" uid="uid://806ya6s6keow" path="res://assets/reanim/ThreePeater_mouth.png" id="3_fuck"]
+[ext_resource type="Texture2D" uid="uid://bvcab6e1lqyff" path="res://assets/reanim/ThreePeater_headleaf3.png" id="4_fuck"]
+[ext_resource type="Texture2D" uid="uid://ctjycabm2oguh" path="res://assets/reanim/ThreePeater_headleaf2.png" id="5_fuck"]
+[ext_resource type="Texture2D" uid="uid://bfojcqkxyd66q" path="res://assets/reanim/ThreePeater_blink2.png" id="6_fuck"]
 
 [resource]
 resource_name = "ThreePeater_face3"

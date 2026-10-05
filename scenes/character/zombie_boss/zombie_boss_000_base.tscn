@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://7y86ib4sacu4"]
+
+[ext_resource type="PackedScene" uid="uid://bkx25sp71flk5" path="res://scenes/character/character_000_base.tscn" id="1_bu51k"]
+[ext_resource type="Script" uid="uid://dadab2luhjkwn" path="res://scripts/character/zombie_boss/z_b_000_base.gd" id="2_gwo2k"]
+
+[node name="ZombieBoss000Base" unique_id=1135427569 instance=ExtResource("1_bu51k")]
+script = ExtResource("2_gwo2k")
+
+[node name="HurtBoxDetection" parent="HurtBoxComponent" parent_id_path=PackedInt32Array(35856933) index="0" unique_id=247294405]
+collision_layer = 4
+
+[node name="HurtBoxReal" parent="HurtBoxComponent" parent_id_path=PackedInt32Array(35856933) index="1" unique_id=418655737]
+collision_layer = 512

@@ -3,7 +3,7 @@ class_name MagnetComponent
 
 ## 当前持有铁器容器
 @export var curr_iron_container: Node2D
-@onready var attack_cd_timer: Timer = $AttackCdTimer
+@onready var attack_cd_timer: SpeedTimer = $AttackCdTimer
 @onready var area_2d: Area2D = $Area2D
 
 ## 攻击cd(笑话铁器时间)
@@ -21,7 +21,9 @@ signal signal_attack_cd_end
 
 func _ready() -> void:
 	super()
-	attack_cd_timer.wait_time = attack_cd
+	# 基础冷却与倍率分开，防止多次速度变化累计缩放周期。
+	attack_cd_timer.base_wait_time = attack_cd
+	owner_update_speed(GlobalUtils.get_dic_product(owner.influence_speed_factors))
 
 ## 启用组件
 func enable_component(is_enable_factor:E_IsEnableFactor):
@@ -50,7 +52,7 @@ func attack_once(iron_node:IronNode):
 	var tween = get_tree().create_tween()
 	tween.tween_property(new_iron_node, "position", Vector2.ZERO, 0.5)
 
-	attack_cd_timer.start()
+	attack_cd_timer.start_scaled()
 
 ## 消化铁器完成
 func _on_attack_cd_timer_timeout() -> void:
@@ -92,14 +94,6 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		area_owner.ladder_death()
 
 
-## 角色速度修改
+## 只同步倍率，冷却进度和零速暂停由 SpeedTimer 维护。
 func owner_update_speed(speed_product:float):
-	if not attack_cd_timer.is_stopped():
-		if speed_product == 0:
-			attack_cd_timer.paused = true
-		else:
-			attack_cd_timer.paused = false
-
-			attack_cd_timer.start(attack_cd_timer.time_left / speed_product)
-
-	attack_cd_timer.wait_time = attack_cd / speed_product
+	attack_cd_timer.set_speed_scale(speed_product)

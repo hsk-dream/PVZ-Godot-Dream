@@ -3,7 +3,7 @@ class_name BombComponentJackbox
 ## 小丑爆炸组件
 ## 小丑爆炸攻击所有范围内敌人
 
-@onready var jack_bomb_timer: Timer = $JackBombTimer
+@onready var jack_bomb_timer: SpeedTimer = $JackBombTimer
 @onready var bomb_effect: BombEffectBase = $BombEffect
 
 
@@ -22,6 +22,8 @@ signal signal_trigger_bomb
 
 func _ready() -> void:
 	owner = owner as Zombie000Base
+	# 随机爆炸时长保持动作时间，已有速度与后续速度信号统一交给计时器。
+	owner_update_speed(GlobalUtils.get_dic_product(owner.influence_speed_factors))
 	## 如果出战角色
 	if owner.character_init_type == Character000Base.E_CharacterInitType.IsNorm:
 		var p = randi_range(1,100)
@@ -30,17 +32,11 @@ func _ready() -> void:
 			wait_time_bomb = randf_range(early_time_range.x, early_time_range.y)
 		else:
 			wait_time_bomb = randf_range(late_time_range.x, late_time_range.y)
-		jack_bomb_timer.start(wait_time_bomb)
+		jack_bomb_timer.start_scaled(wait_time_bomb)
 
-## 角色速度修改
+## 角色变速不重新抽取爆炸时间，冻结后从原有进度继续。
 func owner_update_speed(speed_product:float):
-	if not jack_bomb_timer.is_stopped():
-		if speed_product == 0:
-			jack_bomb_timer.paused = true
-		else:
-			jack_bomb_timer.paused = false
-
-			jack_bomb_timer.start(jack_bomb_timer.time_left / speed_product)
+	jack_bomb_timer.set_speed_scale(speed_product)
 
 ## 爆炸时间到,发射触发爆炸信号
 func _on_jack_bomb_timer_timeout() -> void:

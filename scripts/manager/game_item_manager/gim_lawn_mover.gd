@@ -67,10 +67,13 @@ func replenish_lawn_mover():
 	if all_lawn_movers.is_empty():
 		create_all_lawn_movers()
 	else:
+		# 按行检查原位可用小推车；被碾压但尚未释放的车也需要补充。
 		for i in range(all_lawn_movers.size()):
-			if is_instance_valid(all_lawn_movers[i]) and not all_lawn_movers[i].is_moving:
+			if is_instance_valid(all_lawn_movers[i]) and not all_lawn_movers[i].is_queued_for_deletion() \
+				and not all_lawn_movers[i].is_destroyed and not all_lawn_movers[i].is_moving:
 				continue
 			else:
+				# 本行新补充的小推车，替换旧引用；视觉残留不参与管理器登记。
 				var new_lawn_mover = create_lawn_mover(i, all_lawn_movers_type[i], all_lawn_movers_global_pos[i])
 				all_lawn_movers[i] = new_lawn_mover
 
@@ -85,18 +88,24 @@ func create_lawn_mover(lane:int, lawn_mover_type:E_LawnMoverType, global_pos:Vec
 	lawn_mover_appear(new_lawn_mover)
 	return new_lawn_mover
 
-## 小推车出现动画
+## 小推车出现动画。[param lawn_mover] 为新生成的车，动画随该车销毁自动取消。
 func lawn_mover_appear(lawn_mover:Node2D):
+	# 滑入动画的最终局部横坐标。
 	var pos_x = lawn_mover.position.x
 	lawn_mover.position.x -= 100
-	var tween:Tween = create_tween()
+	# 绑定车节点而非管理器，避免被碾压后继续写入已释放对象。
+	var tween:Tween = lawn_mover.create_tween()
 	tween.tween_property(lawn_mover, "position:x", pos_x, 0.5)
 
 func get_save_game_data_lawn_mover_manager()->Dictionary:
+	# 保存各行是否仍有未启动、未销毁的小推车。
 	var save_game_data_lawn_mover:Dictionary = {}
+	# 与行号对应的可用状态列表，不包含压扁后的视觉副本。
 	var is_has_all_lawn_mover:Array[bool] = []
+	# 当前检查的行号；待删除的原车即使引用有效也不能存为可用。
 	for i in range(all_lawn_movers.size()):
-		if is_instance_valid(all_lawn_movers[i]) and not all_lawn_movers[i].is_moving:
+		if is_instance_valid(all_lawn_movers[i]) and not all_lawn_movers[i].is_queued_for_deletion() \
+			and not all_lawn_movers[i].is_destroyed and not all_lawn_movers[i].is_moving:
 			is_has_all_lawn_mover.append(true)
 		else:
 			is_has_all_lawn_mover.append(false)

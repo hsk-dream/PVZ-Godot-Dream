@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://d4buam3ftf0yu"]
+
+[ext_resource type="Script" uid="uid://cq8h7n2r5nadp" path="res://scripts/ui/main_game_ui/ui_boss_hp_progress_bar.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cebvui8j81gxi" path="res://assets/image/ui/ui_progress_bar/FlagMeter.png" id="2_meter"]
+[ext_resource type="Texture2D" uid="uid://de2yt1rux7boj" path="res://assets/image/ui/ui_progress_bar/FlagMeterParts.png" id="3_parts"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_under"]
+atlas = ExtResource("2_meter")
+region = Rect2(0, 0, 0, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_progress"]
+atlas = ExtResource("2_meter")
+region = Rect2(0, 27, 0, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon"]
+atlas = ExtResource("3_parts")
+region = Rect2(0, 0, 25, 25)
+
+[node name="BossHpProgressBar" type="Control" unique_id=1162200469]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="." unique_id=1110524918]
+layout_mode = 0
+offset_right = 158.0
+offset_bottom = 27.0
+mouse_filter = 2
+step = 0.0
+fill_mode = 1
+texture_under = SubResource("AtlasTexture_under")
+texture_progress = SubResource("AtlasTexture_progress")
+
+[node name="BossIcon" type="TextureRect" parent="." unique_id=1932898590]
+layout_mode = 0
+offset_left = 142.0
+offset_top = -6.0
+offset_right = 167.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_icon")
+
+[node name="BossNameLabel" type="Label" parent="." unique_id=203307386]
+visible = false
+layout_mode = 0
+offset_left = 35.0
+offset_top = 10.0
+offset_right = 125.0
+offset_bottom = 27.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "僵王博士"
+horizontal_alignment = 1

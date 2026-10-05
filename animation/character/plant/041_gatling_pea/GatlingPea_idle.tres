@@ -1,13 +1,13 @@
-[gd_resource type="Animation" load_steps=9 format=3 uid="uid://c253162wiggt0"]
+[gd_resource type="Animation" format=3 uid="uid://c253162wiggt0"]
 
-[ext_resource type="Texture2D" uid="uid://cy3xu8ug3gd2" path="res://assets/reanim/Peashooter_backleaf.png" id="0_fuck"]
-[ext_resource type="Texture2D" uid="uid://cyknr5ymersct" path="res://assets/reanim/Peashooter_backleaf_lefttip.png" id="1_fuck"]
-[ext_resource type="Texture2D" uid="uid://i7fngqj5l36a" path="res://assets/reanim/Peashooter_backleaf_righttip.png" id="2_fuck"]
-[ext_resource type="Texture2D" uid="uid://yxv2bpco6d57" path="res://assets/reanim/Peashooter_stalk_bottom.png" id="3_fuck"]
-[ext_resource type="Texture2D" uid="uid://bu8g84fe1ni48" path="res://assets/reanim/Peashooter_stalk_top.png" id="4_fuck"]
-[ext_resource type="Texture2D" uid="uid://300aew7liup" path="res://assets/reanim/Peashooter_frontleaf.png" id="5_fuck"]
-[ext_resource type="Texture2D" uid="uid://nj6m28m6k5p1" path="res://assets/reanim/Peashooter_frontleaf_righttip.png" id="6_fuck"]
-[ext_resource type="Texture2D" uid="uid://dit0i5evvco14" path="res://assets/reanim/Peashooter_frontleaf_lefttip.png" id="7_fuck"]
+[ext_resource type="Texture2D" uid="uid://cy3xu8ug3gd2" path="res://assets/reanim/PeaShooter_backleaf.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://cyknr5ymersct" path="res://assets/reanim/PeaShooter_backleaf_lefttip.png" id="1_fuck"]
+[ext_resource type="Texture2D" uid="uid://i7fngqj5l36a" path="res://assets/reanim/PeaShooter_backleaf_righttip.png" id="2_fuck"]
+[ext_resource type="Texture2D" uid="uid://yxv2bpco6d57" path="res://assets/reanim/PeaShooter_stalk_bottom.png" id="3_fuck"]
+[ext_resource type="Texture2D" uid="uid://bu8g84fe1ni48" path="res://assets/reanim/PeaShooter_stalk_top.png" id="4_fuck"]
+[ext_resource type="Texture2D" uid="uid://300aew7liup" path="res://assets/reanim/PeaShooter_frontleaf.png" id="5_fuck"]
+[ext_resource type="Texture2D" uid="uid://nj6m28m6k5p1" path="res://assets/reanim/PeaShooter_frontleaf_righttip.png" id="6_fuck"]
+[ext_resource type="Texture2D" uid="uid://dit0i5evvco14" path="res://assets/reanim/PeaShooter_frontleaf_lefttip.png" id="7_fuck"]
 
 [resource]
 resource_name = "GatlingPea_idle"
@@ -384,7 +384,7 @@ tracks/30/keys = {
 "times": PackedFloat32Array(0, 0.083333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333, 0.666667, 0.75, 0.833333, 0.916667, 1, 1.08333, 1.16667, 1.25, 1.33333, 1.41667, 1.5, 1.58333, 1.66667, 1.75, 1.83333, 1.91667, 2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.0, 0.031416, 0.066323, 0.099484, 0.127409, 0.158825, 0.191986, 0.228638, 0.270526, 0.310669, 0.342085, 0.375246, 0.410152, 0.385718, 0.363028, 0.342085, 0.289725, 0.240855, 0.191986, 0.158825, 0.127409, 0.099484, 0.066323, 0.031416, 0.0]
+"values": [0.0, 0.031416, 0.06632299999999999, 0.099484, 0.127409, 0.158825, 0.191986, 0.228638, 0.270526, 0.310669, 0.342085, 0.375246, 0.410152, 0.385718, 0.363028, 0.342085, 0.289725, 0.240855, 0.191986, 0.158825, 0.127409, 0.099484, 0.06632299999999999, 0.031416, 0.0]
 }
 tracks/31/type = "value"
 tracks/31/imported = false

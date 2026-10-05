@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dn36gktmqp2h7"]
+
+[ext_resource type="Script" uid="uid://dd2xy8hq5p7ns" path="res://scripts/character/zombie_boss/001_doctor/objects/z_b_001_doctor_death_explosion_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://ctxw0wsj6lmny" path="res://assets/image/particles/BossExplosion3.png" id="3_flash"]
+[ext_resource type="Texture2D" uid="uid://breddbtgkk5oc" path="res://assets/image/particles/BossExplosion1.png" id="4_fire"]
+[ext_resource type="Texture2D" uid="uid://crkpicwle6l8k" path="res://assets/image/particles/BossExplosion2.png" id="5_smoke"]
+
+[sub_resource type="Animation" id="Animation_explode"]
+resource_name = "explode"
+length = 0.65
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.08, 0.22),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_flash"), ExtResource("4_fire"), ExtResource("5_smoke")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.09, 0.3, 0.65),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.25, 0.25), Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1.25, 1.25)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.65),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_explosion"]
+_data = {
+&"explode": SubResource("Animation_explode")
+}
+
+[node name="ZB001DoctorDeathExplosionEffect" type="Node2D" unique_id=1069347367]
+visible = false
+z_index = 4001
+z_as_relative = false
+script = ExtResource("1_effect")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1022383148]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_flash")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1784689385]
+libraries/ = SubResource("AnimationLibrary_explosion")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]

@@ -6,8 +6,11 @@ class_name DetectComponentSquash
 
 ## 判断敌人状态是否可以被攻击
 func _judge_enemy_is_can_be_attack(enemy:Character000Base)->bool:
-	if not is_instance_valid(enemy):
+	if not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.is_death:
 		return false
+	# 僵王沿用通用受击开关和跨行判断，不套用撑杆、海豚的落点规则。
+	if enemy is ZB000Base:
+		return super._judge_enemy_is_can_be_attack(enemy)
 	## 先判断行属性
 	if is_lane and owner.lane != enemy.lane:
 		return false

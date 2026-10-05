@@ -1,146 +1,120 @@
+## 按统一引用的有序表或权重池生成传送带出战卡，使用后移除卡片。
 extends PanelContainer
 class_name CardSlotConveyorBelt
-"""
-先根据植物和僵尸的权重,随机选取生成植物还是生成僵尸
-在使用随机池生成对应的卡片
-"""
 
+## 传送带齿轮动画节点。
 @onready var conveyor_belt_gear: ConveyorBeltGear = $ConveyorBeltGear
+## 新卡片的挂载区域。
 @onready var new_card_area: Panel = $NewCardArea
+## 控制新卡生成间隔的计时器。
 @onready var create_new_card_timer: Timer = $CreateNewCardTimer
-
-var curr_cards :Array[Card] = []
+## 当前传送带中的卡片。
+var curr_cards: Array[Card] = []
 
 @export_group("传送带参数")
-## 最大卡片数量，固定10个
-@export var num_card_max :int = 10
-## 每张卡片最终目标位置x,从0开始隔50像素个，ready函数中自动生成
-var all_card_pos_x_target :Array[float] = []
-## 卡片移动速度
-@export var conveyor_velocity :float = 30
-## 卡片生成时间
-@export var create_new_card_cd :float = 5
-
-#region 随机生成卡片相关
+## 最大卡片数量，默认 10 张。
+@export var num_card_max: int = 10
+## 各卡片目标 x 坐标，间隔 50 像素。
+var all_card_pos_x_target: Array[float] = []
+## 卡片向左移动的速度，单位像素每秒。
+@export var conveyor_velocity: float = 30
+## 新卡生成的基础间隔，单位秒。
+@export var create_new_card_cd: float = 5
+## 统一引用的随机权重池。
 @onready var card_random_pool: CardRandomPool = $CardRandomPool
-## 按顺序出现的卡片植物
-var card_order_plant:Dictionary[int, CharacterRegistry.PlantType] = {}
-## 按顺序出现的卡片僵尸(若重复,则使用植物的卡片)
-var card_order_zombie:Dictionary[int, CharacterRegistry.ZombieType] = {}
-## 当前生成的卡片总数量
-var all_num_card :int = 0
-#endregion
-
-## 是否正在运行中
-var is_working:= false
-## 创建新卡片倍率
-var create_new_card_speed:float
-## 卡片种植完成后信号，计时器判断是否重启
+## 生成序号到完整引用的覆盖表；未配置序号使用权重池。
+var card_order: Dictionary[int, ResourceCardReference] = {}
+## 从零开始累计的已生成卡片数量。
+var all_num_card: int = 0
+## 是否正在推进卡片和生成计时器。
+var is_working: bool = false
+## 关卡指定的生成速率倍率。
+var create_new_card_speed: float
+## 卡片消费后通知等待满槽的生成协程恢复。
 signal signal_card_end
 
-
-#region 初始化
-
+## 根据最大容量预先生成卡片目标位置。
 func _ready() -> void:
 	_init_card_position_x()
 
-## 初始化传送带卡片最终位置
-func _init_card_position_x():
-	for i in range(num_card_max):
-		all_card_pos_x_target.append(0 + i * 50)
-	print("传送带每张卡片的位置：",all_card_pos_x_target)
+## 初始化零起点的传送带卡片目标 x 坐标。
+func _init_card_position_x() -> void:
+	# 槽位索引只控制布局，与内容编号无关。
+	for index: int in range(num_card_max):
+		all_card_pos_x_target.append(index * 50.0)
 
-## 管理器初始化调用
-func init_card_slot_conveyor_belt(game_para:ResourceLevelData):
-	var card_random_pool_init_para = {
-		CardRandomPool.E_CardRandomPoolInitParaAttr.AllCardPlantProbability: game_para.all_card_plant_type_probability,
-		CardRandomPool.E_CardRandomPoolInitParaAttr.AllCardZombieProbability: game_para.all_card_zombie_type_probability,
-	}
-	print("传送带卡槽初始化随机卡片生成器")
-	card_random_pool.init_card_random_pool(card_random_pool_init_para)
-
-	self.card_order_plant = game_para.card_order_plant
-	self.card_order_zombie = game_para.card_order_zombie
-	self.create_new_card_speed = game_para.create_new_card_speed
-	## 修改倍率
-	create_new_card_cd = create_new_card_cd / create_new_card_speed
+## 从 [param game_para] 获取统一有序卡、权重及倍率，初始化后保留首张卡。
+func init_card_slot_conveyor_belt(game_para: ResourceLevelData) -> void:
+	card_random_pool.init_card_random_pool(game_para.conveyor_weights)
+	card_order = game_para.conveyor_order
+	create_new_card_speed = game_para.create_new_card_speed
+	create_new_card_cd /= create_new_card_speed
 	create_new_card_timer.wait_time = create_new_card_cd
-
 	await get_tree().process_frame
-	## 初始化后生成一个卡片
 	_create_new_card()
 
-#endregion
-
+## 按 [param delta] 秒推进传送带中的卡片位置。
 func _process(delta: float) -> void:
-	if is_working:
-		## 更新卡片位置
-		for i in curr_cards.size():
-			if curr_cards[i].position.x > all_card_pos_x_target[i]:
-				curr_cards[i].position.x-= delta * conveyor_velocity
-			elif curr_cards[i].position.x == all_card_pos_x_target[i]:
-				continue
-			else:
-				curr_cards[i].position.x = all_card_pos_x_target[i]
+	if not is_working:
+		return
+	# 卡片顺序决定其目标槽位。
+	for index: int in curr_cards.size():
+		if curr_cards[index].position.x > all_card_pos_x_target[index]:
+			curr_cards[index].position.x -= delta * conveyor_velocity
+		elif curr_cards[index].position.x < all_card_pos_x_target[index]:
+			curr_cards[index].position.x = all_card_pos_x_target[index]
 
-#region 卡片生成相关
-## 卡片种植完成后
-func card_use_end(card:Card):
+## [param card] 成功使用后移除并释放，再通知满槽等待者继续生成。
+func card_use_end(card: Card) -> void:
 	curr_cards.erase(card)
 	card.queue_free()
 	signal_card_end.emit()
 
+## 计时器到期时尝试生成下一张卡。
 func _on_create_new_card_timer_timeout() -> void:
-	_create_new_card() # Replace with function body.
+	_create_new_card()
 
-## 生成一张新卡片
-func _create_new_card():
+## 优先使用统一有序引用，缺省时按权重抽取；僵王和无效引用不生成出战卡。
+func _create_new_card() -> void:
 	if curr_cards.size() >= num_card_max:
 		create_new_card_timer.stop()
 		await signal_card_end
 		create_new_card_timer.start()
-	var new_card_prefabs:Card
-	if card_order_plant.has(all_num_card):
-		new_card_prefabs = AllCards.all_plant_card_prefabs[card_order_plant[all_num_card]]
-	elif card_order_zombie.has(all_num_card):
-		new_card_prefabs = AllCards.all_zombie_card_prefabs[card_order_zombie[all_num_card]]
-	else:
-		new_card_prefabs = card_random_pool.get_random_card()
-	var new_card = new_card_prefabs.duplicate()
+	# 有序表及随机池都返回相同引用类型，无需植物/僵尸分支。
+	var reference: ResourceCardReference = card_order.get(all_num_card) if card_order.has(all_num_card) else card_random_pool.get_random_reference()
+	if not AllCards.is_battle_card(reference) or reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		push_error("CardSlotConveyorBelt：生成引用必须是已注册的植物或普通僵尸。")
+		return
+	# 卡片入树前已绑定完整引用和战斗交互上下文。
+	var new_card: Card = AllCards.create_card(reference, Card.CardContext.Battle)
+	if new_card == null:
+		return
 	new_card_area.add_child(new_card)
+	# 基类入树时解析默认费用，传送带在之后设为免费卡。
 	new_card.card_init_conveyor_belt()
 	new_card.position = Vector2(new_card_area.size.x, 0)
-	#print(new_card_area.size)
 	curr_cards.append(new_card)
-	new_card.signal_card_use_end.connect(card_use_end.bind(new_card))
-	var card_bg:TextureRect = new_card.get_node("CardBg")
-	card_bg.clip_children = CanvasItem.CLIP_CHILDREN_DISABLED
-
+	new_card.signal_card_use_end.connect(card_use_end)
+	# 保留传送带原有的缩略图越界显示方式。
+	var card_background: TextureRect = new_card.get_node("CardBg")
+	card_background.clip_children = CanvasItem.CLIP_CHILDREN_DISABLED
 	all_num_card += 1
 
-#endregion
-
-#region 传送带开始与结束
-## 开始传送带
-func start_conveyor_belt():
+## 开始移动、齿轮动画和新卡计时。
+func start_conveyor_belt() -> void:
 	is_working = true
 	conveyor_belt_gear.start_gear()
 	create_new_card_timer.start()
 
-## 停止传送带
-func stop_conveyor_belt():
+## 停止移动、齿轮动画和新卡计时。
+func stop_conveyor_belt() -> void:
 	is_working = false
 	conveyor_belt_gear.stop_gear()
 	create_new_card_timer.stop()
 
-## 移动卡槽（出现或隐藏）
-func move_card_slot_conveyor_belt(is_appeal:bool):
-	var tween = create_tween()
-	if is_appeal:
-		tween.tween_property(self, "position:y", 0, 0.2)
-
-	else:
-		tween.tween_property(self, "position:y", -100, 0.2)
+## 根据 [param is_appeal] 显示或隐藏传送带，等待 0.2 秒移动完成。
+func move_card_slot_conveyor_belt(is_appeal: bool) -> void:
+	# 整个卡槽的位移动画。
+	var tween: Tween = create_tween()
+	tween.tween_property(self, "position:y", 0 if is_appeal else -100, 0.2)
 	await tween.finished
-
-#endregion

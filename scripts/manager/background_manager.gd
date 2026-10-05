@@ -45,6 +45,7 @@ func init_frontground():
 		rain = RAIN.instantiate()
 		frontground.add_child(rain)
 
+## 展示下一轮僵尸前退雾；直接进入下一轮时保留当前三叶草效果和移动。
 func start_next_game_background_manager_update():
-	if is_instance_valid(fog):
+	if game_para.look_show_zombie and is_instance_valid(fog):
 		fog.fog_outside()

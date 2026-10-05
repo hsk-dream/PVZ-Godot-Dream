@@ -3,7 +3,7 @@ class_name Plant005PotatoMine
 
 @onready var detect_component: DetectComponent = $DetectComponent
 @onready var bomb_component: BombComponentBase = $BombComponent
-@onready var prepare_timer: Timer = $PrepareTimer
+@onready var prepare_timer: SpeedTimer = $PrepareTimer
 
 ## 准备时间
 @export var prepare_time := 10.0
@@ -20,8 +20,9 @@ func ready_norm():
 	## 默认禁用眨眼组件
 	blink_component.disable_component(ComponentNormBase.E_IsEnableFactor.Prepare)
 
-	prepare_timer.wait_time = prepare_time
-	prepare_timer.start()
+	# 已有速度因素先同步；在零速下种植也能保留完整准备任务。
+	update_prepare_speed(GlobalUtils.get_dic_product(influence_speed_factors))
+	prepare_timer.start_scaled(prepare_time)
 
 	if is_zombie_mode:
 		prepare_timer.stop()
@@ -53,14 +54,8 @@ func _on_prepare_timer_timeout() -> void:
 ## 重新设置准备时间
 func set_prepare_time(new_prepare_time:float):
 	prepare_time = new_prepare_time
-	prepare_timer.wait_time = prepare_time
-	prepare_timer.start()
+	prepare_timer.start_scaled(prepare_time)
 
-## 改变准备的速度
+## 改变准备倍率时保留进度，不重复缩放剩余时间。
 func update_prepare_speed(speed_factor:float):
-	if not prepare_timer.is_stopped():
-		if speed_factor == 0:
-			prepare_timer.paused = true
-		else:
-			prepare_timer.paused = false
-			prepare_timer.start(prepare_timer.time_left / speed_factor)
+	prepare_timer.set_speed_scale(speed_factor)

@@ -4,7 +4,7 @@ class_name AttackComponentBulletBase
 
 @onready var animation_tree: AnimationTree = $"../AnimationTree"
 ## 冷却时间计时器
-@onready var bullet_attack_cd_timer: Timer = $BulletAttackCdTimer
+@onready var bullet_attack_cd_timer: SpeedTimer = $BulletAttackCdTimer
 
 ## 用检测组件对应的值赋值，仙人掌会修改值更新子弹属性
 ## 当前发射子弹可以攻击的敌人状态
@@ -35,7 +35,9 @@ signal signal_shoot_bullet
 var bullets: Node2D
 func _ready() -> void:
 	super()
-	bullet_attack_cd_timer.wait_time = attack_cd
+	# 基础周期不含倍率；同步已有速度因素，避免等待下一次速度信号才生效。
+	bullet_attack_cd_timer.base_wait_time = attack_cd
+	owner_update_speed(GlobalUtils.get_dic_product(owner.influence_speed_factors))
 	if is_instance_valid(Global.main_game):
 		bullets = Global.main_game.bullets
 	## 用检测组件对应的值赋值，仙人掌会修改值更新子弹属性
@@ -46,31 +48,18 @@ func _ready() -> void:
 	is_lane = detect_component.is_lane
 
 
-## 角色速度修改
+## SpeedTimer 保留当前进度并处理零速，调用方不再换算剩余时间或修改 paused。
 func owner_update_speed(speed_product:float):
-	if not bullet_attack_cd_timer.is_stopped():
-		if speed_product == 0:
-			bullet_attack_cd_timer.paused = true
-		else:
-			bullet_attack_cd_timer.paused = false
-
-			bullet_attack_cd_timer.start(bullet_attack_cd_timer.time_left / speed_product)
-
-	bullet_attack_cd_timer.wait_time = attack_cd / speed_product
+	bullet_attack_cd_timer.set_speed_scale(speed_product)
 
 ## 开始攻击
 func attack_start():
 	super()
-	## 先随机等待一段时间调用一次攻击
-	await get_tree().create_timer(randf_range(0, bullet_attack_cd_timer.wait_time/3)).timeout
-	if is_attack_res:
-		## 首次攻击还未使用计时器循环攻击
-		if bullet_attack_cd_timer.is_stopped():
-			_on_bullet_attack_cd_timer_timeout()
-			bullet_attack_cd_timer.start()
-	## 等待一段时间后可能为非攻击状态
-	else:
-		attack_end()
+	# 首次随机等待也使用同一个可变速计时器，停攻会一起取消，避免旧协程迟到重启攻击。
+	if bullet_attack_cd_timer.is_stopped():
+		bullet_attack_cd_timer.start_scaled(maxf(randf_range(0, attack_cd / 3.0), 0.001))
+		# 仅第一轮使用短等待；修改基础周期不会重置当前进度，之后原生循环使用完整冷却。
+		bullet_attack_cd_timer.base_wait_time = attack_cd
 
 ## 结束攻击
 func attack_end():

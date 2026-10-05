@@ -1,6 +1,6 @@
 [gd_resource type="Animation" load_steps=2 format=3 uid="uid://b8jfj7848vwxu"]
 
-[ext_resource type="Texture2D" uid="uid://dp8034ogayq0f" path="res://assets/reanim/Peashooter_blink1.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://dp8034ogayq0f" path="res://assets/reanim/PeaShooter_blink1.png" id="0_fuck"]
 
 [resource]
 resource_name = "SplitPea_blink"

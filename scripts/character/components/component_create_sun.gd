@@ -2,7 +2,7 @@ extends ComponentNormBase
 class_name CreateSunComponent
 
 ## 生产阳光计时器
-@onready var create_sun_timer: Timer = $CreateSunTimer
+@onready var create_sun_timer: SpeedTimer = $CreateSunTimer
 ## 身体, 控制发光
 @onready var body: BodyCharacter = %Body
 
@@ -18,10 +18,7 @@ class_name CreateSunComponent
 @export var create_time_range_first:Vector2 = Vector2(3, 12.5)
 ## 后续生产阳光的时间范围
 @export var create_time_range_other:Vector2 = Vector2(23.5,25)
-## 阳光生产速度
-var create_speed := 1.0
-
-## 阳光生产间隔
+## 阳光生产间隔，始终保存正常速度下的动作时间。
 var create_interval :float
 ## 创建阳光时的发光颜色
 var create_sun_color: Color = Color(1, 1, 1)
@@ -46,11 +43,13 @@ func _on_character_death():
 
 #endregion
 func _ready() -> void:
-	#if get_tree().current_scene != MainGameManager:
+	# 随机区间不包含速度；禁用或展示状态也先保存周期与倍率，供后续启用使用。
+	create_interval = randf_range(create_time_range_first.x, create_time_range_first.y)
+	create_sun_timer.base_wait_time = create_interval
+	owner_update_speed(GlobalUtils.get_dic_product(owner.influence_speed_factors))
 	if not get_tree().current_scene is MainGameManager:
 		return
-	create_interval = randf_range(create_time_range_first.x, create_time_range_first.y)
-	create_sun_timer.start(create_interval)
+	create_sun_timer.start_scaled()
 
 	EventBus.subscribe("main_game_progress_update", _on_main_game_progress_update)
 
@@ -65,7 +64,7 @@ func _on_main_game_progress_update(curr_main_game_progress:MainGameManager.E_Mai
 func enable_component(is_enable_factor:E_IsEnableFactor):
 	super(is_enable_factor)
 	if is_enabling:
-		create_sun_timer.start(create_sun_timer.wait_time / create_speed)
+		create_sun_timer.start_scaled()
 
 ## 禁用组件
 func disable_component(is_enable_factor:E_IsEnableFactor):
@@ -73,23 +72,15 @@ func disable_component(is_enable_factor:E_IsEnableFactor):
 	if not is_enabling:
 		create_sun_timer.stop()
 
+## 禁用期间同样同步倍率，零速下重新启用时应保存任务但不开始扣减。
 func owner_update_speed(speed_product:float):
-	if is_enabling:
-		if not create_sun_timer.is_stopped():
-			if speed_product == 0:
-				create_sun_timer.paused = true
-			else:
-				create_sun_timer.paused = false
-
-				create_sun_timer.start(create_sun_timer.time_left / speed_product)
-
-	create_speed = speed_product
+	create_sun_timer.set_speed_scale(speed_product)
 
 
 ## 生产阳光后、改变阳光生产时间，重新启动计时器
 func change_production_interval():
-	create_interval = randf_range(create_time_range_other.x / create_speed, create_time_range_other.y / create_speed)
-	create_sun_timer.start(create_interval)
+	create_interval = randf_range(create_time_range_other.x, create_time_range_other.y)
+	create_sun_timer.start_scaled(create_interval)
 
 
 ## 创建阳光

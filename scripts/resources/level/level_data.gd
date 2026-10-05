@@ -65,6 +65,11 @@ func set_choose_level(curr_game_mode: MainSceneRegistry.MainScenes, curr_level_p
 @export var monster_mode: ConstLevelData.E_MonsterMode = ConstLevelData.E_MonsterMode.Norm
 ## 是否为小僵尸模式
 @export var is_mini_zombie := false
+@export_subgroup("额外胜利条件")
+## 额外胜利途径：至少生成一只僵王且全部已生成僵王死亡即可结束战斗，不等待普通僵尸清场。
+## 原有清场、罐子、脑子胜利及多轮计时规则仍有效；仅实际由 Boss 条件结束时等待动画或直接消失接口请求奖杯。
+@export var win_on_boss_death: bool = false
+
 @export_subgroup("正常出怪模式")
 ## 出怪倍率
 @export var zombie_multy := 1
@@ -82,6 +87,17 @@ func set_choose_level(curr_game_mode: MainSceneRegistry.MainScenes, curr_level_p
 @export var is_bungi := false
 ## 大波时生成的蹦极僵尸数量范围
 @export var range_num_bungi: Vector2i = Vector2i(3, 5)
+
+@export_subgroup("僵王参数")
+## 自动僵王场景通过 Global.character_registry 查询；Null 表示不自动生成，不限制卡片召唤。
+## 是否接受僵王奖杯请求由 [member win_on_boss_death] 决定，与是否配置僵王分开。
+@export var boss_type: CharacterRegistry.ZombieBossType = CharacterRegistry.ZombieBossType.Null
+## 正常模式：0 为正式开战时生成，1 起为指定波次生成；无出怪模式必须为 0。
+## 参数使用从 1 开始的波次，管理器接入时需与内部从 0 开始的 curr_wave 转换。
+@export_range(0, 999, 1, "or_greater") var boss_spawn_wave: int = 0
+## 相对于主游戏 ZombieBossRoot 的出生位置，不是植物格子行列或屏幕坐标。
+@export var boss_spawn_position: Vector2 = Vector2.ZERO
+
 @export_subgroup("锤僵尸出怪模式（需调整对应墓碑参数）")
 ## 墓碑出怪倍率
 @export var zombie_multy_hammer := 1
@@ -113,22 +129,21 @@ func set_choose_level(curr_game_mode: MainSceneRegistry.MainScenes, curr_level_p
 @export_range(1, 15) var max_choosed_card_num: int = 10
 ## 开始阳光数量
 @export var start_sun: int = 50
-## 预选卡片列表、预选卡片不能在选卡时取消
-@export var pre_choosed_card_list_plant: Array[CharacterRegistry.PlantType] = []
-@export var pre_choosed_card_list_zombie: Array[CharacterRegistry.ZombieType] = []
+## 系统预选卡片，按列表顺序入槽；只保存有效引用，选卡时不能取消。
+@export var prechosen_cards: Array[ResourceCardReference] = []
 
 @export_subgroup("传送带卡片参数")
-@export var all_card_plant_type_probability: Dictionary[CharacterRegistry.PlantType, int]
-@export var all_card_zombie_type_probability: Dictionary[CharacterRegistry.ZombieType, int]
-@export var card_order_plant: Dictionary[int, CharacterRegistry.PlantType] = {}
-@export var card_order_zombie: Dictionary[int, CharacterRegistry.ZombieType] = {}
+## 传送带随机卡片与非负整数权重；0 表示不参与抽取，只使用显式配置的条目。
+@export var conveyor_weights: Array[ResourceCardWeight] = []
+## 指定传送带卡片，键为从 0 开始的生成序号；未指定的序号使用随机池。
+@export var conveyor_order: Dictionary[int, ResourceCardReference] = {}
 @export var create_new_card_speed: float = 1
 
 @export_subgroup("种子雨卡片参数")
-@export var all_card_plant_type_probability_seed_rain: Dictionary[CharacterRegistry.PlantType, int]
-@export var all_card_zombie_type_probability_seed_rain: Dictionary[CharacterRegistry.ZombieType, int]
-@export var card_order_plant_seed_rain: Dictionary[int, CharacterRegistry.PlantType] = {}
-@export var card_order_zombie_seed_rain: Dictionary[int, CharacterRegistry.ZombieType] = {}
+## 种子雨随机卡片与非负整数权重；0 表示不参与抽取，与传送带配置相互独立。
+@export var seed_rain_weights: Array[ResourceCardWeight] = []
+## 指定种子雨卡片，键为从 0 开始的生成序号；未指定的序号使用随机池。
+@export var seed_rain_order: Dictionary[int, ResourceCardReference] = {}
 
 @export_subgroup("种植参数")
 ## 柱子模式
@@ -200,16 +215,68 @@ var ori_data_on_save_data_update: Dictionary = {}
 var save_game_data_main_game: ResourceSaveGameMainGame
 
 ## 游戏开始会根据参数初始化一些硬性的参数。
-## 卡槽: 传送带禁止选卡、禁止天降阳光。预选卡用 0 补全。
+## 卡槽: 传送带禁止选卡、禁止天降阳光。预选卡按引用列表的顺序入槽。
 ## 出怪: 正常模式下刷新列表会按白名单过滤；禁止在列表中写 Z021Bungi，应使用 is_bungi。
-func init_para() -> void:
+## 返回是否初始化成功；僵王配置错误时先报错并返回 false，避免修改参数或读取存档。
+func init_para() -> bool:
+	var boss_parameter_errors := validate_boss_parameters()
+	if not boss_parameter_errors.is_empty():
+		for message: String in boss_parameter_errors:
+			push_error("ResourceLevelData：僵王配置无效：" + message)
+		return false
 	_apply_card_mode_constraints()
-	_pad_prechosen_cards()
 	_init_zombie_refresh_from_whitelist()
 	_normalize_pot_col_range()
 	_init_pot_mode()
 	_apply_zombie_mode_rules()
 	_maybe_load_multi_round_save()
+	return true
+
+
+## 返回是否配置了自动僵王；卡片召唤与胜利规则独立于该配置。
+func has_boss() -> bool:
+	return boss_type != CharacterRegistry.ZombieBossType.Null
+
+
+## 返回全部自动僵王配置错误；空数组表示通过，不修改资源，也不实例化角色。
+## init_para() 统一处理校验错误并中止初始化；本方法仅返回错误，不修改关卡状态。
+## 未配置自动僵王时忽略其专属字段；额外胜利可由卡片召唤触发，不限制原有判胜，也不要求强制预选。
+func validate_boss_parameters() -> PackedStringArray:
+	# 收集全部错误供初始化入口统一报告，不在校验过程中修改关卡资源。
+	var errors := PackedStringArray()
+	if not has_boss():
+		return errors
+
+	# 注册表为静态公共定义，校验无需依赖 Global 节点已经完成 _ready()。
+	if not CharacterRegistry.ZombieBossInfo.has(boss_type):
+		errors.append("boss_type 未在角色注册表中注册：%s。" % boss_type)
+	else:
+		# 注册条目中的场景定义，用于确认所选僵王类型能够生成。
+		var boss_info: Dictionary = CharacterRegistry.ZombieBossInfo[boss_type]
+		# 仅检查场景可实例化性，不在关卡参数校验阶段创建僵王节点。
+		var scene := boss_info.get(CharacterRegistry.ZombieBossInfoAttribute.BossScenes) as PackedScene
+		if scene == null or not scene.can_instantiate():
+			errors.append("注册的僵王场景无效或无法实例化。")
+
+	match monster_mode:
+		ConstLevelData.E_MonsterMode.Null:
+			if boss_spawn_wave != 0:
+				errors.append("无出怪模式的 boss_spawn_wave 必须为 0，表示正式开战时生成。")
+		ConstLevelData.E_MonsterMode.Norm:
+			if boss_spawn_wave < 0 or boss_spawn_wave > max_wave:
+				errors.append("正常出怪模式的 boss_spawn_wave 必须在 0 到 max_wave 之间。")
+		_:
+			errors.append("当前仅无出怪模式和正常出怪模式支持配置僵王。")
+
+	# 现有多轮存档不保存僵王的血量与生成状态，首版不能无提示地允许该组合。
+	if game_round != 1:
+		errors.append("配置僵王的关卡暂只支持单轮游戏，game_round 必须为 1。")
+	if is_pot_mode or pot_mode != ConstLevelData.E_PotMode.Null or is_zombie_mode:
+		errors.append("僵王配置暂不支持与罐子模式或我是僵尸模式组合。")
+	# 负坐标可用于场外入场；只拒绝 NaN、无穷等无法定位角色的坐标。
+	if not boss_spawn_position.is_finite():
+		errors.append("boss_spawn_position 必须为有限坐标。")
+	return errors
 
 
 func _apply_card_mode_constraints() -> void:
@@ -222,15 +289,6 @@ func _apply_card_mode_constraints() -> void:
 	if card_mode != ConstLevelData.E_CardMode.Norm and can_choosed_card:
 		print("warning: 当前卡槽模式无法选卡, 已修改选卡为false")
 		can_choosed_card = false
-
-
-func _pad_prechosen_cards() -> void:
-	if pre_choosed_card_list_plant.size() < max_choosed_card_num:
-		GlobalUtils.pad_array(pre_choosed_card_list_plant, max_choosed_card_num, 0)
-	if pre_choosed_card_list_zombie.size() < max_choosed_card_num:
-		GlobalUtils.pad_array(pre_choosed_card_list_zombie, max_choosed_card_num, 0)
-	print("预选卡植物:", pre_choosed_card_list_plant)
-	print("预选卡僵尸:", pre_choosed_card_list_zombie)
 
 
 func _init_zombie_refresh_from_whitelist() -> void:

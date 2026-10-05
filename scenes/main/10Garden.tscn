@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bro2wcaph4ceu"]
+[gd_scene format=3 uid="uid://bro2wcaph4ceu"]
 
 [ext_resource type="Script" uid="uid://cjfk7fy344tvb" path="res://scripts/garden/garden_manager.gd" id="1_cd35e"]
 [ext_resource type="Texture2D" uid="uid://47ixd5hsddft" path="res://assets/image/ui/ui_card/ShovelBank.png" id="1_uu8cm"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://cejtuu5a1uvft" path="res://assets/image/garden/Zen_WheelBarrow.png" id="16_hjxn1"]
 [ext_resource type="PackedScene" uid="uid://eaveyrvvwxxl" path="res://scenes/garden/05_chocolate.tscn" id="17_65rhf"]
 [ext_resource type="Texture2D" uid="uid://rb8d6x36jh03" path="res://assets/image/garden/Zen_NextGarden.png" id="18_2db7u"]
+[ext_resource type="FontFile" uid="uid://dqb8lum530s2f" path="res://assets/fonts/方正少儿_GBK.ttf" id="18_rnm3w"]
 [ext_resource type="BitMap" uid="uid://b4qpudotkqgmb" path="res://assets/image/garden/Zen_NextGarden_Mask.png" id="19_82jhc"]
 [ext_resource type="Theme" uid="uid://em12la0rqibq" path="res://data/PVZ_theme.tres" id="20_i7yie"]
 [ext_resource type="PackedScene" uid="uid://dvasdbokm8eny" path="res://scenes/garden/06_glove.tscn" id="20_vwovh"]
@@ -32,31 +33,38 @@
 [ext_resource type="Texture2D" uid="uid://c7hm6tgjy1fbs" path="res://assets/image/ui/ui_start_menu/SelectorScreen_StoreHighlight.png" id="28_rnm3w"]
 [ext_resource type="BitMap" uid="uid://cra43htuprgvi" path="res://assets/image/ui/ui_start_menu/SelectorScreen_Store_Mask.png" id="29_s3nj7"]
 
-[node name="Garden" type="Node2D"]
+[sub_resource type="LabelSettings" id="LabelSettings_7qkq4"]
+font = ExtResource("18_rnm3w")
+font_size = 29
+font_color = Color(0, 1, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 1)
+
+[node name="Garden" type="Node2D" unique_id=38541138]
 script = ExtResource("1_cd35e")
 bgm = ExtResource("2_yfmuy")
 
-[node name="DIM_Coin" type="Node" parent="." node_paths=PackedStringArray("all_drop_coin_parent")]
+[node name="DIM_Coin" type="Node" parent="." unique_id=1498145685 node_paths=PackedStringArray("all_drop_coin_parent")]
 script = ExtResource("3_y8v5q")
 all_drop_coin_parent = NodePath("../CanvasLayerDrop/AllDropCoin")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=343227675]
 layer = 2
 
-[node name="PanelUI" type="Control" parent="CanvasLayer"]
+[node name="PanelUI" type="Control" parent="CanvasLayer" unique_id=1511942627]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 184.0
 offset_right = 778.0
 offset_bottom = 77.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelUI"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelUI" unique_id=1611035976]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/separation = -1
 
-[node name="GardenItemButton" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=236782297]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -64,7 +72,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton" unique_id=902805896]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -80,7 +88,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_r7eep")
 
-[node name="GardenItemButton2" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton2" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=1018575010]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -88,7 +96,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton2"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton2" unique_id=146364845]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -104,7 +112,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("4_l0x8f")
 
-[node name="GardenItemButton3" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton3" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=2112584167]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -112,7 +120,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton3"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton3" unique_id=1573099779]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -128,7 +136,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("6_sxrwr")
 
-[node name="GardenItemButton4" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton4" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=423238617]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -136,7 +144,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton4"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton4" unique_id=56090449]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -152,7 +160,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("8_aho5g")
 
-[node name="GardenItemButton5" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton5" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=710669902]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -160,7 +168,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton5"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton5" unique_id=1957611837]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -176,7 +184,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("10_yfmuy")
 
-[node name="GardenItemButton6" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton6" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=323904662]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -184,7 +192,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton6"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton6" unique_id=1660269487]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -200,7 +208,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("12_y8v5q")
 
-[node name="GardenItemButton7" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton7" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=1953835517]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -208,7 +216,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton7"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton7" unique_id=1215757296]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -224,7 +232,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("14_s3nj7")
 
-[node name="GardenItemButton8" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer"]
+[node name="GardenItemButton8" type="TextureButton" parent="CanvasLayer/PanelUI/HBoxContainer" unique_id=1401144034]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -232,7 +240,7 @@ texture_normal = ExtResource("1_uu8cm")
 stretch_mode = 0
 script = ExtResource("5_6rwu8")
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8"]
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8" unique_id=1577605128]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -248,7 +256,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("16_hjxn1")
 
-[node name="PlantCellGarden" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture"]
+[node name="PlantCellGarden" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture" unique_id=2034232842]
 z_index = 100
 custom_minimum_size = Vector2(75, 75)
 anchors_preset = 0
@@ -260,7 +268,7 @@ scale = Vector2(0.6, 0.6)
 mouse_filter = 2
 script = ExtResource("12_sxrwr")
 
-[node name="Panel" type="Panel" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden"]
+[node name="Panel" type="Panel" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden" unique_id=1484445987]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -270,7 +278,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="PlantDownContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden"]
+[node name="PlantDownContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden" unique_id=995665777]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -285,7 +293,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="PlantFloatContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden"]
+[node name="PlantFloatContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden" unique_id=1331235327]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -300,7 +308,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="PlantNormContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden"]
+[node name="PlantNormContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden" unique_id=750788747]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -311,7 +319,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="PlantShellContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden"]
+[node name="PlantShellContainer" type="Control" parent="CanvasLayer/PanelUI/HBoxContainer/GardenItemButton8/ItemTexture/PlantCellGarden" unique_id=394928960]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -322,7 +330,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Next" type="TextureButton" parent="CanvasLayer"]
+[node name="Next" type="TextureButton" parent="CanvasLayer" unique_id=134057455]
 offset_left = 798.0
 offset_top = 5.0
 offset_right = 858.0
@@ -332,7 +340,7 @@ texture_normal = ExtResource("18_2db7u")
 texture_click_mask = ExtResource("19_82jhc")
 stretch_mode = 0
 
-[node name="Label2" type="Label" parent="CanvasLayer/Next"]
+[node name="Label2" type="Label" parent="CanvasLayer/Next" unique_id=810581664]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -345,9 +353,10 @@ grow_vertical = 2
 theme = ExtResource("20_i7yie")
 theme_override_font_sizes/font_size = 24
 text = "1/3"
+label_settings = SubResource("LabelSettings_7qkq4")
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/Next"]
+[node name="Label" type="Label" parent="CanvasLayer/Next" unique_id=796010908]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -360,10 +369,10 @@ grow_vertical = 2
 theme = ExtResource("20_i7yie")
 theme_override_font_sizes/font_size = 24
 text = "1/3"
+label_settings = SubResource("LabelSettings_7qkq4")
 vertical_alignment = 1
 
-[node name="ReturnStartMenu" type="BaseButton" parent="CanvasLayer"]
-_import_path = NodePath("")
+[node name="ReturnStartMenu" type="BaseButton" parent="CanvasLayer" unique_id=328315962]
 unique_name_in_owner = false
 process_mode = 0
 process_priority = 0
@@ -378,6 +387,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -387,9 +397,10 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(0, 0)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
@@ -405,10 +416,21 @@ grow_vertical = 1
 rotation = 0.0
 scale = Vector2(1, 1)
 pivot_offset = Vector2(0, 0)
+pivot_offset_ratio = Vector2(0, 0)
 size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -445,7 +467,7 @@ shortcut_in_tooltip = true
 script = ExtResource("22_aho5g")
 metadata/_custom_type_script = "uid://parybxg7tb1k"
 
-[node name="Panel" type="Panel" parent="CanvasLayer/ReturnStartMenu"]
+[node name="Panel" type="Panel" parent="CanvasLayer/ReturnStartMenu" unique_id=1300117956]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -455,7 +477,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"PanelButtonBG"
 
-[node name="Label" type="Label" parent="CanvasLayer/ReturnStartMenu"]
+[node name="Label" type="Label" parent="CanvasLayer/ReturnStartMenu" unique_id=199030519]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -466,7 +488,7 @@ text = "主菜单"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="NumNewPlantNoPlantCell" type="Label" parent="CanvasLayer"]
+[node name="NumNewPlantNoPlantCell" type="Label" parent="CanvasLayer" unique_id=147080433]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -482,43 +504,43 @@ theme = ExtResource("20_i7yie")
 theme_override_font_sizes/font_size = 21
 text = "待放置植物数量:"
 
-[node name="Items" type="Node2D" parent="CanvasLayer"]
+[node name="Items" type="Node2D" parent="CanvasLayer" unique_id=515324378]
 z_index = 100
 position = Vector2(-9, -16)
 
-[node name="WateringCan" parent="CanvasLayer/Items" instance=ExtResource("5_hjxn1")]
+[node name="WateringCan" parent="CanvasLayer/Items" unique_id=282761829 instance=ExtResource("5_hjxn1")]
 visible = false
 position = Vector2(72, -112)
 
-[node name="Fertilizer" parent="CanvasLayer/Items" instance=ExtResource("8_6rwu8")]
+[node name="Fertilizer" parent="CanvasLayer/Items" unique_id=713497705 instance=ExtResource("8_6rwu8")]
 visible = false
 position = Vector2(163, -139)
 
-[node name="BugSpray" parent="CanvasLayer/Items" instance=ExtResource("11_2db7u")]
+[node name="BugSpray" parent="CanvasLayer/Items" unique_id=1542104449 instance=ExtResource("11_2db7u")]
 visible = false
 position = Vector2(268, -118.5)
 
-[node name="Phonograph" parent="CanvasLayer/Items" instance=ExtResource("14_82jhc")]
+[node name="Phonograph" parent="CanvasLayer/Items" unique_id=1817028462 instance=ExtResource("14_82jhc")]
 visible = false
 position = Vector2(342, -118.5)
 
-[node name="Chocolate" parent="CanvasLayer/Items" instance=ExtResource("17_65rhf")]
+[node name="Chocolate" parent="CanvasLayer/Items" unique_id=1446211012 instance=ExtResource("17_65rhf")]
 visible = false
 position = Vector2(424.5, -114)
 
-[node name="Glove" parent="CanvasLayer/Items" instance=ExtResource("20_vwovh")]
+[node name="Glove" parent="CanvasLayer/Items" unique_id=2127749100 instance=ExtResource("20_vwovh")]
 visible = false
 position = Vector2(486.5, -125)
 
-[node name="MoneySign" parent="CanvasLayer/Items" instance=ExtResource("23_24spt")]
+[node name="MoneySign" parent="CanvasLayer/Items" unique_id=1131589728 instance=ExtResource("23_24spt")]
 visible = false
 position = Vector2(560.5, -124)
 
-[node name="WheelBarrow" parent="CanvasLayer/Items" instance=ExtResource("26_qgitf")]
+[node name="WheelBarrow" parent="CanvasLayer/Items" unique_id=973583486 instance=ExtResource("26_qgitf")]
 visible = false
 position = Vector2(633.5, -125)
 
-[node name="StoreEnterKey" type="TextureButton" parent="CanvasLayer"]
+[node name="StoreEnterKey" type="TextureButton" parent="CanvasLayer" unique_id=2145403191]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -536,15 +558,15 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("22_aho5g")
 
-[node name="TreeBg" type="Sprite2D" parent="."]
+[node name="TreeBg" type="Sprite2D" parent="." unique_id=1720278161]
 visible = false
 texture = ExtResource("25_aho5g")
 centered = false
 
-[node name="CanvasLayerDrop" type="CanvasLayer" parent="."]
+[node name="CanvasLayerDrop" type="CanvasLayer" parent="." unique_id=471298021]
 follow_viewport_enabled = true
 
-[node name="CoinBankLabel" parent="CanvasLayerDrop" instance=ExtResource("26_aho5g")]
+[node name="CoinBankLabel" parent="CanvasLayerDrop" unique_id=1840421864 instance=ExtResource("26_aho5g")]
 unique_name_in_owner = true
 anchors_preset = 2
 anchor_top = 1.0
@@ -555,9 +577,9 @@ offset_right = 364.0
 offset_bottom = -56.0
 grow_vertical = 0
 
-[node name="AllDropCoin" type="Node2D" parent="CanvasLayerDrop"]
+[node name="AllDropCoin" type="Node2D" parent="CanvasLayerDrop" unique_id=457171501]
 
-[node name="CanvasLayerStore" type="CanvasLayer" parent="."]
+[node name="CanvasLayerStore" type="CanvasLayer" parent="." unique_id=1806750858]
 layer = 100
 
 [connection signal="pressed" from="CanvasLayer/Next" to="." method="_on_next_pressed"]

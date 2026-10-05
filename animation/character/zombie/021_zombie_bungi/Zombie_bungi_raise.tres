@@ -1,4 +1,4 @@
-[gd_resource type="Animation" load_steps=26 format=3 uid="uid://8gg4sid31erl"]
+[gd_resource type="Animation" format=3 uid="uid://8gg4sid31erl"]
 
 [ext_resource type="Texture2D" uid="uid://ni7u5qre4aik" path="res://assets/reanim/Zombie_bungi_body.png" id="0_fuck"]
 [ext_resource type="Texture2D" uid="uid://bdf4plya5ncom" path="res://assets/reanim/Zombie_bungi_rightleg_upper.png" id="1_fuck"]
@@ -39,7 +39,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [false, false]
+"values": [true, true]
 }
 tracks/1/type = "value"
 tracks/1/imported = false

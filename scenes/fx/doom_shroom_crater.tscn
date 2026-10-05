@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cflpyoqris51r"]
+[gd_scene format=3 uid="uid://cflpyoqris51r"]
 
 [ext_resource type="Script" uid="uid://b8ue3vl6tpnv5" path="res://scripts/fx/other_effect/doom_shroom_crater.gd" id="1_b5msc"]
 [ext_resource type="Texture2D" uid="uid://cjjpsp3rf8iiy" path="res://assets/image/main_game_item/crater.png" id="2_lyu5h"]
@@ -8,99 +8,100 @@
 [ext_resource type="Texture2D" uid="uid://cnvhijhfqk180" path="res://assets/image/main_game_item/crater_roof_center.png" id="6_sae5k"]
 [ext_resource type="Texture2D" uid="uid://cjgtr754ui3ak" path="res://assets/image/main_game_item/crater_roof_left.png" id="7_5gbe7"]
 
-[node name="Crater" type="Node2D"]
+[node name="Crater" type="Node2D" unique_id=1482218339]
+z_index = -1
 script = ExtResource("1_b5msc")
 
-[node name="Node2D1" type="Node2D" parent="."]
+[node name="Node2D1" type="Node2D" parent="." unique_id=1969654436]
 visible = false
 
-[node name="Crater" type="Sprite2D" parent="Node2D1"]
+[node name="Crater" type="Sprite2D" parent="Node2D1" unique_id=534659734]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("2_lyu5h")
 hframes = 2
 
-[node name="CraterFading" type="Sprite2D" parent="Node2D1"]
+[node name="CraterFading" type="Sprite2D" parent="Node2D1" unique_id=2125926034]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("3_0r2rc")
 hframes = 2
 
-[node name="Node2D2" type="Node2D" parent="."]
+[node name="Node2D2" type="Node2D" parent="." unique_id=454347896]
 visible = false
 
-[node name="Crater2" type="Sprite2D" parent="Node2D2"]
+[node name="Crater2" type="Sprite2D" parent="Node2D2" unique_id=1552927212]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("2_lyu5h")
 hframes = 2
 frame = 1
 
-[node name="CraterFading2" type="Sprite2D" parent="Node2D2"]
+[node name="CraterFading2" type="Sprite2D" parent="Node2D2" unique_id=1291385162]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("3_0r2rc")
 hframes = 2
 frame = 1
 
-[node name="Node2D5" type="Node2D" parent="."]
+[node name="Node2D5" type="Node2D" parent="." unique_id=1583187281]
 visible = false
 
-[node name="CraterWaterDay" type="Sprite2D" parent="Node2D5"]
+[node name="CraterWaterDay" type="Sprite2D" parent="Node2D5" unique_id=1499620293]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("4_w6lri")
 hframes = 2
 
-[node name="CraterWaterDay2" type="Sprite2D" parent="Node2D5"]
+[node name="CraterWaterDay2" type="Sprite2D" parent="Node2D5" unique_id=1268108638]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("4_w6lri")
 hframes = 2
 frame = 1
 
-[node name="Node2D6" type="Node2D" parent="."]
+[node name="Node2D6" type="Node2D" parent="." unique_id=1222941450]
 visible = false
 
-[node name="CraterWaterNight" type="Sprite2D" parent="Node2D6"]
+[node name="CraterWaterNight" type="Sprite2D" parent="Node2D6" unique_id=586599516]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("5_djkvw")
 hframes = 2
 
-[node name="CraterWaterNight2" type="Sprite2D" parent="Node2D6"]
+[node name="CraterWaterNight2" type="Sprite2D" parent="Node2D6" unique_id=1241573763]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("5_djkvw")
 hframes = 2
 frame = 1
 
-[node name="Node2D3" type="Node2D" parent="."]
+[node name="Node2D3" type="Node2D" parent="." unique_id=969364550]
 visible = false
 
-[node name="CraterRoofCenter" type="Sprite2D" parent="Node2D3"]
+[node name="CraterRoofCenter" type="Sprite2D" parent="Node2D3" unique_id=131083250]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("6_sae5k")
 hframes = 2
 
-[node name="CraterRoofCenter2" type="Sprite2D" parent="Node2D3"]
+[node name="CraterRoofCenter2" type="Sprite2D" parent="Node2D3" unique_id=1576111671]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("6_sae5k")
 hframes = 2
 frame = 1
 
-[node name="Node2D4" type="Node2D" parent="."]
+[node name="Node2D4" type="Node2D" parent="." unique_id=1902885606]
 visible = false
 
-[node name="CraterRoofLeft" type="Sprite2D" parent="Node2D4"]
+[node name="CraterRoofLeft" type="Sprite2D" parent="Node2D4" unique_id=2113722730]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("7_5gbe7")
 hframes = 2
 
-[node name="CraterRoofLeft2" type="Sprite2D" parent="Node2D4"]
+[node name="CraterRoofLeft2" type="Sprite2D" parent="Node2D4" unique_id=138744717]
 visible = false
 position = Vector2(38, 49.5)
 texture = ExtResource("7_5gbe7")

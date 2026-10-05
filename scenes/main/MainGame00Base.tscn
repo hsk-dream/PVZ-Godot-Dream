@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b2soejmoqi7wd"]
 
+[ext_resource type="PackedScene" path="res://scenes/ui/boss_hp_progress_bar.tscn" id="boss_hp_progress"]
 [ext_resource type="Script" uid="uid://c7dr2016dfdoo" path="res://scripts/manager/main_game_manager.gd" id="1_7dde3"]
 [ext_resource type="Script" uid="uid://b2rst408m72au" path="res://scripts/manager/hand_manager/hand_manager.gd" id="3_acpf0"]
 [ext_resource type="Script" uid="uid://duphb7sb466c0" path="res://scripts/manager/hand_manager/hm_character.gd" id="4_ee3wa"]
@@ -58,6 +59,7 @@
 [ext_resource type="PackedScene" uid="uid://5v0fdtao52jl" path="res://scenes/main/control_canvas_layer.tscn" id="34_ifnc6"]
 [ext_resource type="Script" uid="uid://2kldvd28hidq" path="res://scripts/ui/card/card_slot/card_slot_root.gd" id="35_ee3wa"]
 [ext_resource type="Script" uid="uid://bw0stsbito4w" path="res://scripts/main_game_item/real_shovel.gd" id="35_mjx71"]
+[ext_resource type="Texture2D" uid="uid://deo4mo3s7clx4" path="res://assets/image/background/background6_gameover_mask.png" id="36_8dwa7"]
 [ext_resource type="Texture2D" uid="uid://47ixd5hsddft" path="res://assets/image/ui/ui_card/ShovelBank.png" id="42_pmw6j"]
 [ext_resource type="Script" uid="uid://drl7ywtxslsbm" path="res://scripts/ui/card/shovel_in_ui.gd" id="43_erab5"]
 [ext_resource type="Script" uid="uid://bkaiiq5qsbt5j" path="res://scripts/main_game_item/level_info.gd" id="46_y1sge"]
@@ -278,6 +280,11 @@ texture = ExtResource("23_401pl")
 visible = false
 position = Vector2(50, 196)
 texture = ExtResource("28_71hfq")
+
+[node name="Background6GameoverMask" type="Sprite2D" parent="CanvasLayerBG/Background/Home/Door/DoorMask" unique_id=1670508338]
+visible = false
+position = Vector2(108, 139)
+texture = ExtResource("36_8dwa7")
 
 [node name="ShowZombiePanel" type="Panel" parent="CanvasLayerBG/Background" unique_id=1803483627]
 unique_name_in_owner = true
@@ -600,10 +607,18 @@ grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("46_y1sge")
 
-[node name="FlagProgressBar" parent="CanvasLayerUI/LevelInfo" unique_id=417677167 instance=ExtResource("16_dc1ex")]
+[node name="WaveProgressRoot" type="Control" parent="CanvasLayerUI/LevelInfo"]
+layout_mode = 0
+mouse_filter = 2
+
+[node name="FlagProgressBar" parent="CanvasLayerUI/LevelInfo/WaveProgressRoot" unique_id=417677167 instance=ExtResource("16_dc1ex")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
+
+[node name="BossHpProgressBar" parent="CanvasLayerUI/LevelInfo" instance=ExtResource("boss_hp_progress")]
+visible = false
+layout_mode = 0
 
 [node name="RoundLabel" type="Label" parent="CanvasLayerUI/LevelInfo" unique_id=1795988872]
 visible = false
@@ -645,6 +660,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -654,9 +670,10 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(0, 0)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -676,7 +693,17 @@ pivot_offset_ratio = Vector2(0, 0)
 size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -867,6 +894,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -876,9 +904,10 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(0, 0)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -898,7 +927,17 @@ pivot_offset_ratio = Vector2(0, 0)
 size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -975,6 +1014,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -984,9 +1024,10 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(0, 0)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -1006,7 +1047,17 @@ pivot_offset_ratio = Vector2(0, 0)
 size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -1084,6 +1135,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -1093,9 +1145,10 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(0, 0)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -1115,7 +1168,17 @@ pivot_offset_ratio = Vector2(0, 0)
 size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -1188,6 +1251,7 @@ self_modulate = Color(1, 1, 1, 1)
 show_behind_parent = false
 top_level = false
 clip_children = 0
+oversampling_with_scale = 0
 light_mask = 1
 visibility_layer = 1
 z_index = 0
@@ -1197,9 +1261,10 @@ texture_filter = 0
 texture_repeat = 0
 material = null
 use_parent_material = false
-clip_contents = false
 custom_minimum_size = Vector2(0, 0)
-layout_direction = 0
+custom_maximum_size = Vector2(-1, -1)
+propagate_maximum_size = false
+clip_contents = false
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -1219,7 +1284,17 @@ pivot_offset_ratio = Vector2(0, 0)
 size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
+offset_transform_enabled = false
+offset_transform_position = Vector2(0, 0)
+offset_transform_position_ratio = Vector2(0, 0)
+offset_transform_scale = Vector2(1, 1)
+offset_transform_rotation = 0.0
+offset_transform_pivot = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0.5, 0.5)
+offset_transform_visual_only = true
 localize_numeral_system = true
+layout_direction = 0
+translation_context = &""
 tooltip_text = ""
 tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
@@ -1359,6 +1434,13 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="ZombiesRoot" type="Node2D" parent="." unique_id=1014060591]
+unique_name_in_owner = true
+
+[node name="ZombieBossRoot" type="Node2D" parent="." unique_id=1715739206]
+unique_name_in_owner = true
+z_index = 4000
+
+[node name="Items" type="Node2D" parent="." unique_id=771447310]
 unique_name_in_owner = true
 
 [node name="Bullets" type="Node2D" parent="." unique_id=1334985395]

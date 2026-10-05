@@ -1,11 +1,11 @@
 [gd_resource type="Animation" load_steps=7 format=3 uid="uid://bv6c51qpkayc6"]
 
-[ext_resource type="Texture2D" uid="uid://b5v5vannbipgc" path="res://assets/reanim/Fumeshroom_body.png" id="0_fuck"]
-[ext_resource type="Texture2D" uid="uid://dvjtgvsprc5em" path="res://assets/reanim/Fumeshroom_blink2.png" id="1_fuck"]
-[ext_resource type="Texture2D" uid="uid://cvjt2bbvgatgh" path="res://assets/reanim/Fumeshroom_blink1.png" id="2_fuck"]
-[ext_resource type="Texture2D" uid="uid://bdecyr5u832mx" path="res://assets/reanim/Fumeshroom_head.png" id="3_fuck"]
-[ext_resource type="Texture2D" uid="uid://b8hsdl8m0la2k" path="res://assets/reanim/Fumeshroom_spout.png" id="4_fuck"]
-[ext_resource type="Texture2D" uid="uid://dlwrjkajjpdsb" path="res://assets/reanim/Fumeshroom_tip.png" id="5_fuck"]
+[ext_resource type="Texture2D" uid="uid://b5v5vannbipgc" path="res://assets/reanim/FumeShroom_body.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://dvjtgvsprc5em" path="res://assets/reanim/FumeShroom_blink2.png" id="1_fuck"]
+[ext_resource type="Texture2D" uid="uid://cvjt2bbvgatgh" path="res://assets/reanim/FumeShroom_blink1.png" id="2_fuck"]
+[ext_resource type="Texture2D" uid="uid://bdecyr5u832mx" path="res://assets/reanim/FumeShroom_head.png" id="3_fuck"]
+[ext_resource type="Texture2D" uid="uid://b8hsdl8m0la2k" path="res://assets/reanim/FumeShroom_spout.png" id="4_fuck"]
+[ext_resource type="Texture2D" uid="uid://dlwrjkajjpdsb" path="res://assets/reanim/FumeShroom_tip.png" id="5_fuck"]
 
 [resource]
 resource_name = "FumeShroom_face"

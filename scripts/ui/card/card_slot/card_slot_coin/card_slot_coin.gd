@@ -1,58 +1,39 @@
+## 金币卡槽使用统一卡牌引用初始化预选卡，费用和次数仍由出战卡槽结算。
 extends Control
-## 正常卡槽
 class_name CardSlotCoin
 
-## 出战卡槽节点
+## 金币模式的出战卡槽。
 @onready var card_slot_battle_coin: CardSlotBattleCoin = $CardSlotBattleCoin
 
-#endregion
-## 初始化出战卡槽，管理器调用
-func init_card_slot_coin(game_para:ResourceLevelData):
+## 依据 [param game_para] 创建金币槽位及其预选卡。
+func init_card_slot_coin(game_para: ResourceLevelData) -> void:
 	card_slot_battle_coin.init_card_slot_battle(game_para.max_choosed_card_num)
-	## 初始化预选卡
-	if game_para.pre_choosed_card_list_plant or game_para.pre_choosed_card_list_zombie:
-		init_pre_choosed_card(game_para.pre_choosed_card_list_plant, game_para.pre_choosed_card_list_zombie)
+	init_pre_choosed_card(game_para.prechosen_cards)
 
-## 初始化系统预选卡
-## 从AllCards中复制一张新卡,隐藏card_slot_candidate的卡片
-func init_pre_choosed_card(card_type_list:Array[CharacterRegistry.PlantType], card_type_list_zombie:Array[CharacterRegistry.ZombieType]):
-	for i in card_type_list.size():
-		var card:Card
-		var plant_type:CharacterRegistry.PlantType = card_type_list[i]
-		var zombie_type:CharacterRegistry.ZombieType = card_type_list_zombie[i]
-		var character_type:CharacterRegistry.CharacterType = GlobalUtils.get_character_type(plant_type, zombie_type)
-		match character_type:
-			CharacterRegistry.CharacterType.Plant:
-				card = AllCards.all_plant_card_prefabs[plant_type].duplicate()
-			CharacterRegistry.CharacterType.Zombie:
-				card = AllCards.all_zombie_card_prefabs[zombie_type].duplicate()
-			CharacterRegistry.CharacterType.Null:
-				continue
-
+## 按 [param references] 的顺序创建出战卡；拒绝僵王及其他未支持的类别。
+func init_pre_choosed_card(references: Array[ResourceCardReference]) -> void:
+	# 每个引用表示一张完整卡片，不再组合植物、僵尸补零数组。
+	for reference: ResourceCardReference in references:
+		if not AllCards.is_battle_card(reference) or reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+			push_error("CardSlotCoin：预选卡必须是已注册的植物或普通僵尸。")
+			continue
+		if card_slot_battle_coin.curr_cards.size() >= card_slot_battle_coin.cards_placeholder.size():
+			break
+		# 挂载前设置合法引用和交互上下文。
+		var card: Card = AllCards.create_card(reference, Card.CardContext.Battle)
+		if card == null:
+			continue
 		card_slot_battle_coin.curr_cards.append(card)
-		pre_choosed_card(card, card_slot_battle_coin.cards_placeholder[len(card_slot_battle_coin.curr_cards)-1])
+		pre_choosed_card(card, card_slot_battle_coin.cards_placeholder[card_slot_battle_coin.curr_cards.size() - 1])
 
-## 系统预选卡
-func pre_choosed_card(card:Card, target_parent):
+## 将 [param card] 挂到 [param target_parent] 的金币卡槽占位。
+func pre_choosed_card(card: Card, target_parent: Control) -> void:
 	target_parent.add_child(card)
 	card.position = Vector2.ZERO
-	#card.card_change_cool_time(0)
 
-## 移动卡槽（出现或隐藏）
-func move_card_slot_candidate(is_appeal:bool):
-	var tween = create_tween()
-	if is_appeal:
-		tween.tween_property(card_slot_battle_coin, "position",Vector2(0, 89.0), 0.2) # 时间可以改短点
-	else:
-		tween.tween_property(card_slot_battle_coin, "position",Vector2(0, 615.0), 0.2) # 时间可以改短点
-
-	await tween.finished
-
-## 移动待选卡槽（出现或隐藏）
-func move_card_slot_battle(is_appeal:bool, appeal_time:= 0.2):
-	var tween = create_tween()
-	if is_appeal:
-		tween.tween_property(card_slot_battle_coin, "position",Vector2(0, 0), appeal_time)
-	else:
-		tween.tween_property(card_slot_battle_coin, "position",Vector2(0, -100.0), appeal_time)
+## 根据 [param is_appeal] 移动卡槽；[param appeal_time] 是等待动画完成的耗时，单位秒。
+func move_card_slot_battle(is_appeal: bool, appeal_time: float = 0.2) -> void:
+	# 金币卡槽的位移动画。
+	var tween: Tween = create_tween()
+	tween.tween_property(card_slot_battle_coin, "position", Vector2(0, 0) if is_appeal else Vector2(0, -100.0), appeal_time)
 	await tween.finished

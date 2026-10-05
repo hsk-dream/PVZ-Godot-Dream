@@ -59,16 +59,6 @@ func sum_arr(arr: Array[float]) -> float:
 		total += n
 	return total
 
-## 根据当前植物类型和僵尸类型获取当前是植物还是僵尸
-func get_character_type(plant_type:CharacterRegistry.PlantType, zombie_type:CharacterRegistry.ZombieType) -> CharacterRegistry.CharacterType:
-	if plant_type == CharacterRegistry.PlantType.Null:
-		if zombie_type == CharacterRegistry.ZombieType.Null:
-			return CharacterRegistry.CharacterType.Null
-		else:
-			return CharacterRegistry.CharacterType.Zombie
-	else:
-		return CharacterRegistry.CharacterType.Plant
-
 ## 补全列表
 func pad_array(arr: Array, target_size: int, pad_value = 0) -> Array:
 	while arr.size() < target_size:
@@ -124,8 +114,9 @@ func get_special_zombie_callable(zombie_type:CharacterRegistry.ZombieType, plant
 			return create_bungi.bind(plant_cell)
 	return Callable()
 
-## 蹦极僵尸
+## 普通出怪在入树前注入蹦极目标，保留靶子与下降前预警。[br]
+## [param zombie_bungi] 尚未入树的蹦极实例；[param plant_cell] 本次偷取的目标格子。
 func create_bungi(zombie_bungi:Zombie021Bungi, plant_cell:PlantCell):
-	zombie_bungi.plant_cell = plant_cell
+	zombie_bungi.initialize_spawn(plant_cell)
 
 #endregion

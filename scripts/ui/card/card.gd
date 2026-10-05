@@ -1,183 +1,233 @@
+## 可交互卡牌；用途决定点击路径，身份与模仿修饰统一来自卡牌引用。
 extends CardBase
 class_name Card
 
+## 静态缩略图容器，复制卡牌时不创建出战角色。
 @onready var character_static: Node2D = $CardBg/CharacterStatic
+## 卡槽快捷键文字。
 @onready var short_cut: Label = $ShortCut
+## 接收卡牌点击的按钮。
 @onready var button: Button = $Button
 
-## 是否为图鉴卡片
-var is_almanac_card:bool= false
+## 显示用途独立于内容类型，避免图鉴被当前战斗场景接管点击。
+enum CardContext {
+	Catalog, ## 隐藏源目录，不处理点击。
+	Selection, ## 选卡与取消选择。
+	Battle, ## 交给手持管理器使用。
+	Almanac, ## 打开图鉴详情。
+}
 
-var _is_cooling : bool = false		# 是否正在冷却
-var is_sun_enough: bool = true		# 阳光是否足够
-var _cool_timer : float				# 冷却计时器
-var is_can_click := true		## 是否可以点击
-var tween_blink:Tween
-#region 开局选卡相关
-## 开局选择卡片时 是否被选中
-var is_choosed_pre_card := false
-var card_candidate_container:CardCandidateContainer
-#endregion
-## 模仿者材质
+## 当前实例的点击用途；创建入口应在入树前设置。
+var card_context: CardContext = CardContext.Catalog
+## 是否处于冷却中。
+var _is_cooling: bool = false
+## 当前费用是否已被卡槽判定为足够。
+var is_sun_enough: bool = true
+## 剩余冷却时间，单位为游戏秒。
+var _cool_timer: float = 0.0
+## 当前是否可以使用，由冷却、费用和种植条件共同决定。
+var is_can_click: bool = true
+## 临时卡消失前的闪烁补间；停止时释放引用。
+var tween_blink: Tween
+## 是否为关卡锁定的预选卡，选卡阶段不可取消。
+var is_choosed_pre_card: bool = false
+## 对应的候选占位容器，选中后用于恢复备选显示。
+var card_candidate_container: CardCandidateContainer
+## 模仿卡共用的着色材质，每个展示实例使用独立副本。
 const IMITATER = preload("res://shader_material/imitater.tres")
-
-## 点击信号,选卡时使用该信号(种植点击使用时间总线)
-signal signal_card_click(card:Card)
-## 卡片种植完成后信号，生成卡片所在卡槽连接该信号
+## 选卡或图鉴点击通知，始终携带实际被点击的卡牌。
+signal signal_card_click(card: Card)
+## 内容成功放置后的结算通知，由所属卡槽或临时卡管理器消费一次。
 @warning_ignore("unused_signal")
-signal signal_card_use_end(card:Card)
+signal signal_card_use_end(card: Card)
 
+
+## 初始化参数与模仿外观；僵王的选卡和战斗实例显示费用，目录及图鉴实例只保留外观。
 func _ready() -> void:
 	super()
 	_cool_mask.value = 0
-	if is_imitater:
+	if card_reference == null or not card_reference.is_valid():
+		is_can_click = false
+		return
+	if card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		# 源模板隐藏了费用，复制实例入树时必须按用途显式恢复可见性。
+		cost.visible = card_context == CardContext.Selection or card_context == CardContext.Battle
+		short_cut.hide()
+		_cool_mask.hide()
+	if card_reference.is_imitater:
 		character_static.material = IMITATER.duplicate()
-		for child in character_static.get_children():
-			GlobalUtils.node_use_parent_material(child)
+		# 静态图像的子节点继承模仿材质。
+		for child: Node in character_static.get_children():
+			if child is Node2D:
+				GlobalUtils.node_use_parent_material(child as Node2D)
 
-## 设置卡片为图鉴卡片
-func set_almanac_card():
-	is_almanac_card = true
 
-## 改变卡片的冷却时间（测试时使用）
-func card_change_cool_time(new_cool_time:float):
-	self.cool_time = new_cool_time
+## 修改实例冷却时长；[param new_cool_time] 单位为秒，0 用于无冷却模式。
+func card_change_cool_time(new_cool_time: float) -> void:
+	cool_time = new_cool_time
 	_cool_mask.value = 0
 
-## 设置卡片冷却时间并开始冷却
-func set_card_cool_time_start_cool(new_cool_time:float):
-	self.cool_time = new_cool_time
-	_cool_mask.value = cool_time
+
+## 设置 [param new_cool_time] 秒冷却并立即开始计时。
+func set_card_cool_time_start_cool(new_cool_time: float) -> void:
+	cool_time = new_cool_time
 	card_cool()
 
-## 设置卡片禁用(不冷却)
-func set_card_disable():
-	self.cool_time = 1
+
+## 禁用当前卡牌但不运行冷却，用于模式限制和使用次数耗尽。
+func set_card_disable() -> void:
+	cool_time = 1
 	_cool_mask.value = cool_time
 	_is_cooling = false
 	_cool_mask.visible = true
 	is_can_click = false
 
-## 传送带卡槽初始化卡片
-func card_init_conveyor_belt():
+
+## 传送带卡牌免费使用；在入树并完成角色参数初始化后调用。
+func card_init_conveyor_belt() -> void:
 	_cool_mask.value = 0
 	sun_cost = 0
 
 
-## 卡片冷卻
+## 按 [param delta] 游戏秒推进已有冷却，树暂停时不执行。
 func _process(delta: float) -> void:
 	if _is_cooling:
 		_cool_timer -= delta
 		_cool_mask.value = _cool_timer
-		# 卡片冷却完成
 		if _cool_timer <= 0:
 			_is_cooling = false
 			judge_card_ready()
 
-## 修改阳光时会调用
-func judge_sun_enough(curr_sun_value):
-	# 判断阳光是否足够
+
+## 根据 [param curr_sun_value] 更新费用可用性，并重新计算是否可以使用。
+func judge_sun_enough(curr_sun_value: int) -> void:
 	is_sun_enough = curr_sun_value >= sun_cost
 	judge_card_ready()
 
-## 判断卡片是否可以点击
-func judge_card_ready():
-	# 阳光充足 且 卡片冷却完成
-	if is_sun_enough and not _is_cooling:
-		## 紫卡并且不能种植
-		if is_purple_card and not plant_condition.judge_purple_card_can_plant(Global.main_game.plant_cell_manager.all_plant_cells, card_plant_type):
-			card_not_can_click()
-		else:
-			card_ready()
-	else:
-		card_not_can_click()
 
-func set_card_cool_end():
+## 结合类别、费用、冷却、僵王召唤资格和紫卡前置条件更新可用状态；非出战卡牌不能就绪。
+func judge_card_ready() -> void:
+	if not AllCards.is_battle_card(card_reference):
+		is_can_click = false
+		return
+	if not is_sun_enough or _is_cooling:
+		card_not_can_click()
+		return
+	if card_context == CardContext.Battle and card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+		# 选卡阶段不检查战斗状态；正式使用时以当前场景的实际召唤条件为准。
+		# 通用内容编号在召唤接口处显式解释为僵王枚举。
+		if not is_instance_valid(Global.main_game) or not is_instance_valid(Global.main_game.zombie_manager) \
+			or not Global.main_game.zombie_manager.can_summon_boss(card_reference.content_id as CharacterRegistry.ZombieBossType):
+			card_not_can_click()
+			return
+	if is_purple_card:
+		# 紫卡只可能来自植物，通用内容编号在调用种植条件时显式转换为植物枚举。
+		var plant_type: CharacterRegistry.PlantType = card_reference.content_id as CharacterRegistry.PlantType
+		if not plant_condition.judge_purple_card_can_plant(Global.main_game.plant_cell_manager.all_plant_cells, plant_type):
+			card_not_can_click()
+			return
+	card_ready()
+
+
+## 清空冷却状态；可用性由卡槽接下来的费用刷新决定。
+func set_card_cool_end() -> void:
 	_cool_timer = 0
-	_cool_mask.value = _cool_timer
+	_cool_mask.value = 0
 	_is_cooling = false
 
-## 卡片可以点击
-func card_ready():
-	_cool_mask.visible = false
+
+## 标记卡牌就绪并隐藏不可用遮罩。
+func card_ready() -> void:
+	_cool_mask.hide()
 	is_can_click = true
 
-## 卡片不可以点击
-func card_not_can_click():
-	_cool_mask.visible = true
+
+## 标记卡牌不可用并显示遮罩。
+func card_not_can_click() -> void:
+	_cool_mask.show()
 	is_can_click = false
 
-## 卡片开始冷却
-func card_cool():
+
+## 开始当前实例的冷却，在成功使用后的结算处调用。
+func card_cool() -> void:
 	_is_cooling = true
-	_cool_mask.visible = true
+	_cool_mask.show()
 	_cool_timer = cool_time
 	_cool_mask.value = cool_time
 	is_can_click = false
 
-## 点击卡片时
+
+## 按显式用途分发点击；战斗入口额外拒绝不支持出战的内容。
 func _on_button_pressed() -> void:
-	## 如果为图鉴卡片
-	if is_almanac_card:
-		signal_card_click.emit()
+	match card_context:
+		CardContext.Almanac:
+			signal_card_click.emit(self)
+		CardContext.Selection:
+			if AllCards.is_battle_card(card_reference):
+				signal_card_click.emit(self)
+		CardContext.Battle:
+			if not is_instance_valid(Global.main_game) or Global.main_game.main_game_progress != MainGameManager.E_MainGameProgress.MAIN_GAME:
+				return
+			# 显式禁用的卡片不能由点击时的就绪重算重新启用。
+			if not is_can_click:
+				SoundManager.play_other_SFX("buzzer")
+				return
+			if card_reference != null and card_reference.card_type == ResourceCardReference.CardType.ZombieBoss:
+				# 点击前重验场景资格，不依赖上次阳光或冷却刷新留下的可用状态。
+				judge_card_ready()
+			if is_can_click and AllCards.is_battle_card(card_reference):
+				EventBus.push_event("main_game_click_card", [self])
+			else:
+				SoundManager.play_other_SFX("buzzer")
+
+
+## 显示 [param i] 对应的卡槽快捷键编号；僵王只在战斗用途下分配快捷键。
+func set_shortcut(i: int) -> void:
+	if card_reference != null and card_reference.card_type == ResourceCardReference.CardType.ZombieBoss and card_context != CardContext.Battle:
 		return
-
-	## 如果时主游戏场景,并且游戏中
-	if is_instance_valid(Global.main_game) and Global.main_game.main_game_progress == MainGameManager.E_MainGameProgress.MAIN_GAME:
-		## 可以点击
-		if is_can_click:
-			EventBus.push_event("main_game_click_card", [self])
-		else:
-			SoundManager.play_other_SFX("buzzer")
-	else:
-		signal_card_click.emit()
-
-## 快捷键设置
-func set_shortcut(i:int):
 	short_cut.text = str(i)
-	short_cut.visible = true
+	short_cut.show()
 
-func set_shortcut_disappear():
-	short_cut.visible = false
 
-#region 卡片闪烁
-## 开始
-func card_blink_start():
-	# 如果已存在 tween，就先 kill 掉
+## 隐藏卡槽快捷键文字。
+func set_shortcut_disappear() -> void:
+	short_cut.hide()
+
+
+## 启动循环闪烁；重复调用先停止旧补间。
+func card_blink_start() -> void:
 	if tween_blink and tween_blink.is_valid():
 		tween_blink.kill()
 	tween_blink = create_tween()
-	# 无限循环
-	tween_blink.set_loops()  # 不传参数就是无限循环 :contentReference[oaicite:0]{index=0}
+	tween_blink.set_loops()
+	tween_blink.tween_property(card_bg, "modulate:a", 0.5, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween_blink.tween_property(card_bg, "modulate:a", 1.0, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-	# 淡出（透明度变为 0）
-	tween_blink.tween_property(card_bg, "modulate:a", 0.5, 0.5) \
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-	# 淡入（透明度变为 1）
-	tween_blink.tween_property(card_bg, "modulate:a", 1.0, 0.5) \
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-## 暂停
-func card_blink_pause():
+## 暂停当前闪烁补间。
+func card_blink_pause() -> void:
 	if tween_blink and tween_blink.is_running():
 		tween_blink.pause()
 
-## 重新启动
-func card_blink_resume():
+
+## 恢复已暂停的闪烁补间。
+func card_blink_resume() -> void:
 	if tween_blink and not tween_blink.is_running():
 		tween_blink.play()
-## 停止
-func card_blink_completely_stop():
+
+
+## 停止并释放闪烁补间引用。
+func card_blink_completely_stop() -> void:
 	if tween_blink and tween_blink.is_valid():
 		tween_blink.kill()
 		tween_blink = null
-#endregion
 
-#region 鼠标检测
-func mouse_filter_start():
+
+## 恢复卡牌接收鼠标输入。
+func mouse_filter_start() -> void:
 	button.mouse_filter = Control.MOUSE_FILTER_PASS
 
-func mouse_filter_stop():
-	button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-#endregion
+## 停止卡牌接收鼠标输入，用于手持临时卡期间屏蔽其他临时卡。
+func mouse_filter_stop() -> void:
+	button.mouse_filter = Control.MOUSE_FILTER_IGNORE

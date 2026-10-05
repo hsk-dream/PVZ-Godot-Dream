@@ -2,8 +2,8 @@ extends Node
 class_name CharacterRegistry
 
 
-# 定义枚举
-enum CharacterType {Null, Plant, Zombie}
+## 定义枚举
+enum CharacterType {Null, Plant, Zombie, ZombieBoss}
 
 #region 植物
 ## 植物信息属性
@@ -154,6 +154,7 @@ enum ZombieInfoAttribute{
 #endregion
 
 
+#region 植物种植信息
 ## 紫卡植物种植前置植物
 @export var AllPrePlantPurple:Dictionary[PlantType, PlantType]= {
 	PlantType.P041GatlingPea:PlantType.P008PeaShooterDouble,
@@ -767,6 +768,69 @@ const ZombieInfo = {
 	},
 }
 
+## 每种僵尸消耗的出怪战力，供自然波次和僵王放置技能只读访问，无需复制。[br]
+## 未列出的类型不能参与按战力预算生成；战力不包含生成后衍生出的其他僵尸。
+const ZombieSpawnPower: Dictionary[ZombieType, int] = {
+	ZombieType.Z001Norm: 1,		# 普僵战力
+	ZombieType.Z002Flag: 1,		# 旗帜战力
+	ZombieType.Z003Cone: 2,		# 路障战力
+	ZombieType.Z004PoleVaulter: 2,	# 撑杆战力
+	ZombieType.Z005Bucket: 4,		# 铁桶战力
+
+	ZombieType.Z006Paper: 2,		# 读报战力
+	ZombieType.Z007ScreenDoor: 4,	# 铁门战力
+	ZombieType.Z008Football: 7,	# 橄榄球战力
+	ZombieType.Z009Jackson: 5,		# 舞王战力
+	ZombieType.Z010Dancer: 1,		# 伴舞战力
+
+	ZombieType.Z012Snorkle: 3,		# 潜水
+	ZombieType.Z013Zamboni: 7,		# 冰车
+	ZombieType.Z014Bobsled: 3,		# 滑雪四兄弟
+	ZombieType.Z015Dolphinrider: 3,# 海豚僵尸
+
+	ZombieType.Z016Jackbox: 3,		# 小丑
+	ZombieType.Z017Balloon: 2,		# 气球
+	ZombieType.Z018Digger: 4,		# 矿工
+	ZombieType.Z019Pogo: 4,			# 跳跳
+	ZombieType.Z020Yeti: 4,			# 雪人
+
+	ZombieType.Z022Ladder: 4,		# 扶梯
+	ZombieType.Z023Catapult: 5,		# 投篮
+	ZombieType.Z024Gargantuar: 10,	# 伽刚特尔
+	ZombieType.Z025Imp: 1,			# 小鬼
+}
+
+## 僵尸初始出怪权重；各出怪系统复制后独立调整，不修改公共基础数据。[br]
+## 未列出的类型不参与此权重池，旗帜与小鬼等特殊生成仍由各自逻辑处理。
+const ZombieSpawnWeights: Dictionary[ZombieType, int] = {
+	ZombieType.Z001Norm: 4000,			# 普僵权重
+	ZombieType.Z003Cone: 4000,			# 路障权重
+	ZombieType.Z004PoleVaulter: 2000,	# 撑杆权重
+	ZombieType.Z005Bucket: 3000,		# 铁桶权重
+
+	ZombieType.Z006Paper: 1000,		# 读报权重
+	ZombieType.Z007ScreenDoor: 3500,	# 铁门权重
+	ZombieType.Z008Football: 2000,		# 橄榄球权重
+	ZombieType.Z009Jackson: 1000,		# 舞王权重
+	ZombieType.Z010Dancer: 4000,		# 伴舞权重
+
+	ZombieType.Z012Snorkle: 2000,		# 潜水
+	ZombieType.Z013Zamboni: 2000,		# 冰车
+	ZombieType.Z014Bobsled: 2000,		# 滑雪四兄弟
+	ZombieType.Z015Dolphinrider: 1500,	# 海豚僵尸
+
+	ZombieType.Z016Jackbox: 1000,		# 小丑
+	ZombieType.Z017Balloon: 2000,		# 气球
+	ZombieType.Z018Digger: 1000,		# 矿工
+	ZombieType.Z019Pogo: 1000,			# 跳跳
+	ZombieType.Z020Yeti: 1,			# 雪人
+
+	ZombieType.Z022Ladder: 1000,		# 扶梯
+	ZombieType.Z023Catapult: 1500,	# 投篮
+	ZombieType.Z024Gargantuar: 1500,	# 伽刚特尔
+}
+
+
 ## 获取僵尸属性方法
 func get_zombie_info(zombie_type:ZombieType, info_attribute:ZombieInfoAttribute):
 	if zombie_type == 0:
@@ -774,3 +838,45 @@ func get_zombie_info(zombie_type:ZombieType, info_attribute:ZombieInfoAttribute)
 		return null
 	var curr_zombie_info = ZombieInfo[zombie_type]
 	return curr_zombie_info[info_attribute]
+#endregion
+
+#region 僵王信息
+
+#region 僵王
+## 僵王使用独立类型，不参与普通僵尸的自然刷新列表；新增类型保持已有编号不变。
+enum ZombieBossType {
+	Null = 0,
+	ZB001Doctor = 1,
+}
+
+## 注册表只保存公共定义，血量和死亡状态由每局生成的僵王实例维护。
+enum ZombieBossInfoAttribute {
+	BossName,
+	BossScenes,
+	SunCost, ## 僵王卡每次成功召唤的阳光费用，取非负整数。
+	CoolTime, ## 僵王卡每次成功召唤后的冷却时长，单位为游戏秒，0 表示无冷却。
+}
+#endregion
+
+## 通过 Global.character_registry 查询场景，关卡只需保存 ZombieBossType。
+const ZombieBossInfo = {
+	ZombieBossType.ZB001Doctor: {
+		ZombieBossInfoAttribute.BossName: "ZB001Doctor",
+		ZombieBossInfoAttribute.BossScenes: preload("res://scenes/character/zombie_boss/zombie_boss_001_doctor.tscn"),
+		ZombieBossInfoAttribute.SunCost: 10000,
+		ZombieBossInfoAttribute.CoolTime: 0,
+	},
+}
+
+
+## 空类型或未注册类型返回 null，由生成入口决定如何处理，不回退成其他角色。
+func get_zombie_boss_info(boss_type: ZombieBossType, info_attribute: ZombieBossInfoAttribute):
+	if boss_type == ZombieBossType.Null:
+		print("warning: 获取空僵王信息")
+		return null
+	if not ZombieBossInfo.has(boss_type):
+		push_error("CharacterRegistry：未注册的僵王类型：%s" % boss_type)
+		return null
+	var curr_boss_info: Dictionary = ZombieBossInfo[boss_type]
+	return curr_boss_info.get(info_attribute)
+#endregion

@@ -1,17 +1,17 @@
-[gd_resource type="Animation" load_steps=13 format=3 uid="uid://2a71dohma3ij"]
+[gd_resource type="Animation" format=3 uid="uid://2a71dohma3ij"]
 
-[ext_resource type="Texture2D" uid="uid://ce7fkg5hv8s6l" path="res://assets/reanim/Goldmagnet_stem.png" id="0_fuck"]
-[ext_resource type="Texture2D" uid="uid://b68nx5vy75ff1" path="res://assets/reanim/Goldmagnet_leaf5.png" id="1_fuck"]
-[ext_resource type="Texture2D" uid="uid://mq76seqkalyk" path="res://assets/reanim/Goldmagnet_leaf1.png" id="2_fuck"]
-[ext_resource type="Texture2D" uid="uid://dxacxekqdua7b" path="res://assets/reanim/Goldmagnet_leaf4.png" id="3_fuck"]
-[ext_resource type="Texture2D" uid="uid://btfp5akxhw6m5" path="res://assets/reanim/Goldmagnet_head1.png" id="4_fuck"]
-[ext_resource type="Texture2D" uid="uid://55ygswjd4ypj" path="res://assets/reanim/Goldmagnet_eyebrow.png" id="5_fuck"]
-[ext_resource type="Texture2D" uid="uid://cmt5pfp2mwnlc" path="res://assets/reanim/Goldmagnet_leaf2.png" id="6_fuck"]
-[ext_resource type="Texture2D" uid="uid://x8844lkm77fv" path="res://assets/reanim/Goldmagnet_leaf3.png" id="7_fuck"]
-[ext_resource type="Texture2D" uid="uid://cfoe638mubffa" path="res://assets/reanim/Goldmagnet_blink1.png" id="8_fuck"]
-[ext_resource type="Texture2D" uid="uid://dibgynbph6s6u" path="res://assets/reanim/Goldmagnet_smallspark1.png" id="9_fuck"]
-[ext_resource type="Texture2D" uid="uid://dpvia8ln5c6sy" path="res://assets/reanim/Goldmagnet_smallspark2.png" id="10_fuck"]
-[ext_resource type="Texture2D" uid="uid://cvjgt37odcqvd" path="res://assets/reanim/Goldmagnet_smallspark3.png" id="11_fuck"]
+[ext_resource type="Texture2D" uid="uid://ce7fkg5hv8s6l" path="res://assets/reanim/GoldMagnet_stem.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://b68nx5vy75ff1" path="res://assets/reanim/GoldMagnet_leaf5.png" id="1_fuck"]
+[ext_resource type="Texture2D" uid="uid://mq76seqkalyk" path="res://assets/reanim/GoldMagnet_leaf1.png" id="2_fuck"]
+[ext_resource type="Texture2D" uid="uid://dxacxekqdua7b" path="res://assets/reanim/GoldMagnet_leaf4.png" id="3_fuck"]
+[ext_resource type="Texture2D" uid="uid://btfp5akxhw6m5" path="res://assets/reanim/GoldMagnet_head1.png" id="4_fuck"]
+[ext_resource type="Texture2D" uid="uid://55ygswjd4ypj" path="res://assets/reanim/GoldMagnet_eyebrow.png" id="5_fuck"]
+[ext_resource type="Texture2D" uid="uid://cmt5pfp2mwnlc" path="res://assets/reanim/GoldMagnet_leaf2.png" id="6_fuck"]
+[ext_resource type="Texture2D" uid="uid://x8844lkm77fv" path="res://assets/reanim/GoldMagnet_leaf3.png" id="7_fuck"]
+[ext_resource type="Texture2D" uid="uid://cfoe638mubffa" path="res://assets/reanim/GoldMagnet_blink1.png" id="8_fuck"]
+[ext_resource type="Texture2D" uid="uid://dibgynbph6s6u" path="res://assets/reanim/GoldMagnet_smallspark1.png" id="9_fuck"]
+[ext_resource type="Texture2D" uid="uid://dpvia8ln5c6sy" path="res://assets/reanim/GoldMagnet_smallspark2.png" id="10_fuck"]
+[ext_resource type="Texture2D" uid="uid://cvjgt37odcqvd" path="res://assets/reanim/GoldMagnet_smallspark3.png" id="11_fuck"]
 
 [resource]
 resource_name = "GoldMagnet_idle"
@@ -640,7 +640,7 @@ tracks/51/keys = {
 "times": PackedFloat32Array(0, 0.083333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333, 0.666667, 0.75, 0.833333, 0.916667, 1, 1.08333, 1.16667, 1.25, 1.33333, 1.41667, 1.5, 1.58333, 1.66667, 1.75, 1.83333, 1.91667, 2, 2.08333, 2.16667, 2.25, 2.33333, 2.41667, 2.5, 2.58333, 2.66667, 2.75, 2.83333, 2.91667, 3, 3.08333, 3.16667, 3.25, 3.33333, 3.41667, 3.5, 3.58333, 3.66667, 3.75, 3.83333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.0, 0.101229, 0.207694, 0.171042, 0.136136, 0.101229, 0.069813, -0.090757, -0.251327, -0.247837, -0.242601, -0.23911, -0.23911, -0.073304, 0.087266, 0.083776, 0.075049, 0.071558, 0.069813, -0.020944, -0.115192, -0.085521, -0.055851, -0.024435, 0.0, 0.10472, 0.20944, 0.15708, 0.10472, 0.05236, 0.0, -0.059341, -0.122173, -0.10821, -0.095993, -0.08203, -0.073304, 0.010472, 0.099484, 0.066323, 0.031416, 0.0, -0.029671, -0.064577, -0.041888, -0.020944, 0.0]
+"values": [0.0, 0.101229, 0.207694, 0.171042, 0.136136, 0.101229, 0.069813, -0.090757, -0.251327, -0.247837, -0.242601, -0.23911, -0.23911, -0.073304, 0.087266, 0.083776, 0.075049, 0.071558, 0.069813, -0.020944, -0.115192, -0.085521, -0.055851, -0.024435, 0.0, 0.10472, 0.20944, 0.15708, 0.10472, 0.05236, 0.0, -0.059341, -0.122173, -0.10821, -0.095993, -0.08203, -0.073304, 0.010472, 0.099484, 0.06632299999999999, 0.031416, 0.0, -0.029671, -0.064577, -0.041888, -0.020944, 0.0]
 }
 tracks/52/type = "value"
 tracks/52/imported = false
@@ -976,7 +976,7 @@ tracks/79/keys = {
 "times": PackedFloat32Array(0, 0.083333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333, 0.666667, 0.75, 0.833333, 0.916667, 1, 1.08333, 1.16667, 1.25, 1.33333, 1.41667, 1.5, 1.58333, 1.66667, 1.75, 1.83333, 1.91667, 2, 2.08333, 2.16667, 2.25, 2.33333, 2.41667, 2.5, 2.58333, 2.66667, 2.75, 2.83333, 2.91667, 3, 3.08333, 3.16667, 3.25, 3.33333, 3.41667, 3.5, 3.58333, 3.66667, 3.75, 3.83333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.083776, 0.043633, 0.005236, 0.0, -0.003491, -0.012217, -0.017453, 0.034907, 0.092502, 0.141372, 0.191986, 0.244346, 0.296706, 0.179769, 0.069813, 0.045379, 0.022689, 0.0, -0.017453, 0.095993, 0.21293, 0.193732, 0.174533, 0.15708, 0.141372, 0.109956, 0.083776, 0.083776, 0.083776, 0.083776, 0.083776, 0.087266, 0.097738, 0.10472, 0.113446, 0.122173, 0.1309, 0.083776, 0.038397, 0.05236, 0.066323, 0.083776, 0.109956, 0.141372, 0.118682, 0.101229, 0.083776]
+"values": [0.083776, 0.043633, 0.005236, 0.0, -0.003491, -0.012217, -0.017453, 0.034907, 0.092502, 0.141372, 0.191986, 0.244346, 0.296706, 0.179769, 0.069813, 0.045379, 0.022689, 0.0, -0.017453, 0.095993, 0.21293, 0.193732, 0.174533, 0.15708, 0.141372, 0.109956, 0.083776, 0.083776, 0.083776, 0.083776, 0.083776, 0.087266, 0.097738, 0.10472, 0.113446, 0.122173, 0.1309, 0.083776, 0.038397, 0.05236, 0.06632299999999999, 0.083776, 0.109956, 0.141372, 0.118682, 0.101229, 0.083776]
 }
 tracks/80/type = "value"
 tracks/80/imported = false

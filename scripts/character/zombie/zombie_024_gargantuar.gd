@@ -53,12 +53,15 @@ func throw_out_imp():
 	if not is_death:
 		create_imp()
 
+## 创建投掷小鬼并继承刷新统计来源，避免博士放置的巨人间接影响自然波次。
 func create_imp():
+	# 小鬼的出生参数；刷新归属独立于自然波次编号。
 	var zombie_init_para:Dictionary = {
 		Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsNorm,
 		Zombie000Base.E_ZInitAttr.Lane:lane,
 		Zombie000Base.E_ZInitAttr.IsMiniZombie: is_mini_zombie,
 		Zombie000Base.E_ZInitAttr.IsPotZombie: is_pot_zombie,
+		Zombie000Base.E_ZInitAttr.ParticipatesNaturalRefresh: participates_natural_refresh,
 	}
 	Global.main_game.zombie_manager.create_norm_zombie(
 		CharacterRegistry.ZombieType.Z025Imp,

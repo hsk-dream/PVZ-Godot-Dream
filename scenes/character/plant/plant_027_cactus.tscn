@@ -1,5 +1,6 @@
-[gd_scene load_steps=44 format=3 uid="uid://b401c4jy3m0xe"]
+[gd_scene load_steps=45 format=3 uid="uid://b401c4jy3m0xe"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_vwoux"]
 [ext_resource type="Texture2D" uid="uid://c4id572fbtjcy" path="res://assets/reanim/Cactus_flower.png" id="2_4xp4t"]
 [ext_resource type="Script" uid="uid://cqowwxado0yfh" path="res://scripts/character/plant/plant_027_cactus.gd" id="2_d8wji"]
@@ -285,6 +286,7 @@ attack_bullet_type = 7
 markers_2d_bullet = [NodePath("../Body/BodyCorrect/Marker2DBullet")]
 
 [node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="0"]
+script = ExtResource("speed_timer")
 
 [node name="DetectComponent" type="Node2D" parent="AttackComponent" index="1"]
 script = ExtResource("21_d8wji")

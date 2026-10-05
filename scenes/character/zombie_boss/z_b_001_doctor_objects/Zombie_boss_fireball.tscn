@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://cv4obfp5v8idm"]
+
+[ext_resource type="Texture2D" uid="uid://bvmrq6jelfff5" path="res://assets/reanim/Zombie_boss_icefire_shadow.png" id="1_q2on7"]
+[ext_resource type="Texture2D" uid="uid://c6uvl01ua6y6e" path="res://assets/reanim/Zombie_boss_fireball.png" id="2_u32mg"]
+[ext_resource type="Texture2D" uid="uid://hba7a74smqsb" path="res://assets/reanim/Zombie_boss_fireball_chunks.png" id="3_j1h6q"]
+[ext_resource type="Texture2D" uid="uid://deyd3xf66l6e8" path="res://assets/reanim/Zombie_boss_fireball_multiply.png" id="4_6gioj"]
+[ext_resource type="Texture2D" uid="uid://co7ol8s100nkj" path="res://assets/reanim/Zombie_boss_fireball_additive.png" id="5_mdti4"]
+[ext_resource type="Texture2D" uid="uid://bx24t5sl6v2yo" path="res://assets/reanim/Zombie_boss_fireball_superglow.png" id="6_vgkdl"]
+[ext_resource type="Animation" uid="uid://whfl8efmfdcw" path="res://animation/character/zombie_boss/001_doctor/ball/Zombie_boss_fireball_form.tres" id="7_mneta"]
+[ext_resource type="Animation" uid="uid://bppsqhe4p714k" path="res://animation/character/zombie_boss/001_doctor/ball/Zombie_boss_fireball_role.tres" id="8_hvdds"]
+[ext_resource type="Script" uid="uid://br0wsj6wppyt" path="res://scripts/character/zombie_boss/001_doctor/objects/z_b_001_doctor_fire_ball.gd" id="ball_script"]
+[ext_resource type="Script" uid="uid://lae0hyhwqrkw" path="res://scripts/character/zombie_boss/001_doctor/objects/z_b_001_doctor_ground_particles.gd" id="ground_script"]
+[ext_resource type="Texture2D" uid="uid://byrfcc1yqasl5" path="res://assets/image/particles/Zombie_boss_fireball_groundparticles.png" id="ground_texture"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dfxh7"]
+_data = {
+&"Zombie_boss_fireball_form": ExtResource("7_mneta"),
+&"Zombie_boss_fireball_role": ExtResource("8_hvdds")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
+size = Vector2(140, 100)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ground"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_ground_fade"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ground_fade"]
+gradient = SubResource("Gradient_ground_fade")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ground"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(3, 3, 0)
+gravity = Vector3(0, 0, 0)
+scale_min = 0.8
+scale_max = 1.2
+color_ramp = SubResource("GradientTexture1D_ground_fade")
+anim_offset_max = 0.9999
+
+[node name="Zombie_boss_fireball" type="Node2D" unique_id=1334991762]
+script = ExtResource("ball_script")
+
+[node name="Body" type="Node2D" parent="." unique_id=96603494]
+position = Vector2(-103.45, -179.45)
+
+[node name="BodyCorrect" type="Node2D" parent="Body" unique_id=671971646]
+
+[node name="Anim_form" type="Sprite2D" parent="Body/BodyCorrect" unique_id=2089560276]
+visible = false
+centered = false
+
+[node name="Anim_role" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1376656810]
+centered = false
+
+[node name="_ground" type="Sprite2D" parent="Body/BodyCorrect" unique_id=267297493]
+position = Vector2(-156.8, 51)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Layer 47" type="Sprite2D" parent="Body/BodyCorrect" unique_id=166586790]
+self_modulate = Color(1, 1, 1, 0.25)
+position = Vector2(32.8, 150.2)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("1_q2on7")
+centered = false
+
+[node name="Fireball" type="Sprite2D" parent="Body/BodyCorrect" unique_id=213635156]
+position = Vector2(15.4, 16.4)
+texture = ExtResource("2_u32mg")
+centered = false
+
+[node name="Fireball_chunks" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1391179551]
+position = Vector2(15.4, 16.4)
+texture = ExtResource("3_j1h6q")
+centered = false
+
+[node name="Multiply" type="Sprite2D" parent="Body/BodyCorrect" unique_id=131239438]
+position = Vector2(24.7, 30.5)
+scale = Vector2(0.91, 0.91)
+texture = ExtResource("4_6gioj")
+centered = false
+
+[node name="Additive" type="Sprite2D" parent="Body/BodyCorrect" unique_id=1240454525]
+position = Vector2(18, 19.4)
+scale = Vector2(0.959, 0.964)
+texture = ExtResource("5_mdti4")
+centered = false
+
+[node name="Superglow" type="Sprite2D" parent="Body/BodyCorrect" unique_id=602105577]
+position = Vector2(-56.3, -55.3)
+scale = Vector2(1.083, 1.083)
+texture = ExtResource("6_vgkdl")
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=988052274]
+libraries/ = SubResource("AnimationLibrary_dfxh7")
+
+[node name="AttackArea" type="Area2D" parent="." unique_id=403107719]
+collision_layer = 0
+collision_mask = 8448
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=1375692086]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_attack")
+
+[node name="GroundParticles" type="GPUParticles2D" parent="." unique_id=1978549883]
+material = SubResource("CanvasItemMaterial_ground")
+emitting = false
+texture = ExtResource("ground_texture")
+lifetime = 5.0
+visibility_rect = Rect2(-2048, -512, 4096, 1024)
+process_material = SubResource("ParticleProcessMaterial_ground")
+script = ExtResource("ground_script")

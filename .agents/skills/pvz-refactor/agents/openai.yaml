@@ -1,0 +1,3 @@
+interface:
+  display_name: "PVZ 项目重构"
+  short_description: "按范围审查与重构 Godot PVZ，保护玩法、资源、存档和时序契约"

@@ -32,6 +32,8 @@
 [ext_resource type="Texture2D" uid="uid://b48l4yjq0j5mo" path="res://assets/image/ui/ui_main_game_menu/UI_BG/button_BG.png" id="30_nbi47"]
 [ext_resource type="BitMap" uid="uid://cxokl66i7qyda" path="res://assets/image/ui/ui_main_game_menu/UI_BG/button_BG_mask.png" id="31_56ytc"]
 
+[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x628s"]
 texture = ExtResource("2_6irry")
 texture_margin_left = 78.0
@@ -56,6 +58,11 @@ texture_margin_bottom = 120.0
 expand_margin_left = 20.0
 expand_margin_right = 20.0
 expand_margin_bottom = 80.0
+
+[sub_resource type="Resource" id="CardReference_1_999"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 999
 
 [node name="CardSlotNorm" type="Control" unique_id=1359007529]
 layout_mode = 3
@@ -680,10 +687,8 @@ offset_right = 56.0
 offset_bottom = 82.0
 theme = null
 script = ExtResource("15_0r41g")
-card_plant_type = 999
+card_reference = SubResource("CardReference_1_999")
 curr_card_gb = 2
-cool_time = 0.0
-sun_cost = 0
 
 [node name="CardBg" parent="CardSlotCandidate/ImitaterBG/CardImitater" index="0"]
 texture = ExtResource("15_v6er4")

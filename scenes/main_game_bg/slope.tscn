@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dix4am6e6dehi"]
+[gd_scene format=3 uid="uid://dix4am6e6dehi"]
 
 [ext_resource type="Script" uid="uid://blnis0vvtsqvt" path="res://scripts/main_game_item/back_ground/slope.gd" id="1_72vrf"]
 
@@ -9,56 +9,56 @@ size = Vector2(460, 600)
 a = Vector2(0, 122)
 b = Vector2(460, 0)
 
-[node name="Slope" type="Node2D"]
+[node name="Slope" type="Node2D" unique_id=171343992]
 script = ExtResource("1_72vrf")
 
-[node name="Area2DSlopeDetection" type="Area2D" parent="."]
+[node name="Area2DSlopeDetection" type="Area2D" parent="." unique_id=1050420592]
 collision_layer = 0
-collision_mask = 1537
+collision_mask = 9729
 monitorable = false
 
-[node name="CollisionShape2DDetection" type="CollisionShape2D" parent="Area2DSlopeDetection"]
+[node name="CollisionShape2DDetection" type="CollisionShape2D" parent="Area2DSlopeDetection" unique_id=1209279345]
 position = Vector2(230, 300)
 shape = SubResource("RectangleShape2D_aflyj")
 
-[node name="SlopeReal" type="Node2D" parent="."]
+[node name="SlopeReal" type="Node2D" parent="." unique_id=611400041]
 
-[node name="Area2DReal" type="Area2D" parent="SlopeReal"]
+[node name="Area2DReal" type="Area2D" parent="SlopeReal" unique_id=1871496605]
 position = Vector2(0, 145)
 collision_mask = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal" unique_id=390224226]
 shape = SubResource("SegmentShape2D_6sinj")
 
-[node name="Area2DReal2" type="Area2D" parent="SlopeReal"]
+[node name="Area2DReal2" type="Area2D" parent="SlopeReal" unique_id=1769118201]
 position = Vector2(0, 231)
 collision_mask = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal2" unique_id=281935804]
 shape = SubResource("SegmentShape2D_6sinj")
 
-[node name="Area2DReal3" type="Area2D" parent="SlopeReal"]
+[node name="Area2DReal3" type="Area2D" parent="SlopeReal" unique_id=209537509]
 position = Vector2(0, 316)
 collision_mask = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal3" unique_id=1025591676]
 shape = SubResource("SegmentShape2D_6sinj")
 
-[node name="Area2DReal4" type="Area2D" parent="SlopeReal"]
+[node name="Area2DReal4" type="Area2D" parent="SlopeReal" unique_id=1377067982]
 position = Vector2(0, 398)
 collision_mask = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal4" unique_id=1520033143]
 shape = SubResource("SegmentShape2D_6sinj")
 
-[node name="Area2DReal5" type="Area2D" parent="SlopeReal"]
+[node name="Area2DReal5" type="Area2D" parent="SlopeReal" unique_id=2141681487]
 position = Vector2(0, 482)
 collision_mask = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal5"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlopeReal/Area2DReal5" unique_id=769619736]
 shape = SubResource("SegmentShape2D_6sinj")

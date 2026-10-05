@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://vhxn4alby3ow"]
+[gd_scene format=3 uid="uid://vhxn4alby3ow"]
 
 [ext_resource type="Script" uid="uid://xuptai70s00a" path="res://scripts/main_game_item/lawn_mover/pool_cleaner.gd" id="1_hjt5v"]
 [ext_resource type="Texture2D" uid="uid://d2je1pntfgimf" path="res://assets/reanim/PoolCleaner_wheel.png" id="2_fhoyp"]
@@ -119,105 +119,104 @@ node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"StateMachine"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_brrg7"]
 size = Vector2(36, 48)
 
-[node name="PoolCleaner" type="Node2D"]
+[node name="PoolCleaner" type="Node2D" unique_id=1271037867]
 script = ExtResource("1_hjt5v")
 
-[node name="Body" type="Node2D" parent="."]
-position = Vector2(-29, -61)
+[node name="Body" type="Node2D" parent="." unique_id=1444942013]
+
+[node name="Node2D" type="Node2D" parent="Body" unique_id=198108387]
+position = Vector2(-29, -59)
 scale = Vector2(0.8, 0.8)
 
-[node name="PoolCleaner_backwheel1" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_backwheel1" type="Sprite2D" parent="Body/Node2D" unique_id=912782875]
 position = Vector2(37.5, 32.9)
 scale = Vector2(0.72, 0.72)
 texture = ExtResource("2_fhoyp")
 centered = false
 
-[node name="PoolCleaner_backwheel2" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_backwheel2" type="Sprite2D" parent="Body/Node2D" unique_id=508666776]
 position = Vector2(9.1, 30.4)
 scale = Vector2(0.72, 0.72)
 texture = ExtResource("2_fhoyp")
 centered = false
 
-[node name="PoolCleaner_body" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_body" type="Sprite2D" parent="Body/Node2D" unique_id=46695078]
 position = Vector2(11.1, 14.1)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("3_w522v")
 centered = false
 
-[node name="PoolCleaner_body2" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_body2" type="Sprite2D" parent="Body/Node2D" unique_id=873697163]
 visible = false
 centered = false
 
-[node name="PoolCleaner_tubeend" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_tubeend" type="Sprite2D" parent="Body/Node2D" unique_id=1655184765]
 position = Vector2(30.8, 15.2)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_8b71b")
 centered = false
 
-[node name="PoolCleaner_whitewater1" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_whitewater1" type="Sprite2D" parent="Body/Node2D" unique_id=1210049011]
 visible = false
 centered = false
 
-[node name="PoolCleaner_whitewater2" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_whitewater2" type="Sprite2D" parent="Body/Node2D" unique_id=1283627030]
 visible = false
 centered = false
 
-[node name="PoolCleaner_whitewater3" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_whitewater3" type="Sprite2D" parent="Body/Node2D" unique_id=1787524581]
 visible = false
 centered = false
 
-[node name="PoolCleaner_tube" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_tube" type="Sprite2D" parent="Body/Node2D" unique_id=2021965851]
 position = Vector2(35.5, -4.2)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("5_baiuf")
 centered = false
 
-[node name="PoolCleaner_bubble" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_bubble" type="Sprite2D" parent="Body/Node2D" unique_id=454991253]
 visible = false
 centered = false
 
-[node name="PoolCleaner_funnel" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_funnel" type="Sprite2D" parent="Body/Node2D" unique_id=582383060]
 position = Vector2(41.4, -21.2)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("6_w1404")
 centered = false
 
-[node name="PoolCleaner_funnel_overlay" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_funnel_overlay" type="Sprite2D" parent="Body/Node2D" unique_id=1917751659]
 position = Vector2(41.6, -21.2)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("7_85o48")
 centered = false
 
-[node name="PoolCleaner_frontwheel1" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_frontwheel1" type="Sprite2D" parent="Body/Node2D" unique_id=813601788]
 position = Vector2(4.8, 51.8)
 scale = Vector2(0.72, 0.72)
 texture = ExtResource("2_fhoyp")
 centered = false
 
-[node name="PoolCleaner_frontwheel11" type="Sprite2D" parent="Body"]
+[node name="PoolCleaner_frontwheel11" type="Sprite2D" parent="Body/Node2D" unique_id=649551448]
 position = Vector2(33, 50)
 scale = Vector2(0.72, 0.72)
 texture = ExtResource("2_fhoyp")
 centered = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_gcy1w")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=419461761]
+libraries/ = SubResource("AnimationLibrary_gcy1w")
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=616517482]
 tree_root = SubResource("AnimationNodeBlendTree_brrg7")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
 parameters/TimeScale/scale = 2.0
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=1691930977]
 position = Vector2(0, -23)
-collision_layer = 0
+collision_layer = 8192
 collision_mask = 513
-monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=976120843]
 position = Vector2(-1, -10)
 shape = SubResource("RectangleShape2D_brrg7")
 

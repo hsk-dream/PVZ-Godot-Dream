@@ -2,7 +2,7 @@ extends Plant000Base
 class_name Plant010SunShroom
 
 @onready var create_sun_component: CreateSunComponent = $CreateSunComponent
-@onready var grow_timer: Timer = $GrowTimer
+@onready var grow_timer: SpeedTimer = $GrowTimer
 
 ## 成长所需时间
 @export var time_grow:float = 100
@@ -17,8 +17,9 @@ class_name Plant010SunShroom
 
 func ready_norm():
 	super()
-	grow_timer.wait_time = time_grow
-	grow_timer.start()
+	# 成长与产阳光各自保留基础周期，共同响应角色速度信号。
+	update_grow_speed(GlobalUtils.get_dic_product(influence_speed_factors))
+	grow_timer.start_scaled(time_grow)
 	create_sun_component.change_sun_value(mini_sun_value)
 
 	if is_zombie_mode:
@@ -36,15 +37,9 @@ func _on_grow_timer_timeout() -> void:
 	self.is_grow = true
 	create_sun_component.change_sun_value(norm_sun_value)
 
-## 更新成长的速度
+## 已停止或尚未开始成长时也保存倍率，进度与零速由计时器处理。
 func update_grow_speed(speed_factor:float):
-	if not grow_timer.is_stopped():
-		if speed_factor == 0:
-			grow_timer.paused = true
-		else:
-			grow_timer.paused = false
-
-			grow_timer.start(grow_timer.time_left / speed_factor)
+	grow_timer.set_speed_scale(speed_factor)
 
 
 ## 被僵尸啃食一次特殊效果,魅惑\大蒜\我是僵尸生产阳光

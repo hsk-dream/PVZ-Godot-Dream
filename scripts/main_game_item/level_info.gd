@@ -1,9 +1,69 @@
+## 管理关卡轮次与进度显示，在自然波次进度和僵王血量之间切换。
 extends Control
 class_name LevelInfo
 
+## 多轮关卡的轮次文字，不参与波次进度与僵王血条的切换。
 @onready var round_label: Label = $RoundLabel
+## 原波次进度条的显示容器；隐藏父节点可阻止后续首波逻辑重新显示子进度条。
+@onready var wave_progress_root: Control = $WaveProgressRoot
+## 独立僵王血条，负责血量信号绑定与平滑显示。
+@onready var boss_hp_progress_bar: BossHpProgressBar = $BossHpProgressBar
 
-## 设置轮次
+## [param curr_round] 当前关卡轮次；更新文字并显示轮次标签。
 func set_round(curr_round:int):
 	round_label.text = "当前为第" + str(curr_round) + "轮"
 	round_label.visible = true
+
+
+## [param bosses] 按成功登记顺序提供僵王，显示最新存活实例并更新存活数量。[br]
+## [param keep_depleted] 为 true 且没有存活实例时保留 100% 击败进度。
+## [param restore_wave] 为 true 时，仅在没有存活僵王且未保留完成进度时恢复波次显示。
+## 非显示实例死亡或离树只影响数量，不会解绑仍存活的显示实例。
+func refresh_boss_progress(bosses: Array[ZB000Base], keep_depleted: bool, restore_wave: bool) -> void:
+	# 忽略已经离树、死亡或等待释放的实例，避免 UI 绑定过期角色。
+	var living_count: int = 0
+	# 登记顺序最后一只有效实例作为当前血条的显示目标。
+	var latest_boss: ZB000Base
+	# 输入列表只读使用，不删除管理器持有的实例或改变其顺序。
+	for boss: ZB000Base in bosses:
+		if not is_instance_valid(boss) or boss.is_death or boss.is_queued_for_deletion() \
+			or not boss.is_inside_tree():
+			continue
+		living_count += 1
+		latest_boss = boss
+	boss_hp_progress_bar.set_living_boss_count(living_count)
+	if latest_boss != null and boss_hp_progress_bar.bind_boss(latest_boss):
+		wave_progress_root.hide()
+		boss_hp_progress_bar.show()
+		return
+	clear_boss_progress(keep_depleted, restore_wave)
+
+
+## [param boss] 已完成初始化的僵王；绑定成功后替换原位置的波次进度显示。
+## 兼容单僵王调用；多实例管理器应使用 [method refresh_boss_progress]。
+func show_boss_progress(boss: ZB000Base) -> void:
+	if not boss_hp_progress_bar.bind_boss(boss):
+		return
+	boss_hp_progress_bar.set_living_boss_count(1)
+	wave_progress_root.hide()
+	boss_hp_progress_bar.show()
+
+
+## [param keep_depleted] 开启 Boss 死亡胜利时保留 100% 击败进度，直到关卡退出。
+## [param restore_wave] 普通模式且仍在战斗时恢复波次容器，子进度条保留原有显隐状态。
+func finish_boss_progress(keep_depleted: bool, restore_wave: bool) -> void:
+	boss_hp_progress_bar.set_living_boss_count(0)
+	boss_hp_progress_bar.show_depleted()
+	boss_hp_progress_bar.visible = keep_depleted
+	wave_progress_root.visible = restore_wave and not keep_depleted
+
+
+## [param keep_depleted] 已死亡的 Boss 离树时保留 100% 击败进度，不再依赖角色引用。
+## [param restore_wave] 普通模式的角色离树时，仅在战斗仍继续的情况下恢复波次容器。
+func clear_boss_progress(keep_depleted: bool, restore_wave: bool) -> void:
+	boss_hp_progress_bar.set_living_boss_count(0)
+	boss_hp_progress_bar.unbind_boss()
+	if keep_depleted:
+		boss_hp_progress_bar.show_depleted()
+	boss_hp_progress_bar.visible = keep_depleted
+	wave_progress_root.visible = restore_wave and not keep_depleted

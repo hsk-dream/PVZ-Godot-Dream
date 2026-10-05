@@ -1,9 +1,9 @@
 [gd_resource type="Animation" load_steps=5 format=3 uid="uid://bocdneu3lvmn8"]
 
-[ext_resource type="Texture2D" uid="uid://i81mtytc2pod" path="res://assets/reanim/Threepeater_headleaf1.png" id="0_fuck"]
-[ext_resource type="Texture2D" uid="uid://xcqhwarudb01" path="res://assets/reanim/Threepeater_head.png" id="1_fuck"]
-[ext_resource type="Texture2D" uid="uid://b20h77g62nvj3" path="res://assets/reanim/Threepeater_blink1.png" id="2_fuck"]
-[ext_resource type="Texture2D" uid="uid://806ya6s6keow" path="res://assets/reanim/Threepeater_mouth.png" id="3_fuck"]
+[ext_resource type="Texture2D" uid="uid://i81mtytc2pod" path="res://assets/reanim/ThreePeater_headleaf1.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://xcqhwarudb01" path="res://assets/reanim/ThreePeater_head.png" id="1_fuck"]
+[ext_resource type="Texture2D" uid="uid://b20h77g62nvj3" path="res://assets/reanim/ThreePeater_blink1.png" id="2_fuck"]
+[ext_resource type="Texture2D" uid="uid://806ya6s6keow" path="res://assets/reanim/ThreePeater_mouth.png" id="3_fuck"]
 
 [resource]
 resource_name = "ThreePeater_blink3"

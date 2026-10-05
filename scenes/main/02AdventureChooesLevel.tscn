@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://mcad1jl5d1ui"]
+[gd_scene format=3 uid="uid://mcad1jl5d1ui"]
 
 [ext_resource type="Texture2D" uid="uid://bwevuvs5nnwfx" path="res://assets/image/ui/ui_challenge/Challenge_Background.jpg" id="1_77tr5"]
 [ext_resource type="Theme" uid="uid://cx302yraw066y" path="res://data/ChooesLevel.tres" id="1_dw7cd"]
@@ -39,8 +39,54 @@
 [ext_resource type="Resource" uid="uid://1lhfjbi4gaok" path="res://resources/level_date_resource/mode_adventure/adventure_05_Roof.tres" id="32_5nwtl"]
 [ext_resource type="Texture2D" uid="uid://cbhaawnc37cwe" path="res://assets/reanim/LilyPad_body.png" id="32_x6sup"]
 [ext_resource type="Texture2D" uid="uid://dmmcjbsd028oj" path="res://assets/reanim/LilyPad_blink1.png" id="33_nodl8"]
-[ext_resource type="Resource" uid="uid://0vrftjy7v4a2" path="res://resources/level_date_resource/mode_minigame/minigame_05_column.tres" id="35_j86es"]
-[ext_resource type="Texture2D" uid="uid://ddq8w41grl3re" path="res://assets/image/choose_level/111.png" id="38_7hqj2"]
+[ext_resource type="Resource" uid="uid://6aix6nlgemjk" path="res://resources/level_date_resource/mode_minigame/minigame_06_boss.tres" id="39_tg4bu"]
+[ext_resource type="Texture2D" uid="uid://d0gnsuf88om6q" path="res://assets/reanim/Zombie_boss_arm_upper2.png" id="40_th7e4"]
+[ext_resource type="Texture2D" uid="uid://cb7lvkchehhyj" path="res://assets/reanim/Zombie_boss_innerarm_lower.png" id="41_fqng3"]
+[ext_resource type="Texture2D" uid="uid://c77q3t07btgx3" path="res://assets/reanim/Zombie_boss_innerarm_finger.png" id="42_l8g0f"]
+[ext_resource type="Texture2D" uid="uid://b61wa16xujdnk" path="res://assets/reanim/Zombie_boss_innerarm_hand.png" id="43_t7k67"]
+[ext_resource type="Texture2D" uid="uid://c533qswlsv8dw" path="res://assets/reanim/Zombie_boss_RVwheel.png" id="44_svthq"]
+[ext_resource type="Texture2D" uid="uid://cj10wpko1fxuj" path="res://assets/reanim/Zombie_boss_rv.png" id="45_q58c5"]
+[ext_resource type="Texture2D" uid="uid://cdrqid7xanb3t" path="res://assets/reanim/Zombie_boss_innerarm_thumb2.png" id="46_cho5l"]
+[ext_resource type="Texture2D" uid="uid://dgcifib0510bl" path="res://assets/reanim/Zombie_boss_innerarm_thumb1.png" id="47_8y17l"]
+[ext_resource type="Texture2D" uid="uid://d22p4oxj6fvxt" path="res://assets/reanim/Zombie_boss_innerarm_upper.png" id="48_5aksc"]
+[ext_resource type="Texture2D" uid="uid://yrcmd1nqpt8i" path="res://assets/reanim/Zombie_boss_foot.png" id="49_5pl6h"]
+[ext_resource type="Texture2D" uid="uid://cq7u4mojd15e3" path="res://assets/reanim/Zombie_boss_legbits.png" id="50_dg6yi"]
+[ext_resource type="Texture2D" uid="uid://cpn0fqjqj12ah" path="res://assets/reanim/Zombie_boss_innerleg_upper.png" id="51_lagr1"]
+[ext_resource type="Texture2D" uid="uid://bjxhbmwr06r3n" path="res://assets/reanim/Zombie_boss_leg_lower.png" id="52_nab1d"]
+[ext_resource type="Texture2D" uid="uid://bxsncalumj0c" path="res://assets/reanim/Zombie_boss_lowerbody.png" id="53_0xrca"]
+[ext_resource type="Texture2D" uid="uid://dmxrbe37acf4o" path="res://assets/reanim/Zombie_boss_outerleg_upper.png" id="54_egkw2"]
+[ext_resource type="Texture2D" uid="uid://dq55l4c8ehewh" path="res://assets/reanim/Zombie_boss_upperbody.png" id="55_uccm7"]
+[ext_resource type="Texture2D" uid="uid://hdhq0s4y5nlc" path="res://assets/reanim/Zombie_boss_neck.png" id="56_riqlo"]
+[ext_resource type="Texture2D" uid="uid://b1g33eigvbf34" path="res://assets/reanim/Zombie_boss_innerjaw.png" id="57_pe5ui"]
+[ext_resource type="Texture2D" uid="uid://bpi1pc7gdc7e3" path="res://assets/reanim/Zombie_boss_mouthglow.png" id="58_qk4is"]
+[ext_resource type="Texture2D" uid="uid://cpfce4np462tn" path="res://assets/image/particles/Zombie_boss_iceball_particles_flip_h.png" id="59_n7kav"]
+[ext_resource type="Texture2D" uid="uid://4a4nlhkc5nak" path="res://assets/reanim/Zombie_boss_mouthglow_red.png" id="60_hc0tp"]
+[ext_resource type="Texture2D" uid="uid://bql5giivcflcr" path="res://assets/reanim/Zombie_boss_jaw.png" id="61_are0w"]
+[ext_resource type="Texture2D" uid="uid://dk0ry1s32y2so" path="res://assets/reanim/Zombie_boss_eyeglow.png" id="62_gt5kb"]
+[ext_resource type="Texture2D" uid="uid://baeptg7m3bq68" path="res://assets/reanim/Zombie_boss_eyeglow_red.png" id="63_byyr7"]
+[ext_resource type="Texture2D" uid="uid://cbanmp4jcvjfb" path="res://assets/reanim/Zombie_boss_head2.png" id="64_yotbh"]
+[ext_resource type="Texture2D" uid="uid://dk13aytsnwxi1" path="res://assets/reanim/Zombie_boss_flagpole.png" id="65_gwxvc"]
+[ext_resource type="Texture2D" uid="uid://mbffsjw8tmah" path="res://assets/reanim/Zombie_boss_flag.png" id="66_6i05c"]
+[ext_resource type="Texture2D" uid="uid://sj6owkpr0cfk" path="res://assets/reanim/Zombie_bossdriver_upperarm.png" id="67_ifj32"]
+[ext_resource type="Texture2D" uid="uid://ba1ajlvpbir3f" path="res://assets/reanim/Zombie_bossdriver_lowerarm2.png" id="68_hjjvg"]
+[ext_resource type="Texture2D" uid="uid://v4p10lusa25u" path="res://assets/reanim/Zombie_bossdriver_innerhand.png" id="69_l0dqf"]
+[ext_resource type="Texture2D" uid="uid://dxcoxwwr4wead" path="res://assets/reanim/Zombie_bossdriver_lowerarm.png" id="70_x110u"]
+[ext_resource type="Texture2D" uid="uid://lagxt75xdc10" path="res://assets/reanim/Zombie_bossdriver_body.png" id="71_7x6i5"]
+[ext_resource type="Texture2D" uid="uid://i3y8pw036bm6" path="res://assets/reanim/Zombie_bossdriver_brain.png" id="72_k3pdi"]
+[ext_resource type="Texture2D" uid="uid://c78slfd0wsyi1" path="res://assets/reanim/Zombie_bossdriver_face.png" id="73_rgbfa"]
+[ext_resource type="Texture2D" uid="uid://dbqc4n8qmm51s" path="res://assets/reanim/Zombie_bossdriver_jaw.png" id="74_76yje"]
+[ext_resource type="Texture2D" uid="uid://dqnrr5mlrqchx" path="res://assets/reanim/Zombie_bossdriver_outerhand.png" id="75_5lvdi"]
+[ext_resource type="Texture2D" uid="uid://b5owucpyftf8c" path="res://assets/reanim/Zombie_boss_antenna.png" id="76_jqfk1"]
+[ext_resource type="Texture2D" uid="uid://dosj05ct71hmf" path="res://assets/reanim/Zombie_boss_head.png" id="77_x0oc3"]
+[ext_resource type="Texture2D" uid="uid://y7g8rfl3fp03" path="res://assets/reanim/Zombie_boss_outerarm_thumb2.png" id="78_hnkt0"]
+[ext_resource type="Texture2D" uid="uid://c74eawoq1s7t2" path="res://assets/reanim/Zombie_boss_outerarm_hand.png" id="79_vhjk1"]
+[ext_resource type="Texture2D" uid="uid://t8xlhlkacmq4" path="res://assets/reanim/Zombie_boss_outerarm_finger2.png" id="80_p0x2e"]
+[ext_resource type="Texture2D" uid="uid://dtklsfuxl3iw0" path="res://assets/reanim/Zombie_boss_outerarm_finger1.png" id="81_16avq"]
+[ext_resource type="Texture2D" uid="uid://dao8440gm8ep2" path="res://assets/reanim/Zombie_boss_outerarm_thumb1.png" id="82_oo0si"]
+[ext_resource type="Texture2D" uid="uid://itotbpb0blnd" path="res://assets/reanim/Zombie_boss_outerarm_lower.png" id="83_salth"]
+[ext_resource type="Texture2D" uid="uid://773rlnrhsldg" path="res://assets/reanim/Zombie_boss_outerarm_upper.png" id="84_kyb63"]
+[ext_resource type="Resource" uid="uid://dtc6ieyhlnhmd" path="res://resources/level_date_resource/mode_minigame/minigame_08_wflag_boss.tres" id="84_th7e4"]
+[ext_resource type="Resource" uid="uid://cxmhrtoidu2nv" path="res://resources/level_date_resource/mode_minigame/minigame_07_wflag_boss_column.tres" id="85_fqng3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1i0xb"]
 
@@ -106,7 +152,35 @@ font_weight = 500
 hinting = 2
 subpixel_positioning = 0
 
-[node name="ChooseLevel" type="Control"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_spit"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_spit_fade"]
+offsets = PackedFloat32Array(0, 0.65, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_spit_fade"]
+gradient = SubResource("Gradient_spit_fade")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spit"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 20, 1)
+angle_min = 160.0
+angle_max = 200.0
+direction = Vector3(-1, 0.12, 0)
+spread = 18.0
+initial_velocity_min = 120.0
+initial_velocity_max = 200.5
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 0.59999996
+color_ramp = SubResource("GradientTexture1D_spit_fade")
+
+[node name="ChooseLevel" type="Control" unique_id=583521531]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -117,7 +191,7 @@ theme = ExtResource("1_dw7cd")
 script = ExtResource("1_qbhvk")
 game_mode = 101
 
-[node name="BG" type="TextureRect" parent="."]
+[node name="BG" type="TextureRect" parent="." unique_id=2068374556]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -126,7 +200,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_77tr5")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=820909441]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -148,7 +222,7 @@ text = "冒 险 模 式"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AllPage" type="Control" parent="."]
+[node name="AllPage" type="Control" parent="." unique_id=581341984]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -156,7 +230,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="AllPage"]
+[node name="GridContainer" type="GridContainer" parent="AllPage" unique_id=241828576]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -170,11 +244,11 @@ theme_override_constants/h_separation = 85
 theme_override_constants/v_separation = 20
 columns = 4
 
-[node name="ChooseLevelButton" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton" parent="AllPage/GridContainer" unique_id=957026118 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("9_ykbb6")
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton" unique_id=453378425]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -189,7 +263,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1i0xb")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton/Panel" unique_id=805059463]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -206,19 +280,19 @@ scale = Vector2(0.6, 0.6)
 mouse_filter = 2
 texture = ExtResource("5_2o48a")
 
-[node name="Plant001PeaShooterSingle" parent="AllPage/GridContainer/ChooseLevelButton/Panel/TextureRect" node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("5_k1h2l")]
+[node name="Plant001PeaShooterSingle" parent="AllPage/GridContainer/ChooseLevelButton/Panel/TextureRect" unique_id=2139432195 node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("5_k1h2l")]
 position = Vector2(89.166626, 88.11499)
 node_no_change_direction = [NodePath("HpComponent"), NodePath("SleepComponent"), null]
 character_init_type = 1
 
-[node name="ChooseLevelButton2" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton2" parent="AllPage/GridContainer" unique_id=1830159209 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("12_43bok")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton2/TextureButton" index="0"]
 text = "黑夜"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton2"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton2" unique_id=1600852688]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -233,7 +307,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ddvl6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton2/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton2/Panel" unique_id=1620756170]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -249,18 +323,18 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("7_7gy53")
 
-[node name="Plant009Puff" parent="AllPage/GridContainer/ChooseLevelButton2/Panel/TextureRect" instance=ExtResource("11_k1h2l")]
+[node name="Plant009Puff" parent="AllPage/GridContainer/ChooseLevelButton2/Panel/TextureRect" unique_id=1049334798 instance=ExtResource("11_k1h2l")]
 position = Vector2(92.5, 94.166664)
 character_init_type = 1
 
-[node name="ChooseLevelButton3" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton3" parent="AllPage/GridContainer" unique_id=1928426709 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("11_0fwuh")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton3/TextureButton" index="0"]
 text = "泳池"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton3"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton3" unique_id=593641087]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -275,7 +349,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ddvl6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton3/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton3/Panel" unique_id=201415527]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -291,18 +365,18 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("11_ddvl6")
 
-[node name="Plant017LilyPad" parent="AllPage/GridContainer/ChooseLevelButton3/Panel/TextureRect" instance=ExtResource("14_dw7cd")]
+[node name="Plant017LilyPad" parent="AllPage/GridContainer/ChooseLevelButton3/Panel/TextureRect" unique_id=1814392622 instance=ExtResource("14_dw7cd")]
 position = Vector2(98.6383, 129.902)
 character_init_type = 1
 
-[node name="ChooseLevelButton4" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton4" parent="AllPage/GridContainer" unique_id=2044363953 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("14_i8cvr")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton4/TextureButton" index="0"]
 text = "浓雾"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton4"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton4" unique_id=895088527]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -317,7 +391,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ddvl6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton4/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton4/Panel" unique_id=2116763269]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -333,18 +407,18 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("16_5nyce")
 
-[node name="Plant025SeaShroom" parent="AllPage/GridContainer/ChooseLevelButton4/Panel/TextureRect" instance=ExtResource("17_i3mhq")]
+[node name="Plant025SeaShroom" parent="AllPage/GridContainer/ChooseLevelButton4/Panel/TextureRect" unique_id=1160719600 instance=ExtResource("17_i3mhq")]
 position = Vector2(93.6383, 116.569)
 character_init_type = 1
 
-[node name="ChooseLevelButton5" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton5" parent="AllPage/GridContainer" unique_id=709776789 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("17_7hqj2")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton5/TextureButton" index="0"]
 text = "保龄球"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton5"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton5" unique_id=1779486747]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -359,7 +433,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a108d")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton5/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton5/Panel" unique_id=1795574581]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -375,65 +449,63 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("5_2o48a")
 
-[node name="Plant1001WallNutBowling" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect"]
+[node name="Plant1001WallNutBowling" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect" unique_id=1934366972]
 position = Vector2(92.32933, 94.35751)
 
-[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling"]
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling" unique_id=1476360210]
 
-[node name="BowlingCenter" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body"]
+[node name="BowlingCenter" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body" unique_id=1586844270]
 position = Vector2(0, -28)
 
-[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter"]
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter" unique_id=696258402]
 position = Vector2(0, 30)
 
-[node name="_ground" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect"]
+[node name="_ground" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect" unique_id=758755482]
 position = Vector2(-42, -71)
 centered = false
 
-[node name="Anim_idle" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect"]
+[node name="Anim_idle" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect" unique_id=1952461083]
 position = Vector2(-42, -71)
 centered = false
 
-[node name="Anim_face" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect"]
+[node name="Anim_face" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect" unique_id=1259658942]
 position = Vector2(-38.163, -62.7476)
 rotation = -0.0454682
 scale = Vector2(0.7, 0.68937)
 texture = ExtResource("18_7hqj2")
 centered = false
 
-[node name="Anim_blink_twitch" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect"]
+[node name="Anim_blink_twitch" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect" unique_id=2050389753]
 visible = false
 position = Vector2(-14.5894, -8.3159)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("19_x6sup")
 centered = false
 
-[node name="Anim_blink_twice" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect"]
+[node name="Anim_blink_twice" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling/Body/BowlingCenter/BodyCorrect" unique_id=1811137709]
 visible = false
 position = Vector2(-15.7894, -22.3159)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("20_nodl8")
 centered = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling"]
-libraries = {
-&"": SubResource("AnimationLibrary_7lapw")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling" unique_id=131589074]
+libraries/ = SubResource("AnimationLibrary_7lapw")
 
-[node name="AnimationTree" type="AnimationTree" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling"]
+[node name="AnimationTree" type="AnimationTree" parent="AllPage/GridContainer/ChooseLevelButton5/Panel/TextureRect/Plant1001WallNutBowling" unique_id=1049321355]
 tree_root = SubResource("AnimationNodeBlendTree_5nwtl")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
 parameters/TimeScale/scale = 1.0
 
-[node name="ChooseLevelButton6" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton6" parent="AllPage/GridContainer" unique_id=1328850478 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("19_om7pm")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton6/TextureButton" index="0"]
 text = "锤僵尸"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton6"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton6" unique_id=1295453887]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -448,7 +520,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ykbb6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton6/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton6/Panel" unique_id=627830813]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -464,42 +536,42 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("7_7gy53")
 
-[node name="Hammer" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel"]
+[node name="Hammer" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel" unique_id=80667086]
 position = Vector2(45.241, 35.5121)
 scale = Vector2(0.51, 0.51)
 
-[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer"]
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer" unique_id=565528152]
 position = Vector2(-62, -11)
 
-[node name="Hammer_3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer/Body"]
+[node name="Hammer_3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer/Body" unique_id=115463981]
 position = Vector2(57.9, -19.3)
 rotation = 1.11527
 scale = Vector2(0.797, 0.797)
 texture = ExtResource("12_1i0xb")
 centered = false
 
-[node name="Hammer_2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer/Body"]
+[node name="Hammer_2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer/Body" unique_id=1021039484]
 position = Vector2(74.6, -29.3)
 rotation = 1.11527
 scale = Vector2(0.797, 0.797)
 texture = ExtResource("13_ddvl6")
 centered = false
 
-[node name="Hammer1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer/Body"]
+[node name="Hammer1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton6/Panel/Hammer/Body" unique_id=670412360]
 position = Vector2(65.3, 4.1)
 rotation = 1.11527
 scale = Vector2(0.797, 0.797)
 texture = ExtResource("14_a108d")
 centered = false
 
-[node name="ChooseLevelButton7" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton7" parent="AllPage/GridContainer" unique_id=329488575 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("23_x6sup")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton7/TextureButton" index="0"]
 text = "小僵尸大麻烦"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton7"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton7" unique_id=1893651606]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -514,7 +586,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ddvl6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton7/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton7/Panel" unique_id=226241867]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -530,24 +602,24 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("5_2o48a")
 
-[node name="Plant001PeaShooterSingle" parent="AllPage/GridContainer/ChooseLevelButton7/Panel/TextureRect" node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("5_k1h2l")]
+[node name="Plant001PeaShooterSingle" parent="AllPage/GridContainer/ChooseLevelButton7/Panel/TextureRect" unique_id=428376969 node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("5_k1h2l")]
 position = Vector2(85.8333, 88.115)
 node_no_change_direction = [NodePath("HpComponent"), NodePath("SleepComponent"), null]
 character_init_type = 1
 
-[node name="Zombie001Norm" parent="AllPage/GridContainer/ChooseLevelButton7/Panel/TextureRect" instance=ExtResource("26_hm51y")]
+[node name="Zombie001Norm" parent="AllPage/GridContainer/ChooseLevelButton7/Panel/TextureRect" unique_id=2020716980 instance=ExtResource("26_hm51y")]
 position = Vector2(151.66666, 93.33333)
 scale = Vector2(0.5, 0.5)
 character_init_type = 1
 
-[node name="ChooseLevelButton8" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton8" parent="AllPage/GridContainer" unique_id=329799826 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("25_nodl8")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton8/TextureButton" index="0"]
 text = "种子雨"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton8"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton8" unique_id=518786643]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -562,7 +634,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ddvl6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton8/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton8/Panel" unique_id=1275831252]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -578,17 +650,17 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("16_5nyce")
 
-[node name="Rain" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect" instance=ExtResource("28_0fwuh")]
+[node name="Rain" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect" unique_id=1077169618 instance=ExtResource("28_0fwuh")]
 layout_mode = 0
 offset_left = -16.361694
 offset_top = 38.235676
 offset_right = 186.97168
 offset_bottom = 193.23564
 
-[node name="rainParticles" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Rain" index="3"]
+[node name="rainParticles" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Rain" index="3" unique_id=777220179]
 position = Vector2(113.33334, -6.6666756)
 
-[node name="Card17" type="Control" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect"]
+[node name="Card17" type="Control" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect" unique_id=1858498813]
 custom_minimum_size = Vector2(50, 70)
 layout_mode = 1
 anchors_preset = 8
@@ -605,7 +677,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("29_bfj22")
 
-[node name="CardBg" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17"]
+[node name="CardBg" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17" unique_id=699340076]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -617,7 +689,7 @@ texture = ExtResource("30_7hqj2")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Cost" type="Label" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg"]
+[node name="Cost" type="Label" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg" unique_id=1362007652]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
@@ -634,51 +706,48 @@ text = "100"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="CharacterStatic" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg"]
+[node name="CharacterStatic" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg" unique_id=1909177657]
 position = Vector2(24, 30)
 
-[node name="Plant017LilyPad" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic"]
+[node name="Plant017LilyPad" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic" unique_id=1541849217]
 position = Vector2(3, 15)
 scale = Vector2(0.5, 0.5)
 
-[node name="Shadow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad"]
+[node name="Shadow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad" unique_id=401387695]
 visible = false
 texture = ExtResource("31_om7pm")
 
-[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad"]
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad" unique_id=1115809015]
 
-[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body"]
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body" unique_id=661659584]
 position = Vector2(-44, -67)
 
-[node name="shadow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body/BodyCorrect"]
+[node name="shadow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body/BodyCorrect" unique_id=512318221]
 visible = false
 position = Vector2(40, 61)
 texture = ExtResource("31_om7pm")
 
-[node name="Anim_idle" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body/BodyCorrect"]
+[node name="Anim_idle" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body/BodyCorrect" unique_id=1515916084]
 position = Vector2(-0.2, 5.5)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("32_x6sup")
 centered = false
 
-[node name="Anim_blink" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body/BodyCorrect"]
+[node name="Anim_blink" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Card17/CardBg/CharacterStatic/Plant017LilyPad/Body/BodyCorrect" unique_id=1433807269]
 visible = false
 position = Vector2(46, 50)
 scale = Vector2(0.735294, 0.695652)
 texture = ExtResource("33_nodl8")
 centered = false
 
-[node name="Control" type="Control" parent="AllPage/GridContainer"]
-layout_mode = 2
-
-[node name="ChooseLevelButton9" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton9" parent="AllPage/GridContainer" unique_id=636965017 instance=ExtResource("4_nodl8")]
 layout_mode = 2
 curr_level_data_game_para = ExtResource("32_5nwtl")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton9/TextureButton" index="0"]
 text = "屋顶"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton9"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton9" unique_id=1724003232]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -693,7 +762,7 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ykbb6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton9/Panel"]
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton9/Panel" unique_id=1193195762]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -709,18 +778,18 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("26_dfwdo")
 
-[node name="Plant033CabbagePult" parent="AllPage/GridContainer/ChooseLevelButton9/Panel/TextureRect" instance=ExtResource("27_pcq3e")]
+[node name="Plant033CabbagePult" parent="AllPage/GridContainer/ChooseLevelButton9/Panel/TextureRect" unique_id=663987817 instance=ExtResource("27_pcq3e")]
 position = Vector2(103.233, 113.353)
 character_init_type = 1
 
-[node name="ChooseLevelButton10" parent="AllPage/GridContainer" instance=ExtResource("4_nodl8")]
+[node name="ChooseLevelButton10" parent="AllPage/GridContainer" unique_id=1863752116 instance=ExtResource("4_nodl8")]
 layout_mode = 2
-curr_level_data_game_para = ExtResource("35_j86es")
+curr_level_data_game_para = ExtResource("39_tg4bu")
 
 [node name="Label" parent="AllPage/GridContainer/ChooseLevelButton10/TextureButton" index="0"]
-text = "柱子"
+text = "僵王博士"
 
-[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton10"]
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton10" unique_id=197867455]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 5
@@ -735,17 +804,1965 @@ pivot_offset = Vector2(41, 33.5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ykbb6")
 
-[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton10/Panel"]
-layout_mode = 0
-offset_left = -1.0602112
-offset_top = -4.987915
-offset_right = 88.93979
-offset_bottom = 76.012085
-texture = ExtResource("38_7hqj2")
-expand_mode = 1
-stretch_mode = 4
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton10/Panel" unique_id=1323458370]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.0
+offset_top = -51.0
+offset_right = 141.0
+offset_bottom = 149.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("26_dfwdo")
 
-[node name="MainMenu" type="TextureButton" parent="."]
+[node name="ZB001Doctor" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect" unique_id=1439291130]
+position = Vector2(0, 22)
+
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor" unique_id=202543180]
+position = Vector2(-1, 5)
+
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body" unique_id=1431649511]
+position = Vector2(-130.76698, -38.646545)
+scale = Vector2(0.385, 0.385)
+
+[node name="InnerArm" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1915769442]
+visible = false
+
+[node name="InnerArmBack" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=549814441]
+
+[node name="Boss_innerarm_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1103162741]
+visible = false
+position = Vector2(470.3, -109.900085)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.893)
+texture = ExtResource("40_th7e4")
+centered = false
+
+[node name="Boss_innerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1096610381]
+visible = false
+position = Vector2(465.00003, -265)
+rotation = 0.18000071
+scale = Vector2(0.793, 0.793)
+texture = ExtResource("41_fqng3")
+centered = false
+
+[node name="Boss_innerarm_finger4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=747670396]
+visible = false
+position = Vector2(490.36295, -127.99321)
+rotation = 0.15700038
+scale = Vector2(0.616, 0.676)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorRight" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger4" unique_id=2065594343]
+position = Vector2(33.250984, 54.583748)
+
+[node name="Boss_innerarm_finger2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=459682833]
+visible = false
+position = Vector2(500.26294, -99.39322)
+rotation = 0.15900071
+scale = Vector2(0.79, 0.861)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Boss_innerarm_finger1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=874000311]
+visible = false
+position = Vector2(506.06293, -65.89322)
+rotation = 0.2760007
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorLeft" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger1" unique_id=2020166051]
+position = Vector2(41.316055, 49.081253)
+
+[node name="Boss_innerarm_finger3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1104814870]
+visible = false
+position = Vector2(500.06293, -121.29321)
+rotation = 0.110000715
+scale = Vector2(0.673, 0.709)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorMiddle" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger3" unique_id=718656988]
+position = Vector2(34.045753, 46.127296)
+
+[node name="Boss_innerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=954487403]
+visible = false
+position = Vector2(520.99994, -182)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("43_t7k67")
+centered = false
+
+[node name="RV" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=685434945]
+
+[node name="Boss_RV_wheel1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=1571212499]
+visible = false
+position = Vector2(260.8, -106.35574)
+rotation = 0.014
+scale = Vector2(1.0530002, 0.8059999)
+texture = ExtResource("44_svthq")
+centered = false
+
+[node name="Boss_RV_wheel2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=1721085055]
+visible = false
+position = Vector2(126.999985, -79.95575)
+rotation = 0.014
+scale = Vector2(1.0850003, 0.75599974)
+texture = ExtResource("44_svthq")
+centered = false
+
+[node name="Boss_RV" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=2138544544]
+visible = false
+position = Vector2(73, -180.8558)
+rotation = -0.24099979
+scale = Vector2(0.899, 0.899)
+texture = ExtResource("45_q58c5")
+centered = false
+
+[node name="InnerArmFront" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=932590188]
+
+[node name="Boss_innerarm_thumb2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=90971544]
+visible = false
+position = Vector2(450.76294, -53.593216)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("46_cho5l")
+centered = false
+
+[node name="Boss_innerarm_thumb1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=1804467544]
+visible = false
+position = Vector2(434.26294, -57.693207)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("47_8y17l")
+centered = false
+
+[node name="Boss_innerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=1616505252]
+visible = false
+position = Vector2(456.70007, -225.10013)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("48_5aksc")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront/Boss_innerarm_upper" unique_id=2072365170]
+position = Vector2(113.5, 125)
+
+[node name="InnerLeg" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=976744150]
+visible = false
+
+[node name="Boss_innerleg_foot" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=928607966]
+visible = false
+position = Vector2(879.9, 104.6)
+rotation = 0.04399998
+scale = Vector2(0.64300007, 0.64299995)
+texture = ExtResource("49_5pl6h")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg/Boss_innerleg_foot" unique_id=1503190638]
+position = Vector2(183.5, 113)
+
+[node name="Boss_innerleg_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=1179036238]
+visible = false
+position = Vector2(962.9, -6)
+rotation = 0.016999988
+scale = Vector2(0.793, 0.79299986)
+texture = ExtResource("50_dg6yi")
+centered = false
+
+[node name="Boss_innerleg_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=2132373892]
+visible = false
+position = Vector2(953.9, -120.4)
+rotation = 0.37500024
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("51_lagr1")
+centered = false
+
+[node name="Boss_innerleg_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=1388047985]
+visible = false
+position = Vector2(930.5, -6.9)
+rotation = 0.016999988
+scale = Vector2(0.645, 0.64499986)
+texture = ExtResource("52_nab1d")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg/Boss_innerleg_lower" unique_id=987050789]
+position = Vector2(134, 144)
+
+[node name="BodyBack" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1943824408]
+visible = false
+
+[node name="Boss_body2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyBack" unique_id=2007212584]
+visible = false
+position = Vector2(904, -152.2)
+rotation = 0.01700034
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("53_0xrca")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyBack/Boss_body2" unique_id=379620693]
+position = Vector2(166.5, 125)
+
+[node name="OuterLeg" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=432475335]
+visible = false
+
+[node name="Boss_outerleg_foot" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=1306296700]
+visible = false
+position = Vector2(948.3, 215)
+rotation = -0.117
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("49_5pl6h")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg/Boss_outerleg_foot" unique_id=1057806065]
+position = Vector2(183.5, 113)
+
+[node name="Boss_outerleg_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=425439819]
+visible = false
+position = Vector2(1052.1, 80.5)
+rotation = -0.39299998
+scale = Vector2(0.99899995, 0.99899995)
+texture = ExtResource("50_dg6yi")
+centered = false
+
+[node name="Boss_outerleg_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=311214549]
+visible = false
+position = Vector2(1036.7, -74.4)
+rotation = 0.4150002
+scale = Vector2(0.799, 0.89)
+texture = ExtResource("54_egkw2")
+centered = false
+
+[node name="Boss_outerleg_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=904335701]
+visible = false
+position = Vector2(1012.9, 79.8)
+rotation = -0.39299998
+scale = Vector2(0.79899997, 0.79899997)
+texture = ExtResource("52_nab1d")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg/Boss_outerleg_lower" unique_id=1725380907]
+position = Vector2(134, 144)
+
+[node name="BodyFront" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=30629902]
+visible = false
+
+[node name="Boss_body1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront" unique_id=2077834746]
+position = Vector2(527.8, 156.09998)
+rotation = -0.29
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("55_uccm7")
+centered = false
+
+[node name="Marker2DDeathExplosionUpper" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront/Boss_body1" unique_id=604544077]
+position = Vector2(260, 170)
+
+[node name="Marker2DDeathExplosionLower" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront/Boss_body1" unique_id=1244532355]
+position = Vector2(280, 330)
+
+[node name="Head" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1261891142]
+
+[node name="Boss_neck" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1953353008]
+visible = false
+position = Vector2(553.5, 174.2)
+rotation = -0.033
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("56_riqlo")
+centered = false
+
+[node name="Boss_innerjaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1818576189]
+position = Vector2(551.4, 248.1)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("57_pe5ui")
+centered = false
+
+[node name="Boss_mouthglow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=835458285]
+position = Vector2(558.3, 248.10002)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("58_qk4is")
+centered = false
+
+[node name="Marker2DSpawnBall" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_mouthglow" unique_id=73557735]
+position = Vector2(-27.533157, 133.01022)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_mouthglow" unique_id=1752433949]
+z_index = 2
+material = SubResource("CanvasItemMaterial_spit")
+position = Vector2(56.43201, 94.18802)
+emitting = false
+amount = 24
+texture = ExtResource("59_n7kav")
+one_shot = true
+visibility_rect = Rect2(-300, -100, 500, 200)
+process_material = SubResource("ParticleProcessMaterial_spit")
+
+[node name="Boss_mouthglow_red" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1084646969]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.051
+scale = Vector2(0.955, 0.998)
+skew = 0.045
+texture = ExtResource("60_hc0tp")
+centered = false
+
+[node name="Boss_jaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=712034899]
+position = Vector2(528.2, 264.4)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("61_are0w")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_jaw" unique_id=265027549]
+position = Vector2(104.5, 101.5)
+
+[node name="Boss_eyeglow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1087260459]
+position = Vector2(523.8, 250.9)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("62_gt5kb")
+centered = false
+
+[node name="Boss_eyeglow_red" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1284497905]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.049
+scale = Vector2(0.795, 0.796)
+skew = -0.002
+texture = ExtResource("63_byyr7")
+centered = false
+
+[node name="Boss_head2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=2120847336]
+position = Vector2(547.4, 184.3)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("64_yotbh")
+centered = false
+
+[node name="TrophySpawnPoint" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2" unique_id=1437084706]
+position = Vector2(79.60669, 80.11557)
+rotation = -0.11747604
+scale = Vector2(1.2256789, 1.2753907)
+skew = -0.004692197
+
+[node name="Zombie_Boss_driver" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2" unique_id=888592276]
+position = Vector2(46.159447, -64.06694)
+
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver" unique_id=1467512295]
+
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body" unique_id=1389495500]
+
+[node name="Anim" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1462614312]
+
+[node name="Anim_swell" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=516952265]
+visible = false
+centered = false
+
+[node name="Anim_idle" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=628294430]
+centered = false
+
+[node name="Anim_drive" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=936917310]
+visible = false
+centered = false
+
+[node name="Anim_damage" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=1164502991]
+visible = false
+centered = false
+
+[node name="Anim_laugh" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=569359945]
+visible = false
+centered = false
+
+[node name="Anim_death" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=905189780]
+visible = false
+centered = false
+
+[node name="Anim_flag" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=160934125]
+visible = false
+centered = false
+
+[node name="Anim_flag_loop" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=1169774247]
+visible = false
+centered = false
+
+[node name="Flagpole" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=913660846]
+visible = false
+position = Vector2(42.7, 39.1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("65_gwxvc")
+centered = false
+
+[node name="Flag" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=348814353]
+visible = false
+position = Vector2(44.4, 40.5)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("66_6i05c")
+centered = false
+
+[node name="Driver_innerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=999893786]
+position = Vector2(39.9, 58.7)
+rotation = 0.686
+scale = Vector2(0.733, 0.733)
+texture = ExtResource("67_ifj32")
+centered = false
+
+[node name="Driver_innerarm_lower2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=897194441]
+position = Vector2(14.4, 79.6)
+rotation = 0.145
+scale = Vector2(0.696, 0.696)
+texture = ExtResource("68_hjjvg")
+centered = false
+
+[node name="Driver_innerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1047154707]
+position = Vector2(0.9, 74)
+rotation = -0.038
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("69_l0dqf")
+centered = false
+
+[node name="Driver_innerrarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=465864995]
+position = Vector2(16.2, 72.9)
+rotation = 0.201
+scale = Vector2(0.696, 0.696)
+texture = ExtResource("70_x110u")
+centered = false
+
+[node name="Driver_body" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1982067482]
+position = Vector2(35.2, 44.8)
+rotation = -0.099
+scale = Vector2(0.799, 0.979)
+texture = ExtResource("71_7x6i5")
+centered = false
+
+[node name="Driver_brain" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1939097072]
+position = Vector2(8.3, 20.8)
+rotation = -0.099
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("72_k3pdi")
+centered = false
+
+[node name="Driver_face" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=136819053]
+position = Vector2(9.7, 44.1)
+rotation = -0.099
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("73_rgbfa")
+centered = false
+
+[node name="Driver_jaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1613079579]
+position = Vector2(24.7, 55.4)
+rotation = -0.099
+scale = Vector2(0.831, 0.737)
+texture = ExtResource("74_76yje")
+centered = false
+
+[node name="Driver_outerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1319016141]
+position = Vector2(47.5, 58)
+rotation = -0.016
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("67_ifj32")
+centered = false
+
+[node name="Driver_outerarm_lower2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=618559283]
+position = Vector2(34.8, 83.2)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("68_hjjvg")
+centered = false
+
+[node name="Driver_outerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1099626393]
+position = Vector2(19.1, 78.3)
+rotation = 0.162
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("75_5lvdi")
+centered = false
+
+[node name="Driver_outerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1838359740]
+position = Vector2(35.5, 75)
+rotation = 0.038
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("70_x110u")
+centered = false
+
+[node name="Boss_eyeglow_black" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1199898609]
+visible = false
+centered = false
+
+[node name="Boss_antenna2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1955491657]
+position = Vector2(496.6, 210.99998)
+rotation = 0.045
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("76_jqfk1")
+centered = false
+
+[node name="Boss_head" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=142233817]
+position = Vector2(517, 190.30002)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("77_x0oc3")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head" unique_id=1418676726]
+position = Vector2(137, 113)
+
+[node name="Boss_antenna" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1050143221]
+position = Vector2(720.3, 212.2)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("76_jqfk1")
+centered = false
+
+[node name="OuterArm" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=225691221]
+visible = false
+
+[node name="Boss_outerarm_thumb2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=474396908]
+visible = false
+position = Vector2(806, 13.4)
+rotation = -0.41400018
+scale = Vector2(0.86, 0.906)
+texture = ExtResource("78_hnkt0")
+centered = false
+
+[node name="Boss_outerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=827433302]
+visible = false
+position = Vector2(893.2, -30.5)
+rotation = -0.44300026
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("79_vhjk1")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss_outerarm_hand" unique_id=458522260]
+position = Vector2(99, 99)
+
+[node name="Boss-outerarm_finger4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=540862445]
+visible = false
+position = Vector2(869, 46)
+rotation = -0.93500024
+scale = Vector2(0.666, 0.611)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Marker2DSpawnZombie" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss-outerarm_finger4" unique_id=1927451174]
+position = Vector2(44.77496, 78.85651)
+
+[node name="Boss-outerarm_knuckle4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1284363237]
+visible = false
+position = Vector2(922.5, 85)
+rotation = -1.0930003
+scale = Vector2(0.536, 0.588)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=366907071]
+visible = false
+position = Vector2(853.3, 19.8)
+rotation = -0.76800025
+scale = Vector2(0.688, 0.705)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=295633086]
+visible = false
+position = Vector2(890.6, 65.6)
+rotation = -0.8990002
+scale = Vector2(0.567, 0.662)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1744079320]
+visible = false
+position = Vector2(884.7, 13.9)
+rotation = -0.73000026
+scale = Vector2(0.74, 0.809)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=725820292]
+visible = false
+position = Vector2(863.5, 48.2)
+rotation = -0.83400023
+scale = Vector2(0.745, 0.795)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=966197563]
+visible = false
+position = Vector2(834.3, 14.6)
+rotation = -0.45200026
+scale = Vector2(0.699, 0.769)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1047529568]
+visible = false
+position = Vector2(846.9, 34)
+rotation = -0.39600027
+scale = Vector2(0.758, 0.758)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss_outerarm_thumb1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1560899993]
+visible = false
+position = Vector2(858, -27.4)
+rotation = -0.39600027
+scale = Vector2(0.86, 0.906)
+texture = ExtResource("82_oo0si")
+centered = false
+
+[node name="Boss_outerarm_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=236443518]
+visible = false
+position = Vector2(929.1, -127.3)
+rotation = -0.5760004
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("40_th7e4")
+centered = false
+
+[node name="Boss_outerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=2054614691]
+visible = false
+position = Vector2(941.8, -145)
+rotation = -0.2830005
+scale = Vector2(0.797, 0.858)
+texture = ExtResource("83_salth")
+centered = false
+
+[node name="Boss_outerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1972201443]
+position = Vector2(738.6, 217.20001)
+rotation = -0.759
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("84_kyb63")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton10/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss_outerarm_upper" unique_id=664477670]
+position = Vector2(142.5, 178)
+
+[node name="ChooseLevelButton11" parent="AllPage/GridContainer" unique_id=566938382 instance=ExtResource("4_nodl8")]
+layout_mode = 2
+curr_level_data_game_para = ExtResource("85_fqng3")
+
+[node name="Label" parent="AllPage/GridContainer/ChooseLevelButton11/TextureButton" index="0"]
+offset_top = -58.5
+offset_bottom = 4.5
+theme_override_font_sizes/font_size = 12
+text = "万旗博士（柱子）"
+
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton11" unique_id=2093483795]
+clip_children = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.93979
+offset_top = 0.98791504
+offset_right = 42.06021
+offset_bottom = 68.9879
+grow_horizontal = 2
+pivot_offset = Vector2(41, 33.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ykbb6")
+
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton11/Panel" unique_id=1809500225]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.0
+offset_top = -51.0
+offset_right = 141.0
+offset_bottom = 149.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("16_5nyce")
+
+[node name="ZB001Doctor" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect" unique_id=1093013449]
+position = Vector2(0, 22)
+
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor" unique_id=800090725]
+position = Vector2(-1, 5)
+
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body" unique_id=1385067555]
+position = Vector2(-130.76698, -38.646545)
+scale = Vector2(0.385, 0.385)
+
+[node name="InnerArm" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1450290574]
+visible = false
+
+[node name="InnerArmBack" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=840391799]
+
+[node name="Boss_innerarm_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1689110855]
+visible = false
+position = Vector2(470.3, -109.900085)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.893)
+texture = ExtResource("40_th7e4")
+centered = false
+
+[node name="Boss_innerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=903640096]
+visible = false
+position = Vector2(465.00003, -265)
+rotation = 0.18000071
+scale = Vector2(0.793, 0.793)
+texture = ExtResource("41_fqng3")
+centered = false
+
+[node name="Boss_innerarm_finger4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=452613079]
+visible = false
+position = Vector2(490.36295, -127.99321)
+rotation = 0.15700038
+scale = Vector2(0.616, 0.676)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorRight" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger4" unique_id=1155429570]
+position = Vector2(33.250984, 54.583748)
+
+[node name="Boss_innerarm_finger2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=161082194]
+visible = false
+position = Vector2(500.26294, -99.39322)
+rotation = 0.15900071
+scale = Vector2(0.79, 0.861)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Boss_innerarm_finger1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1473066877]
+visible = false
+position = Vector2(506.06293, -65.89322)
+rotation = 0.2760007
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorLeft" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger1" unique_id=1496238539]
+position = Vector2(41.316055, 49.081253)
+
+[node name="Boss_innerarm_finger3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=635572628]
+visible = false
+position = Vector2(500.06293, -121.29321)
+rotation = 0.110000715
+scale = Vector2(0.673, 0.709)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorMiddle" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger3" unique_id=1472400644]
+position = Vector2(34.045753, 46.127296)
+
+[node name="Boss_innerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=2128211570]
+visible = false
+position = Vector2(520.99994, -182)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("43_t7k67")
+centered = false
+
+[node name="RV" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=63773292]
+
+[node name="Boss_RV_wheel1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=1097281202]
+visible = false
+position = Vector2(260.8, -106.35574)
+rotation = 0.014
+scale = Vector2(1.0530002, 0.8059999)
+texture = ExtResource("44_svthq")
+centered = false
+
+[node name="Boss_RV_wheel2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=40730471]
+visible = false
+position = Vector2(126.999985, -79.95575)
+rotation = 0.014
+scale = Vector2(1.0850003, 0.75599974)
+texture = ExtResource("44_svthq")
+centered = false
+
+[node name="Boss_RV" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=421856787]
+visible = false
+position = Vector2(73, -180.8558)
+rotation = -0.24099979
+scale = Vector2(0.899, 0.899)
+texture = ExtResource("45_q58c5")
+centered = false
+
+[node name="InnerArmFront" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=1718867239]
+
+[node name="Boss_innerarm_thumb2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=1383148447]
+visible = false
+position = Vector2(450.76294, -53.593216)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("46_cho5l")
+centered = false
+
+[node name="Boss_innerarm_thumb1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=1257932463]
+visible = false
+position = Vector2(434.26294, -57.693207)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("47_8y17l")
+centered = false
+
+[node name="Boss_innerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=481249480]
+visible = false
+position = Vector2(456.70007, -225.10013)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("48_5aksc")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront/Boss_innerarm_upper" unique_id=17460048]
+position = Vector2(113.5, 125)
+
+[node name="InnerLeg" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=721911024]
+visible = false
+
+[node name="Boss_innerleg_foot" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=1800190907]
+visible = false
+position = Vector2(879.9, 104.6)
+rotation = 0.04399998
+scale = Vector2(0.64300007, 0.64299995)
+texture = ExtResource("49_5pl6h")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg/Boss_innerleg_foot" unique_id=338525566]
+position = Vector2(183.5, 113)
+
+[node name="Boss_innerleg_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=592229586]
+visible = false
+position = Vector2(962.9, -6)
+rotation = 0.016999988
+scale = Vector2(0.793, 0.79299986)
+texture = ExtResource("50_dg6yi")
+centered = false
+
+[node name="Boss_innerleg_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=1790086976]
+visible = false
+position = Vector2(953.9, -120.4)
+rotation = 0.37500024
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("51_lagr1")
+centered = false
+
+[node name="Boss_innerleg_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=250640856]
+visible = false
+position = Vector2(930.5, -6.9)
+rotation = 0.016999988
+scale = Vector2(0.645, 0.64499986)
+texture = ExtResource("52_nab1d")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg/Boss_innerleg_lower" unique_id=255298608]
+position = Vector2(134, 144)
+
+[node name="BodyBack" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1300446415]
+visible = false
+
+[node name="Boss_body2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyBack" unique_id=1764200319]
+visible = false
+position = Vector2(904, -152.2)
+rotation = 0.01700034
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("53_0xrca")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyBack/Boss_body2" unique_id=1149208978]
+position = Vector2(166.5, 125)
+
+[node name="OuterLeg" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=552664954]
+visible = false
+
+[node name="Boss_outerleg_foot" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=2132856039]
+visible = false
+position = Vector2(948.3, 215)
+rotation = -0.117
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("49_5pl6h")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg/Boss_outerleg_foot" unique_id=1592376300]
+position = Vector2(183.5, 113)
+
+[node name="Boss_outerleg_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=1124577198]
+visible = false
+position = Vector2(1052.1, 80.5)
+rotation = -0.39299998
+scale = Vector2(0.99899995, 0.99899995)
+texture = ExtResource("50_dg6yi")
+centered = false
+
+[node name="Boss_outerleg_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=72172817]
+visible = false
+position = Vector2(1036.7, -74.4)
+rotation = 0.4150002
+scale = Vector2(0.799, 0.89)
+texture = ExtResource("54_egkw2")
+centered = false
+
+[node name="Boss_outerleg_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=1962247294]
+visible = false
+position = Vector2(1012.9, 79.8)
+rotation = -0.39299998
+scale = Vector2(0.79899997, 0.79899997)
+texture = ExtResource("52_nab1d")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg/Boss_outerleg_lower" unique_id=633275412]
+position = Vector2(134, 144)
+
+[node name="BodyFront" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1422022463]
+visible = false
+
+[node name="Boss_body1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront" unique_id=666179207]
+position = Vector2(527.8, 156.09998)
+rotation = -0.29
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("55_uccm7")
+centered = false
+
+[node name="Marker2DDeathExplosionUpper" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront/Boss_body1" unique_id=250389602]
+position = Vector2(260, 170)
+
+[node name="Marker2DDeathExplosionLower" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront/Boss_body1" unique_id=1085878954]
+position = Vector2(280, 330)
+
+[node name="Head" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1696266949]
+
+[node name="Boss_neck" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1297219463]
+visible = false
+position = Vector2(553.5, 174.2)
+rotation = -0.033
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("56_riqlo")
+centered = false
+
+[node name="Boss_innerjaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=443452104]
+position = Vector2(551.4, 248.1)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("57_pe5ui")
+centered = false
+
+[node name="Boss_mouthglow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1014346443]
+position = Vector2(558.3, 248.10002)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("58_qk4is")
+centered = false
+
+[node name="Marker2DSpawnBall" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_mouthglow" unique_id=571107770]
+position = Vector2(-27.533157, 133.01022)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_mouthglow" unique_id=591722722]
+z_index = 2
+material = SubResource("CanvasItemMaterial_spit")
+position = Vector2(56.43201, 94.18802)
+emitting = false
+amount = 24
+texture = ExtResource("59_n7kav")
+one_shot = true
+visibility_rect = Rect2(-300, -100, 500, 200)
+process_material = SubResource("ParticleProcessMaterial_spit")
+
+[node name="Boss_mouthglow_red" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=112881389]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.051
+scale = Vector2(0.955, 0.998)
+skew = 0.045
+texture = ExtResource("60_hc0tp")
+centered = false
+
+[node name="Boss_jaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=68169138]
+position = Vector2(528.2, 264.4)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("61_are0w")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_jaw" unique_id=423361263]
+position = Vector2(104.5, 101.5)
+
+[node name="Boss_eyeglow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=2057032461]
+position = Vector2(523.8, 250.9)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("62_gt5kb")
+centered = false
+
+[node name="Boss_eyeglow_red" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=495876536]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.049
+scale = Vector2(0.795, 0.796)
+skew = -0.002
+texture = ExtResource("63_byyr7")
+centered = false
+
+[node name="Boss_head2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=39251139]
+position = Vector2(547.4, 184.3)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("64_yotbh")
+centered = false
+
+[node name="TrophySpawnPoint" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2" unique_id=466934571]
+position = Vector2(79.60669, 80.11557)
+rotation = -0.11747604
+scale = Vector2(1.2256789, 1.2753907)
+skew = -0.004692197
+
+[node name="Zombie_Boss_driver" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2" unique_id=1325744751]
+position = Vector2(46.159447, -64.06694)
+
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver" unique_id=1546923568]
+
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body" unique_id=519241338]
+
+[node name="Anim" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=860909291]
+
+[node name="Anim_swell" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=420357676]
+visible = false
+centered = false
+
+[node name="Anim_idle" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=134137398]
+centered = false
+
+[node name="Anim_drive" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=205515877]
+visible = false
+centered = false
+
+[node name="Anim_damage" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=651561341]
+visible = false
+centered = false
+
+[node name="Anim_laugh" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=886391345]
+visible = false
+centered = false
+
+[node name="Anim_death" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=1834307301]
+visible = false
+centered = false
+
+[node name="Anim_flag" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=438525097]
+visible = false
+centered = false
+
+[node name="Anim_flag_loop" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=116972127]
+visible = false
+centered = false
+
+[node name="Flagpole" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1926347610]
+visible = false
+position = Vector2(42.7, 39.1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("65_gwxvc")
+centered = false
+
+[node name="Flag" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1748590794]
+visible = false
+position = Vector2(44.4, 40.5)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("66_6i05c")
+centered = false
+
+[node name="Driver_innerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1465970476]
+position = Vector2(39.9, 58.7)
+rotation = 0.686
+scale = Vector2(0.733, 0.733)
+texture = ExtResource("67_ifj32")
+centered = false
+
+[node name="Driver_innerarm_lower2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=767126524]
+position = Vector2(14.4, 79.6)
+rotation = 0.145
+scale = Vector2(0.696, 0.696)
+texture = ExtResource("68_hjjvg")
+centered = false
+
+[node name="Driver_innerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=807095727]
+position = Vector2(0.9, 74)
+rotation = -0.038
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("69_l0dqf")
+centered = false
+
+[node name="Driver_innerrarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=420624104]
+position = Vector2(16.2, 72.9)
+rotation = 0.201
+scale = Vector2(0.696, 0.696)
+texture = ExtResource("70_x110u")
+centered = false
+
+[node name="Driver_body" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=2031817582]
+position = Vector2(35.2, 44.8)
+rotation = -0.099
+scale = Vector2(0.799, 0.979)
+texture = ExtResource("71_7x6i5")
+centered = false
+
+[node name="Driver_brain" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=933605926]
+position = Vector2(8.3, 20.8)
+rotation = -0.099
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("72_k3pdi")
+centered = false
+
+[node name="Driver_face" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=248591456]
+position = Vector2(9.7, 44.1)
+rotation = -0.099
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("73_rgbfa")
+centered = false
+
+[node name="Driver_jaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1811256458]
+position = Vector2(24.7, 55.4)
+rotation = -0.099
+scale = Vector2(0.831, 0.737)
+texture = ExtResource("74_76yje")
+centered = false
+
+[node name="Driver_outerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=362159411]
+position = Vector2(47.5, 58)
+rotation = -0.016
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("67_ifj32")
+centered = false
+
+[node name="Driver_outerarm_lower2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1485755798]
+position = Vector2(34.8, 83.2)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("68_hjjvg")
+centered = false
+
+[node name="Driver_outerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=339749320]
+position = Vector2(19.1, 78.3)
+rotation = 0.162
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("75_5lvdi")
+centered = false
+
+[node name="Driver_outerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1345553975]
+position = Vector2(35.5, 75)
+rotation = 0.038
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("70_x110u")
+centered = false
+
+[node name="Boss_eyeglow_black" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=68544778]
+visible = false
+centered = false
+
+[node name="Boss_antenna2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1185301539]
+position = Vector2(496.6, 210.99998)
+rotation = 0.045
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("76_jqfk1")
+centered = false
+
+[node name="Boss_head" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1922932935]
+position = Vector2(517, 190.30002)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("77_x0oc3")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head" unique_id=1913272583]
+position = Vector2(137, 113)
+
+[node name="Boss_antenna" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=811042381]
+position = Vector2(720.3, 212.2)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("76_jqfk1")
+centered = false
+
+[node name="OuterArm" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=428151260]
+visible = false
+
+[node name="Boss_outerarm_thumb2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1884045538]
+visible = false
+position = Vector2(806, 13.4)
+rotation = -0.41400018
+scale = Vector2(0.86, 0.906)
+texture = ExtResource("78_hnkt0")
+centered = false
+
+[node name="Boss_outerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=969745499]
+visible = false
+position = Vector2(893.2, -30.5)
+rotation = -0.44300026
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("79_vhjk1")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss_outerarm_hand" unique_id=1806869342]
+position = Vector2(99, 99)
+
+[node name="Boss-outerarm_finger4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1985199092]
+visible = false
+position = Vector2(869, 46)
+rotation = -0.93500024
+scale = Vector2(0.666, 0.611)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Marker2DSpawnZombie" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss-outerarm_finger4" unique_id=1835795304]
+position = Vector2(44.77496, 78.85651)
+
+[node name="Boss-outerarm_knuckle4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1143835270]
+visible = false
+position = Vector2(922.5, 85)
+rotation = -1.0930003
+scale = Vector2(0.536, 0.588)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=391239484]
+visible = false
+position = Vector2(853.3, 19.8)
+rotation = -0.76800025
+scale = Vector2(0.688, 0.705)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=726499549]
+visible = false
+position = Vector2(890.6, 65.6)
+rotation = -0.8990002
+scale = Vector2(0.567, 0.662)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=9181353]
+visible = false
+position = Vector2(884.7, 13.9)
+rotation = -0.73000026
+scale = Vector2(0.74, 0.809)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=984446328]
+visible = false
+position = Vector2(863.5, 48.2)
+rotation = -0.83400023
+scale = Vector2(0.745, 0.795)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=303679990]
+visible = false
+position = Vector2(834.3, 14.6)
+rotation = -0.45200026
+scale = Vector2(0.699, 0.769)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1544514730]
+visible = false
+position = Vector2(846.9, 34)
+rotation = -0.39600027
+scale = Vector2(0.758, 0.758)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss_outerarm_thumb1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=42929905]
+visible = false
+position = Vector2(858, -27.4)
+rotation = -0.39600027
+scale = Vector2(0.86, 0.906)
+texture = ExtResource("82_oo0si")
+centered = false
+
+[node name="Boss_outerarm_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1443941298]
+visible = false
+position = Vector2(929.1, -127.3)
+rotation = -0.5760004
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("40_th7e4")
+centered = false
+
+[node name="Boss_outerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=2100266028]
+visible = false
+position = Vector2(941.8, -145)
+rotation = -0.2830005
+scale = Vector2(0.797, 0.858)
+texture = ExtResource("83_salth")
+centered = false
+
+[node name="Boss_outerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1693093007]
+position = Vector2(738.6, 217.20001)
+rotation = -0.759
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("84_kyb63")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton11/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss_outerarm_upper" unique_id=1317701067]
+position = Vector2(142.5, 178)
+
+[node name="ChooseLevelButton12" parent="AllPage/GridContainer" unique_id=231214977 instance=ExtResource("4_nodl8")]
+layout_mode = 2
+curr_level_data_game_para = ExtResource("84_th7e4")
+
+[node name="Label" parent="AllPage/GridContainer/ChooseLevelButton12/TextureButton" index="0"]
+text = "万旗博士"
+
+[node name="Panel" type="Panel" parent="AllPage/GridContainer/ChooseLevelButton12" unique_id=1560587267]
+clip_children = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.93979
+offset_top = 0.98791504
+offset_right = 42.06021
+offset_bottom = 68.9879
+grow_horizontal = 2
+pivot_offset = Vector2(41, 33.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ykbb6")
+
+[node name="TextureRect" type="TextureRect" parent="AllPage/GridContainer/ChooseLevelButton12/Panel" unique_id=1617451966]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.0
+offset_top = -51.0
+offset_right = 141.0
+offset_bottom = 149.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("16_5nyce")
+
+[node name="ZB001Doctor" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect" unique_id=1662075785]
+position = Vector2(0, 22)
+
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor" unique_id=1356819479]
+position = Vector2(-1, 5)
+
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body" unique_id=1287222783]
+position = Vector2(-130.76698, -38.646545)
+scale = Vector2(0.385, 0.385)
+
+[node name="InnerArm" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=2018552363]
+visible = false
+
+[node name="InnerArmBack" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=2117068349]
+
+[node name="Boss_innerarm_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1025625502]
+visible = false
+position = Vector2(470.3, -109.900085)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.893)
+texture = ExtResource("40_th7e4")
+centered = false
+
+[node name="Boss_innerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=381882324]
+visible = false
+position = Vector2(465.00003, -265)
+rotation = 0.18000071
+scale = Vector2(0.793, 0.793)
+texture = ExtResource("41_fqng3")
+centered = false
+
+[node name="Boss_innerarm_finger4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1578174513]
+visible = false
+position = Vector2(490.36295, -127.99321)
+rotation = 0.15700038
+scale = Vector2(0.616, 0.676)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorRight" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger4" unique_id=136591723]
+position = Vector2(33.250984, 54.583748)
+
+[node name="Boss_innerarm_finger2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=110939907]
+visible = false
+position = Vector2(500.26294, -99.39322)
+rotation = 0.15900071
+scale = Vector2(0.79, 0.861)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Boss_innerarm_finger1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=998270811]
+visible = false
+position = Vector2(506.06293, -65.89322)
+rotation = 0.2760007
+scale = Vector2(0.79, 0.79)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorLeft" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger1" unique_id=581497049]
+position = Vector2(41.316055, 49.081253)
+
+[node name="Boss_innerarm_finger3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=1054741209]
+visible = false
+position = Vector2(500.06293, -121.29321)
+rotation = 0.110000715
+scale = Vector2(0.673, 0.709)
+texture = ExtResource("42_l8g0f")
+centered = false
+
+[node name="Marker2DBungeeAnchorMiddle" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack/Boss_innerarm_finger3" unique_id=1604217847]
+position = Vector2(34.045753, 46.127296)
+
+[node name="Boss_innerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmBack" unique_id=851283966]
+visible = false
+position = Vector2(520.99994, -182)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("43_t7k67")
+centered = false
+
+[node name="RV" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=2032099212]
+
+[node name="Boss_RV_wheel1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=534506185]
+visible = false
+position = Vector2(260.8, -106.35574)
+rotation = 0.014
+scale = Vector2(1.0530002, 0.8059999)
+texture = ExtResource("44_svthq")
+centered = false
+
+[node name="Boss_RV_wheel2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=1155206773]
+visible = false
+position = Vector2(126.999985, -79.95575)
+rotation = 0.014
+scale = Vector2(1.0850003, 0.75599974)
+texture = ExtResource("44_svthq")
+centered = false
+
+[node name="Boss_RV" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/RV" unique_id=524436632]
+visible = false
+position = Vector2(73, -180.8558)
+rotation = -0.24099979
+scale = Vector2(0.899, 0.899)
+texture = ExtResource("45_q58c5")
+centered = false
+
+[node name="InnerArmFront" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm" unique_id=1624692077]
+
+[node name="Boss_innerarm_thumb2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=138070098]
+visible = false
+position = Vector2(450.76294, -53.593216)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("46_cho5l")
+centered = false
+
+[node name="Boss_innerarm_thumb1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=1434565168]
+visible = false
+position = Vector2(434.26294, -57.693207)
+rotation = 0.21800071
+scale = Vector2(0.791, 0.791)
+texture = ExtResource("47_8y17l")
+centered = false
+
+[node name="Boss_innerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront" unique_id=140219416]
+visible = false
+position = Vector2(456.70007, -225.10013)
+rotation = 0.11900039
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("48_5aksc")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerArm/InnerArmFront/Boss_innerarm_upper" unique_id=1714008552]
+position = Vector2(113.5, 125)
+
+[node name="InnerLeg" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=2108903154]
+visible = false
+
+[node name="Boss_innerleg_foot" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=1821830611]
+visible = false
+position = Vector2(879.9, 104.6)
+rotation = 0.04399998
+scale = Vector2(0.64300007, 0.64299995)
+texture = ExtResource("49_5pl6h")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg/Boss_innerleg_foot" unique_id=1693192833]
+position = Vector2(183.5, 113)
+
+[node name="Boss_innerleg_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=570443940]
+visible = false
+position = Vector2(962.9, -6)
+rotation = 0.016999988
+scale = Vector2(0.793, 0.79299986)
+texture = ExtResource("50_dg6yi")
+centered = false
+
+[node name="Boss_innerleg_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=432189088]
+visible = false
+position = Vector2(953.9, -120.4)
+rotation = 0.37500024
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("51_lagr1")
+centered = false
+
+[node name="Boss_innerleg_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg" unique_id=1914383594]
+visible = false
+position = Vector2(930.5, -6.9)
+rotation = 0.016999988
+scale = Vector2(0.645, 0.64499986)
+texture = ExtResource("52_nab1d")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/InnerLeg/Boss_innerleg_lower" unique_id=1127627542]
+position = Vector2(134, 144)
+
+[node name="BodyBack" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1278631278]
+visible = false
+
+[node name="Boss_body2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyBack" unique_id=1659825604]
+visible = false
+position = Vector2(904, -152.2)
+rotation = 0.01700034
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("53_0xrca")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyBack/Boss_body2" unique_id=1710724205]
+position = Vector2(166.5, 125)
+
+[node name="OuterLeg" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1720764316]
+visible = false
+
+[node name="Boss_outerleg_foot" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=1475679418]
+visible = false
+position = Vector2(948.3, 215)
+rotation = -0.117
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("49_5pl6h")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg/Boss_outerleg_foot" unique_id=272354818]
+position = Vector2(183.5, 113)
+
+[node name="Boss_outerleg_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=863182239]
+visible = false
+position = Vector2(1052.1, 80.5)
+rotation = -0.39299998
+scale = Vector2(0.99899995, 0.99899995)
+texture = ExtResource("50_dg6yi")
+centered = false
+
+[node name="Boss_outerleg_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=2097314715]
+visible = false
+position = Vector2(1036.7, -74.4)
+rotation = 0.4150002
+scale = Vector2(0.799, 0.89)
+texture = ExtResource("54_egkw2")
+centered = false
+
+[node name="Boss_outerleg_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg" unique_id=1596718203]
+visible = false
+position = Vector2(1012.9, 79.8)
+rotation = -0.39299998
+scale = Vector2(0.79899997, 0.79899997)
+texture = ExtResource("52_nab1d")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterLeg/Boss_outerleg_lower" unique_id=1930816029]
+position = Vector2(134, 144)
+
+[node name="BodyFront" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1935488458]
+visible = false
+
+[node name="Boss_body1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront" unique_id=150129586]
+position = Vector2(527.8, 156.09998)
+rotation = -0.29
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("55_uccm7")
+centered = false
+
+[node name="Marker2DDeathExplosionUpper" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront/Boss_body1" unique_id=1939157435]
+position = Vector2(260, 170)
+
+[node name="Marker2DDeathExplosionLower" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/BodyFront/Boss_body1" unique_id=1296856161]
+position = Vector2(280, 330)
+
+[node name="Head" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=786380443]
+
+[node name="Boss_neck" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=680897082]
+visible = false
+position = Vector2(553.5, 174.2)
+rotation = -0.033
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("56_riqlo")
+centered = false
+
+[node name="Boss_innerjaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=177090355]
+position = Vector2(551.4, 248.1)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("57_pe5ui")
+centered = false
+
+[node name="Boss_mouthglow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=303190420]
+position = Vector2(558.3, 248.10002)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("58_qk4is")
+centered = false
+
+[node name="Marker2DSpawnBall" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_mouthglow" unique_id=635522568]
+position = Vector2(-27.533157, 133.01022)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_mouthglow" unique_id=40939261]
+z_index = 2
+material = SubResource("CanvasItemMaterial_spit")
+position = Vector2(56.43201, 94.18802)
+emitting = false
+amount = 24
+texture = ExtResource("59_n7kav")
+one_shot = true
+visibility_rect = Rect2(-300, -100, 500, 200)
+process_material = SubResource("ParticleProcessMaterial_spit")
+
+[node name="Boss_mouthglow_red" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=801995719]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.051
+scale = Vector2(0.955, 0.998)
+skew = 0.045
+texture = ExtResource("60_hc0tp")
+centered = false
+
+[node name="Boss_jaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1843318226]
+position = Vector2(528.2, 264.4)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("61_are0w")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_jaw" unique_id=1280513104]
+position = Vector2(104.5, 101.5)
+
+[node name="Boss_eyeglow" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1363434968]
+position = Vector2(523.8, 250.9)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("62_gt5kb")
+centered = false
+
+[node name="Boss_eyeglow_red" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=301118519]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+rotation = -0.049
+scale = Vector2(0.795, 0.796)
+skew = -0.002
+texture = ExtResource("63_byyr7")
+centered = false
+
+[node name="Boss_head2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1966905613]
+position = Vector2(547.4, 184.3)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("64_yotbh")
+centered = false
+
+[node name="TrophySpawnPoint" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2" unique_id=1962018700]
+position = Vector2(79.60669, 80.11557)
+rotation = -0.11747604
+scale = Vector2(1.2256789, 1.2753907)
+skew = -0.004692197
+
+[node name="Zombie_Boss_driver" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2" unique_id=100722689]
+position = Vector2(46.159447, -64.06694)
+
+[node name="Body" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver" unique_id=1604281734]
+
+[node name="BodyCorrect" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body" unique_id=1654648863]
+
+[node name="Anim" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=695680202]
+
+[node name="Anim_swell" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=186669115]
+visible = false
+centered = false
+
+[node name="Anim_idle" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=1038984932]
+centered = false
+
+[node name="Anim_drive" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=1274908527]
+visible = false
+centered = false
+
+[node name="Anim_damage" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=1252169779]
+visible = false
+centered = false
+
+[node name="Anim_laugh" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=483382220]
+visible = false
+centered = false
+
+[node name="Anim_death" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=2136675069]
+visible = false
+centered = false
+
+[node name="Anim_flag" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=778875461]
+visible = false
+centered = false
+
+[node name="Anim_flag_loop" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect/Anim" unique_id=2066868957]
+visible = false
+centered = false
+
+[node name="Flagpole" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1916615739]
+visible = false
+position = Vector2(42.7, 39.1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("65_gwxvc")
+centered = false
+
+[node name="Flag" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1375964069]
+visible = false
+position = Vector2(44.4, 40.5)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("66_6i05c")
+centered = false
+
+[node name="Driver_innerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=835257636]
+position = Vector2(39.9, 58.7)
+rotation = 0.686
+scale = Vector2(0.733, 0.733)
+texture = ExtResource("67_ifj32")
+centered = false
+
+[node name="Driver_innerarm_lower2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1075357935]
+position = Vector2(14.4, 79.6)
+rotation = 0.145
+scale = Vector2(0.696, 0.696)
+texture = ExtResource("68_hjjvg")
+centered = false
+
+[node name="Driver_innerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=134944312]
+position = Vector2(0.9, 74)
+rotation = -0.038
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("69_l0dqf")
+centered = false
+
+[node name="Driver_innerrarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1911271430]
+position = Vector2(16.2, 72.9)
+rotation = 0.201
+scale = Vector2(0.696, 0.696)
+texture = ExtResource("70_x110u")
+centered = false
+
+[node name="Driver_body" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=834333014]
+position = Vector2(35.2, 44.8)
+rotation = -0.099
+scale = Vector2(0.799, 0.979)
+texture = ExtResource("71_7x6i5")
+centered = false
+
+[node name="Driver_brain" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=341267609]
+position = Vector2(8.3, 20.8)
+rotation = -0.099
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("72_k3pdi")
+centered = false
+
+[node name="Driver_face" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1767704092]
+position = Vector2(9.7, 44.1)
+rotation = -0.099
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("73_rgbfa")
+centered = false
+
+[node name="Driver_jaw" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=373528072]
+position = Vector2(24.7, 55.4)
+rotation = -0.099
+scale = Vector2(0.831, 0.737)
+texture = ExtResource("74_76yje")
+centered = false
+
+[node name="Driver_outerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=53590033]
+position = Vector2(47.5, 58)
+rotation = -0.016
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("67_ifj32")
+centered = false
+
+[node name="Driver_outerarm_lower2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1338645134]
+position = Vector2(34.8, 83.2)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("68_hjjvg")
+centered = false
+
+[node name="Driver_outerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=1406921113]
+position = Vector2(19.1, 78.3)
+rotation = 0.162
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("75_5lvdi")
+centered = false
+
+[node name="Driver_outerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/Body/BodyCorrect" unique_id=161081421]
+position = Vector2(35.5, 75)
+rotation = 0.038
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("70_x110u")
+centered = false
+
+[node name="Boss_eyeglow_black" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1352274956]
+visible = false
+centered = false
+
+[node name="Boss_antenna2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=291917180]
+position = Vector2(496.6, 210.99998)
+rotation = 0.045
+scale = Vector2(0.799, 0.799)
+texture = ExtResource("76_jqfk1")
+centered = false
+
+[node name="Boss_head" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=1285187697]
+position = Vector2(517, 190.30002)
+rotation = -0.016
+scale = Vector2(0.796, 0.796)
+texture = ExtResource("77_x0oc3")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head/Boss_head" unique_id=263257023]
+position = Vector2(137, 113)
+
+[node name="Boss_antenna" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/Head" unique_id=507894627]
+position = Vector2(720.3, 212.2)
+rotation = -0.016
+scale = Vector2(0.996, 0.996)
+texture = ExtResource("76_jqfk1")
+centered = false
+
+[node name="OuterArm" type="Node2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect" unique_id=1671256111]
+visible = false
+
+[node name="Boss_outerarm_thumb2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=472454308]
+visible = false
+position = Vector2(806, 13.4)
+rotation = -0.41400018
+scale = Vector2(0.86, 0.906)
+texture = ExtResource("78_hnkt0")
+centered = false
+
+[node name="Boss_outerarm_hand" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=787364303]
+visible = false
+position = Vector2(893.2, -30.5)
+rotation = -0.44300026
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("79_vhjk1")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss_outerarm_hand" unique_id=1480169592]
+position = Vector2(99, 99)
+
+[node name="Boss-outerarm_finger4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=2059258549]
+visible = false
+position = Vector2(869, 46)
+rotation = -0.93500024
+scale = Vector2(0.666, 0.611)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Marker2DSpawnZombie" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss-outerarm_finger4" unique_id=1287548756]
+position = Vector2(44.77496, 78.85651)
+
+[node name="Boss-outerarm_knuckle4" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1084707695]
+visible = false
+position = Vector2(922.5, 85)
+rotation = -1.0930003
+scale = Vector2(0.536, 0.588)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=381529041]
+visible = false
+position = Vector2(853.3, 19.8)
+rotation = -0.76800025
+scale = Vector2(0.688, 0.705)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle3" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1813412845]
+visible = false
+position = Vector2(890.6, 65.6)
+rotation = -0.8990002
+scale = Vector2(0.567, 0.662)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=883364624]
+visible = false
+position = Vector2(884.7, 13.9)
+rotation = -0.73000026
+scale = Vector2(0.74, 0.809)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle2" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=529010820]
+visible = false
+position = Vector2(863.5, 48.2)
+rotation = -0.83400023
+scale = Vector2(0.745, 0.795)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss-outerarm_finger1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=345647751]
+visible = false
+position = Vector2(834.3, 14.6)
+rotation = -0.45200026
+scale = Vector2(0.699, 0.769)
+texture = ExtResource("80_p0x2e")
+centered = false
+
+[node name="Boss-outerarm_knuckle1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1313379110]
+visible = false
+position = Vector2(846.9, 34)
+rotation = -0.39600027
+scale = Vector2(0.758, 0.758)
+texture = ExtResource("81_16avq")
+centered = false
+
+[node name="Boss_outerarm_thumb1" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1101566652]
+visible = false
+position = Vector2(858, -27.4)
+rotation = -0.39600027
+scale = Vector2(0.86, 0.906)
+texture = ExtResource("82_oo0si")
+centered = false
+
+[node name="Boss_outerarm_bits" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1814919719]
+visible = false
+position = Vector2(929.1, -127.3)
+rotation = -0.5760004
+scale = Vector2(0.797, 0.797)
+texture = ExtResource("40_th7e4")
+centered = false
+
+[node name="Boss_outerarm_lower" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1785450692]
+visible = false
+position = Vector2(941.8, -145)
+rotation = -0.2830005
+scale = Vector2(0.797, 0.858)
+texture = ExtResource("83_salth")
+centered = false
+
+[node name="Boss_outerarm_upper" type="Sprite2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm" unique_id=1483813091]
+position = Vector2(738.6, 217.20001)
+rotation = -0.759
+scale = Vector2(0.795, 0.795)
+texture = ExtResource("84_kyb63")
+centered = false
+
+[node name="Marker2DDeathExplosion" type="Marker2D" parent="AllPage/GridContainer/ChooseLevelButton12/Panel/TextureRect/ZB001Doctor/Body/BodyCorrect/OuterArm/Boss_outerarm_upper" unique_id=241038201]
+position = Vector2(142.5, 178)
+
+[node name="MainMenu" type="TextureButton" parent="." unique_id=698628094]
 layout_mode = 0
 offset_left = 669.0
 offset_top = 527.0
@@ -756,7 +2773,7 @@ texture_normal = ExtResource("11_y0ybt")
 texture_pressed = ExtResource("12_7gy53")
 texture_click_mask = ExtResource("13_c1hwb")
 
-[node name="Label" type="Label" parent="MainMenu"]
+[node name="Label" type="Label" parent="MainMenu" unique_id=1125582173]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -788,3 +2805,5 @@ vertical_alignment = 1
 [editable path="AllPage/GridContainer/ChooseLevelButton8/Panel/TextureRect/Rain"]
 [editable path="AllPage/GridContainer/ChooseLevelButton9"]
 [editable path="AllPage/GridContainer/ChooseLevelButton10"]
+[editable path="AllPage/GridContainer/ChooseLevelButton11"]
+[editable path="AllPage/GridContainer/ChooseLevelButton12"]

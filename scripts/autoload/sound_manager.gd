@@ -28,6 +28,12 @@ func play_bgm(stream: AudioStream):
 	bgm_play.stream = stream
 	bgm_play.play()
 
+## 播放 [param stream] 指定的背景音乐；相同曲目正在播放时保持进度，避免从头重播。
+func play_bgm_if_changed(stream: AudioStream) -> void:
+	if bgm_play.stream == stream and bgm_play.playing:
+		return
+	play_bgm(stream)
+
 #region 植物和僵尸有关音效(植物、僵尸、子弹、受击)
 """
  音效分为 僵尸受击 子弹音效 角色(植物僵尸) 戴夫 和其他音效
@@ -205,6 +211,16 @@ const SFXCharacterMap := {
 	&"ladder_zombie": preload("res://assets/audio/SFX/zombie/ladder_zombie.ogg"),
 	## 篮球僵尸发射篮球子弹
 	&"basketball": preload("res://assets/audio/SFX/zombie/basketball.ogg"),
+	## 僵王吐出冰火球。
+	&"bossboulderattack": preload("res://assets/audio/SFX/zombie/bossboulderattack.ogg"),
+	## 僵王机甲死亡爆炸。
+	&"bossexplosion": preload("res://assets/audio/SFX/zombie/bossexplosion.ogg"),
+	## 僵王低头、抬头的液压动作。
+	&"hydraulic": preload("res://assets/audio/SFX/zombie/hydraulic.ogg"),
+	## 僵王放置僵尸及蹦极时的手臂动作。
+	&"hydraulic_short": preload("res://assets/audio/SFX/zombie/hydraulic_short.ogg"),
+	## 僵王丢车时的投掷动作。
+	&"RVthrow": preload("res://assets/audio/SFX/zombie/RVthrow.ogg"),
 
 	## 巨人僵尸攻击\倭瓜
 	&"gargantuar_thump": preload("res://assets/audio/SFX/zombie/gargantuar_thump.ogg"),

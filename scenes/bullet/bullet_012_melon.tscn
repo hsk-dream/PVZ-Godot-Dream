@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://6fujba7kxnjg"]
+[gd_scene format=3 uid="uid://6fujba7kxnjg"]
 
 [ext_resource type="PackedScene" uid="uid://p2fwghratmjl" path="res://scenes/bullet/bullet_000_parabola_base.tscn" id="1_py6d0"]
 [ext_resource type="Script" uid="uid://ccjnjnre8jwfq" path="res://scripts/bullet/bullet_012_melon.gd" id="2_itde2"]
@@ -33,15 +33,14 @@ radius = 20.0
 radius = 60.0
 height = 300.0
 
-[node name="Bullet012Melon" instance=ExtResource("1_py6d0")]
+[node name="Bullet012Melon" unique_id=642889646 instance=ExtResource("1_py6d0")]
 script = ExtResource("2_itde2")
-parabola_height = -500.0
-bullet_type = 12
 is_rotate = true
 attack_value = 80
 bullet_mode = 1
 type_bullet_SFX = 5
 can_attack_zombie_status = 5
+bullet_type = 12
 
 [node name="BulletShadow" parent="." index="0"]
 scale = Vector2(1.90476, 1.33333)
@@ -52,7 +51,7 @@ texture = ExtResource("2_py6d0")
 [node name="BulletEffect" parent="." index="2"]
 script = ExtResource("3_itde2")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="BulletEffect/AllParticles2D" index="0"]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="BulletEffect/AllParticles2D" index="0" unique_id=739185061]
 material = SubResource("CanvasItemMaterial_o220a")
 emitting = false
 amount = 13
@@ -65,15 +64,16 @@ process_material = SubResource("ParticleProcessMaterial_itde2")
 [node name="CollisionShape2D" parent="Area2DAttack" index="0"]
 shape = SubResource("CircleShape2D_wo6mn")
 
-[node name="SpatterComponent" type="Node2D" parent="." index="4"]
+[node name="SpatterComponent" type="Node2D" parent="." index="4" unique_id=1034713094]
 script = ExtResource("5_d0acj")
 sum_attack_value = 574
 range_attack_value = Vector2i(1, 26)
 spatter_lane_up_down = 1
+can_attack_zombie_status = 5
 
-[node name="Area2DSpatter" type="Area2D" parent="SpatterComponent" index="0"]
+[node name="Area2DSpatter" type="Area2D" parent="SpatterComponent" index="0" unique_id=1435741358]
 collision_layer = 8
 collision_mask = 512
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpatterComponent/Area2DSpatter" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpatterComponent/Area2DSpatter" index="0" unique_id=884056933]
 shape = SubResource("CapsuleShape2D_itde2")

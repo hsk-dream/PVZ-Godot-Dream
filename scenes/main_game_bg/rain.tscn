@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cv3iw5srgpusv"]
+[gd_scene format=3 uid="uid://cv3iw5srgpusv"]
 
 [ext_resource type="Shader" uid="uid://c6bhrh1eaf7kg" path="res://shaders/my_shader/main_game_rain.gdshader" id="1_226xs"]
 [ext_resource type="Script" uid="uid://b3046a6pkwswm" path="res://scripts/main_game_item/back_ground/main_game_rain.gd" id="2_1e5if"]
@@ -92,7 +92,7 @@ scale_over_velocity_curve = SubResource("CurveXYZTexture_obksj")
 color = Color(0.784314, 0.858824, 0.894118, 1)
 color_initial_ramp = SubResource("GradientTexture1D_vg3sw")
 
-[node name="Rain" type="Control"]
+[node name="Rain" type="Control" unique_id=1242264447]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -200.0
@@ -101,7 +101,7 @@ offset_bottom = 600.0
 mouse_filter = 2
 script = ExtResource("2_1e5if")
 
-[node name="Rain" type="ColorRect" parent="."]
+[node name="Rain" type="ColorRect" parent="." unique_id=918488565]
 visible = false
 material = SubResource("ShaderMaterial_0himu")
 layout_mode = 1
@@ -112,7 +112,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Fog" type="ColorRect" parent="."]
+[node name="Fog" type="ColorRect" parent="." unique_id=1083781295]
 material = SubResource("ShaderMaterial_t1ac0")
 layout_mode = 1
 anchors_preset = 15
@@ -124,7 +124,7 @@ mouse_filter = 2
 color = Color(0.50140655, 0.5014065, 0.5014065, 0.46666667)
 metadata/_edit_lock_ = true
 
-[node name="Fog3" type="ColorRect" parent="."]
+[node name="Fog3" type="ColorRect" parent="." unique_id=1252382009]
 material = SubResource("ShaderMaterial_syqgh")
 layout_mode = 1
 anchors_preset = 15
@@ -135,9 +135,9 @@ grow_vertical = 2
 mouse_filter = 2
 metadata/_edit_lock_ = true
 
-[node name="rainParticles" type="GPUParticles2D" parent="."]
+[node name="rainParticles" type="GPUParticles2D" parent="." unique_id=777220179]
 position = Vector2(772, 1)
-amount = 6000
+amount = 1000
 amount_ratio = 0.162
 texture = ExtResource("5_ke767")
 process_material = SubResource("ParticleProcessMaterial_i5812")

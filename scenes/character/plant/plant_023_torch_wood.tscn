@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://5cwbr83ymfog"]
+[gd_scene format=3 uid="uid://5cwbr83ymfog"]
 
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_t46j5"]
 [ext_resource type="Texture2D" uid="uid://bxf2w1rk7r03s" path="res://assets/reanim/Torchwood_spark.png" id="2_f3mgj"]
@@ -38,70 +38,70 @@ nodes/TimeScale/position = Vector2(260, 100)
 node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"Animation"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f3mgj"]
-size = Vector2(45, 50)
+size = Vector2(45, 97)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1e0vl"]
 size = Vector2(66, 66)
 
-[node name="Plant023TorchWood" instance=ExtResource("1_t46j5")]
+[node name="Plant023TorchWood" unique_id=1207264297 instance=ExtResource("1_t46j5")]
 script = ExtResource("2_s1g5k")
 plant_type = 23
 
-[node name="BodyCorrect" parent="Body" index="0"]
+[node name="BodyCorrect" parent="Body" parent_id_path=PackedInt32Array(218567138) index="0" unique_id=825799443]
 position = Vector2(-40, -67)
 
-[node name="Anim_idle" type="Sprite2D" parent="Body/BodyCorrect" index="0"]
+[node name="Anim_idle" type="Sprite2D" parent="Body/BodyCorrect" index="0" unique_id=1723263155]
 centered = false
 
-[node name="Anim_blink" type="Sprite2D" parent="Body/BodyCorrect" index="1"]
+[node name="Anim_blink" type="Sprite2D" parent="Body/BodyCorrect" index="1" unique_id=595336282]
 visible = false
 centered = false
 
-[node name="Layer 35" type="Sprite2D" parent="Body/BodyCorrect" index="2"]
-self_modulate = Color(1, 1, 1, 0.35417545)
-position = Vector2(39.7, 5.1618)
+[node name="Layer 35" type="Sprite2D" parent="Body/BodyCorrect" index="2" unique_id=658203457]
+self_modulate = Color(1, 1, 1, 0.4100572)
+position = Vector2(39.7, 7.327216)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_f3mgj")
 centered = false
 
-[node name="Layer 33" type="Sprite2D" parent="Body/BodyCorrect" index="3"]
-self_modulate = Color(1, 1, 1, 0.9744252)
-position = Vector2(54.776398, 28.470121)
+[node name="Layer 33" type="Sprite2D" parent="Body/BodyCorrect" index="3" unique_id=993737727]
+self_modulate = Color(1, 1, 1, 0.6321497)
+position = Vector2(50.445568, 17.363632)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_f3mgj")
 centered = false
 
-[node name="Layer 34" type="Sprite2D" parent="Body/BodyCorrect" index="4"]
-self_modulate = Color(1, 1, 1, 0.51626325)
-position = Vector2(49.1, 13.311384)
+[node name="Layer 34" type="Sprite2D" parent="Body/BodyCorrect" index="4" unique_id=1210944788]
+self_modulate = Color(1, 1, 1, 0.6000858)
+position = Vector2(49.1, 16.140396)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_f3mgj")
 centered = false
 
-[node name="Torchwood_fire1" type="Sprite2D" parent="Body/BodyCorrect" index="5"]
-position = Vector2(18.42171, -2.7287064)
-scale = Vector2(0.7236002, 0.86544365)
-skew = 0.0067991107
+[node name="Torchwood_fire1" type="Sprite2D" parent="Body/BodyCorrect" index="5" unique_id=573652620]
+position = Vector2(17.373928, -3.112893)
+scale = Vector2(0.7316332, 0.8713811)
+skew = 0.004360817
 texture = ExtResource("4_w81nd")
 centered = false
 
-[node name="Anim_face" type="Sprite2D" parent="Body/BodyCorrect" index="6"]
-position = Vector2(6.3973904, 30.310438)
-scale = Vector2(0.7330522, 0.67986953)
+[node name="Anim_face" type="Sprite2D" parent="Body/BodyCorrect" index="6" unique_id=1918574927]
+position = Vector2(6.3624644, 30.450142)
+scale = Vector2(0.7337507, 0.67812324)
 texture = ExtResource("4_ji27e")
 centered = false
 
-[node name="Torchwood_mouth" type="Sprite2D" parent="Body/BodyCorrect" index="7"]
-position = Vector2(22.094782, 43.1)
+[node name="Torchwood_mouth" type="Sprite2D" parent="Body/BodyCorrect" index="7" unique_id=2140564377]
+position = Vector2(22.02493, 43.1)
 rotation = -0.006981
-scale = Vector2(0.7781305, 0.8973393)
+scale = Vector2(0.77987677, 0.90187967)
 skew = 0.006981
 texture = ExtResource("5_w81nd")
 centered = false
 
-[node name="Torchwood_blink" type="Sprite2D" parent="Body/BodyCorrect" index="8"]
+[node name="Torchwood_blink" type="Sprite2D" parent="Body/BodyCorrect" index="8" unique_id=236852634]
 visible = false
-position = Vector2(30.261635, 40.997143)
+position = Vector2(30.259966, 41.088398)
 scale = Vector2(0.737, 0.787)
 texture = ExtResource("6_lpob7")
 centered = false
@@ -109,35 +109,33 @@ centered = false
 [node name="BlinkComponent" parent="." index="5"]
 all_blink_body_change = Array[ExtResource("8_lpob7")]([SubResource("Resource_7d34a")])
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="8"]
-libraries = {
-&"": SubResource("AnimationLibrary_ytarc")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="8" unique_id=1866072931]
+libraries/ = SubResource("AnimationLibrary_ytarc")
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="9"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="9" unique_id=148540772]
 deterministic = false
 tree_root = SubResource("AnimationNodeBlendTree_7d34a")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
 parameters/TimeScale/scale = 1.0
 
-[node name="Area2DUpBullet" type="Area2D" parent="." index="10"]
+[node name="Area2DUpBullet" type="Area2D" parent="." index="10" unique_id=880035802]
 collision_layer = 0
 collision_mask = 8
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2DUpBullet" index="0"]
-position = Vector2(0, -25)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2DUpBullet" index="0" unique_id=91272222]
+position = Vector2(0, -37.5)
 shape = SubResource("RectangleShape2D_f3mgj")
 
-[node name="FogClearerComponent" type="Node2D" parent="." index="11"]
+[node name="FogClearerComponent" type="Node2D" parent="." index="11" unique_id=180534325]
 unique_name_in_owner = true
 script = ExtResource("11_lpob7")
 
-[node name="Area2DFogClear" type="Area2D" parent="FogClearerComponent" index="0"]
+[node name="Area2DFogClear" type="Area2D" parent="FogClearerComponent" index="0" unique_id=691064652]
 z_index = 1000
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FogClearerComponent/Area2DFogClear" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FogClearerComponent/Area2DFogClear" index="0" unique_id=769989500]
 position = Vector2(0, -40)
 rotation = 0.785398
 shape = SubResource("RectangleShape2D_1e0vl")

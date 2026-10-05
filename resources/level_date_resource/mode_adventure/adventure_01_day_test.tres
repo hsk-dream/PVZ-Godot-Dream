@@ -1,7 +1,24 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=3 format=3 uid="uid://n4ag8qfqegwh"]
+[gd_resource type="Resource" script_class="ResourceLevelData" format=3 uid="uid://n4ag8qfqegwh"]
 
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="1_0covv"]
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_84rgi"]
+[ext_resource type="Script" uid="uid://dt2wj1hnyu2es" path="res://scripts/resources/card/card_weight.gd" id="3_ifj48"]
+[ext_resource type="Script" uid="uid://brtidnnpm2a7x" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+
+[sub_resource type="Resource" id="CardReference_1_1001"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 1001
+
+[sub_resource type="Resource" id="CardReference_1_1002"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 1002
+
+[sub_resource type="Resource" id="CardReference_1_1003"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 1003
 
 [resource]
 script = ExtResource("1_0covv")
@@ -9,5 +26,5 @@ monster_mode = 0
 max_wave = 10
 max_choosed_card_num = 15
 start_sun = 5210
-pre_choosed_card_list_plant = Array[int]([1001, 1002, 1003])
+prechosen_cards = Array[ExtResource("card_reference")]([SubResource("CardReference_1_1001"), SubResource("CardReference_1_1002"), SubResource("CardReference_1_1003")])
 metadata/_custom_type_script = "uid://bjt3l56exxmdw"

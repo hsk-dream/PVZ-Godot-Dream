@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://lqcj6lx0tml1"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://lqcj6lx0tml1"]
 
 [ext_resource type="Shader" uid="uid://ca275c7ergmcw" path="res://shaders/my_shader/body_mask.gdshader" id="1_3mq5g"]
 

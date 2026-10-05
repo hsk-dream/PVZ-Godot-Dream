@@ -1,7 +1,34 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=3 format=3 uid="uid://ep3r2178ixc6"]
+[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=9 format=3 uid="uid://ep3r2178ixc6"]
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_atvkk"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="2_kq0mn"]
+
+[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+
+[sub_resource type="Resource" id="CardReference_2_1"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 1
+
+[sub_resource type="Resource" id="CardReference_2_4"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 4
+
+[sub_resource type="Resource" id="CardReference_2_5"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 5
+
+[sub_resource type="Resource" id="CardReference_2_17"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 17
+
+[sub_resource type="Resource" id="CardReference_2_21"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 21
 
 [resource]
 script = ExtResource("2_kq0mn")
@@ -15,7 +42,7 @@ can_choosed_card = false
 monster_mode = 0
 zombie_refresh_types = Array[int]([1, 3, 4, 5, 6, 7, 8, 9])
 start_sun = 300
-pre_choosed_card_list_zombie = Array[int]([1, 4, 5, 17, 21])
+prechosen_cards = Array[ExtResource("card_reference")]([SubResource("CardReference_2_1"), SubResource("CardReference_2_4"), SubResource("CardReference_2_5"), SubResource("CardReference_2_17"), SubResource("CardReference_2_21")])
 is_zombie_mode = true
 all_plants_weight_on_zombie_mode = Dictionary[int, int]({
 1: 2,

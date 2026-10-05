@@ -1,7 +1,14 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=3 format=3 uid="uid://byaabbkntnwec"]
+[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=5 format=3 uid="uid://byaabbkntnwec"]
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_n28n2"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="1_nhsat"]
+
+[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+
+[sub_resource type="Resource" id="CardReference_2_20"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 20
 
 [resource]
 script = ExtResource("1_nhsat")
@@ -12,7 +19,7 @@ zombie_refresh_types = Array[int]([])
 card_mode = 3
 max_choosed_card_num = 1
 start_sun = 12810
-pre_choosed_card_list_zombie = Array[int]([20])
+prechosen_cards = Array[ExtResource("card_reference")]([SubResource("CardReference_2_20")])
 is_mode_column = true
 is_shovel = false
 is_bowling_stripe = true

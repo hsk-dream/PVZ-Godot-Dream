@@ -80,6 +80,8 @@ var curr_ice_roads:Array[IceRoad] = []
 var tombstone:TombStone
 ## 当前cell的坑洞
 var crater:DoomShroomCrater
+## 标准九列屋顶从左到右的斜面列数；零起点列号 0～4 使用斜面坑洞，其余列使用平面坑洞。
+const ROOF_SLOPE_COLUMN_COUNT := 5
 
 @export_subgroup("特殊状态，特殊状态下无法种植僵尸")
 ## 是否可以种植僵尸
@@ -321,18 +323,31 @@ func down_plant_change_condition(is_water:bool):
 #endregion
 
 #region 蹦极僵尸偷植物
-## 被蹦极僵尸偷植物,返回被偷的植物body复制体
-func be_bungi()->Node2D:
+## 返回当前可偷取的第一层植物；选择目标与实际偷取共用此顺序，失效或死亡实例不参与。
+func get_bungi_target() -> Plant000Base:
+	# 各种植层的偷取优先级；一次只取一株，不连带移除整格植物。
 	for place in [
 		CharacterRegistry.PlacePlantInCell.Norm,
 		CharacterRegistry.PlacePlantInCell.Shell,
 		CharacterRegistry.PlacePlantInCell.Down,
 		CharacterRegistry.PlacePlantInCell.Float
 	]:
-		if is_instance_valid(plant_in_cell[place]):
-			#plant_in_cell[place].be_bungi()
-			return plant_in_cell[place].be_bungi()
+		# 先以 Variant 检查可能已释放的引用，再转换植物类型。
+		var plant_reference: Variant = plant_in_cell[place]
+		if not is_instance_valid(plant_reference):
+			continue
+		# 只有仍在场景中的存活植物才能成为偷取目标。
+		var plant := plant_reference as Plant000Base
+		if plant != null and plant.is_inside_tree() and not plant.is_queued_for_deletion() and not plant.is_death:
+			return plant
 	return null
+
+
+## 偷取当前有效植物并返回其表现复制体；目标消失时返回 null。
+func be_bungi() -> Node2D:
+	# 执行时重新读取格内植物，避免使用准备阶段已死亡的植物引用。
+	var plant: Plant000Base = get_bungi_target()
+	return plant.be_bungi() if plant != null else null
 #endregion
 
 #region 特殊状态
@@ -374,13 +389,63 @@ func tombstone_death_update_plant_cell_data():
 #endregion
 
 #region 坑洞相关
-## 创建坑洞
+## 按背景和格子地形创建毁灭菇坑洞并清空同格植物。
+## 先禁种，避免死亡回调刷新种植虚影时短暂允许种植。
 func create_crater():
+	update_special_state_plant(true, E_SpecialStatePlant.IsCrater)
+	_clear_plants_for_crater()
+
 	self.crater = SceneRegistry.DOOM_SHROOM_CRATER.instantiate()
 	add_child(crater)
-	crater.init_crater(1, self)
+	crater.init_crater(_get_crater_type(), self)
 
-	update_special_state_plant(true, E_SpecialStatePlant.IsCrater)
+
+## 根据实际背景与原始格子地形返回坑洞图片组索引，不受睡莲或花盆改变种植条件的影响。[br]
+## 0/1 为陆地白天/黑夜，2/3 为水池白天/黑夜，4/5 为屋顶平面/斜面。[br]
+## 屋顶按开局初始化完成后的左起零起点列号判断；未知背景回退到陆地白天。
+func _get_crater_type() -> int:
+	match Global.main_game.game_para.game_BG:
+		ConstLevelData.GameBg.FrontDay:
+			return 0
+		ConstLevelData.GameBg.FrontNight:
+			return 1
+		ConstLevelData.GameBg.Pool:
+			return 2 if plant_cell_type == PlantCellType.Pool else 0
+		ConstLevelData.GameBg.Fog:
+			return 3 if plant_cell_type == PlantCellType.Pool else 1
+		ConstLevelData.GameBg.Roof, ConstLevelData.GameBg.RoofNight:
+			return 5 if row_col.y >= 0 and row_col.y < ROOF_SLOPE_COLUMN_COUNT else 4
+	return 0
+
+
+## 清空坑洞所在格子的各层植物，不触发连带亡语；底层植物最后死亡以恢复地形和容器结构。
+## 已死亡或等待释放的实例不重复结算，毁灭菇自身由原来的死亡流程释放。
+func _clear_plants_for_crater() -> void:
+	# 保存各层植物引用，避免死亡回调修改格子数据后影响本次清理目标。
+	var plants_to_clear: Dictionary = plant_in_cell.duplicate()
+	# 当前清理的种植层；底层植物最后处理，模仿者层不存在时会被跳过。
+	for place: CharacterRegistry.PlacePlantInCell in [
+		CharacterRegistry.PlacePlantInCell.Norm,
+		CharacterRegistry.PlacePlantInCell.Shell,
+		CharacterRegistry.PlacePlantInCell.Float,
+		CharacterRegistry.PlacePlantInCell.Imitater,
+		CharacterRegistry.PlacePlantInCell.Down
+	]:
+		# 先检查原始引用，前一个植物的死亡回调可能已经释放后续目标。
+		var plant_reference: Variant = plants_to_clear.get(place)
+		if not is_instance_valid(plant_reference):
+			continue
+		# 有效的待清理植物；正在执行亡语的毁灭菇尚未排队释放，但已经标记死亡。
+		var plant := plant_reference as Plant000Base
+		if plant == null or plant.is_death or plant.is_queued_for_deletion():
+			continue
+
+		plant.is_can_death_language = false
+		# 沿用死亡通知、数量更新和底层植物地形恢复，不直接释放节点。
+		plant.character_death_disappear()
+		# 只清空仍指向原目标的种植层，避免覆盖死亡回调新写入的植物引用。
+		if plant_in_cell.get(place) == plant_reference:
+			plant_in_cell[place] = null
 
 ## 坑洞调用该函数，坑洞是自己消失后调用该函数
 func delete_crater_update_plant_cell_data():

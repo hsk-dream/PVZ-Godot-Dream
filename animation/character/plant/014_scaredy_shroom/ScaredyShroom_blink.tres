@@ -1,7 +1,7 @@
 [gd_resource type="Animation" load_steps=3 format=3 uid="uid://dkx8cnsa5g2km"]
 
-[ext_resource type="Texture2D" uid="uid://dmc0tn8f0rcd5" path="res://assets/reanim/Scaredyshroom_eye2.png" id="0_fuck"]
-[ext_resource type="Texture2D" uid="uid://bhy6v2sefb34e" path="res://assets/reanim/Scaredyshroom_eye1.png" id="1_fuck"]
+[ext_resource type="Texture2D" uid="uid://dmc0tn8f0rcd5" path="res://assets/reanim/ScaredyShroom_eye2.png" id="0_fuck"]
+[ext_resource type="Texture2D" uid="uid://bhy6v2sefb34e" path="res://assets/reanim/ScaredyShroom_eye1.png" id="1_fuck"]
 
 [resource]
 resource_name = "ScaredyShroom_blink"

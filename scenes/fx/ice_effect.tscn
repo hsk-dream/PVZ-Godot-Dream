@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b2y2ygq62yaag"]
+[gd_scene format=3 uid="uid://b2y2ygq62yaag"]
 
 [ext_resource type="Script" uid="uid://cc2pukv2rh1pk" path="res://scripts/main_game_item/ice_zombie_effect.gd" id="1_q33bu"]
 [ext_resource type="Texture2D" uid="uid://b8wyfl4uolim5" path="res://assets/image/main_game_item/icetrap.png" id="2_pnb1i"]
@@ -24,18 +24,18 @@ initial_velocity_max = 90.0
 gravity = Vector3(0, 98, 0)
 anim_offset_max = 1.0
 
-[node name="IceEffect" type="Node2D"]
+[node name="IceEffect" type="Node2D" unique_id=151902430]
 script = ExtResource("1_q33bu")
 
-[node name="Icetrap" type="Sprite2D" parent="."]
+[node name="Icetrap" type="Sprite2D" parent="." unique_id=2035348080]
 z_index = 1
 texture = ExtResource("2_pnb1i")
 
-[node name="Icetrap2" type="Sprite2D" parent="."]
+[node name="Icetrap2" type="Sprite2D" parent="." unique_id=305567536]
 z_index = -1
 texture = ExtResource("3_oux6n")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=252669612]
 z_index = 1
 material = SubResource("CanvasItemMaterial_81wjr")
 emitting = false

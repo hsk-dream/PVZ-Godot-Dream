@@ -1,5 +1,6 @@
-[gd_scene load_steps=37 format=3 uid="uid://bqqakge6bmsww"]
+[gd_scene load_steps=38 format=3 uid="uid://bqqakge6bmsww"]
 
+[ext_resource type="Script" uid="uid://biw3o2t4rr2yr" path="res://scripts/util/speed_timer.gd" id="speed_timer"]
 [ext_resource type="PackedScene" uid="uid://c5cke4cm02um7" path="res://scenes/character/plant/plant_000_base.tscn" id="1_185k3"]
 [ext_resource type="Script" uid="uid://n0ofh7q85nqc" path="res://scripts/character/plant/plant_043_gloom_shroom.gd" id="2_52sk1"]
 [ext_resource type="Texture2D" uid="uid://crmmrx3udqb0" path="res://assets/reanim/GloomShroom_base.png" id="2_bucvu"]
@@ -280,6 +281,7 @@ position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_52sk1")
 
 [node name="BulletAttackCdTimer" type="Timer" parent="AttackComponent" index="1"]
+script = ExtResource("speed_timer")
 
 [node name="AllBullet_FX" type="Node2D" parent="." index="11"]
 

@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=7 format=3 uid="uid://1lhfjbi4gaok"]
+[gd_resource type="Resource" script_class="ResourceLevelData" format=3 uid="uid://1lhfjbi4gaok"]
 
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="1_hdf0g"]
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_qeepr"]
+[ext_resource type="Script" uid="uid://brtidnnpm2a7x" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+[ext_resource type="Script" uid="uid://dt2wj1hnyu2es" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
 
 [sub_resource type="Resource" id="Resource_gacjd"]
 script = ExtResource("1_qeepr")
@@ -59,17 +61,7 @@ card_mode = null
 is_seed_rain = null
 max_choosed_card_num = null
 start_sun = null
-pre_choosed_card_list_plant = null
-pre_choosed_card_list_zombie = null
-all_card_plant_type_probability = null
-all_card_zombie_type_probability = null
-card_order_plant = null
-card_order_zombie = null
 create_new_card_speed = null
-all_card_plant_type_probability_seed_rain = null
-all_card_zombie_type_probability_seed_rain = null
-card_order_plant_seed_rain = null
-card_order_zombie_seed_rain = null
 is_mode_column = null
 is_shovel = null
 is_pot_mode = null

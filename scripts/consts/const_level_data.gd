@@ -9,6 +9,7 @@ enum GameBg {
 	Pool,
 	Fog,
 	Roof,
+	RoofNight
 }
 
 ## 背景图
@@ -18,6 +19,8 @@ const GameBgTextureMap: Dictionary = {
 	GameBg.Pool: preload("res://assets/image/background/background3.jpg"),
 	GameBg.Fog: preload("res://assets/image/background/background4.jpg"),
 	GameBg.Roof: preload("res://assets/image/background/background5.jpg"),
+	GameBg.RoofNight: preload("res://assets/image/background/background6boss.jpg"),
+
 }
 #endregion
 
@@ -47,11 +50,11 @@ const GameBGMMap: Dictionary[GameBGM, String] = {
 #endregion
 
 #region 出怪
-## 出怪模式
+## 出怪模式。新增模式追加在末尾，保留关卡资源中已保存的枚举编号。
 enum E_MonsterMode {
-	Null, ## 不出怪，测试使用
-	Norm, ## 正常出怪模式
-	HammerZombie, ## 锤僵尸出怪模式
+	Null = 0, ## 不启动自然波次，仍可配置开战时生成的僵王
+	Norm = 1, ## 正常出怪模式
+	HammerZombie = 2, ## 锤僵尸出怪模式
 }
 #endregion
 

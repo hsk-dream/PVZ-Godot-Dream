@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dfolyuftpk42u"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dfolyuftpk42u"]
 
 [ext_resource type="Shader" uid="uid://i5g5ymmn8y37" path="res://shaders/my_shader/imitater.gdshader" id="1_0lwdd"]
 

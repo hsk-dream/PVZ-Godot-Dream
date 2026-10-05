@@ -88,8 +88,10 @@ var is_mouse_visibel_on_hammer:bool = false
 @export_group("bgm")
 ## 选卡bgm
 var bgm_choose_card: AudioStream = preload("res://assets/audio/BGM/choose_card.mp3")
-## 主游戏bgm
+## 关卡配置的原始战斗音乐，用于常规战斗及解除僵王音乐覆盖。
 var bgm_main_game: AudioStream
+## 存活僵王入场后覆盖原始战斗音乐的曲目，不改变关卡配置。
+var bgm_boss: AudioStream
 #endregion
 
 
@@ -258,16 +260,32 @@ func init_manager():
 
 ## 信号连接
 func signal_connect():
+	zombie_manager.signal_living_bosses_changed.connect(refresh_battle_bgm)
 	if game_para.is_hammer:
 		for ui_node:Control in node_mouse_appear_have_hammer:
 			ui_node.mouse_entered.connect(mouse_appear_have_hammer)
 			ui_node.mouse_exited.connect(mouse_disappear_have_hammer)
 
-## 初始化游戏bgm
+## 加载关卡原始战斗音乐和僵王音乐，选卡阶段不在此处切换播放。
 func _init_game_BGM():
-	#print(game_para.game_BGM)
-	var path_bgm_game = ConstLevelData.GameBGMMap[game_para.game_BGM]
+	# 当前关卡配置的战斗音乐资源路径。
+	var path_bgm_game: String = ConstLevelData.GameBGMMap[game_para.game_BGM]
 	bgm_main_game = load(path_bgm_game) as AudioStream
+	# 僵王曲目复用关卡音乐映射，避免另行维护资源路径。
+	var path_bgm_boss: String = ConstLevelData.GameBGMMap[ConstLevelData.GameBGM.Boss]
+	bgm_boss = load(path_bgm_boss) as AudioStream
+
+
+## 正式战斗时按存活僵王选择音乐；解除覆盖时从头播放关卡原曲。
+## 单轮僵王死亡获胜先进入结算，因此保留僵王音乐，不在结算阶段恢复原曲。
+## 相同曲目继续播放，选卡、结算或场景卸载时不覆盖其他界面的音乐。
+func refresh_battle_bgm() -> void:
+	if not is_inside_tree() or is_queued_for_deletion() \
+		or get_tree().current_scene != self or main_game_progress != E_MainGameProgress.MAIN_GAME:
+		return
+	# 死亡演出中的僵王已不属于存活快照，不必等待动画结束或节点释放。
+	var battle_bgm: AudioStream = bgm_main_game if zombie_manager.get_living_bosses().is_empty() else bgm_boss
+	SoundManager.play_bgm_if_changed(battle_bgm)
 
 
 ## 不用选择卡片进行的流程
@@ -406,9 +424,14 @@ func main_game_start():
 	zombie_manager.restore_saved_bosses()
 	card_manager.card_slot_update_main_game()
 
-	## 红字结束后一秒修改bgm
+	# 本次延迟所属轮次，防止旧轮协程重新播放音乐或启动下一轮刷怪。
+	var start_round: int = curr_game_round
+	# 红字结束后一秒按当前存活僵王选择音乐，不能覆盖读档或卡牌入场已切换的僵王曲目。
 	await get_tree().create_timer(1.0).timeout
-	SoundManager.play_bgm(bgm_main_game)
+	if not is_inside_tree() or is_queued_for_deletion() or get_tree().current_scene != self \
+		or main_game_progress != E_MainGameProgress.MAIN_GAME or curr_game_round != start_round:
+		return
+	refresh_battle_bgm()
 
 	zombie_manager.start_game()
 

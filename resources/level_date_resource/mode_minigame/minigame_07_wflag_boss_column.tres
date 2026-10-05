@@ -1,0 +1,275 @@
+[gd_resource type="Resource" script_class="ResourceLevelData" format=3 uid="uid://cxmhrtoidu2nv"]
+
+[ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_wwigg"]
+[ext_resource type="Script" uid="uid://brtidnnpm2a7x" path="res://scripts/resources/card/card_reference.gd" id="2_ur3h5"]
+[ext_resource type="Script" uid="uid://dt2wj1hnyu2es" path="res://scripts/resources/card/card_weight.gd" id="3_62pxf"]
+[ext_resource type="Script" uid="uid://7qucqjvdq78q" path="res://scripts/resources/crazy_dave_dialog_detail_resource.gd" id="4_vjg8c"]
+[ext_resource type="Script" uid="uid://dlfnh7fjqyil6" path="res://scripts/resources/crazy_dave_dialog_resource.gd" id="5_6j0u3"]
+[ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="6_pc7o7"]
+
+[sub_resource type="Resource" id="Resource_hl02h"]
+script = ExtResource("1_wwigg")
+plant_type = 17
+plant_cell_pos = Vector2i(0, 1)
+is_imitater_plant = true
+metadata/_custom_type_script = "uid://bke3sg5otco7s"
+
+[sub_resource type="Resource" id="Resource_i5mhj"]
+script = ExtResource("1_wwigg")
+plant_type = 17
+plant_cell_pos = Vector2i(0, 2)
+metadata/_custom_type_script = "uid://bke3sg5otco7s"
+
+[sub_resource type="Resource" id="Resource_miqb2"]
+script = ExtResource("1_wwigg")
+plant_type = 17
+plant_cell_pos = Vector2i(0, 3)
+metadata/_custom_type_script = "uid://bke3sg5otco7s"
+
+[sub_resource type="Resource" id="Resource_c0sf0"]
+script = ExtResource("4_vjg8c")
+text = "你好，我亲爱的邻居"
+metadata/_custom_type_script = "uid://7qucqjvdq78q"
+
+[sub_resource type="Resource" id="Resource_j12hc"]
+script = ExtResource("4_vjg8c")
+text = "僵尸这一次带来了一万波攻势"
+metadata/_custom_type_script = "uid://7qucqjvdq78q"
+
+[sub_resource type="Resource" id="Resource_4f2yh"]
+script = ExtResource("4_vjg8c")
+text = "这听起来很疯狂"
+is_crazy = true
+metadata/_custom_type_script = "uid://7qucqjvdq78q"
+
+[sub_resource type="Resource" id="Resource_c4460"]
+script = ExtResource("4_vjg8c")
+text = "但是没有关系，我帮你做了一个博士召唤器"
+metadata/_custom_type_script = "uid://7qucqjvdq78q"
+
+[sub_resource type="Resource" id="Resource_d87ja"]
+script = ExtResource("4_vjg8c")
+text = "只要一万阳光就可以召唤僵王博士"
+metadata/_custom_type_script = "uid://7qucqjvdq78q"
+
+[sub_resource type="Resource" id="Resource_aolfu"]
+script = ExtResource("4_vjg8c")
+text = "战胜他，我们就赢了"
+metadata/_custom_type_script = "uid://7qucqjvdq78q"
+
+[sub_resource type="Resource" id="Resource_7gpx0"]
+script = ExtResource("4_vjg8c")
+text = "祝你好运，我亲爱的邻居"
+metadata/_custom_type_script = "uid://7qucqjvdq78q"
+
+[sub_resource type="Resource" id="Resource_i7mo1"]
+script = ExtResource("5_6j0u3")
+dialog_detail_list = Array[ExtResource("4_vjg8c")]([SubResource("Resource_c0sf0"), SubResource("Resource_j12hc"), SubResource("Resource_4f2yh"), SubResource("Resource_c4460"), SubResource("Resource_d87ja"), SubResource("Resource_aolfu"), SubResource("Resource_7gpx0")])
+is_enter_up = true
+is_grab = true
+metadata/_custom_type_script = "uid://dlfnh7fjqyil6"
+
+[sub_resource type="Resource" id="Resource_j6xl1"]
+script = ExtResource("2_ur3h5")
+card_type = 3
+content_id = 1
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_8aop0"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 3
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_21b1r"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_8aop0")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_60xs2"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 5
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_v4mjg"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_60xs2")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_pgbu3"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 7
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_vv3gs"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_pgbu3")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_dt8xy"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 8
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_weoi5"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_dt8xy")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_pty2b"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 9
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_72hto"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_pty2b")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_js2lg"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 13
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_36drb"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_js2lg")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_omgbo"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 15
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_pmk6u"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_omgbo")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_x65nm"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 16
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_67i0s"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_x65nm")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_rl4pm"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 17
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_qn2tw"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_rl4pm")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_moe0c"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 18
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_fxkpu"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_moe0c")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_h31gq"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 20
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_km6ga"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_h31gq")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_031jk"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 21
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_l3153"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_031jk")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_sx5u1"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 28
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_rn0ww"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_sx5u1")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_u5cys"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 31
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_rxs57"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_u5cys")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_f4qu5"]
+script = ExtResource("2_ur3h5")
+card_type = 1
+content_id = 44
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_ott3h"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_f4qu5")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[sub_resource type="Resource" id="Resource_87h2v"]
+script = ExtResource("2_ur3h5")
+card_type = 2
+content_id = 22
+metadata/_custom_type_script = "uid://brtidnnpm2a7x"
+
+[sub_resource type="Resource" id="Resource_fsg61"]
+script = ExtResource("3_62pxf")
+card_reference = SubResource("Resource_87h2v")
+metadata/_custom_type_script = "uid://dt2wj1hnyu2es"
+
+[resource]
+script = ExtResource("6_pc7o7")
+game_sences = 1
+game_BG = 3
+game_BGM = 3
+is_fog = true
+is_rain = true
+is_day = false
+is_day_sun = false
+all_pre_plant_data = Array[ExtResource("1_wwigg")]([SubResource("Resource_hl02h"), SubResource("Resource_i5mhj"), SubResource("Resource_miqb2")])
+crazy_dave_dialog = SubResource("Resource_i7mo1")
+win_on_boss_death = true
+max_wave = 10000
+zombie_refresh_types = Array[int]([7, 1, 3, 5, 6, 8, 24, 22, 9, 15])
+is_bungi = true
+is_seed_rain = true
+max_choosed_card_num = 13
+start_sun = 300
+prechosen_cards = Array[ExtResource("2_ur3h5")]([SubResource("Resource_j6xl1")])
+seed_rain_weights = Array[ExtResource("3_62pxf")]([SubResource("Resource_21b1r"), SubResource("Resource_v4mjg"), SubResource("Resource_vv3gs"), SubResource("Resource_weoi5"), SubResource("Resource_72hto"), SubResource("Resource_36drb"), SubResource("Resource_pmk6u"), SubResource("Resource_67i0s"), SubResource("Resource_qn2tw"), SubResource("Resource_fxkpu"), SubResource("Resource_km6ga"), SubResource("Resource_l3153"), SubResource("Resource_rn0ww"), SubResource("Resource_rxs57"), SubResource("Resource_ott3h"), SubResource("Resource_fsg61")])
+is_mode_column = true
+metadata/_custom_type_script = "uid://bjt3l56exxmdw"

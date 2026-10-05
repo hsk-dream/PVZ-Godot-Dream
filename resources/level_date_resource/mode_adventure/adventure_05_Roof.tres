@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=9 format=3 uid="uid://1lhfjbi4gaok"]
+[gd_resource type="Resource" script_class="ResourceLevelData" format=3 uid="uid://1lhfjbi4gaok"]
 
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="1_hdf0g"]
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_qeepr"]
-
-[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
-[ext_resource type="Script" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
+[ext_resource type="Script" uid="uid://brtidnnpm2a7x" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+[ext_resource type="Script" uid="uid://dt2wj1hnyu2es" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
 
 [sub_resource type="Resource" id="Resource_gacjd"]
 script = ExtResource("1_qeepr")
@@ -62,12 +61,7 @@ card_mode = null
 is_seed_rain = null
 max_choosed_card_num = null
 start_sun = null
-prechosen_cards = Array[ExtResource("card_reference")]([])
-conveyor_weights = Array[ExtResource("card_weight")]([])
-conveyor_order = Dictionary[int, ExtResource("card_reference")]({})
 create_new_card_speed = null
-seed_rain_weights = Array[ExtResource("card_weight")]([])
-seed_rain_order = Dictionary[int, ExtResource("card_reference")]({})
 is_mode_column = null
 is_shovel = null
 is_pot_mode = null

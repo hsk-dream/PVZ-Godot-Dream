@@ -863,8 +863,8 @@ const ZombieBossInfo = {
 	ZombieBossType.ZB001Doctor: {
 		ZombieBossInfoAttribute.BossName: "ZB001Doctor",
 		ZombieBossInfoAttribute.BossScenes: preload("res://scenes/character/zombie_boss/zombie_boss_001_doctor.tscn"),
-		ZombieBossInfoAttribute.SunCost: 50,
-		ZombieBossInfoAttribute.CoolTime: 7.5,
+		ZombieBossInfoAttribute.SunCost: 10000,
+		ZombieBossInfoAttribute.CoolTime: 0,
 	},
 }
 

@@ -1548,7 +1548,7 @@ boundary_value_hp = Array[int]([20000, 10000, 0])
 body_change = Array[ExtResource("doctor_body_change")]([SubResource("DoctorDamageStage1"), SubResource("DoctorDamageStage2"), null])
 
 [node name="HpComponent" parent="." index="5" unique_id=2107863698]
-max_hp = 30000
+max_hp = 90000
 
 [node name="HpControl" type="Control" parent="HpComponent" index="0" unique_id=827349636]
 unique_name_in_owner = true

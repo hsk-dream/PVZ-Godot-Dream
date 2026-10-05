@@ -28,6 +28,12 @@ func play_bgm(stream: AudioStream):
 	bgm_play.stream = stream
 	bgm_play.play()
 
+## 播放 [param stream] 指定的背景音乐；相同曲目正在播放时保持进度，避免从头重播。
+func play_bgm_if_changed(stream: AudioStream) -> void:
+	if bgm_play.stream == stream and bgm_play.playing:
+		return
+	play_bgm(stream)
+
 #region 植物和僵尸有关音效(植物、僵尸、子弹、受击)
 """
  音效分为 僵尸受击 子弹音效 角色(植物僵尸) 戴夫 和其他音效

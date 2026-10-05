@@ -1,10 +1,19 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=27 format=3 uid="uid://cxdnr4j80e85h"]
+[gd_resource type="Resource" script_class="ResourceLevelData" format=3 uid="uid://cxdnr4j80e85h"]
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_mdbk5"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="2_3aqa3"]
+[ext_resource type="Script" uid="uid://brtidnnpm2a7x" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+[ext_resource type="Script" uid="uid://dt2wj1hnyu2es" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
 
-[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
-[ext_resource type="Script" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
+[sub_resource type="Resource" id="CardReference_1_17"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 17
+
+[sub_resource type="Resource" id="CardReference_1_44"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 44
 
 [sub_resource type="Resource" id="CardReference_1_1"]
 script = ExtResource("card_reference")
@@ -24,7 +33,6 @@ content_id = 3
 [sub_resource type="Resource" id="CardWeight_conveyor_weights_1_3"]
 script = ExtResource("card_weight")
 card_reference = SubResource("CardReference_1_3")
-weight = 1
 
 [sub_resource type="Resource" id="CardReference_1_4"]
 script = ExtResource("card_reference")
@@ -56,11 +64,6 @@ script = ExtResource("card_weight")
 card_reference = SubResource("CardReference_1_8")
 weight = 2
 
-[sub_resource type="Resource" id="CardReference_1_17"]
-script = ExtResource("card_reference")
-card_type = 1
-content_id = 17
-
 [sub_resource type="Resource" id="CardWeight_conveyor_weights_1_17"]
 script = ExtResource("card_weight")
 card_reference = SubResource("CardReference_1_17")
@@ -74,7 +77,6 @@ content_id = 18
 [sub_resource type="Resource" id="CardWeight_conveyor_weights_1_18"]
 script = ExtResource("card_weight")
 card_reference = SubResource("CardReference_1_18")
-weight = 1
 
 [sub_resource type="Resource" id="CardReference_1_19"]
 script = ExtResource("card_reference")
@@ -94,7 +96,6 @@ content_id = 21
 [sub_resource type="Resource" id="CardWeight_conveyor_weights_1_21"]
 script = ExtResource("card_weight")
 card_reference = SubResource("CardReference_1_21")
-weight = 1
 
 [sub_resource type="Resource" id="CardReference_1_23"]
 script = ExtResource("card_reference")
@@ -106,15 +107,9 @@ script = ExtResource("card_weight")
 card_reference = SubResource("CardReference_1_23")
 weight = 2
 
-[sub_resource type="Resource" id="CardReference_1_44"]
-script = ExtResource("card_reference")
-card_type = 1
-content_id = 44
-
 [sub_resource type="Resource" id="CardWeight_conveyor_weights_1_44"]
 script = ExtResource("card_weight")
 card_reference = SubResource("CardReference_1_44")
-weight = 1
 
 [resource]
 script = ExtResource("2_3aqa3")

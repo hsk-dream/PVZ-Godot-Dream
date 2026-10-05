@@ -40,5 +40,3 @@ func get_random_reference() -> ResourceCardReference:
 		if random_weight <= _cumulative_weights[index]:
 			return _references[index].copy_reference()
 	return null
-
-

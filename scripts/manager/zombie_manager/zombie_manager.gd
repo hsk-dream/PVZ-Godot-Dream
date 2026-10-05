@@ -2,6 +2,9 @@
 extends MainGameSubManager
 class_name ZombieManager
 
+## 出战僵王成功入树、死亡或移除后发出，供所属关卡按当前存活实例选择战斗音乐。
+signal signal_living_bosses_changed()
+
 ## 无出怪模式或最后一波启用的场外清理计时器，每秒清理离开视野的普通僵尸。
 @onready var check_zombie_end_wave_timer: Timer = $CheckZombieEndWaveTimer
 ## 管理器
@@ -255,6 +258,8 @@ func _create_boss_instance(boss_type: CharacterRegistry.ZombieBossType, spawn_po
 	if restored_hp > 0:
 		boss_hp.Hp_loss(boss_hp.max_hp - mini(restored_hp, boss_hp.max_hp),
 			BulletRegistry.AttackMode.Norm, false, false, false)
+	# 登记发生在入树前，音乐通知必须等入树完成，存活快照才能包含本次实例。
+	signal_living_bosses_changed.emit()
 	_refresh_boss_progress()
 	return boss
 
@@ -284,11 +289,15 @@ func register_boss(boss: ZB000Base, boss_type: CharacterRegistry.ZombieBossType,
 	boss.signal_trophy_requested.connect(_on_boss_trophy_requested.bind(instance_id))
 	boss.tree_exiting.connect(_on_boss_tree_exiting.bind(instance_id))
 	curr_zombie_num += 1
+	# 已挂在根节点的外部实例可直接登记；尚未入树的实例由生成入口完成后通知。
+	if boss.is_inside_tree():
+		signal_living_bosses_changed.emit()
 	return true
 
 
 ## [param instance_id] 发出死亡通知的登记实例；重复通知不再次扣数或累计死亡。
 ## 先检查原有清场条件，再检查额外 Boss 条件；只有实际接受 Boss 胜利才停止刷新并等待演出。
+## 单轮全部僵王死亡满足胜利条件时先判胜，已进入结算则保留僵王音乐。
 func _on_boss_dead(instance_id: int) -> void:
 	# 先验证弱引用，再访问角色死亡状态。
 	var boss: ZB000Base = _get_registered_boss(instance_id)
@@ -296,6 +305,12 @@ func _on_boss_dead(instance_id: int) -> void:
 		return
 	_boss_dead_total += 1
 	curr_zombie_num -= 1
+	# 单轮启用死亡胜利且全部僵王已击杀时，延后音乐通知，避免获胜前短暂切回原曲。
+	var defer_bgm_update: bool = game_para.game_round == 1 and game_para.win_on_boss_death \
+		and _boss_spawn_total > 0 and _boss_dead_total == _boss_spawn_total
+	if not defer_bgm_update:
+		# 多轮或仍需继续战斗时，先恢复原曲，再允许胜利判断切到结算阶段。
+		signal_living_bosses_changed.emit()
 	# 同一次死亡也满足普通清场时，保留原清场结算时机，不强制等待 Boss 演出。
 	_try_finish_wave(boss.global_position)
 	if game_para.win_on_boss_death and is_game_running() \
@@ -311,6 +326,9 @@ func _on_boss_dead(instance_id: int) -> void:
 			check_zombie_end_wave_timer.stop()
 		if is_instance_valid(multi_round_end_wave_timer):
 			multi_round_end_wave_timer.stop()
+	if defer_bgm_update:
+		# 获胜后阶段过滤会保留僵王曲目；若未实际获胜，仍按存活快照恢复原曲。
+		signal_living_bosses_changed.emit()
 	_refresh_boss_progress()
 
 
@@ -342,6 +360,8 @@ func _on_boss_tree_exiting(instance_id: int) -> void:
 	_boss_types.erase(instance_id)
 	if _counted_boss_ids.erase(instance_id):
 		curr_zombie_num -= 1
+		# 未死亡的直接移除也解除音乐覆盖；死亡后的离树不再重复通知。
+		signal_living_bosses_changed.emit()
 	if _boss_trophy_pending_id == instance_id:
 		_boss_trophy_pending_id = 0
 	_refresh_boss_progress()
@@ -453,6 +473,8 @@ func _clear_bosses_for_next_round() -> void:
 	# 信号在离树时仍可能执行，但集合已清空，不会再次扣减敌方数量。
 	for boss: ZB000Base in bosses:
 		boss.queue_free()
+	# 整批清场后同步一次；重选卡阶段由关卡保留选卡音乐。
+	signal_living_bosses_changed.emit()
 	_refresh_boss_progress()
 
 #region 生成僵尸

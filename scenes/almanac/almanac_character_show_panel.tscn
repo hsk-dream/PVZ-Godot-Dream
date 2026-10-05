@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dthq42y7g8j85"]
+[gd_scene format=3 uid="uid://dthq42y7g8j85"]
 
 [ext_resource type="Script" uid="uid://bhlpq22spa1sn" path="res://scripts/Almanac/panel_container.gd" id="1_a1io1"]
 [ext_resource type="Texture2D" uid="uid://hb4b6ujaahoc" path="res://assets/image/Almanac/Almanac_GroundDay.jpg" id="2_2g2oc"]
@@ -7,13 +7,13 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jly7p"]
 
-[node name="AlmanacCharacterShowPanel" type="Panel"]
+[node name="AlmanacCharacterShowPanel" type="Panel" unique_id=1504116216]
 offset_right = 317.0
 offset_bottom = 476.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_jly7p")
 script = ExtResource("1_a1io1")
 
-[node name="CharacterBg" type="TextureRect" parent="."]
+[node name="CharacterBg" type="TextureRect" parent="." unique_id=1628820965]
 clip_children = 2
 layout_mode = 0
 offset_left = 59.0
@@ -24,13 +24,13 @@ grow_horizontal = 0
 grow_vertical = 2
 texture = ExtResource("2_2g2oc")
 
-[node name="AllBg" type="TextureRect" parent="."]
+[node name="AllBg" type="TextureRect" parent="." unique_id=965670786]
 layout_mode = 0
 offset_right = 324.0
 offset_bottom = 484.0
 texture = ExtResource("3_kdrdk")
 
-[node name="CharacterName" type="Label" parent="AllBg"]
+[node name="CharacterName" type="Label" parent="AllBg" unique_id=1472160140]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -52,7 +52,7 @@ text = "名字"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="AllBg"]
+[node name="ScrollContainer" type="ScrollContainer" parent="AllBg" unique_id=984674381]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -67,13 +67,13 @@ grow_horizontal = 2
 grow_vertical = 0
 vertical_scroll_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="AllBg/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="AllBg/ScrollContainer" unique_id=1221153039]
 custom_minimum_size = Vector2(255, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 9
 
-[node name="CharacterText1" type="Label" parent="AllBg/ScrollContainer/VBoxContainer"]
+[node name="CharacterText1" type="Label" parent="AllBg/ScrollContainer/VBoxContainer" unique_id=597235417]
 custom_minimum_size = Vector2(255, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -89,13 +89,13 @@ theme_override_font_sizes/font_size = 13
 text = "豌豆射手，你的第一道防线，发射豌豆攻击僵尸"
 autowrap_mode = 1
 
-[node name="CharacterText2Para" type="VBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer"]
+[node name="CharacterText2Para" type="VBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer" unique_id=559803575]
 layout_mode = 2
 
-[node name="PlantPara" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para"]
+[node name="PlantPara" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" unique_id=1160450405]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara"]
+[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara" unique_id=1460925985]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0.262745, 0.105882, 1)
 theme_override_colors/font_outline_color = Color(0.560784, 0.262745, 0.105882, 1)
@@ -108,8 +108,8 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "伤害: "
 
-[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara"]
-custom_minimum_size = Vector2(200, 0)
+[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara" unique_id=1389980977]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.835294, 0.141176, 0.113725, 1)
@@ -124,10 +124,10 @@ theme_override_font_sizes/font_size = 13
 text = "中等"
 autowrap_mode = 1
 
-[node name="PlantPara2" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para"]
+[node name="PlantPara2" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" unique_id=497549420]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara2"]
+[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara2" unique_id=431716292]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0.262745, 0.105882, 1)
 theme_override_colors/font_outline_color = Color(0.560784, 0.262745, 0.105882, 1)
@@ -140,8 +140,8 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "伤害: "
 
-[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara2"]
-custom_minimum_size = Vector2(200, 0)
+[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara2" unique_id=1023815212]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.835294, 0.141176, 0.113725, 1)
@@ -156,10 +156,10 @@ theme_override_font_sizes/font_size = 13
 text = "中等"
 autowrap_mode = 1
 
-[node name="PlantPara3" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para"]
+[node name="PlantPara3" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" unique_id=174842321]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara3"]
+[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara3" unique_id=53166530]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0.262745, 0.105882, 1)
 theme_override_colors/font_outline_color = Color(0.560784, 0.262745, 0.105882, 1)
@@ -172,8 +172,8 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "伤害: "
 
-[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara3"]
-custom_minimum_size = Vector2(200, 0)
+[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara3" unique_id=37649359]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.835294, 0.141176, 0.113725, 1)
@@ -188,10 +188,10 @@ theme_override_font_sizes/font_size = 13
 text = "中等"
 autowrap_mode = 1
 
-[node name="PlantPara4" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para"]
+[node name="PlantPara4" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" unique_id=338717419]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara4"]
+[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara4" unique_id=1931315154]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0.262745, 0.105882, 1)
 theme_override_colors/font_outline_color = Color(0.560784, 0.262745, 0.105882, 1)
@@ -204,8 +204,8 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "伤害: "
 
-[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara4"]
-custom_minimum_size = Vector2(200, 0)
+[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara4" unique_id=388089106]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.835294, 0.141176, 0.113725, 1)
@@ -220,10 +220,10 @@ theme_override_font_sizes/font_size = 13
 text = "中等"
 autowrap_mode = 1
 
-[node name="PlantPara5" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para"]
+[node name="PlantPara5" type="HBoxContainer" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" unique_id=490876462]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara5"]
+[node name="Key" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara5" unique_id=6327104]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0.262745, 0.105882, 1)
 theme_override_colors/font_outline_color = Color(0.560784, 0.262745, 0.105882, 1)
@@ -236,8 +236,8 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "伤害: "
 
-[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara5"]
-custom_minimum_size = Vector2(200, 0)
+[node name="Value" type="Label" parent="AllBg/ScrollContainer/VBoxContainer/CharacterText2Para/PlantPara5" unique_id=1979960114]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.835294, 0.141176, 0.113725, 1)
@@ -252,7 +252,7 @@ theme_override_font_sizes/font_size = 13
 text = "中等"
 autowrap_mode = 1
 
-[node name="CharacterText3Hint" type="Label" parent="AllBg/ScrollContainer/VBoxContainer"]
+[node name="CharacterText3Hint" type="Label" parent="AllBg/ScrollContainer/VBoxContainer" unique_id=84099115]
 visible = false
 custom_minimum_size = Vector2(255, 0)
 layout_mode = 2
@@ -268,7 +268,7 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 autowrap_mode = 2
 
-[node name="CharacterText4Introduction" type="Label" parent="AllBg/ScrollContainer/VBoxContainer"]
+[node name="CharacterText4Introduction" type="Label" parent="AllBg/ScrollContainer/VBoxContainer" unique_id=681531714]
 custom_minimum_size = Vector2(255, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -282,19 +282,19 @@ theme_override_constants/shadow_outline_size = 0
 theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "一棵植物，怎么能如此快地生长，并发射如此多的豌豆呢？豌豆射手说：“努力工作，奉献自己，加上一份阳光，高纤维和二氧化碳均衡搭配，这种健康早餐让一切管成可能。”"
-autowrap_mode = 1
+autowrap_mode = 3
 
-[node name="PlantEndPara" type="HBoxContainer" parent="AllBg"]
+[node name="PlantEndPara" type="HBoxContainer" parent="AllBg" unique_id=377140333]
 layout_mode = 0
 offset_left = 26.0
 offset_top = 437.0
 offset_right = 287.0
 offset_bottom = 451.0
 
-[node name="Cost" type="HBoxContainer" parent="AllBg/PlantEndPara"]
+[node name="Cost" type="HBoxContainer" parent="AllBg/PlantEndPara" unique_id=1241071544]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="AllBg/PlantEndPara/Cost"]
+[node name="Key" type="Label" parent="AllBg/PlantEndPara/Cost" unique_id=984063989]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0.262745, 0.105882, 1)
 theme_override_colors/font_outline_color = Color(0.560784, 0.262745, 0.105882, 1)
@@ -308,7 +308,7 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "花费: "
 
-[node name="Value" type="Label" parent="AllBg/PlantEndPara/Cost"]
+[node name="Value" type="Label" parent="AllBg/PlantEndPara/Cost" unique_id=1426980121]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.835294, 0.141176, 0.113725, 1)
 theme_override_colors/font_outline_color = Color(0.835294, 0.141176, 0.113725, 1)
@@ -322,16 +322,16 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "中等"
 
-[node name="Control" type="Control" parent="AllBg/PlantEndPara"]
+[node name="Control" type="Control" parent="AllBg/PlantEndPara" unique_id=563467420]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CoolTime" type="HBoxContainer" parent="AllBg/PlantEndPara"]
+[node name="CoolTime" type="HBoxContainer" parent="AllBg/PlantEndPara" unique_id=1709613080]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Key" type="Label" parent="AllBg/PlantEndPara/CoolTime"]
+[node name="Key" type="Label" parent="AllBg/PlantEndPara/CoolTime" unique_id=1422465248]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0.262745, 0.105882, 1)
 theme_override_colors/font_outline_color = Color(0.560784, 0.262745, 0.105882, 1)
@@ -345,7 +345,7 @@ theme_override_fonts/font = ExtResource("4_wmr3e")
 theme_override_font_sizes/font_size = 13
 text = "冷却时间: "
 
-[node name="Value" type="Label" parent="AllBg/PlantEndPara/CoolTime"]
+[node name="Value" type="Label" parent="AllBg/PlantEndPara/CoolTime" unique_id=2131404388]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.835294, 0.141176, 0.113725, 1)
 theme_override_colors/font_outline_color = Color(0.835294, 0.141176, 0.113725, 1)

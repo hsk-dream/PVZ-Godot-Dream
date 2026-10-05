@@ -41,29 +41,38 @@ func init_card_slot_battle(max_choosed_card_num:int, sun:int):
 
 	return cards_placeholder
 
-## 主游戏刷新卡片
+## 正式战斗时切换卡片上下文、检查费用并连接一次成功结算信号。
 func main_game_refresh_card():
 	update_card_purple_sun_cost()
-	for i in range(curr_cards.size()):
-		var card:Card = curr_cards[i]
+	# 出战卡顺序决定快捷键位置。
+	for i: int in range(curr_cards.size()):
+		# 当前槽位卡片，由目录能力再次确认不能使用僵王。
+		var card: Card = curr_cards[i]
+		if not AllCards.is_battle_card(card.card_reference):
+			card.set_card_disable()
+			continue
+		card.card_context = Card.CardContext.Battle
 		card.judge_sun_enough(sun_value)
 		card.set_shortcut((i+1)%10)
-		if not card.signal_card_use_end.is_connected(card_use_end.bind(card)):
-			card.signal_card_use_end.connect(card_use_end.bind(card))
+		if not card.signal_card_use_end.is_connected(card_use_end):
+			card.signal_card_use_end.connect(card_use_end)
 	judge_disappear_add_card_bar()
 
-## 开始下一轮出战卡槽更新数据
+## 下一轮重选前恢复选择上下文和冷却，解除本轮的使用结算。
 func start_next_game_card_slot_battle_update():
-	for i in range(curr_cards.size()):
-		var card:Card = curr_cards[i]
+	# 本轮保留的卡片顺序不变。
+	for i: int in range(curr_cards.size()):
+		# 需要恢复为选卡交互的卡片。
+		var card: Card = curr_cards[i]
+		card.card_context = Card.CardContext.Selection
 		## 卡牌冷却结束,可以点击
 		card.set_card_cool_end()
 		card.card_ready()
 		card.set_shortcut_disappear()
-		if card.signal_card_use_end.is_connected(card_use_end.bind(card)):
-			card.signal_card_use_end.disconnect(card_use_end.bind(card))
+		if card.signal_card_use_end.is_connected(card_use_end):
+			card.signal_card_use_end.disconnect(card_use_end)
 
-## 卡片种植后信号调用函数
+## [param card] 成功使用后扣除当前阳光价格，并开始原有冷却。
 func card_use_end(card:Card):
 	## 减少阳光，卡片冷却
 	sun_value = sun_value - card.sun_cost
@@ -87,10 +96,15 @@ func judge_disappear_add_card_bar():
 
 #endregion
 
-## 等待一帧(阳光减少)后 更新当前卡片的紫卡价格,每次植物种植或死亡时调用
+## 植物数量变化一帧后刷新植物紫卡价格，普通僵尸及僵王不查询植物计数。
 func update_card_purple_sun_cost():
 	await get_tree().process_frame
-	for card:Card in curr_cards:
-		if card.is_purple_card and Global.main_game.plant_cell_manager.curr_plant_num.has(card.card_plant_type):
-			card.sun_cost = Global.character_registry.get_plant_info(card.card_plant_type, CharacterRegistry.PlantInfoAttribute.SunCost) + 50 * Global.main_game.plant_cell_manager.curr_plant_num[card.card_plant_type]
+	# 本次仍在槽中的卡片。
+	for card: Card in curr_cards:
+		if card.card_reference.card_type != ResourceCardReference.CardType.Plant:
+			continue
+		# 紫卡的植物内容编号，用于查询本关同种植物数量。
+		var plant_type: int = card.card_reference.content_id
+		if card.is_purple_card and Global.main_game.plant_cell_manager.curr_plant_num.has(plant_type):
+			card.sun_cost = Global.character_registry.get_plant_info(plant_type, CharacterRegistry.PlantInfoAttribute.SunCost) + 50 * Global.main_game.plant_cell_manager.curr_plant_num[plant_type]
 			card.judge_sun_enough(sun_value)

@@ -1,7 +1,40 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=3 format=3 uid="uid://c8yt6n65ponc6"]
+[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=11 format=3 uid="uid://c8yt6n65ponc6"]
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_5myuh"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="1_kesjv"]
+
+[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+[ext_resource type="Script" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
+
+[sub_resource type="Resource" id="CardReference_1_1001"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 1001
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_1001"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_1001")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_1002"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 1002
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_1002"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_1002")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_1003"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 1003
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_1003"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_1003")
+weight = 1
 
 [resource]
 script = ExtResource("1_kesjv")
@@ -12,15 +45,11 @@ can_choosed_card = false
 zombie_multy = 3
 max_wave = 20
 card_mode = 2
-all_card_plant_type_probability = Dictionary[int, int]({
-1001: 2,
-1002: 1,
-1003: 1
-})
-card_order_plant = Dictionary[int, int]({
-0: 1001,
-1: 1002,
-2: 1003
+conveyor_weights = Array[ExtResource("card_weight")]([SubResource("CardWeight_conveyor_weights_1_1001"), SubResource("CardWeight_conveyor_weights_1_1002"), SubResource("CardWeight_conveyor_weights_1_1003")])
+conveyor_order = Dictionary[int, ExtResource("card_reference")]({
+0: SubResource("CardReference_1_1001"),
+1: SubResource("CardReference_1_1002"),
+2: SubResource("CardReference_1_1003")
 })
 is_bowling_stripe = true
 plant_cell_can_use = Dictionary[String, bool]({

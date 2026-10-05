@@ -53,6 +53,19 @@ func ready_norm() -> void:
 	_start_state_machine.call_deferred()
 
 
+## 图鉴和其它展示实例播放机甲低头待机与驾驶员待机动画，不初始化或启动战斗状态机。
+func ready_show() -> void:
+	super.ready_show()
+	# 主体播放器直接循环低头待机，展示头部姿态，不经过战斗技能流程。
+	var mech_player: AnimationPlayer = $AnimationPlayer
+	mech_player.play(ZB001DoctorAnimations.HEAD_IDLE_ANIMATION)
+	mech_player.advance(0.0)
+	# 驾驶舱博士使用独立播放器；直接播放待机，避免接入技能联动和音效回调。
+	var driver_player: AnimationPlayer = $Body/BodyCorrect/Head/Boss_head2/Zombie_Boss_driver/AnimationPlayer
+	driver_player.play(ZB001DoctorAnimations.DRIVER_IDLE_ANIMATION)
+	driver_player.advance(0.0)
+
+
 ## 由角色根节点接入死亡状态的持续表现；正常进入 Dead 后仍接收速度和机甲结束通知。
 ## 重复初始化不会重复接线，原有状态机动画通知仍负责死亡前抬头与本体动作流程。
 func _connect_death_explosion_signals() -> void:

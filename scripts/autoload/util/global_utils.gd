@@ -59,16 +59,6 @@ func sum_arr(arr: Array[float]) -> float:
 		total += n
 	return total
 
-## 根据当前植物类型和僵尸类型获取当前是植物还是僵尸
-func get_character_type(plant_type:CharacterRegistry.PlantType, zombie_type:CharacterRegistry.ZombieType) -> CharacterRegistry.CharacterType:
-	if plant_type == CharacterRegistry.PlantType.Null:
-		if zombie_type == CharacterRegistry.ZombieType.Null:
-			return CharacterRegistry.CharacterType.Null
-		else:
-			return CharacterRegistry.CharacterType.Zombie
-	else:
-		return CharacterRegistry.CharacterType.Plant
-
 ## 补全列表
 func pad_array(arr: Array, target_size: int, pad_value = 0) -> Array:
 	while arr.size() < target_size:

@@ -1,7 +1,10 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=11 format=3 uid="uid://0vrftjy7v4a2"]
+[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=34 format=3 uid="uid://0vrftjy7v4a2"]
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_05at0"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="2_2ib0m"]
+
+[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+[ext_resource type="Script" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
 
 [sub_resource type="Resource" id="Resource_gacjd"]
 script = ExtResource("1_05at0")
@@ -51,6 +54,111 @@ plant_type = 34
 plant_cell_pos = Vector2i(0, 8)
 metadata/_custom_type_script = "uid://bke3sg5otco7s"
 
+[sub_resource type="Resource" id="CardReference_1_3"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 3
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_3"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_3")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_7"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 7
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_7"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_7")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_18"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 18
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_18"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_18")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_21"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 21
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_21"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_21")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_33"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 33
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_33"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_33")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_34"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 34
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_34"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_34")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_35"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 35
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_35"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_35")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_40"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 40
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_40"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_40")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_5"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 5
+
+[sub_resource type="Resource" id="CardReference_1_24"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 24
+
+[sub_resource type="Resource" id="CardReference_1_32"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 32
+
+[sub_resource type="Resource" id="CardReference_1_36"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 36
+
+[sub_resource type="Resource" id="CardReference_1_45"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 45
+
 [resource]
 script = ExtResource("2_2ib0m")
 game_sences = 2
@@ -83,33 +191,19 @@ card_mode = 2
 is_seed_rain = null
 max_choosed_card_num = null
 start_sun = 50000
-pre_choosed_card_list_plant = null
-pre_choosed_card_list_zombie = null
-all_card_plant_type_probability = Dictionary[int, int]({
-3: 1,
-7: 1,
-18: 1,
-21: 1,
-33: 1,
-34: 1,
-35: 1,
-40: 1
+prechosen_cards = Array[ExtResource("card_reference")]([])
+conveyor_weights = Array[ExtResource("card_weight")]([SubResource("CardWeight_conveyor_weights_1_3"), SubResource("CardWeight_conveyor_weights_1_7"), SubResource("CardWeight_conveyor_weights_1_18"), SubResource("CardWeight_conveyor_weights_1_21"), SubResource("CardWeight_conveyor_weights_1_33"), SubResource("CardWeight_conveyor_weights_1_34"), SubResource("CardWeight_conveyor_weights_1_35"), SubResource("CardWeight_conveyor_weights_1_40")])
+conveyor_order = Dictionary[int, ExtResource("card_reference")]({
+0: SubResource("CardReference_1_5"),
+1: SubResource("CardReference_1_24"),
+2: SubResource("CardReference_1_40"),
+3: SubResource("CardReference_1_32"),
+4: SubResource("CardReference_1_36"),
+9: SubResource("CardReference_1_45")
 })
-all_card_zombie_type_probability = null
-card_order_plant = Dictionary[int, int]({
-0: 5,
-1: 24,
-2: 40,
-3: 32,
-4: 36,
-9: 45
-})
-card_order_zombie = null
 create_new_card_speed = 1.5
-all_card_plant_type_probability_seed_rain = null
-all_card_zombie_type_probability_seed_rain = null
-card_order_plant_seed_rain = null
-card_order_zombie_seed_rain = null
+seed_rain_weights = Array[ExtResource("card_weight")]([])
+seed_rain_order = Dictionary[int, ExtResource("card_reference")]({})
 is_mode_column = true
 is_shovel = null
 is_pot_mode = null

@@ -1,74 +1,73 @@
+## 卡牌共有外观与战斗参数；身份由引用提供，费用和冷却由角色注册表初始化。
 extends Control
 class_name CardBase
 
+## 卡牌背景与缩略图容器。
 @onready var card_bg: TextureRect = $CardBg
+## 当前费用文字；没有战斗参数的内容隐藏此节点。
 @onready var cost: Label = $CardBg/Cost
+## 冷却及不可用状态遮罩。
 @onready var _cool_mask: ProgressBar = $ProgressBar
 
-enum E_CardBg{
-	CB01Norm,	## 普通卡片背景
-	CB02Purple,	## 紫卡背景
-	CB03Gray,	## 灰卡背景
+## 卡牌背景样式。
+enum E_CardBg {
+	CB01Norm, ## 普通背景。
+	CB02Purple, ## 紫卡背景。
+	CB03Gray, ## 模仿卡背景。
 }
 
-## 卡片背景对应资源
-var CradBgMap:Dictionary[E_CardBg, Resource] = {
-	E_CardBg.CB01Norm:load("res://resources/card_bg/01Norm.tres"),
-	E_CardBg.CB02Purple:load("res://resources/card_bg/02Purple.tres"),
-	E_CardBg.CB03Gray:load("res://resources/card_bg/03Gray.tres")
+## 背景样式的共享纹理，不存入卡牌身份数据。
+const CARD_BG_MAP: Dictionary[E_CardBg, Resource] = {
+	E_CardBg.CB01Norm: preload("res://resources/card_bg/01Norm.tres"),
+	E_CardBg.CB02Purple: preload("res://resources/card_bg/02Purple.tres"),
+	E_CardBg.CB03Gray: preload("res://resources/card_bg/03Gray.tres"),
 }
 
-## 卡片索引位置,用于在备选卡槽时确定位置
-@export var card_id :int = -1
-## 植物卡片类型，植物卡片类型为CharacterRegistry.PlantType.Null时为僵尸卡片
-@export var card_plant_type: CharacterRegistry.PlantType
-## 僵尸卡片类型
-@export var card_zombie_type: CharacterRegistry.ZombieType
-## 是否为紫卡
-var is_purple_card := false
-## 卡片背景,紫卡会自动更换背景
-@export var curr_card_gb :E_CardBg = E_CardBg.CB01Norm
-## 该植物种植条件,紫卡使用内部方法判断是否可以种植
-var plant_condition:ResourcePlantCondition
-## 卡片冷却时间
-@export var cool_time: float = 7.5:
+## 唯一卡牌身份；源模板及关卡引用不应被运行状态改写。
+@export var card_reference: ResourceCardReference
+## 根据植物条件推导的紫卡标记，其他类型始终为 false。
+var is_purple_card: bool = false
+## 当前背景；紫卡和模仿修饰在初始化时覆盖默认样式。
+@export var curr_card_gb: E_CardBg = E_CardBg.CB01Norm
+## 植物专用种植条件；其他卡牌不访问此字段。
+var plant_condition: ResourcePlantCondition
+## 当前实例的冷却时长，单位为游戏秒；模式可在初始化后覆盖。
+var cool_time: float = 0.0:
 	set(value):
 		cool_time = value
-		if _cool_mask:
+		if is_instance_valid(_cool_mask):
 			_cool_mask.max_value = value
-
-## 卡片阳光消耗
-@export var sun_cost: int = 100:
+## 当前实例的基础阳光费用；金币模式在结算处应用倍率。
+var sun_cost: int = 0:
 	set(value):
 		sun_cost = value
-		if cost:
-			cost.text = str(int(value))
+		if is_instance_valid(cost):
+			cost.text = str(value)
 
-## 是否为模仿者
-@export var is_imitater := false
 
+## 根据已配置的身份初始化参数与外观；空模板仅供编辑器布局，不参与注册。
 func _ready() -> void:
-	## 如果是植物,根据是否为紫卡更新背景
-	if card_plant_type != 0:
-		plant_condition = Global.character_registry.get_plant_info(card_plant_type, CharacterRegistry.PlantInfoAttribute.PlantConditionResource)
-		is_purple_card = plant_condition.is_purple_card
-		if is_purple_card:
-			curr_card_gb = E_CardBg.CB02Purple
-		if is_imitater:
-			curr_card_gb = E_CardBg.CB03Gray
-
-
-		card_bg.texture = CradBgMap[curr_card_gb]
-
-## 卡片初始化参数
-enum E_CInitAttr{
-	CardId,	## 卡片id,目前没有用到,植物卡片和僵尸卡片单独使用
-	SunCost,
-	CoolTime,
-}
-
-func init_card(card_init_para:Dictionary):
-	card_id = card_init_para[E_CInitAttr.CardId]
-	cool_time = card_init_para[E_CInitAttr.CoolTime]
-	sun_cost = card_init_para[E_CInitAttr.SunCost]
-
+	if card_reference == null or not card_reference.is_valid():
+		cost.hide()
+		return
+	match card_reference.card_type:
+		ResourceCardReference.CardType.Plant:
+			# 在植物边界解释角色编号，不能依靠其他类别的空字段推导。
+			var plant_type: CharacterRegistry.PlantType = card_reference.content_id
+			sun_cost = Global.character_registry.get_plant_info(plant_type, CharacterRegistry.PlantInfoAttribute.SunCost)
+			cool_time = Global.character_registry.get_plant_info(plant_type, CharacterRegistry.PlantInfoAttribute.CoolTime)
+			plant_condition = Global.character_registry.get_plant_info(plant_type, CharacterRegistry.PlantInfoAttribute.PlantConditionResource)
+			is_purple_card = plant_condition.is_purple_card
+			if is_purple_card:
+				curr_card_gb = E_CardBg.CB02Purple
+			if card_reference.is_imitater:
+				curr_card_gb = E_CardBg.CB03Gray
+		ResourceCardReference.CardType.Zombie:
+			# 普通僵尸的费用和冷却沿用角色注册表。
+			var zombie_type: CharacterRegistry.ZombieType = card_reference.content_id
+			sun_cost = Global.character_registry.get_zombie_info(zombie_type, CharacterRegistry.ZombieInfoAttribute.SunCost)
+			cool_time = Global.character_registry.get_zombie_info(zombie_type, CharacterRegistry.ZombieInfoAttribute.CoolTime)
+		ResourceCardReference.CardType.ZombieBoss:
+			cost.hide()
+			_cool_mask.hide()
+	card_bg.texture = CARD_BG_MAP[curr_card_gb]

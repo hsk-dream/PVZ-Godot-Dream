@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_hl02h"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="2_i5mhj"]
+[ext_resource type="Script" uid="uid://brtidnnpm2a7x" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+[ext_resource type="Script" uid="uid://dt2wj1hnyu2es" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
 
 [sub_resource type="Resource" id="Resource_hl02h"]
 script = ExtResource("1_hl02h")
@@ -22,6 +24,90 @@ plant_type = 34
 plant_cell_pos = Vector2i(0, 3)
 metadata/_custom_type_script = "uid://bke3sg5otco7s"
 
+[sub_resource type="Resource" id="CardReference_1_40"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 40
+
+[sub_resource type="Resource" id="CardReference_1_33"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 33
+
+[sub_resource type="Resource" id="CardReference_1_45"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 45
+
+[sub_resource type="Resource" id="CardReference_1_3"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 3
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_3"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_3")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_15"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 15
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_15"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_15")
+weight = 3
+
+[sub_resource type="Resource" id="CardReference_1_21"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 21
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_21"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_21")
+weight = 3
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_33"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_33")
+weight = 3
+
+[sub_resource type="Resource" id="CardReference_1_34"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 34
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_34"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_34")
+weight = 6
+
+[sub_resource type="Resource" id="CardReference_1_35"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 35
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_35"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_35")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_38"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 38
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_38"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_38")
+
+[sub_resource type="Resource" id="CardWeight_conveyor_weights_1_40"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_40")
+weight = 2
+
 [resource]
 script = ExtResource("2_i5mhj")
 game_sences = 2
@@ -34,20 +120,11 @@ monster_mode = 0
 zombie_refresh_types = Array[int]([7, 1, 3, 5, 6, 8, 24, 22, 9, 15])
 is_bungi = true
 start_sun = 50000
-all_card_plant_type_probability = Dictionary[int, int]({
-3: 2,
-15: 3,
-21: 3,
-33: 3,
-34: 6,
-35: 2,
-38: 1,
-40: 2
-})
-card_order_plant = Dictionary[int, int]({
-1: 40,
-2: 33,
-9: 45
+conveyor_weights = Array[ExtResource("card_weight")]([SubResource("CardWeight_conveyor_weights_1_3"), SubResource("CardWeight_conveyor_weights_1_15"), SubResource("CardWeight_conveyor_weights_1_21"), SubResource("CardWeight_conveyor_weights_1_33"), SubResource("CardWeight_conveyor_weights_1_34"), SubResource("CardWeight_conveyor_weights_1_35"), SubResource("CardWeight_conveyor_weights_1_38"), SubResource("CardWeight_conveyor_weights_1_40")])
+conveyor_order = Dictionary[int, ExtResource("card_reference")]({
+1: SubResource("CardReference_1_40"),
+2: SubResource("CardReference_1_33"),
+9: SubResource("CardReference_1_45")
 })
 create_new_card_speed = 1.5
 metadata/_custom_type_script = "uid://bjt3l56exxmdw"

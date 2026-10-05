@@ -1,7 +1,24 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=3 format=3 uid="uid://bcid5y3mbwwg4"]
+[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=7 format=3 uid="uid://bcid5y3mbwwg4"]
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_nlchp"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="2_tugim"]
+
+[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+
+[sub_resource type="Resource" id="CardReference_2_3"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 3
+
+[sub_resource type="Resource" id="CardReference_2_5"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 5
+
+[sub_resource type="Resource" id="CardReference_2_8"]
+script = ExtResource("card_reference")
+card_type = 2
+content_id = 8
 
 [resource]
 script = ExtResource("2_tugim")
@@ -16,7 +33,7 @@ monster_mode = 0
 zombie_refresh_types = Array[int]([1, 3, 4, 5, 6, 7, 8, 9])
 max_choosed_card_num = 3
 start_sun = 500
-pre_choosed_card_list_zombie = Array[int]([3, 5, 8])
+prechosen_cards = Array[ExtResource("card_reference")]([SubResource("CardReference_2_3"), SubResource("CardReference_2_5"), SubResource("CardReference_2_8")])
 is_pot_mode = true
 pot_mode = 2
 random_pot_plant = Dictionary[int, int]({

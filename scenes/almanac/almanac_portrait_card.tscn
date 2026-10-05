@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://c8xa1hurve827"]
+[gd_scene format=3 uid="uid://c8xa1hurve827"]
 
 [ext_resource type="Texture2D" uid="uid://kcj0o0fgykr5" path="res://assets/image/Almanac/Almanac_ZombieWindow.png" id="1_0hgaq"]
-[ext_resource type="Script" uid="uid://cd7p8v1iqsry6" path="res://scripts/Almanac/almanac_zombie_card.gd" id="1_y3dyy"]
+[ext_resource type="Script" uid="uid://cd7p8v1iqsry6" path="res://scripts/Almanac/almanac_portrait_card.gd" id="1_y3dyy"]
 [ext_resource type="Texture2D" uid="uid://c3u2ptvhtmyd3" path="res://assets/image/Almanac/Almanac_ZombieWindow2.png" id="34_20rvx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t27vh"]
@@ -14,26 +14,26 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q3iw5"]
 
-[node name="AlmanacZombieCard" type="Control"]
+[node name="AlmanacPortraitCard" type="Control" unique_id=2029701464]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_y3dyy")
 
-[node name="AlmanacZombieCardBg" type="TextureRect" parent="."]
+[node name="PortraitBg" type="TextureRect" parent="." unique_id=982430054]
 clip_children = 2
 layout_mode = 0
 offset_right = 76.0
 offset_bottom = 76.0
 texture = ExtResource("1_0hgaq")
 
-[node name="AlmanacZombieCardFront" type="TextureRect" parent="."]
+[node name="PortraitFront" type="TextureRect" parent="." unique_id=1508443163]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("34_20rvx")
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=469319817]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

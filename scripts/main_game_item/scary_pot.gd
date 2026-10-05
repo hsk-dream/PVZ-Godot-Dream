@@ -174,23 +174,27 @@ func random_res():
 			var curr_zomebi_row_type:CharacterRegistry.ZombieRowType = Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type
 			curr_zombie_type = Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type].pick_random()
 
-## 打开植物
+## 打开 [param plant_type] 对应植物的临时卡，保留原有位置、限时和弹出动画。
 func open_plant(plant_type:CharacterRegistry.PlantType):
-	var temp_card_para:Dictionary = {
-		CardManager.E_TempCardParaAttr.PlantType:plant_type,
-		CardManager.E_TempCardParaAttr.GlobalPos:marker_2d_create_card_or_trophy.global_position,
-		CardManager.E_TempCardParaAttr.ExistTime:card_exist_time
-	}
-	var card:Card = Global.main_game.card_manager.create_temp_card(temp_card_para)
+	# 罐子内容显式转换为植物卡引用，不再使用二选一参数字典。
+	var reference: ResourceCardReference = ResourceCardReference.create(ResourceCardReference.CardType.Plant, plant_type)
+	# 临时卡的释放与存在计时仍由卡片管理器负责。
+	var card: Card = Global.main_game.card_manager.create_temp_card(reference, marker_2d_create_card_or_trophy.global_position, card_exist_time)
+	if card == null:
+		return
 
 	## 控制卡片移动
+	# 植物卡弹出的水平随机偏移，单位像素。
 	var move_x = randf_range(-20, 20)
+	# 植物卡弹出的垂直随机偏移，单位像素。
 	var move_y = randf_range(10, 30)
 
+	# 先上升再落下的垂直弹出动画。
 	var tween_y = card.create_tween()
 	tween_y.tween_property(card, "position:y", -move_y, 0.3).as_relative().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween_y.tween_property(card, "position:y", move_y, 0.3).as_relative().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 
+	# 同时推进垂直弹出与水平位移的动画。
 	var tween_x = card.create_tween()
 	tween_x.set_parallel()
 	tween_x.tween_subtween(tween_y)
@@ -251,14 +255,16 @@ func end_loot_pot():
 	if is_instance_valid(res_random_character_static_update_timer):
 		res_random_character_static_update_timer.stop()
 
-## 角色虚影初始化
+## 通过统一卡牌目录初始化固定或轮换内容的静态预览，不生成出战角色。
 func character_static_init():
 	## 固定随机结果
 	if is_fixed_res:
 		if curr_plant_type != CharacterRegistry.PlantType.Null:
-			character_static = AllCards.all_plant_card_prefabs[curr_plant_type].character_static.duplicate()
+			character_static = AllCards.create_static_preview(ResourceCardReference.create(ResourceCardReference.CardType.Plant, curr_plant_type))
 		elif curr_zombie_type != CharacterRegistry.ZombieType.Null:
-			character_static = AllCards.all_zombie_card_prefabs[curr_zombie_type].character_static.duplicate()
+			character_static = AllCards.create_static_preview(ResourceCardReference.create(ResourceCardReference.CardType.Zombie, curr_zombie_type))
+		if character_static == null:
+			return
 		character_container.add_child(character_static)
 		character_static.position = Vector2(0,0)
 	else:
@@ -293,20 +299,31 @@ func update_res_random_character_static():
 			curr_zombie_type = all_zombie_character_statics.keys().pick_random()
 			character_static = all_zombie_character_statics[curr_zombie_type]
 
-## 结果随机罐子初始化植物虚影
+## 为植物白名单预先复制静态预览，身份只用于查询统一目录。
 func character_static_init_res_random_plant():
+	# 罐子允许出现的植物内容编号。
 	for plant_type:CharacterRegistry.PlantType in Global.global_read_data.whitelist_plant_types_with_pot:
-		all_plant_character_statics[plant_type] = AllCards.all_plant_card_prefabs[plant_type].character_static.duplicate()
+		# 独立的植物缩略图节点，不共享卡牌模板节点。
+		var preview: Node2D = AllCards.create_static_preview(ResourceCardReference.create(ResourceCardReference.CardType.Plant, plant_type))
+		if preview == null:
+			continue
+		all_plant_character_statics[plant_type] = preview
 		character_container.add_child(all_plant_character_statics[plant_type])
 		all_plant_character_statics[plant_type].position = Vector2(0,0)
 		all_plant_character_statics[plant_type].visible = false
 
-## 结果随机罐子初始化僵尸虚影
+## 为本行地形允许的普通僵尸预先复制静态预览，僵王不进入罐子内容。
 func character_static_init_res_random_zombie():
+	# 当前罐子所在僵尸行的地形类型。
 	var curr_zomebi_row_type:CharacterRegistry.ZombieRowType = Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type
 	## 从白名单生成所有的僵尸虚影
+	# 本行地形对应的普通僵尸内容编号。
 	for zombie_type:CharacterRegistry.ZombieType in Global.global_read_data.whitelist_refresh_zombie_types_with_zombie_row_type[curr_zomebi_row_type]:
-		all_zombie_character_statics[zombie_type] = AllCards.all_zombie_card_prefabs[zombie_type].character_static.duplicate()
+		# 独立的普通僵尸缩略图节点。
+		var preview: Node2D = AllCards.create_static_preview(ResourceCardReference.create(ResourceCardReference.CardType.Zombie, zombie_type))
+		if preview == null:
+			continue
+		all_zombie_character_statics[zombie_type] = preview
 		character_container.add_child(all_zombie_character_statics[zombie_type])
 		all_zombie_character_statics[zombie_type].position = Vector2(0,0)
 		all_zombie_character_statics[zombie_type].visible = false

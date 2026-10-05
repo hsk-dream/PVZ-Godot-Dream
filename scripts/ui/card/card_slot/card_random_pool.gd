@@ -1,70 +1,43 @@
+## 按统一卡牌引用的权重抽取出战卡，不创建节点或修改模板。
 extends Node
 class_name CardRandomPool
-## 卡片随机池,随机生成一张新卡片
 
-## 可能出现的植物卡片,及其概率
-var all_card_plant_type_probability :Dictionary[CharacterRegistry.PlantType, int] = {}
-## 可能出现的僵尸卡片,及其概率
-var all_card_zombie_type_probability :Dictionary[CharacterRegistry.ZombieType, int] = {}
-## 选择卡片随即池_植物
-var card_choose_random_pool_plant:RandomPicker
-## 选择卡片随即池_僵尸
-var card_choose_random_pool_zombie:RandomPicker
-## 总概率之和
-var total_prob = 0
-## 植物卡片概率之和
-var total_prob_plant = 0
+## 可抽取的卡牌引用，顺序与权重条目一致。
+var _references: Array[ResourceCardReference] = []
+## 每个有效条目的累计权重上界。
+var _cumulative_weights: Array[int] = []
+## 有效条目的总权重；零表示没有可抽取内容。
+var _total_weight: int = 0
 
+## 使用 [param weights] 初始化；零权重不参与，负权重和无效出战引用报告错误。
+## 单次抽取保留每张植物、僵尸卡的相对概率，不以类型额外分组。
+func init_card_random_pool(weights: Array[ResourceCardWeight]) -> void:
+	_references.clear()
+	_cumulative_weights.clear()
+	_total_weight = 0
+	# 权重条目只读，保存独立引用以避免修改共享关卡资源。
+	for entry: ResourceCardWeight in weights:
+		if entry != null and entry.weight == 0:
+			continue
+		if entry == null or entry.weight < 0 or not AllCards.is_battle_card(entry.card_reference):
+			push_error("CardRandomPool：条目必须引用已注册的植物或普通僵尸，并具有正权重。")
+			continue
+		_references.append(entry.card_reference.copy_reference())
+		_total_weight += entry.weight
+		_cumulative_weights.append(_total_weight)
+	if _total_weight == 0:
+		push_error("CardRandomPool：没有可抽取的出战卡牌。")
 
-enum E_CardRandomPoolInitParaAttr{
-	AllCardPlantProbability,
-	AllCardZombieProbability,
-}
-
-## 管理器初始化调用
-func init_card_random_pool(card_random_pool_init_para:Dictionary):
-	self.all_card_plant_type_probability = card_random_pool_init_para[E_CardRandomPoolInitParaAttr.AllCardPlantProbability]
-	self.all_card_zombie_type_probability = card_random_pool_init_para[E_CardRandomPoolInitParaAttr.AllCardZombieProbability]
-	var card_choose_random_pool_plant_data:Array[Array] = []
-	## 计算总概率值
-	for plant_type in all_card_plant_type_probability.keys():
-		total_prob += all_card_plant_type_probability[plant_type]
-		card_choose_random_pool_plant_data.append([plant_type, all_card_plant_type_probability[plant_type]])
-	total_prob_plant = total_prob
-	if not card_choose_random_pool_plant_data.is_empty():
-		print("初始化植物随机生成器")
-		card_choose_random_pool_plant = RandomPicker.new(card_choose_random_pool_plant_data)
-	var card_choose_random_pool_zombie_data:Array[Array] = []
-	## 计算总概率值
-	for zombie_type in all_card_zombie_type_probability.keys():
-		total_prob += all_card_zombie_type_probability[zombie_type]
-		card_choose_random_pool_zombie_data.append([zombie_type, all_card_zombie_type_probability[zombie_type]])
-	if not card_choose_random_pool_zombie_data.is_empty():
-		print("初始化僵尸随机生成器")
-		card_choose_random_pool_zombie = RandomPicker.new(card_choose_random_pool_zombie_data)
-	assert(total_prob != 0, "植物卡片和僵尸卡片总概率值为0")
-
-	print("植物卡片概率：", total_prob_plant, "僵尸卡片概率", total_prob - total_prob_plant)
-
-## 按概率随机获取可生成卡片索引
-func get_random_card() -> Card:
-	var rand_val = randi_range(1, total_prob)
-	## 植物卡片
-	if rand_val <= total_prob_plant:
-		var card_plant_type = card_choose_random_pool_plant.get_random_item()
-		return AllCards.all_plant_card_prefabs[card_plant_type]
-	else:
-		var card_zombie_type = card_choose_random_pool_zombie.get_random_item()
-		return AllCards.all_zombie_card_prefabs[card_zombie_type]
-
-func get_random_card_info() -> Dictionary:
-	var rand_val = randi_range(1, total_prob)
-	## 植物卡片
-	if rand_val <= total_prob_plant:
-		var card_plant_type = card_choose_random_pool_plant.get_random_item()
-		return {"plant_type": card_plant_type,"zombie_type": CharacterRegistry.ZombieType.Null}
-	else:
-		var card_zombie_type = card_choose_random_pool_zombie.get_random_item()
-		return {"plant_type": CharacterRegistry.PlantType.Null, "zombie_type": card_zombie_type}
+## 返回按权重抽取的独立引用；空池返回 null，由生成入口停止本次创建。
+func get_random_reference() -> ResourceCardReference:
+	if _total_weight <= 0:
+		return null
+	# 本次随机数落入某个条目的累计权重区间。
+	var random_weight: int = randi_range(1, _total_weight)
+	# 累计区间索引与引用数组一一对应。
+	for index: int in _cumulative_weights.size():
+		if random_weight <= _cumulative_weights[index]:
+			return _references[index].copy_reference()
+	return null
 
 

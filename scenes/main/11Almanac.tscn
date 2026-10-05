@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://colkdhubp27eq"]
+[gd_scene format=3 uid="uid://colkdhubp27eq"]
 
 [ext_resource type="Script" uid="uid://b16fmyyjt3mej" path="res://scripts/Almanac/main_almanac.gd" id="1_fstyb"]
 [ext_resource type="Theme" uid="uid://em12la0rqibq" path="res://data/PVZ_theme.tres" id="1_pt714"]
@@ -26,7 +26,7 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fi68g"]
 
-[node name="Almanac" type="Control"]
+[node name="Almanac" type="Control" unique_id=17413967]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -36,7 +36,7 @@ grow_vertical = 2
 theme = ExtResource("1_pt714")
 script = ExtResource("1_fstyb")
 
-[node name="StartPage" type="TextureRect" parent="."]
+[node name="StartPage" type="TextureRect" parent="." unique_id=44281847]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,7 +45,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_db05o")
 
-[node name="Label" type="Label" parent="StartPage"]
+[node name="Label" type="Label" parent="StartPage" unique_id=653025006]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -63,7 +63,7 @@ theme_override_fonts/font = ExtResource("12_jlxhy")
 theme_override_font_sizes/font_size = 33
 text = "图鉴--索引"
 
-[node name="Panel" type="Panel" parent="StartPage"]
+[node name="Panel" type="Panel" parent="StartPage" unique_id=702223571]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 8
@@ -79,7 +79,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fi68g")
 
-[node name="PlantButton" type="TextureButton" parent="StartPage/Panel"]
+[node name="PlantButton" type="TextureButton" parent="StartPage/Panel" unique_id=853126947]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -98,7 +98,7 @@ texture_pressed = ExtResource("4_ikq35")
 texture_click_mask = ExtResource("5_db05o")
 script = ExtResource("11_pn30t")
 
-[node name="Label" type="Label" parent="StartPage/Panel/PlantButton"]
+[node name="Label" type="Label" parent="StartPage/Panel/PlantButton" unique_id=1218712123]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -115,12 +115,12 @@ theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 text = "查看植物"
 
-[node name="Plant002SunFlower" parent="StartPage/Panel" node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("8_pt714")]
+[node name="Plant002SunFlower" parent="StartPage/Panel" unique_id=342456344 node_paths=PackedStringArray("node_no_change_direction") instance=ExtResource("8_pt714")]
 position = Vector2(162, 125)
 node_no_change_direction = [NodePath("HpComponent"), NodePath("SleepComponent"), null]
 character_init_type = 1
 
-[node name="Panel2" type="Panel" parent="StartPage"]
+[node name="Panel2" type="Panel" parent="StartPage" unique_id=1440756828]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 8
@@ -136,7 +136,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fi68g")
 
-[node name="ZombieButton" type="TextureButton" parent="StartPage/Panel2"]
+[node name="ZombieButton" type="TextureButton" parent="StartPage/Panel2" unique_id=1528980476]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -156,7 +156,7 @@ texture_click_mask = ExtResource("7_2p4k2")
 stretch_mode = 0
 script = ExtResource("11_pn30t")
 
-[node name="Label" type="Label" parent="StartPage/Panel2/ZombieButton"]
+[node name="Label" type="Label" parent="StartPage/Panel2/ZombieButton" unique_id=1880719039]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -173,18 +173,18 @@ theme_override_colors/font_color = Color(0, 0.917647, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 text = "查看僵尸"
 
-[node name="Zombie001Norm" parent="StartPage/Panel2" instance=ExtResource("11_2p4k2")]
+[node name="Zombie001Norm" parent="StartPage/Panel2" unique_id=518119263 instance=ExtResource("11_2p4k2")]
 position = Vector2(157, 141)
 character_init_type = 1
 
-[node name="PlantPage" type="TextureRect" parent="."]
+[node name="PlantPage" type="TextureRect" parent="." unique_id=91264844]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("12_u1nrc")
 script = ExtResource("13_pt714")
 
-[node name="Label" type="Label" parent="PlantPage"]
+[node name="Label" type="Label" parent="PlantPage" unique_id=39966321]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -204,7 +204,7 @@ text = "图鉴--植物"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CardGridContainer" type="GridContainer" parent="PlantPage"]
+[node name="CardGridContainer" type="GridContainer" parent="PlantPage" unique_id=685283436]
 layout_mode = 0
 offset_left = 27.0
 offset_top = 89.0
@@ -214,7 +214,7 @@ theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 9
 columns = 8
 
-[node name="AlmanacCharacterShowPanel" parent="PlantPage" instance=ExtResource("14_ji74r")]
+[node name="AlmanacCharacterShowPanel" parent="PlantPage" unique_id=1464435253 instance=ExtResource("14_ji74r")]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -228,7 +228,7 @@ offset_bottom = 264.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="ReturnButton" type="TextureButton" parent="PlantPage"]
+[node name="ReturnButton" type="TextureButton" parent="PlantPage" unique_id=454808796]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -245,7 +245,7 @@ texture_hover = ExtResource("16_pt714")
 texture_click_mask = ExtResource("17_2p4k2")
 script = ExtResource("11_pn30t")
 
-[node name="Label" type="Label" parent="PlantPage/ReturnButton"]
+[node name="Label" type="Label" parent="PlantPage/ReturnButton" unique_id=405530626]
 layout_mode = 0
 offset_left = 53.0
 offset_top = 5.0
@@ -262,14 +262,14 @@ theme_override_fonts/font = ExtResource("12_jlxhy")
 theme_override_font_sizes/font_size = 16
 text = "图鉴索引"
 
-[node name="ZombiePage" type="TextureRect" parent="."]
+[node name="ZombiePage" type="TextureRect" parent="." unique_id=255088982]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("18_ji74r")
 script = ExtResource("20_u1nrc")
 
-[node name="Label" type="Label" parent="ZombiePage"]
+[node name="Label" type="Label" parent="ZombiePage" unique_id=2107666140]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -289,17 +289,17 @@ text = "图鉴--僵尸"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CardGridContainer" type="GridContainer" parent="ZombiePage"]
+[node name="CardGridContainer" type="GridContainer" parent="ZombiePage" unique_id=277093214]
 layout_mode = 0
 offset_left = 29.0
 offset_top = 89.0
 offset_right = 443.0
 offset_bottom = 633.0
 theme_override_constants/h_separation = 2
-theme_override_constants/v_separation = 9
+theme_override_constants/v_separation = 5
 columns = 5
 
-[node name="AlmanacCharacterShowPanel" parent="ZombiePage" instance=ExtResource("14_ji74r")]
+[node name="AlmanacCharacterShowPanel" parent="ZombiePage" unique_id=1963963608 instance=ExtResource("14_ji74r")]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -313,7 +313,7 @@ offset_bottom = 251.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="CharacterBg" parent="ZombiePage/AlmanacCharacterShowPanel" index="0"]
+[node name="CharacterBg" parent="ZombiePage/AlmanacCharacterShowPanel" index="0" unique_id=1628820965]
 offset_left = 64.0
 offset_top = 41.0
 offset_right = 264.0
@@ -321,10 +321,10 @@ offset_bottom = 241.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="AllBg" parent="ZombiePage/AlmanacCharacterShowPanel" index="1"]
+[node name="AllBg" parent="ZombiePage/AlmanacCharacterShowPanel" index="1" unique_id=965670786]
 texture = ExtResource("54_lse7w")
 
-[node name="CharacterName" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg" index="0"]
+[node name="CharacterName" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg" index="0" unique_id=1472160140]
 offset_left = -116.0
 offset_top = 260.0
 offset_right = 110.0
@@ -333,25 +333,25 @@ theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 1
 
-[node name="ScrollContainer" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg" index="1"]
+[node name="ScrollContainer" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg" index="1" unique_id=984674381]
 offset_left = -133.0
 offset_top = -195.0
 offset_right = 127.0
 offset_bottom = -40.0
 
-[node name="PlantPara3" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" index="2"]
+[node name="PlantPara3" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" parent_id_path=PackedInt32Array(1963963608, 559803575) index="2" unique_id=174842321]
 visible = false
 
-[node name="PlantPara4" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" index="3"]
+[node name="PlantPara4" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" parent_id_path=PackedInt32Array(1963963608, 559803575) index="3" unique_id=338717419]
 visible = false
 
-[node name="PlantPara5" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" index="4"]
+[node name="PlantPara5" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg/ScrollContainer/VBoxContainer/CharacterText2Para" parent_id_path=PackedInt32Array(1963963608, 559803575) index="4" unique_id=490876462]
 visible = false
 
-[node name="PlantEndPara" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg" index="2"]
+[node name="PlantEndPara" parent="ZombiePage/AlmanacCharacterShowPanel/AllBg" index="2" unique_id=377140333]
 visible = false
 
-[node name="ReturnButton" type="TextureButton" parent="ZombiePage"]
+[node name="ReturnButton" type="TextureButton" parent="ZombiePage" unique_id=60801877]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -368,7 +368,7 @@ texture_hover = ExtResource("16_pt714")
 texture_click_mask = ExtResource("17_2p4k2")
 script = ExtResource("11_pn30t")
 
-[node name="Label" type="Label" parent="ZombiePage/ReturnButton"]
+[node name="Label" type="Label" parent="ZombiePage/ReturnButton" unique_id=999230195]
 layout_mode = 0
 offset_left = 53.0
 offset_top = 5.0
@@ -385,7 +385,7 @@ theme_override_fonts/font = ExtResource("12_jlxhy")
 theme_override_font_sizes/font_size = 16
 text = "图鉴索引"
 
-[node name="ExitButton" type="TextureButton" parent="."]
+[node name="ExitButton" type="TextureButton" parent="." unique_id=863249286]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -405,7 +405,7 @@ texture_hover = ExtResource("9_ji74r")
 texture_click_mask = ExtResource("10_dyjda")
 script = ExtResource("11_pn30t")
 
-[node name="Label" type="Label" parent="ExitButton"]
+[node name="Label" type="Label" parent="ExitButton" unique_id=1795370472]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 3.0

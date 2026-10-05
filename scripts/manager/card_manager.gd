@@ -39,15 +39,19 @@ func _ready():
 	EventBus.subscribe("hm_character_clear_card", _on_hm_character_clear_card)
 	EventBus.subscribe("hm_character_hand_card", _on_hm_character_hand_card)
 
-## 当手持管理器拿到新卡片时
+## [param curr_card] 开始手持时记录临时卡身份，并暂停临时卡的鼠标交互。
 func _on_hm_character_hand_card(curr_card:Card):
 	curr_temp_card_in_hm = curr_card
+	# 手持期间其他临时卡不可通过鼠标抢占。
 	for temp_card in curr_temp_cards:
 		temp_card.mouse_filter_stop()
 
-## 当手持管理器清除当前手持卡片数据时
+## [param curr_card] 退出手持时清除记录并通知到期等待者，再恢复其他临时卡交互。
 func _on_hm_character_clear_card(curr_card:Card):
+	if curr_temp_card_in_hm == curr_card:
+		curr_temp_card_in_hm = null
 	signal_hm_character_clear_card.emit(curr_card)
+	# 重新启用仍存在的临时卡按钮。
 	for temp_card in curr_temp_cards:
 		temp_card.mouse_filter_start()
 
@@ -148,54 +152,51 @@ func card_slot_disappear_choose():
 	await card_slot_norm.move_card_slot_candidate(false)
 
 #region 临时卡片
-enum E_TempCardParaAttr{
-	PlantType,
-	ZombieType,
-	GlobalPos,
-	ExistTime,	## 存在时间，若没有，则永久存在
-}
-
-## 创建临时卡片
-func create_temp_card(temp_card_para:Dictionary) -> Card:
-	var new_card_prefabs:Card
-	if temp_card_para.has(E_TempCardParaAttr.PlantType) and temp_card_para[E_TempCardParaAttr.PlantType] != CharacterRegistry.PlantType.Null:
-		new_card_prefabs = AllCards.all_plant_card_prefabs[temp_card_para[E_TempCardParaAttr.PlantType]]
-	elif temp_card_para.has(E_TempCardParaAttr.ZombieType) and temp_card_para[E_TempCardParaAttr.ZombieType] !=  CharacterRegistry.ZombieType.Null:
-		new_card_prefabs = AllCards.all_zombie_card_prefabs[temp_card_para[E_TempCardParaAttr.ZombieType]]
-	else:
-		print("error: 没有卡片类型")
-		return
-	var temp_card = new_card_prefabs.duplicate()
+## 在 [param global_pos] 创建 [param reference] 的临时出战卡。[br]
+## [param exist_time] 是正常存在秒数；负数表示永久存在，非负数结束后另有 5 秒闪烁。
+## 返回独立卡实例；僵王、无效引用或未注册模板返回 null，不修改当前临时卡。
+func create_temp_card(reference: ResourceCardReference, global_pos: Vector2, exist_time: float = -1.0) -> Card:
+	if not AllCards.is_battle_card(reference):
+		push_error("CardManager：临时卡只允许已注册的植物和普通僵尸。")
+		return null
+	# 目录统一复制模板、引用并在入树前设定战斗上下文。
+	var temp_card: Card = AllCards.create_card(reference, Card.CardContext.Battle)
+	if temp_card == null:
+		return null
 	curr_temp_cards.append(temp_card)
 	canvas_layer_card_slot_front.add_child(temp_card)
-	temp_card.global_position = temp_card_para.get(E_TempCardParaAttr.GlobalPos, Vector2(100, 100))
-	temp_card.signal_card_use_end.connect(card_use_end.bind(temp_card))
-
-	if temp_card_para.has(E_TempCardParaAttr.ExistTime):
-		temp_card_add_exist_timer(temp_card, temp_card_para[E_TempCardParaAttr.ExistTime])
-
+	temp_card.global_position = global_pos
+	temp_card.signal_card_use_end.connect(card_use_end)
+	if exist_time >= 0:
+		temp_card_add_exist_timer(temp_card, exist_time)
 	return temp_card
 
-func temp_card_add_exist_timer(temp_card:Card, temp_card_exist_time:float):
-	var temp_card_timer:Timer = Timer.new()
+## 给 [param temp_card] 添加一次性的正常存在计时器；[param temp_card_exist_time] 单位秒。
+func temp_card_add_exist_timer(temp_card: Card, temp_card_exist_time: float) -> void:
+	# 定时器由临时卡拥有，卡片释放时同时结束。
+	var temp_card_timer: Timer = Timer.new()
 	temp_card_timer.autostart = false
 	temp_card_timer.one_shot = true
 	temp_card_timer.timeout.connect(_on_temp_card_timer_timeout.bind(temp_card))
 	temp_card.add_child(temp_card_timer)
 	temp_card_timer.start(temp_card_exist_time)
 
-func _on_temp_card_timer_timeout(temp_card:Card):
+## [param temp_card] 正常存在期结束后闪烁 5 秒；仍手持时等待该卡退出手持再销毁。
+func _on_temp_card_timer_timeout(temp_card: Card) -> void:
+	if not is_instance_valid(temp_card) or temp_card.is_queued_for_deletion():
+		return
 	temp_card.card_blink_start()
-	## 五秒闪烁后消失
 	await get_tree().create_timer(5.0, false).timeout
+	if not is_instance_valid(temp_card) or temp_card.is_queued_for_deletion():
+		return
 	if curr_temp_card_in_hm == temp_card:
 		await signal_hm_character_clear_card
-	## 如果还未被使用
 	if is_instance_valid(temp_card):
 		card_use_end(temp_card)
 
-func card_use_end(card:Card):
-	if not card.is_queued_for_deletion():
+## [param card] 成功使用或到期时从临时卡列表移除并释放；重复通知不重复释放。
+func card_use_end(card: Card) -> void:
+	if is_instance_valid(card) and not card.is_queued_for_deletion():
 		curr_temp_cards.erase(card)
 		card.queue_free()
 

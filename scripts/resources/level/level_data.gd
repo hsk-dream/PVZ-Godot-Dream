@@ -128,22 +128,21 @@ func set_choose_level(curr_game_mode: MainSceneRegistry.MainScenes, curr_level_p
 @export_range(1, 15) var max_choosed_card_num: int = 10
 ## 开始阳光数量
 @export var start_sun: int = 50
-## 预选卡片列表、预选卡片不能在选卡时取消
-@export var pre_choosed_card_list_plant: Array[CharacterRegistry.PlantType] = []
-@export var pre_choosed_card_list_zombie: Array[CharacterRegistry.ZombieType] = []
+## 系统预选卡片，按列表顺序入槽；只保存有效引用，选卡时不能取消。
+@export var prechosen_cards: Array[ResourceCardReference] = []
 
 @export_subgroup("传送带卡片参数")
-@export var all_card_plant_type_probability: Dictionary[CharacterRegistry.PlantType, int]
-@export var all_card_zombie_type_probability: Dictionary[CharacterRegistry.ZombieType, int]
-@export var card_order_plant: Dictionary[int, CharacterRegistry.PlantType] = {}
-@export var card_order_zombie: Dictionary[int, CharacterRegistry.ZombieType] = {}
+## 传送带随机卡片与非负整数权重；0 表示不参与抽取，只使用显式配置的条目。
+@export var conveyor_weights: Array[ResourceCardWeight] = []
+## 指定传送带卡片，键为从 0 开始的生成序号；未指定的序号使用随机池。
+@export var conveyor_order: Dictionary[int, ResourceCardReference] = {}
 @export var create_new_card_speed: float = 1
 
 @export_subgroup("种子雨卡片参数")
-@export var all_card_plant_type_probability_seed_rain: Dictionary[CharacterRegistry.PlantType, int]
-@export var all_card_zombie_type_probability_seed_rain: Dictionary[CharacterRegistry.ZombieType, int]
-@export var card_order_plant_seed_rain: Dictionary[int, CharacterRegistry.PlantType] = {}
-@export var card_order_zombie_seed_rain: Dictionary[int, CharacterRegistry.ZombieType] = {}
+## 种子雨随机卡片与非负整数权重；0 表示不参与抽取，与传送带配置相互独立。
+@export var seed_rain_weights: Array[ResourceCardWeight] = []
+## 指定种子雨卡片，键为从 0 开始的生成序号；未指定的序号使用随机池。
+@export var seed_rain_order: Dictionary[int, ResourceCardReference] = {}
 
 @export_subgroup("种植参数")
 ## 柱子模式
@@ -215,7 +214,7 @@ var ori_data_on_save_data_update: Dictionary = {}
 var save_game_data_main_game: ResourceSaveGameMainGame
 
 ## 游戏开始会根据参数初始化一些硬性的参数。
-## 卡槽: 传送带禁止选卡、禁止天降阳光。预选卡用 0 补全。
+## 卡槽: 传送带禁止选卡、禁止天降阳光。预选卡按引用列表的顺序入槽。
 ## 出怪: 正常模式下刷新列表会按白名单过滤；禁止在列表中写 Z021Bungi，应使用 is_bungi。
 ## 返回是否初始化成功；僵王配置错误时先报错并返回 false，避免修改参数或读取存档。
 func init_para() -> bool:
@@ -225,7 +224,6 @@ func init_para() -> bool:
 			push_error("ResourceLevelData：僵王配置无效：" + message)
 		return false
 	_apply_card_mode_constraints()
-	_pad_prechosen_cards()
 	_init_zombie_refresh_from_whitelist()
 	_normalize_pot_col_range()
 	_init_pot_mode()
@@ -292,15 +290,6 @@ func _apply_card_mode_constraints() -> void:
 	if card_mode != ConstLevelData.E_CardMode.Norm and can_choosed_card:
 		print("warning: 当前卡槽模式无法选卡, 已修改选卡为false")
 		can_choosed_card = false
-
-
-func _pad_prechosen_cards() -> void:
-	if pre_choosed_card_list_plant.size() < max_choosed_card_num:
-		GlobalUtils.pad_array(pre_choosed_card_list_plant, max_choosed_card_num, 0)
-	if pre_choosed_card_list_zombie.size() < max_choosed_card_num:
-		GlobalUtils.pad_array(pre_choosed_card_list_zombie, max_choosed_card_num, 0)
-	print("预选卡植物:", pre_choosed_card_list_plant)
-	print("预选卡僵尸:", pre_choosed_card_list_zombie)
 
 
 func _init_zombie_refresh_from_whitelist() -> void:

@@ -1,274 +1,241 @@
+## 手持出战卡的预览、格子判定和创建；显式区分植物与普通僵尸。
 extends Node
-## 手持管理器，角色（植物僵尸）
 class_name HM_Character
 
+## 所属手持管理器。
 @onready var hand_manager: HandManager = %HandManager
-
-## 角色临时挂载节点
+## 鼠标角色预览与格子虚影的临时挂载节点。
 @onready var temporary_character: Node2D = %TemporaryCharacter
+## 当前手持的卡片实例，退出状态时清除。
+var curr_card: Card = null
+## 跟随鼠标的静态角色预览。
+var characte_static: Node2D
+## 当前格子的半透明静态角色虚影。
+var characte_static_shadow: Node2D
+## 植物格子判定条件，仅植物卡加载。
+var plant_condition: ResourcePlantCondition
+## 普通僵尸允许出现的行地形，仅僵尸卡读取。
+var zombie_row_type: CharacterRegistry.ZombieRowType = CharacterRegistry.ZombieRowType.Land
+## 当前格子是否已通过出战卡放置判定。
+var is_shadow_in_cell: bool = false
+## 是否启用同列多行的柱子模式。
+var is_mode_column: bool = false
+## 柱子模式按行保存的额外虚影。
+var characte_static_shadow_colum: Array[Node2D] = []
+## 当前紫卡的预置植物，退出手持时恢复明暗效果。
+var curr_all_preplant_purple: Array[Plant000Base] = []
 
-## 当前卡片
-var curr_card:Card = null
-## 手持静态角色
-var characte_static:Node2D
-## 格子静态角色虚影
-var characte_static_shadow:Node2D
-## 植物种植条件
-var plant_condition:ResourcePlantCondition
-## 僵尸种植行条件
-var zombie_row_type:CharacterRegistry.ZombieRowType
-## 虚影在格子中，即可以种植
-var is_shadow_in_cell:=false
+## 从所属关卡读取柱子模式。
+func init_hm_character() -> void:
+	is_mode_column = hand_manager.game_para.is_mode_column
 
-## 柱子模式
-var is_mode_column := false
-## 柱子模式虚影
-var characte_static_shadow_colum : Array[Node2D]
-
-## 紫卡植物可以的预种植植物,点击卡片时明暗交替
-var curr_all_preplant_purple:Array[Plant000Base]
-
-func init_hm_character():
-	self.is_mode_column = hand_manager.game_para.is_mode_column
-
+## 当前预览存在时更新为鼠标的全局位置。
 func character_process() -> void:
-	## CanvasItem方法获取位置
-	characte_static.global_position = temporary_character.get_global_mouse_position()
+	if is_instance_valid(characte_static):
+		characte_static.global_position = temporary_character.get_global_mouse_position()
 
-## 点击卡片
-func click_card(card:Card) -> void:
-	## 清除之前数据
+## 开始手持 [param card]，建立独立预览并读取本类型条件。
+## 返回是否成功初始化；僵王、无效引用和缺少静态预览的卡片不进入手持。
+func click_card(card: Card) -> bool:
+	if not AllCards.is_battle_card(card.card_reference):
+		return false
 	if curr_card != null:
 		_clear_curr_data()
-	## 新植物数据
+	# 目录复制静态节点，卡片模板不参与战斗场景生命周期。
+	var static_preview: Node2D = AllCards.create_static_preview(card.card_reference)
+	if static_preview == null:
+		return false
+	if static_preview.get_child_count() == 0:
+		static_preview.free()
+		return false
 	curr_card = card
+	characte_static = static_preview
+	characte_static.get_child(0).scale = Vector2.ONE
+	characte_static_shadow = characte_static.get_child(0).duplicate() as Node2D
+	characte_static_shadow.modulate.a = 0
+	characte_static.z_index = 1
+	temporary_character.add_child(characte_static)
+	temporary_character.add_child(characte_static_shadow)
+	match curr_card.card_reference.card_type:
+		ResourceCardReference.CardType.Plant:
+			plant_condition = Global.character_registry.get_plant_info(curr_card.card_reference.content_id, CharacterRegistry.PlantInfoAttribute.PlantConditionResource)
+			if plant_condition.is_purple_card:
+				start_preplant_purple_light(plant_condition, curr_card.card_reference.content_id)
+		ResourceCardReference.CardType.Zombie:
+			zombie_row_type = Global.character_registry.get_zombie_info(curr_card.card_reference.content_id, CharacterRegistry.ZombieInfoAttribute.ZombieRowType)
+	if is_mode_column:
+		click_card_column()
 	EventBus.push_event("hm_character_hand_card", [curr_card])
-	## 植物
-	if curr_card.card_plant_type != CharacterRegistry.PlantType.Null:
-		plant_condition = Global.character_registry.get_plant_info(curr_card.card_plant_type, CharacterRegistry.PlantInfoAttribute.PlantConditionResource)
-		## 静态植物以及植物虚影
-		characte_static = card.character_static.duplicate()
-		characte_static.get_child(0).scale = Vector2.ONE
-		characte_static_shadow = characte_static.get_child(0).duplicate()
-		characte_static_shadow.modulate.a = 0
-		characte_static.z_index = 1
+	return true
 
-		temporary_character.add_child(characte_static)
-		temporary_character.add_child(characte_static_shadow)
-
-		if click_card_column:
-			click_card_column()
-
-		# 如果是紫卡植物
-		if plant_condition.is_purple_card:
-			start_preplant_purple_light(plant_condition, curr_card.card_plant_type)
-
-	## 僵尸
-	else:
-		zombie_row_type = Global.character_registry.get_zombie_info(curr_card.card_zombie_type, CharacterRegistry.ZombieInfoAttribute.ZombieRowType)
-		## 静态僵尸以及僵尸虚影
-		characte_static = card.character_static.duplicate()
-		characte_static.get_child(0).scale = Vector2.ONE
-		characte_static_shadow = characte_static.get_child(0).duplicate()
-		characte_static_shadow.modulate.a = 0
-		characte_static.z_index = 1
-
-		temporary_character.add_child(characte_static)
-		temporary_character.add_child(characte_static_shadow)
-
-		if click_card_column:
-			click_card_column()
-
-## 紫卡预种植植物身体明暗发光开始
-func start_preplant_purple_light(curr_plant_condition:ResourcePlantCondition, plant_type:CharacterRegistry.PlantType):
+## 让 [param curr_plant_condition] 为 [param plant_type] 找到的预置植物开始明暗提示。
+func start_preplant_purple_light(curr_plant_condition: ResourcePlantCondition, plant_type: CharacterRegistry.PlantType) -> void:
 	curr_all_preplant_purple = curr_plant_condition.get_all_preplant_purple(Global.main_game.plant_cell_manager.all_plant_cells, plant_type)
-	for preplant_purple in curr_all_preplant_purple:
+	# 本次紫卡可以升级的预置植物。
+	for preplant_purple: Plant000Base in curr_all_preplant_purple:
 		preplant_purple.preplant_purple_body_light_and_dark()
-#
-## 紫卡预种植植物身体明暗发光结束
-func end_preplant_purple_light():
-	for preplant_purple in curr_all_preplant_purple:
+
+## 恢复仍然存在的紫卡预置植物明暗状态。
+func end_preplant_purple_light() -> void:
+	# 预置植物可能在手持期间死亡，需要先检查引用。
+	for preplant_purple: Plant000Base in curr_all_preplant_purple:
 		if is_instance_valid(preplant_purple):
 			preplant_purple.preplant_purple_body_light_and_dark_end()
+	curr_all_preplant_purple.clear()
 
-## 清除数据
-func _clear_curr_data():
-	# 如果是紫卡植物
+## 释放本次预览、恢复紫卡提示并发出原有手持清除事件。
+func _clear_curr_data() -> void:
 	if plant_condition != null and plant_condition.is_purple_card:
 		end_preplant_purple_light()
-
 	is_shadow_in_cell = false
-	## 若当前存在卡片,事件总线推清除当前卡片数据,种子雨卡槽接受判断
 	if is_instance_valid(curr_card):
 		EventBus.push_event("hm_character_clear_card", [curr_card])
-
 	curr_card = null
-	characte_static.queue_free()
-	characte_static_shadow.queue_free()
+	if is_instance_valid(characte_static):
+		characte_static.queue_free()
+	if is_instance_valid(characte_static_shadow):
+		characte_static_shadow.queue_free()
+	characte_static = null
+	characte_static_shadow = null
 	plant_condition = null
 	zombie_row_type = CharacterRegistry.ZombieRowType.Land
-	if is_mode_column:
-		_clear_curr_data_column()
+	_clear_curr_data_column()
 
-## 鼠标进入cell
-func mouse_enter(plant_cell:PlantCell):
+## 进入 [param plant_cell] 时更新虚影与放置条件，柱子模式同时检查其余行。
+func mouse_enter(plant_cell: PlantCell) -> void:
+	if curr_card == null:
+		return
 	is_shadow_in_cell = _update_cell_shadow(plant_cell, characte_static_shadow)
 	if is_shadow_in_cell and is_mode_column:
 		_mouse_enter_column(plant_cell)
 
-## 更新植物格子虚影,返回是否能种植
-func _update_cell_shadow(plant_cell:PlantCell, curr_characte_static_shadow:Node2D) -> bool:
-	## 植物
-	if curr_card.card_plant_type != 0:
-		## 如果是判定是否可以种植植物
-		if plant_condition.judge_is_can_plant(plant_cell, curr_card.card_plant_type):
-			curr_characte_static_shadow.global_position = plant_cell.get_new_plant_static_shadow_global_position(plant_condition.place_plant_in_cell)
-			curr_characte_static_shadow.modulate.a = 0.5
-			return true
-		else:
-			curr_characte_static_shadow.modulate.a = 0
-			return false
-
-	## 僵尸
-	else:
-		## 如果当前格子不能种植僵尸(蹦极除外)
-		if not plant_cell.can_common_zombie and curr_card.card_zombie_type != CharacterRegistry.ZombieType.Z021Bungi:
-			return false
-		## 如果不是双地形
-		if zombie_row_type != CharacterRegistry.ZombieRowType.Both:
-			if zombie_row_type == Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type:
-				curr_characte_static_shadow.global_position =  get_zombie_static_shadow_global_position(plant_cell)
+## 更新 [param plant_cell] 上的 [param curr_characte_static_shadow] 并返回能否放置。
+## 只支持植物与普通僵尸，其他类别隐藏虚影并返回 false。
+func _update_cell_shadow(plant_cell: PlantCell, curr_characte_static_shadow: Node2D) -> bool:
+	curr_characte_static_shadow.modulate.a = 0
+	if not AllCards.is_battle_card(curr_card.card_reference):
+		return false
+	match curr_card.card_reference.card_type:
+		ResourceCardReference.CardType.Plant:
+			if plant_condition.judge_is_can_plant(plant_cell, curr_card.card_reference.content_id):
+				curr_characte_static_shadow.global_position = plant_cell.get_new_plant_static_shadow_global_position(plant_condition.place_plant_in_cell)
 				curr_characte_static_shadow.modulate.a = 0.5
 				return true
-			else:
-				curr_characte_static_shadow.modulate.a = 0
+		ResourceCardReference.CardType.Zombie:
+			if not plant_cell.can_common_zombie and curr_card.card_reference.content_id != CharacterRegistry.ZombieType.Z021Bungi:
 				return false
-		else:
+			if plant_cell.row_col.x >= Global.main_game.zombie_manager.all_zombie_rows.size():
+				return false
+			if zombie_row_type != CharacterRegistry.ZombieRowType.Both and zombie_row_type != Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_row_type:
+				return false
 			curr_characte_static_shadow.global_position = get_zombie_static_shadow_global_position(plant_cell)
 			curr_characte_static_shadow.modulate.a = 0.5
 			return true
+	return false
 
-## 获取种植僵尸的虚影位置
-func get_zombie_static_shadow_global_position(plant_cell)->Vector2:
-	var global_pos =  Vector2(
-		plant_cell.global_position.x + plant_cell.size.x/2,
+## 返回普通僵尸在 [param plant_cell] 对应行的预览全局位置，包含屋顶坡面修正。
+func get_zombie_static_shadow_global_position(plant_cell: PlantCell) -> Vector2:
+	# 水平位置位于格子中点，垂直位置沿用僵尸行的生成标记。
+	var global_pos: Vector2 = Vector2(
+		plant_cell.global_position.x + plant_cell.size.x / 2,
 		Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_create_position.global_position.y
 	)
-
-	## 如果有斜面
 	if is_instance_valid(Global.main_game.main_game_slope):
 		global_pos += Vector2(0, Global.main_game.main_game_slope.get_all_slope_y(global_pos.x))
-
-
 	return global_pos
 
-## 鼠标移出cell
-func mouse_exit(_plant_cell:PlantCell):
-	characte_static_shadow.modulate.a = 0
+## 移出 [param _plant_cell] 时隐藏当前及柱子模式虚影。
+func mouse_exit(_plant_cell: PlantCell) -> void:
+	is_shadow_in_cell = false
+	if is_instance_valid(characte_static_shadow):
+		characte_static_shadow.modulate.a = 0
 	if is_mode_column:
 		_mouse_exit_column()
 
-## 点击种植植物\僵尸
-func click_cell(plant_cell:PlantCell):
-	if is_shadow_in_cell:
-		if curr_card.card_plant_type != 0:
-			plant_cell.create_plant(curr_card.card_plant_type, curr_card.is_imitater)
-		else:
-			var zombie_init_para:Dictionary = {
-				Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsNorm,
-				Zombie000Base.E_ZInitAttr.Lane:plant_cell.row_col.x,
-			}
+## 在 [param plant_cell] 成功创建后完成同列创建，仅发送一次卡片使用结算。
+func click_cell(plant_cell: PlantCell) -> void:
+	if not is_shadow_in_cell or not AllCards.is_battle_card(curr_card.card_reference):
+		return
+	if not _create_character_at_cell(plant_cell):
+		return
+	if is_mode_column:
+		_click_cell_column(plant_cell)
+	curr_card.signal_card_use_end.emit(curr_card)
 
-			Global.main_game.zombie_manager.create_norm_zombie(
-				curr_card.card_zombie_type,
+## 在 [param plant_cell] 创建当前植物或普通僵尸并返回是否创建成功，不进行卡槽结算。
+func _create_character_at_cell(plant_cell: PlantCell) -> bool:
+	match curr_card.card_reference.card_type:
+		ResourceCardReference.CardType.Plant:
+			return plant_cell.create_plant(curr_card.card_reference.content_id, curr_card.card_reference.is_imitater) != null
+		ResourceCardReference.CardType.Zombie:
+			# 普通僵尸仍按行初始化，保留关卡模式与特殊僵尸回调。
+			var zombie_init_para: Dictionary = {
+				Zombie000Base.E_ZInitAttr.CharacterInitType: Character000Base.E_CharacterInitType.IsNorm,
+				Zombie000Base.E_ZInitAttr.Lane: plant_cell.row_col.x,
+			}
+			return Global.main_game.zombie_manager.create_norm_zombie(
+				curr_card.card_reference.content_id,
 				Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x],
 				zombie_init_para,
 				Vector2(
-					plant_cell.global_position.x + plant_cell.size.x/2,
+					plant_cell.global_position.x + plant_cell.size.x / 2,
 					Global.main_game.zombie_manager.all_zombie_rows[plant_cell.row_col.x].zombie_create_position.global_position.y
 				),
-				GlobalUtils.get_special_zombie_callable(curr_card.card_zombie_type, plant_cell)
-			)
+				GlobalUtils.get_special_zombie_callable(curr_card.card_reference.content_id, plant_cell)
+			) != null
+	return false
 
-		## 卡片种植完成发射信号
-		curr_card.signal_card_use_end.emit()
-		if is_mode_column:
-			_click_cell_column(plant_cell)
-
-## 退出当前状态
-func exit_status():
+## 退出手持角色状态并清理所有预览。
+func exit_status() -> void:
 	_clear_curr_data()
 
-
-#region 柱子模式额外操作函数
-## 柱子模式 点击卡片产生多余植物虚影
+## 柱子模式为植物格子行或普通僵尸行生成额外预览，不支持僵王。
 func click_card_column() -> void:
-	if curr_card.card_plant_type != 0:
-		for plant_cell_i in range(Global.main_game.plant_cell_manager.row_col.x):
-			var column_characte_static_shadow = characte_static_shadow.duplicate()
-			column_characte_static_shadow.modulate.a = 0
-			temporary_character.add_child(column_characte_static_shadow)
-			characte_static_shadow_colum.append(column_characte_static_shadow)
-	else:
-		for zombie_rows_i in range(Global.main_game.zombie_manager.all_zombie_rows.size()):
-			var column_characte_static_shadow = characte_static_shadow.duplicate()
-			column_characte_static_shadow.modulate.a = 0
-			temporary_character.add_child(column_characte_static_shadow)
-			characte_static_shadow_colum.append(column_characte_static_shadow)
+	# 本类型用于柱子模式的行数。
+	var row_count: int = 0
+	match curr_card.card_reference.card_type:
+		ResourceCardReference.CardType.Plant:
+			row_count = Global.main_game.plant_cell_manager.row_col.x
+		ResourceCardReference.CardType.Zombie:
+			row_count = Global.main_game.zombie_manager.all_zombie_rows.size()
+	# 虚影数组索引与行号一致，当前行由主虚影展示。
+	for lane: int in range(row_count):
+		# 独立副本只用于该行的预览。
+		var column_shadow: Node2D = characte_static_shadow.duplicate() as Node2D
+		column_shadow.modulate.a = 0
+		temporary_character.add_child(column_shadow)
+		characte_static_shadow_colum.append(column_shadow)
 
-## 柱子模式 鼠标进入判断其他格子是否可以种植，产生虚影
-func _mouse_enter_column(plant_cell:PlantCell):
-	for plant_cell_i in range(Global.main_game.plant_cell_manager.row_col.x):
-		if plant_cell_i == plant_cell.row_col.x:
+## 检查 [param plant_cell] 同列的其余行，仅为可放置格子显示额外虚影。
+func _mouse_enter_column(plant_cell: PlantCell) -> void:
+	_mouse_exit_column()
+	# 虚影行号与对应植物格子行保持一致。
+	for lane: int in characte_static_shadow_colum.size():
+		if lane == plant_cell.row_col.x or lane >= Global.main_game.plant_cell_manager.all_plant_cells.size():
 			continue
-
-		## 判断是否产生虚影
 		_update_cell_shadow(
-			Global.main_game.plant_cell_manager.all_plant_cells[plant_cell_i][plant_cell.row_col.y],\
-			characte_static_shadow_colum[plant_cell_i]
+			Global.main_game.plant_cell_manager.all_plant_cells[lane][plant_cell.row_col.y],
+			characte_static_shadow_colum[lane]
 		)
 
-## 柱子模式 鼠标移出cell
-func _mouse_exit_column():
-	for _characte_static_shadow in characte_static_shadow_colum:
-		_characte_static_shadow.modulate.a = 0
+## 隐藏柱子模式所有额外虚影。
+func _mouse_exit_column() -> void:
+	# 额外预览可能因状态退出释放。
+	for shadow: Node2D in characte_static_shadow_colum:
+		if is_instance_valid(shadow):
+			shadow.modulate.a = 0
 
-## 柱子模式 点击种植或铲掉植物
-func _click_cell_column(plant_cell:PlantCell):
-	if curr_card.card_plant_type != 0:
-		for i in range(characte_static_shadow_colum.size()):
-			## 当前格子的图像透明
-			var _characte_static_shadow = characte_static_shadow_colum[i]
-			if _characte_static_shadow.modulate.a != 0:
-				var _plant_cell:PlantCell = Global.main_game.plant_cell_manager.all_plant_cells[i][plant_cell.row_col.y]
-				_plant_cell.create_plant(curr_card.card_plant_type, curr_card.is_imitater)
-	else:
-		for i in range(characte_static_shadow_colum.size()):
-			## 当前格子的图像透明
-			var _characte_static_shadow = characte_static_shadow_colum[i]
-			if _characte_static_shadow.modulate.a != 0:
-				var _plant_cell:PlantCell = Global.main_game.plant_cell_manager.all_plant_cells[i][plant_cell.row_col.y]
+## 在 [param plant_cell] 同列的其他可放置行创建角色，不重复发出成功结算信号。
+func _click_cell_column(plant_cell: PlantCell) -> void:
+	# 透明度记录本次额外行的放置判定。
+	for lane: int in characte_static_shadow_colum.size():
+		if characte_static_shadow_colum[lane].modulate.a != 0:
+			_create_character_at_cell(Global.main_game.plant_cell_manager.all_plant_cells[lane][plant_cell.row_col.y])
 
-				var zombie_init_para:Dictionary = {
-					Zombie000Base.E_ZInitAttr.CharacterInitType:Character000Base.E_CharacterInitType.IsNorm,
-					Zombie000Base.E_ZInitAttr.Lane:_plant_cell.row_col.x,
-				}
-
-				Global.main_game.zombie_manager.create_norm_zombie(
-					curr_card.card_zombie_type,
-					Global.main_game.zombie_manager.all_zombie_rows[_plant_cell.row_col.x],
-					zombie_init_para,
-
-					Vector2(_characte_static_shadow.global_position.x,
-						Global.main_game.zombie_manager.all_zombie_rows[_plant_cell.row_col.x].zombie_create_position.global_position.y
-					),
-					GlobalUtils.get_special_zombie_callable(curr_card.card_zombie_type, _plant_cell)
-				)
-
-## 柱子模式 清除数据
-func _clear_curr_data_column():
-	for _characte_static_shadow in characte_static_shadow_colum:
-		_characte_static_shadow.queue_free()
+## 释放本次手持产生的柱子模式预览，退出后清空引用列表。
+func _clear_curr_data_column() -> void:
+	# 额外虚影均由本手持状态拥有。
+	for shadow: Node2D in characte_static_shadow_colum:
+		if is_instance_valid(shadow):
+			shadow.queue_free()
 	characte_static_shadow_colum.clear()
-
-#endregion

@@ -59,16 +59,23 @@ func init_card_slot_battle(max_choosed_card_num:int):
 	cards_placeholder = card_ui_list.get_children()
 	return cards_placeholder
 
-## 主游戏刷新卡片
+## 切换为战斗交互并连接成功使用结算；僵王不能进入金币卡槽。
 func main_game_refresh_card():
-	for i in range(curr_cards.size()):
-		var card:Card = curr_cards[i]
+	# 出战卡顺序决定快捷键位置。
+	for i: int in range(curr_cards.size()):
+		# 当前槽位中需要启用战斗交互的卡片。
+		var card: Card = curr_cards[i]
+		if not AllCards.is_battle_card(card.card_reference):
+			card.set_card_disable()
+			continue
+		card.card_context = Card.CardContext.Battle
 		card.judge_sun_enough(int(Global.global_game_state.coin_value / 10.0))
-		card.signal_card_use_end.connect(card_use_end.bind(card))
+		if not card.signal_card_use_end.is_connected(card_use_end):
+			card.signal_card_use_end.connect(card_use_end)
 		card.set_shortcut((i+1)%10)
 	judge_disappear_add_card_bar()
 
-## 卡片种植后信号调用函数
+## [param card] 成功使用后扣除金币与本波次数，保留金币卡槽的专用结算规则。
 func card_use_end(card:Card):
 	## 减少阳光，卡片冷却
 	Global.global_game_state.coin_value = Global.global_game_state.coin_value - card.sun_cost * 10

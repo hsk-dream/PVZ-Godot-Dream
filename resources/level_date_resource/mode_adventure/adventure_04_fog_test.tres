@@ -1,7 +1,140 @@
-[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=3 format=3 uid="uid://deg85prfbg2fo"]
+[gd_resource type="Resource" script_class="ResourceLevelData" load_steps=31 format=3 uid="uid://deg85prfbg2fo"]
 
 [ext_resource type="Script" uid="uid://bke3sg5otco7s" path="res://scripts/resources/level/pre_plant_in_level.gd" id="1_6kpqt"]
 [ext_resource type="Script" uid="uid://bjt3l56exxmdw" path="res://scripts/resources/level/level_data.gd" id="2_gwdva"]
+
+[ext_resource type="Script" path="res://scripts/resources/card/card_reference.gd" id="card_reference"]
+[ext_resource type="Script" path="res://scripts/resources/card/card_weight.gd" id="card_weight"]
+
+[sub_resource type="Resource" id="CardReference_1_1"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 1
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_1"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_1")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_3"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 3
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_3"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_3")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_4"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 4
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_4"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_4")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_6"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 6
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_6"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_6")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_8"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 8
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_8"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_8")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_17"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 17
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_17"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_17")
+weight = 8
+
+[sub_resource type="Resource" id="CardReference_1_18"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 18
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_18"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_18")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_19"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 19
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_19"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_19")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_21"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 21
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_21"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_21")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_23"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 23
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_23"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_23")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_26"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 26
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_26"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_26")
+weight = 1
+
+[sub_resource type="Resource" id="CardReference_1_28"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 28
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_28"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_28")
+weight = 2
+
+[sub_resource type="Resource" id="CardReference_1_44"]
+script = ExtResource("card_reference")
+card_type = 1
+content_id = 44
+
+[sub_resource type="Resource" id="CardWeight_seed_rain_weights_1_44"]
+script = ExtResource("card_weight")
+card_reference = SubResource("CardReference_1_44")
+weight = 1
 
 [resource]
 script = ExtResource("2_gwdva")
@@ -14,23 +147,9 @@ is_day_sun = false
 zombie_multy = 4
 zombie_refresh_types = Array[int]([15])
 is_seed_rain = true
-all_card_plant_type_probability_seed_rain = Dictionary[int, int]({
-1: 2,
-3: 1,
-4: 2,
-6: 2,
-8: 2,
-17: 8,
-18: 1,
-19: 2,
-21: 1,
-23: 2,
-26: 1,
-28: 2,
-44: 1
-})
-card_order_plant_seed_rain = Dictionary[int, int]({
-0: 17,
-5: 44
+seed_rain_weights = Array[ExtResource("card_weight")]([SubResource("CardWeight_seed_rain_weights_1_1"), SubResource("CardWeight_seed_rain_weights_1_3"), SubResource("CardWeight_seed_rain_weights_1_4"), SubResource("CardWeight_seed_rain_weights_1_6"), SubResource("CardWeight_seed_rain_weights_1_8"), SubResource("CardWeight_seed_rain_weights_1_17"), SubResource("CardWeight_seed_rain_weights_1_18"), SubResource("CardWeight_seed_rain_weights_1_19"), SubResource("CardWeight_seed_rain_weights_1_21"), SubResource("CardWeight_seed_rain_weights_1_23"), SubResource("CardWeight_seed_rain_weights_1_26"), SubResource("CardWeight_seed_rain_weights_1_28"), SubResource("CardWeight_seed_rain_weights_1_44")])
+seed_rain_order = Dictionary[int, ExtResource("card_reference")]({
+0: SubResource("CardReference_1_17"),
+5: SubResource("CardReference_1_44")
 })
 metadata/_custom_type_script = "uid://bjt3l56exxmdw"

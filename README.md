@@ -32,7 +32,7 @@
 一个 Godot 插件，用于重构 AnimationPlayer 的动画。
 [插件使用教程](https://www.bilibili.com/video/BV1GxXWYZExH?spm_id_from=333.788.videopod.sections&vd_source=1005534986b111b7c1911fe1c36ac835)
 
-注意：目录下**plugin.gd**脚本中调用的函数EditorUtil.find_animation_menu_button(base_control)只支持英文，需要进入函数修改对应的代码 func(node): return node.text == "Animation" 修改为 func(node): return node.text == "Animation" or node.text == "动画"
+当前项目内的插件已支持英文 `Animation` 和中文 `动画` 菜单。
 
 ### [R2Ga_PVZ](https://github.com/hsk-dream/PVZ_reanim2godot_animation)
 将植物大战僵尸的动画文件转换为Godot游戏引擎所支持的动画格式。[使用教程](https://www.bilibili.com/video/BV1XBKwzdELA/)

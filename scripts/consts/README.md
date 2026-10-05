@@ -14,8 +14,12 @@
 在脚本中直接写类型或枚举成员，例如：
 
 ```gdscript
+## 本例关卡采用的泳池背景类型。
 var bg: ConstLevelData.GameBg = ConstLevelData.GameBg.Pool
-var scene: EnumsMainScene.MainScenes = EnumsMainScene.MainScenes.ChooseLevelAdventure
+## 本例要打开的冒险模式选关场景。
+var scene: MainSceneRegistry.MainScenes = MainSceneRegistry.MainScenes.ChooseLevelAdventure
 ```
+
+`MainSceneRegistry` 位于 `res://scripts/autoload/global/main_scene_registry.gd`，负责主场景枚举与场景映射。通过 `Global.main_scene_registry` 访问注册表实例，使用 `Global.main_scene_registry.MainScenesMap[scene]` 获取对应场景的资源路径。
 
 新增枚举或常量时，优先放在语义对应的文件中；若属于「整局关卡规则」且与 `ResourceLevelData` 强相关，放在 `ConstLevelData` 中。
